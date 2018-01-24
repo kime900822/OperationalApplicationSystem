@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans  
+    xmlns="http://www.springframework.org/schema/beans"  
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
+    xmlns:p="http://www.springframework.org/schema/p"  
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xmlns:mvc="http://www.springframework.org/schema/mvc"  
+    xsi:schemaLocation="http://www.springframework.org/schema/beans 
+           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd  
+           http://www.springframework.org/schema/context
+           http://www.springframework.org/schema/context/spring-context-3.0.xsd
+           http://www.springframework.org/schema/aop 
+           http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+           http://www.springframework.org/schema/tx 
+           http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+           http://www.springframework.org/schema/mvc
+           http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd">  
+
+<context:component-scan base-package="com" />
+
+
+<!-- <mvc:annotation-driven />-->
+<!-- 激活组件扫描功能,在包com.gcx及其子包下面自动扫描通过注解配置的组件 -->
+<!-- <context:component-scan base-package="com" /> -->
+<!-- 启动对@AspectJ注解的支持 --> 
+<!-- proxy-target-class等于true是强制使用cglib代理，proxy-target-class默认是false，如果你的类实现了接口 就走JDK代理，如果没有，走cglib代理  -->
+<!-- 注：对于单利模式建议使用cglib代理，虽然JDK动态代理比cglib代理速度快，但性能不如cglib -->
+
+<!--如果不写proxy-target-class="true"这句话也没问题-->
+<!-- <aop:aspectj-autoproxy proxy-target-class="true"/>-->
+
+<!--切面-->
+<!-- <bean id="systemLogAspect" class="com.gcx.annotation.SystemLogAspect"></bean>-->
+
+
+     
+<!-- 数据库配置 -->
+<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+	<property name="locations">
+		<value>classpath:/conf/jdbc.properties</value>
+	</property>
+</bean>
+
+<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+	<property name="driverClassName">
+		<value>${jdbc.driverClassName}</value>
+	</property>
+	<property name="url">
+		<!--<value>jdbc:mysql://zzh624109553.xicp.net:32215/b_jui</value> -->
+		<value>${jdbc.url}</value>
+	</property>
+	<property name="username">
+		<value>${jdbc.username}</value>
+	</property>
+	<property name="password">
+		<value>${jdbc.password}</value>
+	</property>
+</bean>
+
+<bean id="sessionFactory"
+	class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+	<property name="dataSource">
+		<ref bean="dataSource" />
+	</property>
+	<property name="hibernateProperties">
+		<props>
+			<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+			<prop key="hibernate.show_sql">true</prop>
+			<prop key="hibernate.format_sql">true</prop>
+			<prop key="hibernate.use_sql_comments">true</prop>
+		</props>
+	</property>
+    <property name="packagesToScan">
+       <list>
+            <value>com/kime/model</value>
+            <value>com/analysis/model</value>
+            <value>com/sign</value>
+        </list>
+    </property>
+</bean>
+
+
+	<bean id="transactionManager"
+        class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactory" />
+    </bean>
+	<tx:annotation-driven transaction-manager="transactionManager" />	
+
+
+
+</beans>

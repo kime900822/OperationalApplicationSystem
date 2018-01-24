@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.5//EN"
+	"http://struts.apache.org/dtds/struts-2.5.dtd">
+
+<!-- START SNIPPET: xworkSample -->
+<struts>
+
+	<!-- 指定由spring负责action对象的创建 -->
+    <constant name="struts.objectFactory" value="spring" />
+	<!-- 配置web默认编码集 -->
+	<constant name="struts.custom.i18n.resources" value="UTF-8" />
+	<!-- 默认请求后缀是action，配置之后请求后缀可以是action/do -->
+	<constant name="struts.action.extension" value="action,do" />
+	<!-- 设置浏览器是否缓存静态内容，默认值true。我们开发阶段建议关闭， 防止修改后测试不到 -->
+	<constant name="struts.server.static.browserCache" value="false" />
+	<!-- 当struts配置文件修改后，系统是否重新加载该文件。默认为false。开发阶段建议为true， -->
+	<constant name="struts.configuratio.xml.reload" value="true" />
+	<!-- 开发模式下，这样可以打印出更加详细的错误i -->
+	<constant name="struts.devMode" value="true" />
+	<!-- 开启动态方法调用 -->
+	<constant name="struts.enable.DynamicMethodInvocation" value="true"></constant>
+	<!-- 默认视觉主题 这个配置之后label什么都不会显示-->
+	<!-- <constant name="struts.ui.theme" value="simple" /> -->
+	<constant name="struts.objectFactory" value="org.apache.struts2.spring.StrutsSpringObjectFactory" />
+	<!-- 设置上传文件的临时文件夹,默认使用javax.servlet.context.tempdir -->
+    <constant name="struts.multipart.saveDir " value="/upload" />
+	<!-- 进行扫描的根包，该包会被扫描成action -->
+	<constant name="struts.convention.action.packages" value="com.kime.action" />
+	
+ 
+	<package name="Struts 2" extends="struts-default,json-default" >
+		
+
+		
+		<!-- 拦截器 -->
+	    <interceptors>  
+			<interceptor name="loginInterceptor"  
+				class="com.kime.intercept.LoginInterceptor">  
+				<!-- 设置忽略方法 -->
+				<param name="excludeMethods">Logout,Login</param>
+			</interceptor>  
+			<!-- 拦截器栈 -->  
+			<interceptor-stack name="mystack">  
+				<interceptor-ref name="loginInterceptor"></interceptor-ref>
+				<interceptor-ref name="defaultStack"></interceptor-ref>  
+			</interceptor-stack>  
+		</interceptors>  
+		
+		<!-- 默认烂拦截器 -->
+		<default-interceptor-ref name="mystack"></default-interceptor-ref>
+	
+		<!--global-results放的位置顺序不对会报错， 全局变量error -->  
+		<global-results>  
+			<!-- LoginInterceptor中的Action.LOGIN对应找到name -->  
+			<result name="login" type="dispatcher">/UI/error.json</result>         
+		</global-results>
+		
+		
+		
+	</package>
+	<package name="DataImport" extends="Struts 2">
+	
+	</package>
+</struts>
+
+<!-- END SNIPPET: xworkSample -->
+

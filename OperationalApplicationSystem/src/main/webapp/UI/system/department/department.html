@@ -1,0 +1,29 @@
+
+<div class="bjui-pageHeader" style="background-color:#fefefe; border-bottom:none;">
+
+</div>
+<div class="bjui-pageContent" id="div-user">
+    <table class="table table-bordered" id="datagrid-edit-filter" data-toggle="datagrid" data-options="{
+        height: '100%',
+        gridTitle : '部门维护',
+        showToolbar: true,
+        dataType: 'jsonp',
+        toolbarItem: 'add,edit,del,save,cancel,|,refresh',
+        dataUrl: 'queryDepartment.action',
+        delUrl:'deleteDepartment.action',
+        editUrl: 'saveDepartment.action',
+        paging: {pageSize:60, pageCurrent:1},
+        showCheckboxcol: true,
+        linenumberAll: true,
+        contextMenuB: true,
+        hScrollbar: true
+    }">
+        <thead>
+            <tr>
+            	<th data-options="{name:'id',width:350,align:'center',finalWidth:'true',hide:'true'}" ></th>
+            	<th data-options="{name:'did',width:150,align:'center',finalWidth:'true'}" >ID</th>
+				<th data-options="{name:'name',width:350,align:'center',finalWidth:'true'}">Name</th>
+            </tr>
+        </thead>
+    </table>
+</div>

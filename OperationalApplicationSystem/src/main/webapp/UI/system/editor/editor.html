@@ -1,0 +1,30 @@
+
+<div class="bjui-pageHeader" style="background-color:#fefefe; border-bottom:none;">
+
+</div>
+<div class="bjui-pageContent" id="div-user">
+    <table class="table table-bordered" id="datagrid-edit-filter" data-toggle="datagrid" data-options="{
+        height: '100%',
+        gridTitle : '信息发布',
+        showToolbar: true,
+        toolbarItem: 'add,edit,del,|,refresh',
+        dataUrl: 'getEditor.action',
+        dataType: 'jsonp',
+        editMode: {dialog:{width:'800',height:600,title:'编辑发布信息',mask:true}},
+        delUrl:'deleteEditor.action',
+        editUrl: 'JSP/editor/editor-edit.jsp?id={id}',
+        paging: {pageSize:60, pageCurrent:1},
+        showCheckboxcol: true,
+        linenumberAll: true,
+        contextMenuB: true,
+        hScrollbar: true
+    }">
+        <thead>
+            <tr>
+            	<th data-options="{name:'id',width:350,align:'center',finalWidth:'true',hide:'true'}" >ID</th>
+				<th data-options="{name:'title',width:150,align:'center',finalWidth:'true'}">Title</th>
+				<th data-options="{name:'date',width:200,align:'center',finalWidth:'true'}">Datetime</th>
+            </tr>
+        </thead>
+    </table>
+</div>

@@ -1,0 +1,37 @@
+<div class="bjui-pageContent">
+    <form action="register.action" data-toggle="validate" method="post" data-close-current="true">
+        <div class="bjui-row col-1">
+            <label class="row-label">Username:</label>
+            <div class="row-input required">
+                <input type="text" id="j_userinfo_name" name="name" value="" data-rule="required">
+            </div>
+            <label class="row-label">Age:</label>
+            <div class="row-input">
+                <input type="text" id="j_userinfo_age" name="age" value="" >
+            </div>
+            <label class="row-label">Sex:</label>
+            <div class="row-input required">
+                <input type="radio" name="sex" id="j_user_edit_sex_nan" data-toggle="icheck" value="男" data-rule="checked" data-label="男&nbsp;&nbsp;" checked>
+                <input type="radio" name="sex" id="j_user_edit_sex_nv" data-toggle="icheck" value="女" data-label="女">
+            </div>
+            <label class="row-label">Email:</label>
+            <div class="row-input required">
+                <input type="text" id="j_userinfo_email" name="email" data-rule="email" value="" >
+            </div>
+            <label class="row-label">Password:</label>
+            <div class="row-input required">
+                <input type="password" id="j_userinfo_pass" name="password" value="" data-rule="Password:required;length(6~)">
+            </div>
+            <label class="row-label">Confirm Password:</label>
+            <div class="row-input required">
+                <input type="password" id="j_userinfo_pass_confirmpass" name="" value="" data-rule="required;match(#j_userinfo_pass)">
+            </div>
+        </div>
+    </form>
+</div>
+<div class="bjui-pageFooter">
+    <ul>
+        <li><button type="button" class="btn-close" data-icon="close">Close</button></li>
+        <li><button type="submit" class="btn-default" data-icon="check">Register</button></li>
+    </ul>
+</div>

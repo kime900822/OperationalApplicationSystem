@@ -1,0 +1,58 @@
+<script type="text/javascript">
+
+
+BJUI.ajax('doajax', {
+    url: 'getALLType.action',
+    loadingmask: false,
+    okCallback: function(json, options) {
+        $.each(json, function (i, item) {
+            $.CurrentNavtab.find('#j_dict_type').append("<option value='" + item + "'>" + item + "</option>")           
+        })
+        $.CurrentNavtab.find('#j_dict_type').selectpicker('refresh');
+    }
+})	
+
+
+</script>
+
+<div class="bjui-pageHeader" style="background-color:#fefefe; border-bottom:none;">
+<form data-toggle="ajaxsearch" data-options="{searchDatagrid:$.CurrentNavtab.find('#j_datagrid_jur')}">
+    <fieldset>
+        <legend style="font-weight:normal;">select a dict</legend>
+        <div style="margin:0; padding:1px 5px 5px;">
+             <select name="type" data-toggle="selectpicker" id="j_dict_type" data-width="200"  >
+                    <option value=""></option>   
+             </select>&nbsp;&nbsp;&nbsp;&nbsp;
+             <div class="btn-group">
+                <button type="submit" class="btn-green" data-icon="search">Search</button>
+            </div>
+        </div>
+    </fieldset>
+</form>
+</div>
+<div class="bjui-pageContent">
+    <table id="j_datagrid_jur" data-toggle="datagrid" data-options="{
+        height: '100%',
+        gridTitle : 'Dict',
+        showToolbar: true,
+        toolbarItem: 'add,edit,del,save,cancel,|,refresh',
+        dataType: 'jsonp',
+        dataUrl: 'getDict.action',
+        editUrl: 'modeDict.action',
+        delUrl: 'deleteDict.action',
+        paging: {pageSize:50, pageCurrent:1},
+        linenumberAll: true,
+        hScrollbar: true,
+        inlineEditMult: false,
+        addLocation:'last'
+    }">
+        <thead>
+            <tr>
+           		<th data-options="{name:'id', align:'left',finalWidth:'true', width:200, edit:false,hide:'true'}">ID</th>
+            	<th data-options="{name:'type', align:'left',finalWidth:'true', width:200, edit:false}">Type</th>
+                <th data-options="{name:'key', align:'left',finalWidth:'true', width:200}">Key</th>
+                <th data-options="{name:'value', align:'center',finalWidth:'true',width:200}">Value</th>
+            </tr>
+        </thead>
+    </table>
+</div>

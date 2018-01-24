@@ -1,0 +1,80 @@
+<script type="text/javascript">
+// department
+// 操作列
+function datagrid_tree_operation() {
+    var html = '<button type="button" class="btn-green" data-toggle="edit.datagrid.tr">Editor</button>'   
+    return html
+}
+//不能拖动一级父节点
+function datagrid_tree_beforeDrag(tr, data) {
+	return false
+}
+
+
+BJUI.ajax('doajax', {
+    url: 'getAllRole.action',
+    loadingmask: false,
+    okCallback: function(json, options) {
+        $.each(json, function (i, item) {
+            $.CurrentNavtab.find('#j_user_edit_type').append("<option value='" + item.name + "'>" + item.name + "</option>")           
+        })
+        $.CurrentNavtab.find('#j_user_edit_type').selectpicker('val','${param.type}');
+        $.CurrentNavtab.find('#j_user_edit_type').selectpicker('refresh');
+    }
+})	
+
+
+</script>
+
+<div class="bjui-pageHeader" style="background-color:#fefefe; border-bottom:none;">
+<form data-toggle="ajaxsearch" data-options="{searchDatagrid:$.CurrentNavtab.find('#j_datagrid_jur')}">
+    <fieldset>
+        <legend style="font-weight:normal;">select a category：</legend>
+        <div style="margin:0; padding:1px 5px 5px;">
+             <select name="type" data-toggle="selectpicker" id="j_user_edit_type" data-rule="required" data-width="200"  >
+                    <option value=""></option>   
+             </select>&nbsp;&nbsp;&nbsp;&nbsp;
+             <div class="btn-group">
+                <button type="submit" class="btn-green" data-icon="search">Search</button>
+            </div>
+        </div>
+    </fieldset>
+</form>
+</div>
+<div class="bjui-pageContent">
+    <table id="j_datagrid_jur" data-toggle="datagrid" data-options="{
+        width: '100%',
+        height: '100%',
+        gridTitle: 'Role Management',
+        showToolbar: true,
+        toolbarItem:'save,cancel,|,refresh',
+        local: 'local',
+        dataUrl: 'getRoleMenu.action',
+        inlineEditMult: false,
+        editUrl: 'editRoleMenu.action',
+        isTree: 'name',
+        addLocation: 'last',
+        fieldSortable: false,
+        columnMenu: false,
+        contextMenuB: true,
+        filterThead: false,
+        paging: false,
+        treeOptions: {
+            expandAll: false,
+            add: false,
+            simpleData: true,
+            keys: {
+                parentKey: 'parentid'
+            }
+        }
+    }">
+        <thead>
+            <tr>
+            	<th data-options="{name:'type', align:'left',finalWidth:'true', width:200, edit:false}">Role</th>
+                <th data-options="{name:'name', align:'left',finalWidth:'true', width:300, edit:false}">Menu</th>
+                <th data-options="{name:'used', align:'center',finalWidth:'true',width:70,type:'boolean',render:function(value){return value ? '√' : '×'}}">Enabled</th>
+                <th data-options="{render:datagrid_tree_operation}">Operation</th>
+            </tr>
+        </thead>
+    </table>
+</div>

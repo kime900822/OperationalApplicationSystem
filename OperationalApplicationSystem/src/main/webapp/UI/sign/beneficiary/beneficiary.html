@@ -1,0 +1,33 @@
+
+<div class="bjui-pageHeader" style="background-color:#fefefe; border-bottom:none;">
+
+</div>
+<div class="bjui-pageContent" id="div-user">
+    <table class="table table-bordered" id="datagrid-edit-filter" data-toggle="datagrid" data-options="{
+        height: '100%',
+        gridTitle : '供应商维护',
+        showToolbar: true,
+        dataType: 'jsonp',
+        toolbarItem: 'add,edit,del,save,cancel,|,import,export,refresh',
+        dataUrl: 'queryBeneficiary.action',
+        delUrl:'deleteBeneficiary.action',
+        editUrl: 'saveBeneficiary.action',
+        paging: {pageSize:60, pageCurrent:1},
+        showCheckboxcol: true,
+        linenumberAll: true,
+        contextMenuB: true,
+        hScrollbar: true,
+        importOption: {type:'dialog', options:{url:'sign/beneficiary/beneficiary-import.html', width:500, height:300, title:'Import Beneficiary'}},
+        exportOption: {type:'file', options:{url:'exportBeneficiary.action', loadingmask:false}}
+    }">
+        <thead>
+            <tr>
+            	<th data-options="{name:'supplierCode',width:350,align:'center',finalWidth:'true'}" >SupplierCode</th>	
+            	<th data-options="{name:'name',width:200,align:'center',finalWidth:'true'}">Name</th>
+            	<th data-options="{name:'ename',width:200,align:'center',finalWidth:'true'}">EName</th>
+            	<th data-options="{name:'accno',width:350,align:'center',finalWidth:'true'}" >AccNO</th>	
+            	<th data-options="{name:'accbank',width:350,align:'center',finalWidth:'true'}" >AccBank</th>	
+            </tr>
+        </thead>
+    </table>
+</div>
