@@ -446,7 +446,11 @@ function showButton(state,print,uid,documentAuditid,deptManagerid){
 		$.CurrentNavtab.find('#payment-assign').hide();
 		$.CurrentNavtab.find('#payment-acc').hide();
 		$.CurrentNavtab.find('#payment-print').hide();
-		$.CurrentNavtab.find('#payment-delete').show();
+		if(print=='1'){
+			$.CurrentNavtab.find('#payment-delete').hide();
+		}else{
+			$.CurrentNavtab.find('#payment-delete').show();
+		}
 		$.CurrentNavtab.find('#payment-invalid-tr').hide();
 		$.CurrentNavtab.find('#payment-return-tr').hide();	
 	}else if(state=="4"){//财务处理完成  非财务人员查看。可打印
@@ -852,6 +856,9 @@ function checkPoNO(o){
 function checkSupplierCode(o){
 	 var str = $(o).val();
     var ret =  /^\d{5,6}$/;
+    if($.CurrentNavtab.find(o).val()==""||$.CurrentNavtab.find(o).val()==null)
+    	return;
+    
     if(!ret.test(str)){
    	 $.CurrentNavtab.find(o).val("")
    	 BJUI.alertmsg('error', 'Plese Enter Right Type'); 
@@ -894,6 +901,7 @@ function ajaxFileUpload(id,tid) {
 	            secureuri: false, //是否需要安全协议，一般设置为false
 	            fileElementId: id, //文件上传域的ID
 	            dataType: 'json', //返回值类型 一般设置为json
+	            async :false,
 	            success: function (data, status)  //服务器成功响应处理函数
 	            {
 	                if(data.statusCode=='200'){	                      	
@@ -920,10 +928,10 @@ function ajaxFileUpload(id,tid) {
 function checkSave(){
 	var err='';
 	if($.CurrentNavtab.find('input:radio:checked').val()==null||$.CurrentNavtab.find('input:radio:checked').val()==''){
-		err+=" PayType can`t be  empty！<br>";		
+		err+=" Payment Way can`t be  empty！<br>";		
 	}
 	if($.CurrentNavtab.find('#j_payment_paymentSubject').val()==null||$.CurrentNavtab.find('#j_payment_paymentSubject').val()==''){
-		err+=" paymentSubject can`t be  empty！<br>";				
+		err+=" Payment Subject can`t be  empty！<br>";				
 	}
 	if($.CurrentNavtab.find('#j_payment_currency_1').val()==null||$.CurrentNavtab.find('#j_payment_currency_1').val()==''){
 		err+=" Currency can`t be  empty！<br>";				
@@ -1002,7 +1010,7 @@ function checkReturn(){
 						<input type="text" name="contacturalPaymentDate" size="19" value="" data-nobtn="true" id="j_payment_contacturalPaymentDate"  data-toggle="datepicker" >
 					</td>
 					<td>
-						CODE(流水码)
+						Sequential Code(流水码)
 					</td>
 					<td>
 						<input type="text" name="code" value="" readonly="" id="j_payment_code" size="19">
@@ -1010,7 +1018,7 @@ function checkReturn(){
 				</tr>
 				<tr>
 					<td>
-						支付方式*
+						Payment Way*
 					</td>
 					<td>
 						<input type="radio" name="payType" data-toggle="icheck" id="j_payment_cash" value="Cash" data-label="支付现金 <br>Cash">

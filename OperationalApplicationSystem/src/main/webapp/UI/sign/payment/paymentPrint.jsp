@@ -231,7 +231,7 @@ function dataToFace(){
 				</tr>
 				<tr height="10px">
 					<td colspan="2" align="right" >
-						<label>流水码:</label>
+						<label>NO:</label>
 					</td>
 					<td align="center"><label id="code"></label></td>
 				</tr>
@@ -269,28 +269,13 @@ function dataToFace(){
 					<td >
 					</td>
 					<td colspan="3">
-						<input type="checkbox" id="AdvanceWriteoff"><label>&nbsp&nbsp核销预付 Advance Write-off (Amount) .&nbsp&nbsp&nbsp&nbsp</label> 
+						<input type="checkbox" id="AdvanceWriteoff"><label>&nbsp&nbsp核销预付 Advance Write-off&nbsp&nbsp&nbsp&nbsp</label> 
 					</td>
 				</tr>
 			</table>            
 			
 			<table width="1200px" border="1" cellspacing="0" border-bottom="0px" bordercolor="black" style="font-size:10px;">
-				<tr style="display:none">
-					<td width="30px" style="height:0px;line-height:0px;font-size:0px;"></td>
-					<td width="140px"></td>
-					<td width="50px"></td>
-					<td width="120px"></td>
-					<td width="100px"></td>
-					<td width="50px"></td>
-					<td width="60px"></td>
-					<td width="110px"></td>
-					<td width="100px"></td>
-					<td width="160px"></td>
-					<td width="50px"></td>
-					<td width="130px"></td>
-					<td width="100px"></td>
-				</tr>
-				<tr height="20px">
+				<tr height="30px">
 					<td colspan="2" rowspan="2" class="bg">&nbsp申请人:<br>&nbspApplication:</td>
 					<td colspan="2" rowspan="2" style="text-align:center;" ><label id="UID"></label></td>
 					<td colspan="4"  class="bg">&nbsp收款人（全称）:</td>
@@ -301,13 +286,13 @@ function dataToFace(){
 					<td width="90px" rowspan="2" style="text-align:center;" class="bg">供应商代码:<br/>Supplier Code:</td>
 					<td width="90px" rowspan="2" style="text-align:center"><label id="supplierCode"></label> </td>
 				</tr>
-				<tr height="20px">
+				<tr height="30px">
 					<td colspan="4"  class="bg" height="12px">&nbspBeneficiary:</td>
 					<td style="text-align:center">
 						<label id="beneficiaryChange" ></label>
 					</td>
 				</tr>
-				<tr height="20px">
+				<tr height="30px">
 					<td colspan="2" rowspan="2" class="bg">&nbsp所属部门:<br>&nbspDepartment of Applicant:</td>
 					<td colspan="2" rowspan="2" style="text-align:center"><label id="departmentID"></label></td>
 					<td colspan="4"  class="bg">&nbsp银行及帐号:</td>
@@ -318,7 +303,7 @@ function dataToFace(){
 					<td rowspan="2" style="text-align:center;" class="bg">银行交易编码:<br/>Ref. No. of Bank:</td>
 					<td rowspan="2" ><label id="refNoofBank"></label></td>
 				</tr>
-				<tr height="20px">
+				<tr height="30px">
 					<td colspan="4"  class="bg">&nbspBeneficiary Account NO:</td>
 					<td style="text-align:center">
 						<label id="beneficiaryAccountNOChange" ></label>

@@ -99,7 +99,7 @@ $(function() {
         pageInfo     : {total:'totalRow', pageCurrent:'pageCurrent', pageSize:'pageSize', orderField:'orderField', orderDirection:'orderDirection'}, //[可选]分页参数
         keys         : {statusCode:'statusCode', message:'message'}, //[可选]
         ui           : {
-                         sidenavWidth     : 220,
+                         sidenavWidth     : 280,
                          showSlidebar     : true, //[可选]左侧导航栏锁定/隐藏
                          overwriteHomeTab : false //[可选]当打开一个未定义id的navtab时，是否可以覆盖主navtab(我的主页)
                        },

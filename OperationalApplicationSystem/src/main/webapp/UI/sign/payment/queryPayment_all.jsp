@@ -14,6 +14,10 @@ function datagrid_paymentSubject() {
     return [{'1':'Fixed Asset 固定资产'},{'2':'Raw Material 原材料'},{'3':'Consumable 消耗品'},{'4':'Subcontractor 外包'},{'5':'Service 服务'},{'6':'Petty Cash备用金'},{'7':'Other 其他'}]
 }
 
+function datagrid_urgent() {
+    return [{'0':''},{'1':'Y'}]
+}
+
 function datagrid_paymentState() {
     return [{'0':'Save'},{'1':'Submit'},{'2':'Approve'},{'3':'REJECT'},{'4':'Finance'},{'5':'Invalid'}]
 }
@@ -32,23 +36,27 @@ function datagrid_paymentState() {
             	<input type="text" name="applicationDate_f"  data-nobtn="true"  id="q_payment_applicationDate_f" value="" data-toggle="datepicker" size="9" data-rule="date">to:
             	<input type="text" name="applicationDate_t"  data-nobtn="true"  id="q_payment_applicationDate_t" value="" data-toggle="datepicker" size="9" data-rule="date">
         		</td>
-        		<td width="80px">
-        		<span>Code：</span>
+        		<td width="150px">
+        		<span>Sequential Code：</span>
         		</td>
         		<td width="180px">
             	<input type="text" name="code" value="" id="q_payment_code" size="15">
         		</td>
         		<td>
-        		<span>ID：</span>
+        		<span>Cimtas ID：</span>
         		</td>
-        		<td>
+        		<td width="180px">
         		<input type="text" name="UID" value="" id="q_payment_UID" size="15">
         		</td>
         		<td width="80px">
         		<span>Urgent：</span>
         		</td>
         		<td width="80px">
-            	<input type="checkbox" name="urgent"  data-toggle="icheck" id="q_payment_urgent" value="1" data-label="">
+            		<select name="urgent" data-toggle="selectpicker" id="q_payment_urgent"  data-width="80px">
+		              <option value=""></option>
+		              <option value="1">Y</option>
+		              <option value="0">N</option>
+	            	</select>
         		</td>
         	</tr>    
         	<tr>
@@ -71,10 +79,20 @@ function datagrid_paymentState() {
             	</select>
         		</td>
         		<td>
-        		<span>DepermentID：</span>
+        		<span>BU NO：</span>
         		</td>
         		<td>
             	<input type="text" name="departmentID" class="form-control" size="15" data-rule="number" >
+        		</td>
+        		<td>
+        		<span>Status</span>
+        		</td>
+        		<td>
+            	<select name="state" data-toggle="selectpicker" id="q_payment_state"  data-width="80px">
+	              <option value="" >all</option>
+	              <option value="1">check</option>
+	              <option value="2">uncheck</option>
+            	</select>
         		</td>
         		<td colspan="2" align="center">
         		<div class="btn-group">
@@ -82,7 +100,7 @@ function datagrid_paymentState() {
                 <button type="reset" class="btn-orange" data-icon="times">Reset</button>
             	</div>
         		</td>
-        		<td colspan="2"></td>
+
         	</tr>    
         </table>
             
@@ -117,16 +135,16 @@ function datagrid_paymentState() {
             <tr>
             	<th data-options="{render:datagrid_tree_operation,align:'center'}">Operation</th>
             	<th data-options="{name:'id',width:150,align:'center',finalWidth:'true',hide:'true'}">id</th>
-            	<th data-options="{name:'applicationDate',width:150,align:'center',finalWidth:'true'}" >ApplicationDate</th>
+            	<th data-options="{name:'applicationDate',width:150,align:'center',finalWidth:'true'}" >Application Date</th>
 				<th data-options="{name:'state',width:150,align:'center',finalWidth:'true',type:'select', items:datagrid_paymentState}">Approval Status</th>
-				<th data-options="{name:'UID',width:150,align:'center',finalWidth:'true'}">ID</th>
-				<th data-options="{name:'UName',width:150,align:'center',finalWidth:'true'}">User</th>
-				<th data-options="{name:'code',width:150,align:'center',finalWidth:'true'}">Code</th>
-				<th data-options="{name:'urgent',width:60,align:'center' ,finalWidth:'true'}">Urgent</th>
+				<th data-options="{name:'UID',width:150,align:'center',finalWidth:'true'}">Cimtas ID</th>
+				<th data-options="{name:'UName',width:150,align:'center',finalWidth:'true'}">User Name</th>
+				<th data-options="{name:'code',width:150,align:'center',finalWidth:'true'}">Sequential Code</th>
+				<th data-options="{name:'urgent',width:60,align:'center' ,finalWidth:'true',type:'select', items:datagrid_urgent}">Urgent</th>
 				<th data-options="{name:'paymentSubject',width:200,align:'center',finalWidth:'true',type:'select', items:datagrid_paymentSubject}">Payment Subject</th>
 				<th data-options="{name:'currency_1',width:80,align:'right',finalWidth:'true'}">Currency</th>
 				<th data-options="{name:'amountInFigures',width:80,align:'right',finalWidth:'true'}">Amount</th>
-				<th data-options="{name:'usageDescription',width:400,align:'left',finalWidth:'true'}">UsageDescription</th>            
+				<th data-options="{name:'usageDescription',width:400,align:'left',finalWidth:'true'}">Usage Description</th>            
 			</tr>
         </thead>
     </table>

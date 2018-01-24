@@ -17,6 +17,9 @@ function datagrid_paymentSubject() {
 function datagrid_paymentState() {
     return [{'0':'Save'},{'1':'Submit'},{'2':'Approve'},{'3':'REJECT'},{'4':'Finance'},{'5':'Invalid'}]
 }
+function datagrid_urgent() {
+    return [{'0':''},{'1':'Y'}]
+}
 
 $(function(){
 	$.CurrentNavtab.find("#q_payment_urgent").on('ifChecked',function(){
@@ -49,18 +52,31 @@ $(function(){
             	<input type="text" name="applicationDate_f"  data-nobtn="true"  id="q_payment_applicationDate_f" value="" data-toggle="datepicker" size="9" data-rule="date">to:
             	<input type="text" name="applicationDate_t"  data-nobtn="true"  id="q_payment_applicationDate_t" value="" data-toggle="datepicker" size="9" data-rule="date">
         		</td>
-        		<td width="80px">
-        		<span>Code：</span>
+        		<td width="150px">
+        		<span>Sequential Code：</span>
         		</td>
         		<td width="180px">
             	<input type="text" name="code" value="" id="q_payment_code" size="15">
         		</td>
-        		<td colspan="2">
+        		<td>
+        		<span>Cimtas ID：</span>
         		</td>
-
+        		<td width="180px">
+        		<input type="text" name="UID" value="" id="q_payment_UID" size="15">
+        		</td>
+        		<td width="80px">
+        		<span>Urgent：</span>
+        		</td>
+        		<td width="80px">
+            		<select name="urgent" data-toggle="selectpicker" id="q_payment_urgent"  data-width="80px">
+		              <option value=""></option>
+		              <option value="1">Y</option>
+		              <option value="0">N</option>
+	            	</select>
+        		</td>
         	</tr>    
         	<tr>
-        		<td colspan="6" height="10px"></td>
+        		<td colspan="8" height="10px"></td>
         	</tr>
         	<tr>
         		<td>
@@ -78,18 +94,29 @@ $(function(){
 	              <option value="7">Other 其他</option>
             	</select>
         		</td>
-        		<td width="80px">
-        		<span>Urgent：</span>
+        		<td>
+        		<span>BU NO：</span>
         		</td>
-        		<td width="80px">
-            	<input type="checkbox" name="urgent"  data-toggle="icheck" id="q_payment_urgent" data-label="" >
-         		</td>
+        		<td>
+            	<input type="text" name="departmentID" class="form-control" size="15" data-rule="number" >
+        		</td>
+        		<td>
+        		<span>Status</span>
+        		</td>
+        		<td>
+            	<select name="state" data-toggle="selectpicker" id="q_payment_state"  data-width="80px">
+	              <option value="" >all</option>
+	              <option value="1">check</option>
+	              <option value="2">uncheck</option>
+            	</select>
+        		</td>
         		<td colspan="2" align="center">
         		<div class="btn-group">
                 <button type="submit" class="btn-green" data-icon="search">Search</button>
                 <button type="reset" class="btn-orange" data-icon="times">Reset</button>
             	</div>
         		</td>
+
         	</tr>    
         </table>
             
@@ -124,16 +151,18 @@ $(function(){
             <tr>
             	<th data-options="{render:datagrid_tree_operation,align:'center'}">Operation</th>
             	<th data-options="{name:'id',width:150,align:'center',finalWidth:'true',hide:'true'}">id</th>
-            	<th data-options="{name:'applicationDate',width:150,align:'center',finalWidth:'true'}" >ApplicationDate</th>
+            	<th data-options="{name:'applicationDate',width:150,align:'center',finalWidth:'true'}" >Application Date</th>
 				<th data-options="{name:'state',width:150,align:'center',finalWidth:'true',type:'select', items:datagrid_paymentState}">Approval Status</th>
-				<th data-options="{name:'deptManagerID',width:150,align:'center',finalWidth:'true'}">deptManagerID</th>
-				<th data-options="{name:'deptManager',width:150,align:'center',finalWidth:'true'}">deptManager</th>
-				<th data-options="{name:'code',width:150,align:'center',finalWidth:'true'}">Code</th>
-				<th data-options="{name:'urgent',width:60,align:'center' ,finalWidth:'true'}">Urgent</th>
+				<th data-options="{name:'UID',width:150,align:'center',finalWidth:'true'}">Cimtas ID</th>
+				<th data-options="{name:'UName',width:150,align:'center',finalWidth:'true'}">User Name</th>
+				<th data-options="{name:'deptManagerID',width:150,align:'center',finalWidth:'true'}">Manager Cimtas ID</th>
+				<th data-options="{name:'deptManager',width:150,align:'center',finalWidth:'true'}">Manager Name</th>
+				<th data-options="{name:'code',width:150,align:'center',finalWidth:'true'}">Sequential Code</th>
+				<th data-options="{name:'urgent',width:60,align:'center' ,finalWidth:'true',type:'select', items:datagrid_urgent}">Urgent</th>
 				<th data-options="{name:'paymentSubject',width:200,align:'center',finalWidth:'true',type:'select', items:datagrid_paymentSubject}">Payment Subject</th>
 				<th data-options="{name:'currency_1',width:80,align:'right',finalWidth:'true'}">Currency</th>
 				<th data-options="{name:'amountInFigures',width:80,align:'right',finalWidth:'true'}">Amount</th>
-				<th data-options="{name:'usageDescription',width:400,align:'left',finalWidth:'true'}">UsageDescription</th>            
+				<th data-options="{name:'usageDescription',width:400,align:'left',finalWidth:'true'}">Usage Description</th>            
 			</tr>
         </thead>
     </table>

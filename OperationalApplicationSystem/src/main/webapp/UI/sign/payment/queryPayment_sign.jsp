@@ -8,7 +8,9 @@ function datagrid_tree_operation() {
  var html = '<button type="button" class="btn-green" data-toggle="edit.datagrid.tr">View</button>'   
  return html
 }
-
+function datagrid_urgent() {
+    return [{'0':''},{'1':'Y'}]
+}
 
 function datagrid_paymentSubject() {
     return [{'1':'Fixed Asset 固定资产'},{'2':'Raw Material 原材料'},{'3':'Consumable 消耗品'},{'4':'Subcontractor 外包'},{'5':'Service 服务'},{'6':'Petty Cash备用金'},{'7':'Other 其他'}]
@@ -35,13 +37,13 @@ function datagrid_paymentSubject() {
             <tr>
             	<th data-options="{render:datagrid_tree_operation,align:'center'}">Operation</th>
             	<th data-options="{name:'id',width:150,align:'center',finalWidth:'true',hide:'true'}">id</th>
-            	<th data-options="{name:'applicationDate',width:150,align:'center',finalWidth:'true'}" >ApplicationDate</th>
-				<th data-options="{name:'code',width:150,align:'center',finalWidth:'true'}">Code</th>
-				<th data-options="{name:'urgent',width:60,align:'center' ,finalWidth:'true'}">Urgent</th>
+            	<th data-options="{name:'applicationDate',width:150,align:'center',finalWidth:'true'}" >Application Date</th>
+				<th data-options="{name:'code',width:150,align:'center',finalWidth:'true'}">Sequential Code</th>
+				<th data-options="{name:'urgent',width:60,align:'center' ,finalWidth:'true',type:'select', items:datagrid_urgent}">Urgent</th>
 				<th data-options="{name:'paymentSubject',width:200,align:'center',finalWidth:'true',type:'select', items:datagrid_paymentSubject}">Payment Subject</th>
 				<th data-options="{name:'currency_1',width:80,align:'right',finalWidth:'true'}">Currency</th>
 				<th data-options="{name:'amountInFigures',width:80,align:'right',finalWidth:'true'}">Amount</th>
-				<th data-options="{name:'usageDescription',width:400,align:'left',finalWidth:'true'}">UsageDescription</th>            </tr>
+				<th data-options="{name:'usageDescription',width:400,align:'left',finalWidth:'true'}">Usage Description</th>            </tr>
         </thead>
     </table>
 </div>
