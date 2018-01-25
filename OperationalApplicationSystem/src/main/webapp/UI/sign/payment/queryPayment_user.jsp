@@ -60,9 +60,20 @@ $(function(){
         		<td width="180px">
             	<input type="text" name="code" value="" id="q_payment_code" size="15">
         		</td>
-        		<td colspan="2">
+	        	<td>
+        		<span>Status</span>
         		</td>
-
+        		<td>
+            	<select name="state" data-toggle="selectpicker" id="q_payment_state"  data-width="80px">
+	              <option value="" >all</option>
+	              <option value="0">Save</option>
+	              <option value="1">Submit</option>
+	              <option value="2">Approve</option>
+	              <option value="3">Reject</option>
+	              <option value="4">Finance</option>
+	              <option value="5">Invalid</option>
+            	</select>
+        		</td>
         	</tr>    
         	<tr>
         		<td colspan="6" height="10px"></td>

@@ -407,8 +407,10 @@ function fileToTr(name,path,b){
 function showButton(state,print,uid,documentAuditid,deptManagerid){	
 	
 	if('${param.viewtype}'=='admin'){
-		if(state=="0"||state=="1"){
+		if((state=="0"||state=="1")&&print!='1'){
 			$.CurrentNavtab.find('#payment-delete').show();
+		}else{
+			$.CurrentNavtab.find('#payment-delete').hide();
 		}		
 		$.CurrentNavtab.find('#upfile_other').hide();
 		$.CurrentNavtab.find('#upfile_contract').hide();
@@ -856,8 +858,14 @@ function checkPoNO(o){
 function checkSupplierCode(o){
 	 var str = $(o).val();
     var ret =  /^\d{5,6}$/;
-    if($.CurrentNavtab.find(o).val()==""||$.CurrentNavtab.find(o).val()==null)
+    if($.CurrentNavtab.find(o).val()==""||$.CurrentNavtab.find(o).val()==null){
+    	$.CurrentNavtab.find("#j_payment_beneficiary").val('');
+     	$.CurrentNavtab.find("#j_payment_beneficiaryAccountNO").val('');
+     	$.CurrentNavtab.find("#j_payment_beneficiaryE").val('');
+     	$.CurrentNavtab.find("#j_payment_beneficiaryAccountBank").val('');
     	return;
+    }
+    	
     
     if(!ret.test(str)){
    	 $.CurrentNavtab.find(o).val("")
@@ -969,7 +977,7 @@ function checkAcc(){
 
 function checkInvalid(){
 	var err='';
-	if($.CurrentNavtab.find('#payment-invalidDescription').val()==null||$.CurrentNavtab.find('#invalidDescription').val()==''){
+	if($.CurrentNavtab.find('#payment-invalidDescription').val()==null||$.CurrentNavtab.find('#payment-invalidDescription').val()==''){
 		err+=" ReturnDescription can`t be  empty！\r\n";				
 	}
 	return err;
@@ -1018,6 +1026,7 @@ function checkReturn(){
 				</tr>
 				<tr>
 					<td>
+						付款方式*<br>
 						Payment Way*
 					</td>
 					<td>

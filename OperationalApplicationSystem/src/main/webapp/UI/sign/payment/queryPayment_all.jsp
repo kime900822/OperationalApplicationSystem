@@ -90,8 +90,12 @@ function datagrid_paymentState() {
         		<td>
             	<select name="state" data-toggle="selectpicker" id="q_payment_state"  data-width="80px">
 	              <option value="" >all</option>
-	              <option value="1">check</option>
-	              <option value="2">uncheck</option>
+	              <option value="0">Save</option>
+	              <option value="1">Submit</option>
+	              <option value="2">Approve</option>
+	              <option value="3">Reject</option>
+	              <option value="4">Finance</option>
+	              <option value="5">Invalid</option>
             	</select>
         		</td>
         		<td colspan="2" align="center">

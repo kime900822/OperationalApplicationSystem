@@ -49,7 +49,7 @@ public class MenuDAOImpl extends HibernateDaoSupport implements MenuDAO {
 
 	@Override
 	public List getMenuByParentID(String parentID) {
-		return this.getHibernateTemplate().find("FROM Menu where parentid=? ", new String[]{parentID});
+		return this.getHibernateTemplate().find("FROM Menu where parentid=? ORDER BY order", new String[]{parentID});
 	}
 
 	

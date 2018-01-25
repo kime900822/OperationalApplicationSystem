@@ -1057,7 +1057,9 @@ public class PaymentAction extends ActionBase {
 		if (!"".equals(code)&&code!=null) {
 			where += " AND P.code = '"+code+"'";
 		}
-		
+		if (!"".equals(state)&&state!=null) {
+			where += " AND P.state = '"+state+"'";
+		}
 		if (!"".equals(urgent)&&urgent!=null) {
 			where += " AND P.urgent = '"+urgent+"'";
 		}
@@ -1067,19 +1069,16 @@ public class PaymentAction extends ActionBase {
 		if (!"".equals(departmentID)&&departmentID!=null) {
 			where += " AND P.departmentID='"+departmentID+"'";
 		}
-		
+		if (!"".equals(paymentSubject)&&paymentSubject!=null) {
+			where += " AND P.paymentSubject='"+paymentSubject+"'";
+		}
+			
 			
 		if ("all".equals(queryType)) {
-			hql="  select P from Payment P WHERE P.departmentID='"+user.getDid()+"' "+where+" order By P.dateTemp desc";
+			hql="  select P from Payment P WHERE P.deptManagerID='"+user.getUid()+"' "+where+" order By P.dateTemp desc";    		
 		}
 		if ("acc".equals(queryType)) {
-			if (state==null||state.equals("")) {
-				hql="  select  P from Payment P where P.state in (0,2,4,5) AND P.documentAuditID='"+user.getUid()+"' order By P.dateTemp desc";
-			}else if (state.equals("1")) {
-				hql="  select  P from Payment P where P.state in (0,5,4) AND P.documentAuditID='"+user.getUid()+"' order By P.dateTemp desc";
-			}else if(state.equals("2")) {
-				hql="  select  P from Payment P where P.state=2 AND P.documentAuditID='"+user.getUid()+"' order By P.dateTemp desc";
-			}
+			hql="  select  P from Payment P where P.documentAuditID='"+user.getUid()+"' "+where+" order By P.dateTemp desc";  			
 		}
 		if ("sign".equals(queryType)) {
 			hql="  select  P from Payment P where P.state='1' and P.deptManagerID='"+user.getUid()+"' order By P.dateTemp desc";
@@ -1126,7 +1125,6 @@ public class PaymentAction extends ActionBase {
         	User user=(User)session.getAttribute("user");
         	
     		String hql="";
-    		String hql_t="";
     		String where="";
     		
     		if (!"".equals(applicationDate_f)&&applicationDate_f!=null) {
@@ -1138,7 +1136,9 @@ public class PaymentAction extends ActionBase {
     		if (!"".equals(code)&&code!=null) {
     			where += " AND P.code = '"+code+"'";
     		}
-    		
+    		if (!"".equals(state)&&state!=null) {
+    			where += " AND P.state = '"+state+"'";
+    		}
     		if (!"".equals(urgent)&&urgent!=null) {
     				where += " AND P.urgent = '"+urgent+"'";		
     		}
@@ -1148,19 +1148,15 @@ public class PaymentAction extends ActionBase {
     		if (!"".equals(departmentID)&&departmentID!=null) {
     			where += " AND P.departmentID='"+departmentID+"'";
     		}
-    		
+    		if (!"".equals(paymentSubject)&&paymentSubject!=null) {
+    			where += " AND P.paymentSubject='"+paymentSubject+"'";
+    		}
     			
     		if ("all".equals(queryType)) {
-    			hql="  select P from Payment P WHERE P.deptManagerID='"+user.getUid()+"' "+where+" order By P.dateTemp desc";    		}
+    			hql="  select P from Payment P WHERE P.deptManagerID='"+user.getUid()+"' "+where+" order By P.dateTemp desc";    		
+    		}
     		if ("acc".equals(queryType)) {
-    			if (state.equals("1")) {
-    				hql="  select  P from Payment P where P.state in (0,5,4) AND P.documentAuditID='"+user.getUid()+"' "+where+" order By P.dateTemp desc";
-				}else if(state.equals("2")) {
-    				hql="  select  P from Payment P where P.state=2 AND P.documentAuditID='"+user.getUid()+"' "+where+" order By P.dateTemp desc";
-				}else{
-					hql="  select  P from Payment P where P.state in (0,2,4,5) AND P.documentAuditID='"+user.getUid()+"' "+where+" order By P.dateTemp desc";
-				}
-    			
+    			hql="  select  P from Payment P where P.documentAuditID='"+user.getUid()+"' "+where+" order By P.dateTemp desc";  			
     		}
     		if ("sign".equals(queryType)) {
     			hql="  select  P from Payment P where P.state='1' and P.deptManagerID='"+user.getUid()+"' order By P.dateTemp desc";
