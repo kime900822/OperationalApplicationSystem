@@ -405,7 +405,6 @@ function fileToTr(name,path,b){
 
 
 function showButton(state,print,uid,documentAuditid,deptManagerid){	
-	
 	if('${param.viewtype}'=='admin'){
 		if((state=="0"||state=="1")&&print!='1'){
 			$.CurrentNavtab.find('#payment-delete').show();
@@ -425,7 +424,6 @@ function showButton(state,print,uid,documentAuditid,deptManagerid){
 		$.CurrentNavtab.find('#payment-acc').hide();
 		$.CurrentNavtab.find('#payment-invalid-tr').hide();
 		$.CurrentNavtab.find('#payment-return-tr').hide();	
-		$.CurrentNavtab.find('#payment-delete').hide();
 		$("input[id*='j_payment']").attr('disabled','disabled');
 		$("select[id*='j_payment']").attr('disabled','disabled');
 		$("textarea[id*='j_payment']").attr('disabled','disabled')
@@ -1027,8 +1025,8 @@ function checkReturn(){
 				</tr>
 				<tr>
 					<td>
-						付款方式*<br>
-						Payment Way*
+						付款方式  <label style="color:red;font-size:12px"><b>*</b></label><br>
+						Payment Way <label style="color:red;font-size:12px"><b>*</b></label>
 					</td>
 					<td>
 						<input type="radio" name="payType" data-toggle="icheck" id="j_payment_cash" value="Cash" data-label="支付现金 <br>Cash">
@@ -1120,7 +1118,8 @@ function checkReturn(){
 				<!-- 付款   -->
 				<tr>
 					<td>
-						付款项目*<br>Payment Subject*
+						付款项目  <label style="color:red;font-size:12px"><b>*</b></label><br>
+						Payment Subject <label style="color:red;font-size:12px"><b>*</b></label>
 					</td>
 					<td>
 						<select name="paymentSubject" data-toggle="selectpicker" id="j_payment_paymentSubject"  data-rule="required" data-width="190px">
@@ -1184,7 +1183,7 @@ function checkReturn(){
 									<input type="text" name="PONo_1" id="j_payment_PONo_1"  value="" size="19" onchange="checkPoNO(this)">
 								</td>
 								<td>
-									<label class="row-label">币别*<br>Currency*</label>
+									<label class="row-label">币别  <label style="color:red;font-size:12px"><b>*</b></label><br>Currency <label style="color:red;font-size:12px"><b>*</b></label></label>
 								</td>
 								<td>
 									<select name="currency_1" data-toggle="selectpicker" id="j_payment_currency_1" data-width="190px" onchange="changeCurrency(this)">
@@ -1198,7 +1197,7 @@ function checkReturn(){
 							</tr>
 							<tr class="child_row_01 child_row">
 								<td>
-									金额*<br>Amount*
+									金额   <label style="color:red;font-size:12px"><b>*</b></label><br>Amount  <label style="color:red;font-size:12px"><b>*</b></label>
 								</td>
 								<td>
 									<input type="text" name="amount_1_t" id="j_payment_amount_1_t" value="" data-rule="number" onchange="changeAmount()" size="19">
@@ -1238,7 +1237,7 @@ function checkReturn(){
 									<input type="text" name="PONo_2" id="j_payment_PONo_2"  value="" size="19" onchange="checkPoNO(this)">
 								</td>
 								<td>
-									<label class="row-label">币别*<br>Currency*</label>
+									<label class="row-label">币别  <label style="color:red;font-size:12px"><b>*</b></label><br>Currency  <label style="color:red;font-size:12px"><b>*</b></label></label>
 								</td>
 								<td>
 									<select name="currency_2" id="j_payment_currency_2" data-toggle="selectpicker" data-width="190px" onchange="changeCurrency(this)">
@@ -1252,7 +1251,7 @@ function checkReturn(){
 							</tr>
 							<tr class="child_row_02 child_row">
 								<td>
-									金额*<br>Amount*
+									金额  <label style="color:red;font-size:12px"><b>*</b></label><br>Amount  <label style="color:red;font-size:12px"><b>*</b></label>
 								</td>
 								<td>
 									<input type="text" name="amount_2_t" id="j_payment_amount_2_t" value="" data-rule="number" size="19" onchange="changeAmount()">
@@ -1291,7 +1290,7 @@ function checkReturn(){
 									<input type="text" name="PONo_3" id="j_payment_PONo_3" size="19" value="" onchange="checkPoNO(this)">
 								</td>
 								<td>
-									<label class="row-label">币别*<br>Currency*</label>
+									<label class="row-label">币别  <label style="color:red;font-size:12px"><b>*</b></label><br>Currency  <label style="color:red;font-size:12px"><b>*</b></label></label>
 								</td>
 								<td>
 									<select name="currency_3" id="j_payment_currency_3" data-width="190px" data-toggle="selectpicker" onchange="changeCurrency(this)">
@@ -1305,7 +1304,7 @@ function checkReturn(){
 							</tr>
 							<tr class="child_row_03 child_row">
 								<td>
-									金额*<br>Amount*
+									金额  <label style="color:red;font-size:12px"><b>*</b></label><br>Amount  <label style="color:red;font-size:12px"><b>*</b></label>
 								</td>
 								<td>
 									<input type="text" name="amount_3_t" id="j_payment_amount_3_t" value="" size="19" data-rule="number" onchange="changeAmount();" >
@@ -1344,7 +1343,7 @@ function checkReturn(){
 									<input type="text" name="PONo_4" id="j_payment_PONo_4" size="19" value="" onchange="checkPoNO(this)">
 								</td>
 								<td>
-									<label class="row-label">币别*<br>Currency*</label>
+									<label class="row-label">币别  <label style="color:red;font-size:12px"><b>*</b></label><br>Currency  <label style="color:red;font-size:12px"><b>*</b></label></label>
 								</td>
 								<td>
 									<select name="currency_4" id="j_payment_currency_4" data-width="190px" data-toggle="selectpicker" onchange="changeCurrency(this)">
@@ -1358,7 +1357,7 @@ function checkReturn(){
 							</tr>
 							<tr class="child_row_04 child_row">
 								<td>
-									金额*<br>Amount*
+									金额  <label style="color:red;font-size:12px"><b>*</b></label><br>Amount  <label style="color:red;font-size:12px"><b>*</b></label>
 								</td>
 								<td>
 									<input type="text" name="amount_4_t" id="j_payment_amount_4_t" size="19" value="" data-rule="number" onchange="changeAmount()" >
@@ -1397,7 +1396,7 @@ function checkReturn(){
 									<input type="text" name="PONo_5" id="j_payment_PONo_5" size="19" value="" onchange="checkPoNO(this)">
 								</td>
 								<td>
-									<label class="row-label">币别*<br>Currency*</label>
+									<label class="row-label">币别  <label style="color:red;font-size:12px"><b>*</b></label><br>Currency  <label style="color:red;font-size:12px"><b>*</b></label></label>
 								</td>
 								<td>
 									<select name="currency_5" id="j_payment_currency_5" data-width="190px" data-toggle="selectpicker" onchange="changeCurrency(this)">
@@ -1411,7 +1410,7 @@ function checkReturn(){
 							</tr>
 							<tr class="child_row_05 child_row">
 								<td>
-									金额*<br>Amount*
+									金额  <label style="color:red;font-size:12px"><b>*</b></label><br>Amount  <label style="color:red;font-size:12px"><b>*</b></label>
 								</td>
 								<td>
 									<input type="text" name="amount_5_t" id="j_payment_amount_5_t" size="19" value="" data-rule="number" onchange="changeAmount()" >
@@ -1450,7 +1449,7 @@ function checkReturn(){
 									<input type="text" name="PONo_6" id="j_payment_PONo_6" size="19" value="" onchange="checkPoNO(this)" >
 								</td>
 								<td>
-									<label class="row-label">币别*<br>Currency*</label>
+									<label class="row-label">币别  <label style="color:red;font-size:12px"><b>*</b></label><br>Currency  <label style="color:red;font-size:12px"><b>*</b></label></label>
 								</td>
 								<td>
 									<select name="currency_6" id="j_payment_currency_6" data-toggle="selectpicker" data-width="190px" onchange="changeCurrency(this)">
@@ -1464,7 +1463,7 @@ function checkReturn(){
 							</tr>
 							<tr class="child_row_06 child_row">
 								<td>
-									金额*<br>Amount*
+									金额  <label style="color:red;font-size:12px"><b>*</b></label><br>Amount  <label style="color:red;font-size:12px"><b>*</b></label>
 								</td>
 								<td>
 									<input type="text" name="amount_6_t" id="j_payment_amount_6_t" value="" data-rule="number" size="19" onchange="changeAmount()" >
@@ -1494,7 +1493,7 @@ function checkReturn(){
 				</tr>
 				<tr>
 					<td>
-						支付用途 *<br>Usage Description*
+						支付用途   <label style="color:red;font-size:12px"><b>*</b></label><br>Usage Description  <label style="color:red;font-size:12px"><b>*</b></label>
 					</td>
 					<td colspan="3">
 						<textarea cols="80" rows="3" id="j_payment_usageDescription"  name="usageDescription" data-toggle="autoheight"></textarea>
@@ -1591,7 +1590,7 @@ function checkReturn(){
 	            		<button type="button" id="payment-reject" class="btn-default" data-icon="close" >Reject(拒绝)</button>
 	            		<button type="button" id="payment-assign" class="btn-default" data-icon="undo" >Assign(转交)</button>
 	            		<button type="button" id="payment-acc" class="btn-default" data-icon="check" >Approve(同意)</button>
-	            		<button type="button" id="payment-print" class="btn-default" data-icon="print" >Print Out(打印)</button><br>
+	            		<button type="button" id="payment-print" class="btn-default" data-icon="print" >Print Out(打印)</button>
 	            		<button type="button" id="payment-delete" class="btn-default" data-icon="close" >Delete(删除)</button>
             		</td>				
 				</tr>

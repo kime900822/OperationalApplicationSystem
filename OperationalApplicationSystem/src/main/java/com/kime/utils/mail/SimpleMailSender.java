@@ -1,5 +1,6 @@
 package com.kime.utils.mail;
 
+import java.io.UnsupportedEncodingException;
 import java.util.Date;    
 import java.util.Properties;   
 import javax.mail.Address;    
@@ -36,7 +37,7 @@ public class SimpleMailSender  {
       // 根据session创建一个邮件消息    
       Message mailMessage = new MimeMessage(sendMailSession);    
       // 创建邮件发送者地址    
-      Address from = new InternetAddress(mailInfo.getFromAddress());    
+      Address from = new InternetAddress(mailInfo.getNic()+"<"+mailInfo.getFromAddress()+">");  
       // 设置邮件消息的发送者    
       mailMessage.setFrom(from);    
       // 创建邮件的接收者地址，并设置到邮件消息中    
@@ -76,8 +77,7 @@ public class SimpleMailSender  {
       // 根据session创建一个邮件消息    
       Message mailMessage = new MimeMessage(sendMailSession);    
       // 创建邮件发送者地址    
-      Address from = new InternetAddress(mailInfo.getFromAddress());    
-      // 设置邮件消息的发送者    
+      Address from = new InternetAddress(mailInfo.getNic()+"<"+mailInfo.getFromAddress()+">");
       mailMessage.setFrom(from);    
       // 创建邮件的接收者地址，并设置到邮件消息中    
       Address to = new InternetAddress(mailInfo.getToAddress());    

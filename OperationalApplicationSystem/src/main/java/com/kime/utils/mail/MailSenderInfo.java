@@ -6,7 +6,7 @@ import com.kime.infoenum.Message;
 import com.kime.utils.PropertiesUtil;
 
 public class MailSenderInfo {
-	private String isSSL=PropertiesUtil.ReadProperties(Message.MAIL_PROPERTIES, "isSSl");    
+	private String isSSL=PropertiesUtil.ReadProperties(Message.MAIL_PROPERTIES, "IsSSL");    
     // 发送邮件的服务器的IP和端口    
     private String mailServerHost=PropertiesUtil.ReadProperties(Message.MAIL_PROPERTIES, "MailServerHost");    
     private String mailServerPort =PropertiesUtil.ReadProperties(Message.MAIL_PROPERTIES, "MailServerPort");    
@@ -34,6 +34,7 @@ public class MailSenderInfo {
     
     private String protocol=PropertiesUtil.ReadProperties(Message.MAIL_PROPERTIES, "protocol"); 
     
+    private String nic=PropertiesUtil.ReadProperties(Message.MAIL_PROPERTIES, "nic"); 
     /**   
       * 获得邮件会话属性   
       */    
@@ -111,5 +112,11 @@ public class MailSenderInfo {
     }   
     public void setContent(String textContent) {    
       this.content = textContent;    
-    }  
+    }
+	public String getNic() {
+		return nic;
+	}
+	public void setNic(String nic) {
+		this.nic = nic;
+	}  
 }
