@@ -409,9 +409,11 @@ function showButton(state,print,uid,documentAuditid,deptManagerid){
 	if('${param.viewtype}'=='admin'){
 		if((state=="0"||state=="1")&&print!='1'){
 			$.CurrentNavtab.find('#payment-delete').show();
+			$.CurrentNavtab.find('#payment-print').hide();
 		}else{
 			$.CurrentNavtab.find('#payment-delete').hide();
-		}		
+			$.CurrentNavtab.find('#payment-print').show();
+		}
 		$.CurrentNavtab.find('#upfile_other').hide();
 		$.CurrentNavtab.find('#upfile_contract').hide();
 		$.CurrentNavtab.find('#upfile_invoice').hide();
@@ -421,7 +423,6 @@ function showButton(state,print,uid,documentAuditid,deptManagerid){
 		$.CurrentNavtab.find('#payment-reject').hide();
 		$.CurrentNavtab.find('#payment-assign').hide();
 		$.CurrentNavtab.find('#payment-acc').hide();
-		$.CurrentNavtab.find('#payment-print').hide();
 		$.CurrentNavtab.find('#payment-invalid-tr').hide();
 		$.CurrentNavtab.find('#payment-return-tr').hide();	
 		$.CurrentNavtab.find('#payment-delete').hide();
@@ -689,11 +690,11 @@ function dataToFace(){
             	
             	$.CurrentNavtab.find("#j_payment_documentAudit").val(json.documentAudit);
             	$.CurrentNavtab.find("#j_payment_deptManager").val(json.deptManager);
-            	var b=true;
-            	if(json.state!='0'||'${user.uid}'!=json.UID){
-            		b=false;
+            	var b=false;
+            	if(json.state=='0'&&'${user.uid}'==json.UID){
+            		b=true;
             	}
-            	if('${param.viewtype}'=='admin'){
+            	if('${param.viewtype}'=='admin'&&json.state!='0'&&json.state!='1'){
             		b=true;
             	}
             	
