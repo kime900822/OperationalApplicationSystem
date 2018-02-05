@@ -42,6 +42,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.kime.base.ActionBase;
 import com.kime.biz.DepartmentBIZ;
 import com.kime.biz.RoleBIZ;
 import com.kime.biz.UserBIZ;

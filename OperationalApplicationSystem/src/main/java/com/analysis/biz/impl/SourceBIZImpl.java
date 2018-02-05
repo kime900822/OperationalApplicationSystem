@@ -10,10 +10,11 @@ import org.springframework.transaction.annotation.Transactional;
 import com.analysis.biz.SourceBIZ;
 import com.analysis.dao.SourceDAO;
 import com.analysis.model.Source;
+import com.kime.base.BizBase;
 
 @Service
 @Transactional(readOnly=true)
-public class SourceBIZImpl implements SourceBIZ {
+public class SourceBIZImpl extends BizBase implements SourceBIZ {
 
 	@Autowired
 	SourceDAO sourceDao;

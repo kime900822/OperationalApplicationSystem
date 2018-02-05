@@ -1,6 +1,6 @@
 
 
-package com.kime.action;
+package com.kime.base;
 
 import java.io.File;
 import java.io.InputStream;

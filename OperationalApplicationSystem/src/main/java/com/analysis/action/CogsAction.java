@@ -17,7 +17,7 @@ import org.springframework.context.annotation.Scope;
 import com.analysis.biz.CogsBIZ;
 import com.analysis.model.COGS_Details;
 import com.google.gson.Gson;
-import com.kime.action.ActionBase;
+import com.kime.base.ActionBase;
 import com.kime.model.Result;
 import com.kime.utils.ExcelUtil;
 import com.opensymphony.xwork2.ActionSupport;

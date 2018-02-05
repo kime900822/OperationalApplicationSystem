@@ -26,7 +26,7 @@ import org.springframework.stereotype.Controller;
 import com.analysis.model.Sales;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.kime.action.ActionBase;
+import com.kime.base.ActionBase;
 import com.kime.infoenum.Message;
 import com.kime.model.User;
 import com.kime.utils.ExcelUtil;

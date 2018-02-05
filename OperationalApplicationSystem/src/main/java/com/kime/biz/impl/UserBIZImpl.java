@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.kime.base.BizBase;
 import com.kime.biz.UserBIZ;
 import com.kime.dao.UserDAO;
 import com.kime.infoenum.Message;
@@ -19,7 +20,7 @@ import com.kime.utils.mail.SendMail;
 
 @Service
 @Transactional(readOnly=true)
-public class UserBIZImpl implements UserBIZ {
+public class UserBIZImpl extends BizBase implements UserBIZ {
 	
 	@Autowired
 	UserDAO userDao;

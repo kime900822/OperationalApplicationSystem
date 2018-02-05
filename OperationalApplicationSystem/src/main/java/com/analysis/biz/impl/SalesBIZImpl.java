@@ -10,10 +10,11 @@ import org.springframework.transaction.annotation.Transactional;
 import com.analysis.biz.SalesBIZ;
 import com.analysis.dao.SalesDAO;
 import com.analysis.model.Sales;
+import com.kime.base.BizBase;
 
 @Service
 @Transactional(readOnly=true)
-public class SalesBIZImpl implements SalesBIZ {
+public class SalesBIZImpl extends BizBase implements SalesBIZ {
 	
 	@Autowired
 	SalesDAO salesDao;

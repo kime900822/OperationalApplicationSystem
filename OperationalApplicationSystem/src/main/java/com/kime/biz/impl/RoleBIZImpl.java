@@ -7,13 +7,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.kime.base.BizBase;
 import com.kime.biz.RoleBIZ;
 import com.kime.dao.RoleDAO;
 import com.kime.model.Role;
 
 @Service
 @Transactional(readOnly=true)
-public class RoleBIZImpl implements RoleBIZ {
+public class RoleBIZImpl extends BizBase implements RoleBIZ {
 	
 	@Autowired
 	RoleDAO roleDao;

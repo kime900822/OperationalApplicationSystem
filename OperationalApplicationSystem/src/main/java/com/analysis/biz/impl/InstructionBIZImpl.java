@@ -10,11 +10,12 @@ import org.springframework.transaction.annotation.Transactional;
 import com.analysis.biz.InstructionBIZ;
 import com.analysis.dao.InstructionDAO;
 import com.analysis.model.Instruction;
+import com.kime.base.BizBase;
 import com.kime.infoenum.Message;
 
 @Service
 @Transactional(readOnly=true)
-public class InstructionBIZImpl implements InstructionBIZ {
+public class InstructionBIZImpl extends BizBase implements InstructionBIZ {
 	
 	@Autowired
 	InstructionDAO instructionDao;

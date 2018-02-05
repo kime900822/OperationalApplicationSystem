@@ -12,7 +12,7 @@ import org.springframework.stereotype.Controller;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.kime.action.ActionBase;
+import com.kime.base.ActionBase;
 import com.kime.infoenum.Message;
 import com.sign.biz.SignManBIZ;
 import com.sign.model.Beneficiary;

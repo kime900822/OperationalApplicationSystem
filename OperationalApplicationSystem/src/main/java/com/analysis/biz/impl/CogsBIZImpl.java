@@ -10,11 +10,12 @@ import org.springframework.transaction.annotation.Transactional;
 import com.analysis.biz.CogsBIZ;
 import com.analysis.dao.CogsDAO;
 import com.analysis.model.COGS_Details;
+import com.kime.base.BizBase;
 import com.kime.utils.TypeChangeUtil;
 
 @Service
 @Transactional(readOnly=true)
-public class CogsBIZImpl implements CogsBIZ {
+public class CogsBIZImpl extends BizBase implements CogsBIZ {
 	
 	@Autowired
 	CogsDAO cogsDao;

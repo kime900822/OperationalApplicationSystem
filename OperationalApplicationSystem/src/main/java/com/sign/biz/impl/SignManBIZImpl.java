@@ -7,13 +7,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.kime.base.BizBase;
 import com.sign.biz.SignManBIZ;
 import com.sign.dao.SignManDAO;
 import com.sign.model.SignMan;
 
 @Service
 @Transactional(readOnly=true)
-public class SignManBIZImpl implements SignManBIZ {
+public class SignManBIZImpl extends BizBase implements SignManBIZ {
 
 	@Autowired
 	SignManDAO signManDao;

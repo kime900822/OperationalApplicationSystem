@@ -24,7 +24,7 @@ import org.springframework.stereotype.Controller;
 
 import com.analysis.model.Source;
 import com.google.gson.Gson;
-import com.kime.action.ActionBase;
+import com.kime.base.ActionBase;
 import com.kime.biz.DictBIZ;
 import com.kime.infoenum.Message;
 import com.kime.model.Dict;

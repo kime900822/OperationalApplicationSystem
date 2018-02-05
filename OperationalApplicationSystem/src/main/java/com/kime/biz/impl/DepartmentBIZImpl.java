@@ -7,13 +7,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.kime.base.BizBase;
 import com.kime.biz.DepartmentBIZ;
 import com.kime.dao.DepartmentDAO;
 import com.kime.model.Department;
 
 @Service
 @Transactional(readOnly=true)
-public class DepartmentBIZImpl implements DepartmentBIZ {
+public class DepartmentBIZImpl extends BizBase implements DepartmentBIZ {
 
 	@Autowired
 	DepartmentDAO departmentDAO;

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.kime.base.BizBase;
 import com.kime.biz.DictBIZ;
 import com.kime.biz.UserBIZ;
 import com.kime.dao.CommonDAO;
@@ -29,7 +30,7 @@ import com.sign.model.Payment;
 
 @Service
 @Transactional(readOnly=true)
-public class PaymentBIZImpl implements PaymentBIZ {
+public class PaymentBIZImpl extends BizBase implements PaymentBIZ {
 	
 	@Autowired
 	private PaymentDAO paymentDao;

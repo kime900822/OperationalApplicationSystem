@@ -10,10 +10,11 @@ import org.springframework.transaction.annotation.Transactional;
 import com.analysis.biz.IrrecoverableVatBIZ;
 import com.analysis.dao.IrrecoverableVatDAO;
 import com.analysis.model.IrrecoverableVat;
+import com.kime.base.BizBase;
 
 @Service
 @Transactional(readOnly=true)
-public class IrrecoverableVatBIZImpl implements IrrecoverableVatBIZ {
+public class IrrecoverableVatBIZImpl extends BizBase implements IrrecoverableVatBIZ {
 	
 	@Autowired
 	IrrecoverableVatDAO irrecoverableVatDao;

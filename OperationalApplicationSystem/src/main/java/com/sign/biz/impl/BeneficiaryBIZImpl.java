@@ -7,13 +7,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.kime.base.BizBase;
 import com.sign.biz.BeneficiaryBIZ;
 import com.sign.dao.BeneficiaryDAO;
 import com.sign.model.Beneficiary;
 
 @Service
 @Transactional(readOnly=true)
-public class BeneficiaryBIZImpl implements BeneficiaryBIZ {
+public class BeneficiaryBIZImpl extends BizBase implements BeneficiaryBIZ {
 	
 	@Autowired
 	private BeneficiaryDAO beneficiaryDAO;

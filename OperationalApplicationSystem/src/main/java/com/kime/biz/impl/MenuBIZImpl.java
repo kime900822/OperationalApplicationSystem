@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.kime.base.BizBase;
 import com.kime.biz.MenuBIZ;
 import com.kime.biz.RoleBIZ;
 import com.kime.dao.MenuDAO;
@@ -15,7 +16,7 @@ import com.kime.model.Role;
 
 @Service
 @Transactional(readOnly=true)
-public class MenuBIZImpl implements MenuBIZ {
+public class MenuBIZImpl extends BizBase implements MenuBIZ {
 	
 	@Autowired
 	MenuDAO menuDao;

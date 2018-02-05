@@ -7,13 +7,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.kime.base.BizBase;
 import com.kime.biz.DictBIZ;
 import com.kime.dao.DictDAO;
 import com.kime.model.Dict;
 
 @Service
 @Transactional(readOnly=true)
-public class DictBIZImpl implements DictBIZ {
+public class DictBIZImpl extends BizBase implements DictBIZ {
 
 	@Autowired
 	DictDAO dictDao;

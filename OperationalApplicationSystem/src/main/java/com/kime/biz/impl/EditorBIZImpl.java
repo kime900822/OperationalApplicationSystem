@@ -7,13 +7,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.kime.base.BizBase;
 import com.kime.biz.EditorBIZ;
 import com.kime.dao.EditorDAO;
 import com.kime.model.Editor;
 
 @Service
 @Transactional(readOnly=true)
-public class EditorBIZImpl implements EditorBIZ{
+public class EditorBIZImpl extends BizBase implements EditorBIZ{
 	
 	@Autowired
 	EditorDAO editorDAO;
