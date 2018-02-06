@@ -255,6 +255,7 @@ public class UserAction extends ActionBase {
 		}
 		
 		if (err_message==null) {
+			session.removeAttribute("user");
 			session.setAttribute("user", user);
 			logUtil.logInfo("登录成功！");
 			return SUCCESS;
