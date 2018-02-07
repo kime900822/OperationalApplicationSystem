@@ -779,6 +779,7 @@ function changeAmount(){
 		total+=parseFloat(amount1);
 		$.CurrentNavtab.find("#row_01_title").html("PO&nbsp1 &nbsp&nbsp&nbsp&nbsp PO No:"+$.CurrentNavtab.find("#j_payment_PONo_1").val()+"&nbsp&nbsp  Amount(金额):"+$.CurrentNavtab.find("#j_payment_currency_1").val()+"&nbsp&nbsp"+c1);
 	}else{
+		$.CurrentNavtab.find("#j_payment_amount_1").val('')
 		$.CurrentNavtab.find("#row_01_title").html("PO&nbsp1");
 	}
 	if(amount2!="0.00"&&amount2!=""){
@@ -786,6 +787,7 @@ function changeAmount(){
 		total+=parseFloat(amount2);
 		$.CurrentNavtab.find("#row_02_title").html("PO&nbsp2 &nbsp&nbsp&nbsp&nbsp PO No:"+$.CurrentNavtab.find("#j_payment_PONo_2").val()+"&nbsp&nbsp  Amount(金额):"+$.CurrentNavtab.find("#j_payment_currency_2").val()+"&nbsp&nbsp"+c2);
 	}else{
+		$.CurrentNavtab.find("#j_payment_amount_2").val('')
 		$.CurrentNavtab.find("#row_02_title").html("PO&nbsp2");
 	}
 	if(amount3!="0.00"&&amount3!=""){
@@ -793,6 +795,7 @@ function changeAmount(){
 		total+=parseFloat(amount3);
 		$.CurrentNavtab.find("#row_03_title").html("PO&nbsp3 &nbsp&nbsp&nbsp&nbsp PO No:"+$.CurrentNavtab.find("#j_payment_PONo_3").val()+"&nbsp&nbsp  Amount(金额):"+$.CurrentNavtab.find("#j_payment_currency_3").val()+"&nbsp&nbsp"+c3);
 	}else{
+		$.CurrentNavtab.find("#j_payment_amount_3").val('')
 		$.CurrentNavtab.find("#row_03_title").html("PO&nbsp3");
 	}
 	if(amount4!="0.00"&&amount4!=""){
@@ -800,6 +803,7 @@ function changeAmount(){
 		total+=parseFloat(amount4);
 		$.CurrentNavtab.find("#row_04_title").html("PO&nbsp4 &nbsp&nbsp&nbsp&nbsp PO No:"+$.CurrentNavtab.find("#j_payment_PONo_4").val()+"&nbsp&nbsp  Amount(金额):"+$.CurrentNavtab.find("#j_payment_currency_4").val()+"&nbsp&nbsp"+c4);
 	}else{
+		$.CurrentNavtab.find("#j_payment_amount_4").val('')
 		$.CurrentNavtab.find("#row_04_title").html("PO&nbsp4");
 	}
 	if(amount5!="0.00"&&amount5!=""){
@@ -807,6 +811,7 @@ function changeAmount(){
 		total+=parseFloat(amount5);
 		$.CurrentNavtab.find("#row_05_title").html("PO&nbsp5 &nbsp&nbsp&nbsp&nbsp PO No:"+$.CurrentNavtab.find("#j_payment_PONo_5").val()+"&nbsp&nbsp  Amount(金额):"+$.CurrentNavtab.find("#j_payment_currency_5").val()+"&nbsp&nbsp"+c5);
 	}else{
+		$.CurrentNavtab.find("#j_payment_amount_5").val('')
 		$.CurrentNavtab.find("#row_05_title").html("PO&nbsp5");
 	}
 	if(amount6!="0.00"&&amount6!=""){
@@ -814,6 +819,7 @@ function changeAmount(){
 		total+=parseFloat(amount6);
 		$.CurrentNavtab.find("#row_06_title").html("PO&nbsp6 &nbsp&nbsp&nbsp&nbsp PO No:"+$.CurrentNavtab.find("#j_payment_PONo_6").val()+"&nbsp&nbsp  Amount(金额):"+$.CurrentNavtab.find("#j_payment_currency_6").val()+"&nbsp&nbsp"+c6);
 	}else{
+		$.CurrentNavtab.find("#j_payment_amount_6").val('')
 		$.CurrentNavtab.find("#row_06_title").html("PO&nbsp6");
 	}
 	
