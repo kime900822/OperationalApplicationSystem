@@ -128,7 +128,7 @@ function datagrid_paymentState() {
         editMode: {navtab:{width:'830',height:800,title:'Edit Payment',mask:true,fresh:true}},
         delUrl:'deleteUser.action',
         editUrl: 'sign/payment/paymentform.jsp',
-        paging: {pageSize:60, pageCurrent:1},
+        paging: {pageSize:30, pageCurrent:1},
         linenumberAll: true,
         contextMenuB: true,
         hScrollbar: true,
@@ -147,7 +147,7 @@ function datagrid_paymentState() {
 				<th data-options="{name:'urgent',width:60,align:'center' ,finalWidth:'true',type:'select', items:datagrid_urgent}">Urgent</th>
 				<th data-options="{name:'paymentSubject',width:200,align:'center',finalWidth:'true',type:'select', items:datagrid_paymentSubject}">Payment Subject</th>
 				<th data-options="{name:'currency_1',width:80,align:'right',finalWidth:'true'}">Currency</th>
-				<th data-options="{name:'amountInFigures',width:80,align:'right',finalWidth:'true'}">Amount</th>
+				<th data-options="{name:'amountInFigures',width:120,align:'right',finalWidth:'true'}">Amount</th>
 				<th data-options="{name:'usageDescription',width:400,align:'left',finalWidth:'true'}">Usage Description</th>            
 			</tr>
         </thead>

@@ -17,7 +17,7 @@
         editMode: {dialog:{width:'800',height:200,title:'Edit SignMan4Manager',mask:true}},
         delUrl:'deleteDict.action',
         editUrl: 'sign/signMan/signMan4Management/signman4management-edit.jsp',
-        paging: {pageSize:60, pageCurrent:1},
+        paging: {pageSize:30, pageCurrent:1},
         showCheckboxcol: true,
         linenumberAll: true,
         contextMenuB: true,

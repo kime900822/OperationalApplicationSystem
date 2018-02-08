@@ -367,9 +367,10 @@ function getFile(path){
 }
 
 function deleteFile(path,o){
+	var pid=$.CurrentNavtab.find("#j_payment_id").val();
 	BJUI.ajax('doajax', {
 	    url:'deleteFile.action',
-	    data:{dfile:path},
+	    data:{dfile:path,id:pid},
 	    okCallback: function(json, options) {
             if(json.status='200'){
             	 BJUI.alertmsg('info', json.message); 
@@ -611,6 +612,7 @@ function dataToFace(){
             	if(json.urgent=='1'){
             		$.CurrentNavtab.find("#j_payment_urgent").iCheck('check'); 
             	}
+            	$.CurrentNavtab.find("#j_payment_isPrint").val(json.isPrint);
             	$.CurrentNavtab.find("#j_payment_UID").val(json.UID+'-'+json.UName);
             	$.CurrentNavtab.find("#j_payment_departmentID").val(json.departmentName+'-'+json.departmentID);            	
             	$.CurrentNavtab.find("#j_payment_beneficiary").val(json.beneficiary);
@@ -701,7 +703,7 @@ function dataToFace(){
             		
             		$.each(file,function(i,n){
             			var filename=n.split('/')[1];
-            			if(filename!=undefined){         				
+            			if(filename!=undefined&&filename!=''){         				
             				$.CurrentNavtab.find('#upfile_invoice_list').append(fileToTr(filename,n,b));	   
             			}
             		})
@@ -710,7 +712,7 @@ function dataToFace(){
             		var file=json.file_other.split('|');
             		$.each(file,function(i,n){
             			var filename=n.split('/')[1];
-            			if(filename!=undefined){
+            			if(filename!=undefined&&filename!=''){
             				$.CurrentNavtab.find('#upfile_other_list').append(fileToTr(filename,n,b));	 
             			}
             		})
@@ -719,7 +721,7 @@ function dataToFace(){
             		var file=json.file_contract.split('|');
             		$.each(file,function(i,n){
             			var filename=n.split('/')[1];
-            			if(filename!=undefined){
+            			if(filename!=undefined&&filename!=''){
             				$.CurrentNavtab.find('#upfile_contract_list').append(fileToTr(filename,n,b));
             			}
             			
@@ -746,8 +748,7 @@ function faceToData(){
 	o.UName='${user.name}';
 	o.departmentName='${user.department.name}';
 	o.departmentID='${user.department.did}';
-	
-
+	o.isPrint=$.CurrentNavtab.find("#j_payment_isPrint").val();
 	return o;
 }
 
@@ -758,12 +759,12 @@ function changeAmount(){
 	
 	
 	
-	var amount1=$.CurrentNavtab.find("#j_payment_amount_1_t").val().replace(",", "").replace(" ", "");
-	var amount2=$.CurrentNavtab.find("#j_payment_amount_2_t").val().replace(",", "").replace(" ", "");
-	var amount3=$.CurrentNavtab.find("#j_payment_amount_3_t").val().replace(",", "").replace(" ", "");
-	var amount4=$.CurrentNavtab.find("#j_payment_amount_4_t").val().replace(",", "").replace(" ", "");
-	var amount5=$.CurrentNavtab.find("#j_payment_amount_5_t").val().replace(",", "").replace(" ", "");
-	var amount6=$.CurrentNavtab.find("#j_payment_amount_6_t").val().replace(",", "").replace(" ", "");
+	var amount1=$.CurrentNavtab.find("#j_payment_amount_1_t").val().replace(/\,/g, "").replace(" ", "");
+	var amount2=$.CurrentNavtab.find("#j_payment_amount_2_t").val().replace(/\,/g, "").replace(" ", "");
+	var amount3=$.CurrentNavtab.find("#j_payment_amount_3_t").val().replace(/\,/g, "").replace(" ", "");
+	var amount4=$.CurrentNavtab.find("#j_payment_amount_4_t").val().replace(/\,/g, "").replace(" ", "");
+	var amount5=$.CurrentNavtab.find("#j_payment_amount_5_t").val().replace(/\,/g, "").replace(" ", "");
+	var amount6=$.CurrentNavtab.find("#j_payment_amount_6_t").val().replace(/\,/g, "").replace(" ", "");
 	
 	var c1=$.CurrentNavtab.find("#j_payment_amount_1_t").val(formatCurrency(amount1)).val()
 	var c2=$.CurrentNavtab.find("#j_payment_amount_2_t").val(formatCurrency(amount2)).val()
@@ -1005,6 +1006,7 @@ function checkReturn(){
         <form id="j_payment_form" data-toggle="ajaxform">
 			<input type="hidden" name="id" id="j_payment_id" value="">
 			<input type="hidden" name="state" id="j_payment_state" value="">
+			<input type="hidden" name="isPrint" id="j_payment_isPrint" value="">
             <div class="bjui-row-0" align="center">
             <h2 class="row-label">Payment Application Form 付款申请单</h2><br> 
             </div>

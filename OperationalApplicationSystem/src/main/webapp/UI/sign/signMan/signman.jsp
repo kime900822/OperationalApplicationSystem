@@ -48,7 +48,7 @@ $(function(){
         editMode: {dialog:{width:'800',height:200,title:'Edit SignMan',mask:true}},
         delUrl:'deleteSignMan.action',
         editUrl: 'sign/signMan/signman-edit.jsp',
-        paging: {pageSize:60, pageCurrent:1},
+        paging: {pageSize:30, pageCurrent:1},
         showCheckboxcol: true,
         linenumberAll: true,
         contextMenuB: true,

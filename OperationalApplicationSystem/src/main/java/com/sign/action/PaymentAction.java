@@ -662,6 +662,13 @@ public class PaymentAction extends ActionBase {
 	    	if (dfile!=null) {   
 	    		String r=fileSave.fileDelete(dfile);	
 	    		if (r.equals("1")) {
+		    		if (id!=null&&!id.equals("")) {
+						Payment t=paymentBIZ.getPayment(" where id='"+id+"'").get(0);
+						t.setFile_contract(t.getFile_contract().replaceAll(dfile+"|", ""));
+						t.setFile_invoice(t.getFile_invoice().replaceAll(dfile+"|", ""));
+						t.setFile_other(t.getFile_other().replaceAll(dfile+"|", ""));
+						paymentBIZ.updatePayment(t);
+					}
 	    			result.setMessage("Delete Success!");
 					result.setStatusCode("200");
 				}else{
@@ -717,7 +724,6 @@ public class PaymentAction extends ActionBase {
 					}
 					payment.setFile_other(filenames);
 				}*/
-				
 				if (file_invoice!=null&&!"".equals(file_invoice)) {
 					payment.setFile_invoice(file_invoice);
 				}
@@ -790,7 +796,7 @@ public class PaymentAction extends ActionBase {
 	public String printPayment() throws UnsupportedEncodingException{
 		try {
 			Payment payment=paymentBIZ.getPayment(" where id='"+id+"'").get(0);
-			if (payment.getIsPrint()==null) {
+			if (payment.getIsPrint()==null||payment.getIsPrint().equals("")) {
 				payment.setIsPrint("1");
 				payment.setCode(paymentBIZ.getMaxCode());		
 				paymentBIZ.printPayment(payment);
