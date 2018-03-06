@@ -1,0 +1,25 @@
+<div class="bjui-pageContent">
+    <table class="table table-bordered" data-toggle="datagrid" data-options="{
+        height: '100%',
+        gridTitle : 'DpcumentType',
+        showToolbar: true,
+        toolbarItem: 'add,edit,del,save,cancel,|,refresh',
+        local: 'local',
+        dataUrl: 'getDpcumentType.action',
+        editUrl: 'modeDpcumentTypee.action',
+        delUrl: 'deleteDpcumentType.action',
+        paging: {pageSize:50, pageCurrent:1},
+        linenumberAll: true,
+        hScrollbar: true,
+        inlineEditMult: false,
+        addLocation:'last'
+    }">
+        <thead>
+            <tr>
+                <th data-options="{name:'id',align:'center',finalWidth:'true',hide:'true'}"></th>
+                <th data-options="{name:'type',align:'center',finalWidth:'true',hide:'true'}"></th>
+                <th data-options="{name:'key',align:'center',finalWidth:'true',width:200}">DocumentType</th>
+            </tr>
+        </thead>
+    </table>
+</div>

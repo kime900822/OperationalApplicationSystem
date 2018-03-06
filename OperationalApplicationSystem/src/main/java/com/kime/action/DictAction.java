@@ -343,11 +343,82 @@ public class DictAction extends ActionBase{
 	
 	
 	
+	@Action(value="getDocumentType",results={@org.apache.struts2.convention.annotation.Result(type="stream",
+			params={
+					"inputName", "reslutJson"
+			})})
+	public String getDocumentType() throws UnsupportedEncodingException{
+	
+		List<Dict> list=dictBIZ.getDict("WHERE type='DocumentType' ");		
+		reslutJson=new ByteArrayInputStream(new Gson().toJson(list).getBytes("UTF-8"));  
+		return SUCCESS;
+	}
 	
 	
+	@Action(value="deleteDocumentType",results={@org.apache.struts2.convention.annotation.Result(type="stream",
+			params={
+					"inputName", "reslutJson"
+			})})
+	public String deleteDocumentType() throws UnsupportedEncodingException{
+		List<Dict> list=new Gson().fromJson(json, new TypeToken<ArrayList<Dict>>() {}.getType());
+		try {
+			for (Dict dict : list) {
+				dictBIZ.delete(dict);
+				logUtil.logInfo("删除字典:"+dict.getType()+" "+dict.getKey());
+			}
+			result.setMessage(Message.DEL_MESSAGE_SUCCESS);
+			result.setStatusCode("200");
+		} catch (Exception e) {
+			logUtil.logInfo("删除字典:"+e.getMessage());
+			result.setMessage(e.getMessage());
+			result.setStatusCode("300");
+		}
+
+		reslutJson=new ByteArrayInputStream(new Gson().toJson(result).getBytes("UTF-8"));  
+		return SUCCESS;
+	}
 	
 	
-	
-	
+	@Action(value="modeDocumentType",results={@org.apache.struts2.convention.annotation.Result(type="stream",
+			params={
+					"inputName", "reslutJson"
+			})})
+	public String modeDocumentType() throws UnsupportedEncodingException{
+		
+		List<Dict> list=new Gson().fromJson(json, new TypeToken<ArrayList<Dict>>() {}.getType());
+		Dict object=list.get(0);
+
+		try {
+			if (object.getAddFlag()!=null) {
+				if (dictBIZ.getDict(" where type='"+object.getType()+"' and key='"+object.getKey()+"'").size()==1) {
+					logUtil.logInfo("新增字典:已存在相同type和相同key的记录：");
+					result.setMessage(Message.SAVE_MESSAGE_ERROR_DICT);
+					result.setStatusCode("300");
+				}else{
+					object.setType("DocumentType");
+					dictBIZ.save(object);
+					logUtil.logInfo("新增字典:"+object.getType()+" "+object.getKey());
+					result.setMessage(Message.SAVE_MESSAGE_SUCCESS);
+					result.setStatusCode("200");
+				}
+				
+			}else{
+				dictBIZ.update(object);
+				logUtil.logInfo("修改字典:"+object.getType()+" "+object.getKey());
+				result.setMessage(Message.SAVE_MESSAGE_SUCCESS);
+				result.setStatusCode("200");
+			}
+			
+			
+		} catch (Exception e) {
+			logUtil.logInfo("修改字典:"+e.getMessage());
+			result.setMessage(e.getMessage());
+			result.setStatusCode("300");	
+		}
+
+		reslutJson=new ByteArrayInputStream(new Gson().toJson(result).getBytes("UTF-8"));  
+		return SUCCESS;
+		
+	}
 	
 }
