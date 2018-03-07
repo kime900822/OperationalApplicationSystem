@@ -348,8 +348,11 @@ public class DictAction extends ActionBase{
 					"inputName", "reslutJson"
 			})})
 	public String getDocumentType() throws UnsupportedEncodingException{
-	
-		List<Dict> list=dictBIZ.getDict("WHERE type='DocumentType' ");		
+		String where="";
+		if (key!=null&&!key.equals("")) {
+			where+=" AND KEY LIKE '%"+key+"%' ";
+		}
+		List<Dict> list=dictBIZ.getDict("WHERE type='DocumentType' "+where);		
 		reslutJson=new ByteArrayInputStream(new Gson().toJson(list).getBytes("UTF-8"));  
 		return SUCCESS;
 	}
@@ -390,7 +393,7 @@ public class DictAction extends ActionBase{
 
 		try {
 			if (object.getAddFlag()!=null) {
-				if (dictBIZ.getDict(" where type='"+object.getType()+"' and key='"+object.getKey()+"'").size()==1) {
+				if (dictBIZ.getDict(" where type='DocumentType' and key='"+object.getKey()+"'").size()==1) {
 					logUtil.logInfo("新增字典:已存在相同type和相同key的记录：");
 					result.setMessage(Message.SAVE_MESSAGE_ERROR_DICT);
 					result.setStatusCode("300");

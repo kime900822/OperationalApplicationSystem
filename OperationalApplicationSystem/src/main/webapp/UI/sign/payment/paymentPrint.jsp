@@ -407,7 +407,7 @@ function dataToFace(){
 				<tr >
 					<td width="25%" height="160px">General Manager:<br/>总经理</td>
 					<td width="25%">Finance Manager:<br/>财务经理</td>
-					<td width="25%">Finance Supervisor:<br/>财务主管</td>
+					<td width="25%">Audit:<br/>审计</td>
 					<td width="10%">Dept. Manager:<br/>部门经理</td>		
 					<td width="15%" align="left"><label id="deptManager"></label></td>		
 				</tr>
