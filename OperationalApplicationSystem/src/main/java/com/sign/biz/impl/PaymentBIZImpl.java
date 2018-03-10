@@ -225,11 +225,11 @@ public class PaymentBIZImpl extends BizBase implements PaymentBIZ {
 	public String getMaxCode() {
 		Date d=new Date();
 		SimpleDateFormat sdf=new SimpleDateFormat("yyyyMM");
-		String hql="SELECT MAX(P.code) FROM Payment P";
+		String hql="SELECT MAX(P.code) FROM Payment P where SUBSTR(P.code,1,6)='"+sdf.format(d)+"'";
 		List list= commonDAO.queryByHql(hql);
 		if (list.size()>0) { 
 			String mcode=(String)list.get(0);
-			if (!mcode.equals("")&&mcode!=null) {
+			if (mcode!=null&&!mcode.equals("")) {
 				return  String.valueOf(Integer.valueOf(mcode)+1);
 			}		
 		}
