@@ -953,6 +953,9 @@ function checkSave(){
 	if($.CurrentNavtab.find('#j_payment_usageDescription').val()==null||$.CurrentNavtab.find('#j_payment_usageDescription').val()==''){
 		err+=" Usage Description can`t be  empty！<br>";				
 	}
+	if($.CurrentNavtab.find('#j_payment_supplierCode').val()==null||$.CurrentNavtab.find('#j_payment_supplierCode').val()==''){
+		err+=" Supplier Code can`t be  empty！<br>";				
+	}
 	
 	var term=$.CurrentNavtab.find("#j_payment_paymentTerm").val();
 	for(var i=1;i<7;i++){		
@@ -1075,7 +1078,7 @@ function checkReturn(){
 						供应商代码<br>Supplier Code
 					</td>
 					<td>
-						<input type="text" name="supplierCode" id="j_payment_supplierCode" value="" size="19" onchange="checkSupplierCode(this);">
+						<input type="text" name="supplierCode" id="j_payment_supplierCode" value="" size="19" data-rule="required" onchange="checkSupplierCode(this);">
 					</td>
 					<td colspan="2">
 					</td>
