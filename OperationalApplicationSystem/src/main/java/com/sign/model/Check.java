@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.stereotype.Component;
@@ -13,63 +14,93 @@ import org.springframework.stereotype.Component;
 @Entity @Table(name = "t_check")
 public class Check {
 	@Id
-	@GeneratedValue(generator="uuid")
-	@GenericGenerator(name = "uuid", strategy = "uuid")
+	@GeneratedValue(generator="assigned")
+	@GenericGenerator(name = "assigned", strategy = "assigned")
 	private String id;
 	@Column
-	private String parentId;
+	private String type;
 	@Column
-	private String cName;
+	private String name;
 	@Column
-	private String uId;
+	private String fistUID;
 	@Column
-	private String uName;
-	@Column(name="`order`")
-	private String order;
+	private String fistUname;
 	@Column
-	private String level;
+	private String secondUID;
+	@Column
+	private String secondUname;
+	@Column
+	private String thirdUID;
+	@Column
+	private String thirdUname;
+	@Column
+	private String attachment;
+	@Transient
+	private String addFlag;
 	public String getId() {
 		return id;
 	}
 	public void setId(String id) {
 		this.id = id;
+	}	
+	public String getType() {
+		return type;
 	}
-	public String getParentId() {
-		return parentId;
+	public void setType(String type) {
+		this.type = type;
 	}
-	public void setParentId(String parentId) {
-		this.parentId = parentId;
+	public String getName() {
+		return name;
 	}
-	public String getcName() {
-		return cName;
+	public void setName(String name) {
+		this.name = name;
 	}
-	public void setcName(String cName) {
-		this.cName = cName;
+	public String getFistUID() {
+		return fistUID;
 	}
-	public String getuId() {
-		return uId;
+	public void setFistUID(String fistUID) {
+		this.fistUID = fistUID;
 	}
-	public void setuId(String uId) {
-		this.uId = uId;
+	public String getFistUname() {
+		return fistUname;
 	}
-	public String getuName() {
-		return uName;
+	public void setFistUname(String fistUname) {
+		this.fistUname = fistUname;
 	}
-	public void setuName(String uName) {
-		this.uName = uName;
+	public String getSecondUID() {
+		return secondUID;
 	}
-	public String getOrder() {
-		return order;
+	public void setSecondUID(String secondUID) {
+		this.secondUID = secondUID;
 	}
-	public void setOrder(String order) {
-		this.order = order;
+	public String getSecondUname() {
+		return secondUname;
 	}
-	public String getLevel() {
-		return level;
+	public void setSecondUname(String secondUname) {
+		this.secondUname = secondUname;
 	}
-	public void setLevel(String level) {
-		this.level = level;
+	public String getThirdUID() {
+		return thirdUID;
 	}
-
-	
+	public void setThirdUID(String thirdUID) {
+		this.thirdUID = thirdUID;
+	}
+	public String getThirdUname() {
+		return thirdUname;
+	}
+	public void setThirdUname(String thirdUname) {
+		this.thirdUname = thirdUname;
+	}
+	public String getAttachment() {
+		return attachment;
+	}
+	public void setAttachment(String attachment) {
+		this.attachment = attachment;
+	}
+	public String getAddFlag() {
+		return addFlag;
+	}
+	public void setAddFlag(String addFlag) {
+		this.addFlag = addFlag;
+	}
 }

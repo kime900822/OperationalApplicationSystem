@@ -9,12 +9,15 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.sign.dao.CheckDAO;
-import com.sign.model.Sign4Stamp;
+import com.sign.model.Check;
+
 
 @Repository
-public class Sign4StampDAOImpl extends HibernateDaoSupport implements CheckDAO {
+public class CheckDAOImpl extends HibernateDaoSupport implements CheckDAO {
 
     @Autowired
     private SessionFactory sessionFactory;  
@@ -32,19 +35,22 @@ public class Sign4StampDAOImpl extends HibernateDaoSupport implements CheckDAO {
 	}
 
 	@Override
-	public void delete(Sign4Stamp check) {
+	@Transactional(readOnly=false,propagation=Propagation.REQUIRED,rollbackFor=Exception.class )
+	public void delete(Check check) {
 		this.getHibernateTemplate().delete(check);
 		
 	}
 
 	@Override
-	public void insert(Sign4Stamp check) {
+	@Transactional(readOnly=false,propagation=Propagation.REQUIRED,rollbackFor=Exception.class )
+	public void insert(Check check) {
 		this.getHibernateTemplate().save(check);
 		
 	}
 
 	@Override
-	public void update(Sign4Stamp check) {
+	@Transactional(readOnly=false,propagation=Propagation.REQUIRED,rollbackFor=Exception.class )
+	public void update(Check check) {
 		this.getHibernateTemplate().update(check);
 		
 	}

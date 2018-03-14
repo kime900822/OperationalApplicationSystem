@@ -2,15 +2,16 @@ package com.sign.biz;
 
 import java.util.List;
 
-import com.sign.model.Sign4Stamp;
+import com.sign.model.Check;
 
-public interface Sign4StampBIZ {
 
-	public String save(Sign4Stamp check);
+public interface CheckBIZ {
+
+	public String save(Check check);
 	
-	public String delete(Sign4Stamp check);
+	public String delete(List check);
 	
-	public String update(Sign4Stamp check);
+	public String update(Check check);
 	
 	public List<?> getDocumentType();
 	

@@ -3,8 +3,9 @@ package com.kime.action;
 import java.io.ByteArrayInputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-
+import java.util.Map;
 
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.ParentPackage;
@@ -343,26 +344,29 @@ public class DictAction extends ActionBase{
 	
 	
 	
-	@Action(value="getDocumentType",results={@org.apache.struts2.convention.annotation.Result(type="stream",
+	@Action(value="getCheckType",results={@org.apache.struts2.convention.annotation.Result(type="stream",
 			params={
 					"inputName", "reslutJson"
 			})})
-	public String getDocumentType() throws UnsupportedEncodingException{
+	public String getCheckType() throws UnsupportedEncodingException{
 		String where="";
 		if (key!=null&&!key.equals("")) {
 			where+=" AND KEY LIKE '%"+key+"%' ";
 		}
-		List<Dict> list=dictBIZ.getDict("WHERE type='DocumentType' "+where);		
+		if (value!=null&&!value.equals("")) {
+			where+=" AND value LIKE '%"+value+"%' ";
+		}
+		List<Dict> list=dictBIZ.getDict("WHERE type='CHECKTYPE' "+where);		
 		reslutJson=new ByteArrayInputStream(new Gson().toJson(list).getBytes("UTF-8"));  
 		return SUCCESS;
 	}
 	
 	
-	@Action(value="deleteDocumentType",results={@org.apache.struts2.convention.annotation.Result(type="stream",
+	@Action(value="deleteCheckType",results={@org.apache.struts2.convention.annotation.Result(type="stream",
 			params={
 					"inputName", "reslutJson"
 			})})
-	public String deleteDocumentType() throws UnsupportedEncodingException{
+	public String deleteCheckType() throws UnsupportedEncodingException{
 		List<Dict> list=new Gson().fromJson(json, new TypeToken<ArrayList<Dict>>() {}.getType());
 		try {
 			for (Dict dict : list) {
@@ -382,23 +386,41 @@ public class DictAction extends ActionBase{
 	}
 	
 	
-	@Action(value="modeDocumentType",results={@org.apache.struts2.convention.annotation.Result(type="stream",
+	@Action(value="getCheckType4Select",results={@org.apache.struts2.convention.annotation.Result(type="stream",
 			params={
 					"inputName", "reslutJson"
 			})})
-	public String modeDocumentType() throws UnsupportedEncodingException{
+	public String getCheckType4Select() throws UnsupportedEncodingException{
+			Map<String, String>map=new HashMap<>();
+		try {		
+			List<Dict> ldDicts=dictBIZ.getDict("WHERE type='CHECKTYPE' ");		
+			for (Dict dict : ldDicts) {
+				map.put(dict.getKey(), dict.getValue());
+			}		
+		} catch (Exception e) {
+		}
+	
+		reslutJson=new ByteArrayInputStream(new Gson().toJson(map).getBytes("UTF-8"));  
+		return SUCCESS;
+	}
+	
+	@Action(value="modeCheckType",results={@org.apache.struts2.convention.annotation.Result(type="stream",
+			params={
+					"inputName", "reslutJson"
+			})})
+	public String modeCheckType() throws UnsupportedEncodingException{
 		
 		List<Dict> list=new Gson().fromJson(json, new TypeToken<ArrayList<Dict>>() {}.getType());
 		Dict object=list.get(0);
 
 		try {
 			if (object.getAddFlag()!=null) {
-				if (dictBIZ.getDict(" where type='DocumentType' and key='"+object.getKey()+"'").size()==1) {
+				if (dictBIZ.getDict(" where type='CHECKTYPE' and key='"+object.getKey()+"'").size()==1) {
 					logUtil.logInfo("新增字典:已存在相同type和相同key的记录：");
 					result.setMessage(Message.SAVE_MESSAGE_ERROR_DICT);
 					result.setStatusCode("300");
 				}else{
-					object.setType("DocumentType");
+					object.setType("CHECKTYPE");
 					dictBIZ.save(object);
 					logUtil.logInfo("新增字典:"+object.getType()+" "+object.getKey());
 					result.setMessage(Message.SAVE_MESSAGE_SUCCESS);

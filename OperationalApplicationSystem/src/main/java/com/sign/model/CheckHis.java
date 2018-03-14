@@ -16,9 +16,11 @@ public class CheckHis {
 	@Id
 	@GeneratedValue(generator="assigned")
 	@GenericGenerator(name = "assigned", strategy = "assigned")
-	private String cId;
+	private String Id;
 	@Column
-	private String clevel;
+	private String type;
+	@Column
+	private String level;
 	@Column
 	private String uId;
 	@Column
@@ -33,17 +35,25 @@ public class CheckHis {
 	private String status;
 	@Column
 	private String date;
-	public String getcId() {
-		return cId;
+
+
+	public String getId() {
+		return Id;
 	}
-	public void setcId(String cId) {
-		this.cId = cId;
+	public void setId(String id) {
+		Id = id;
 	}
-	public String getClevel() {
-		return clevel;
+	public String getType() {
+		return type;
 	}
-	public void setClevel(String clevel) {
-		this.clevel = clevel;
+	public void setType(String type) {
+		this.type = type;
+	}
+	public String getLevel() {
+		return level;
+	}
+	public void setLevel(String level) {
+		this.level = level;
 	}
 	public String getuId() {
 		return uId;
