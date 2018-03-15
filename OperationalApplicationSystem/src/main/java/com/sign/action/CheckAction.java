@@ -25,7 +25,6 @@ public class CheckAction extends ActionBase{
 
 	private String id;
 	private String type;
-	private String name;
 	private String fistUID;
 	private String fistUname;
 	private String uName;
@@ -52,12 +51,6 @@ public class CheckAction extends ActionBase{
 	}
 	public void setType(String type) {
 		this.type = type;
-	}
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
 	}
 	public String getFistUID() {
 		return fistUID;
@@ -116,7 +109,9 @@ public class CheckAction extends ActionBase{
 			})})
 	public String getCheck() throws UnsupportedEncodingException{	
 		String where="";
-
+		if (type!=null&&!type.equals("")) {
+			where+=" where type like'%"+type+"%' ";
+		}
 		
 		List<Check> list  =(List<Check>)checkBIZ.query(where, Integer.parseInt(pageSize),Integer.parseInt(pageCurrent));
 		int total=checkBIZ.query(where).size();	
@@ -162,7 +157,6 @@ public class CheckAction extends ActionBase{
 		check.setFistUID(fistUID);
 		check.setFistUname(fistUname);
 		check.setType(type);
-		check.setName(name);
 		check.setSecondUID(secondUID);
 		check.setSecondUname(secondUname);
 		check.setThirdUID(thirdUID);
@@ -176,15 +170,7 @@ public class CheckAction extends ActionBase{
 		
 		String err=null;
 		String rString="";
-		if ("".equals(id) && id == null) {
-			err=checkBIZ.save(check);
-			if (err==null) {
-				rString=callback + "(" + new Gson().toJson(check) + ")";
-			}else{
-				result.setMessage(Message.SAVE_MESSAGE_ERROR);
-				result.setStatusCode("300");
-			}
-		} else {
+		if (!"".equals(id) && id != null) {
 			err=checkBIZ.update(check);
 			if (err==null) {
 				rString=callback + "(" + new Gson().toJson(check) + ")";
@@ -192,6 +178,15 @@ public class CheckAction extends ActionBase{
 				result.setMessage(Message.MOD_MESSAGE_ERROE);
 				result.setStatusCode("300");
 			}
+		} else {
+			err=checkBIZ.save(check);
+			if (err==null) {
+				rString=callback + "(" + new Gson().toJson(check) + ")";
+			}else{
+				result.setMessage(Message.SAVE_MESSAGE_ERROR);
+				result.setStatusCode("300");
+			}
+
 		}
 		if (err==null) {
 			reslutJson = new ByteArrayInputStream(rString.getBytes("UTF-8"));

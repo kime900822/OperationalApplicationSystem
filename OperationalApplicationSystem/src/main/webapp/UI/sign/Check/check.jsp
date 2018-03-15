@@ -2,20 +2,6 @@
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <script type="text/javascript">
-$(function(){
-	BJUI.ajax('doajax', {
-	    url: 'getCheckType.action',
-	    loadingmask: false,
-	    okCallback: function(json, options) {
-	    	typeArray=json;
-            $.each(json, function (i, item) {
-                $.CurrentNavtab.find('#j_check_type').append("<option value='" + item.value + "'>" + item.key + "</option>")           
-            })
-            $.CurrentNavtab.find('#j_check_type').selectpicker('refresh');
-	    }
-	})	
-	
-})
 
 
 </script>
@@ -25,9 +11,7 @@ $(function(){
         <legend style="font-weight:normal;">Search：</legend>
         <div style="margin:0; padding:1px 5px 5px;">
             <span>Type</span>
-            <select name="type" id="j_check_type" data-toggle="selectpicker" data-width="200">
-	                <option value=""></option>
-	        </select>
+            <input type="text" name="type" id="j_check_type" size="19"  >
             &nbsp;&nbsp;&nbsp;&nbsp;
 
             <div class="btn-group">
@@ -59,15 +43,13 @@ $(function(){
         <thead>
             <tr>
             	<th  rowspan="2" data-options="{name:'id',width:50,align:'center',finalWidth:'true',hide:'true'}" >sid</th>
-            	<th  rowspan="2" data-options="{name:'type',width:150,align:'center',finalWidth:'true',type:'select',items:getType}" >Type</th>
-            	<th  align="center">Document Type *</th>
+            	<th  rowspan="2" data-options="{name:'type',width:150,align:'center',finalWidth:'true'}" >签核类型</th>
             	<th  colspan="2" align="center">First Level</th>
             	<th  colspan="2" align="center">Second Level</th>
             	<th  colspan="2" align="center">Audit & Filing</th>
             	<th  rowspan="2" data-options="{name:'attachment',width:150,align:'center',finalWidth:'true'}">Attachment</th>
            	</tr>
            	<tr>
-				<th data-options="{name:'name',width:250,align:'center',finalWidth:'true'}" >文件类型 * </th>
 				<th data-options="{name:'fistUID',width:150,align:'center',finalWidth:'true'}">ID</th>
 				<th data-options="{name:'fistUname',width:150,align:'center',finalWidth:'true' }" >Name</th>
 				<th data-options="{name:'secondUID',width:150,align:'center',finalWidth:'true'}">ID</th>

@@ -2,34 +2,6 @@
     pageEncoding="UTF-8"%>
  <script type="text/javascript">
 
-		$(function(){
-		
-			
-			BJUI.ajax('doajax', {
-			    url: 'getCheckType.action',
-			    loadingmask: false,
-			    okCallback: function(json, options) {
-	                $.each(json, function (i, item) {
-	                    $.CurrentDialog.find('#j_check_edit_type').append("<option value='" + item.value + "'>" + item.key + "</option>")           
-	                })
-	                $.CurrentDialog.find('#j_check_edit_type').selectpicker('val','${param.type}');
-	                $.CurrentDialog.find('#j_check_edit_type').selectpicker('refresh');
-			    }
-			})	
-			
-			BJUI.ajax('doajax', {
-			    url: 'getAllDepartmentOfSign.action',
-			    loadingmask: false,
-			    okCallback: function(json, options) {
-	                $.each(json, function (i, item) {
-	                    $.CurrentDialog.find('#j_signman_edit_departmenmt').append("<option value='" + item.did + "'>" + item.did + "</option>")           
-	                })
-	                $.CurrentDialog.find('#j_signman_edit_departmenmt').selectpicker('val','${param.did}');
-	                $.CurrentDialog.find('#j_signman_edit_departmenmt').selectpicker('refresh');
-			    }
-			})	
-			
-		})
 
 		function getUname(a,name){
 			var id=$.CurrentDialog.find(a).val();
@@ -67,13 +39,11 @@
 
 				<label class="row-label">CheckType</label>
                 <div class="row-input required">
-                    <select name="type" data-toggle="selectpicker" id="j_check_edit_type" data-rule="required" data-width="100%"  >
-                         <option value="" selected></option>
-                    </select>
+                 	<input type="text" name="type" id="j_check_edit_type" value="${param.type}" >
                 </div>
-                <label class="row-label">Name</label>
+                <label class="row-label">Attachment</label>
                 <div class="row-input required">
-                    <input type="text" name="name" id="j_check_edit_name" value="${param.name}" data-rule="required" >
+               		 <input type="checkbox" name="attachment" id="j_check_edit_attachment" data-toggle="icheck" value="1" data-label="Attachment">
                 </div>
                 <label class="row-label">First ID</label>
                 <div class="row-input required">
@@ -99,10 +69,7 @@
                 <div class="row-input required">
                     <input type="text" name="thirdUname" id="j_check_edit_thirdUname" value="${param.thirdUname}" readonly="">
                 </div>
-                <label class="row-label">Attachment</label>
-                <div class="row-input required">
-               		 <input type="checkbox" name="attachment" id="j_check_edit_attachment" data-toggle="icheck" value="1" data-label="Attachment">
-                </div>
+
             </div>
         </form>
     </div>

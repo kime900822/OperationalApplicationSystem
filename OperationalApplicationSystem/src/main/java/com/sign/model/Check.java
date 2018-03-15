@@ -20,8 +20,6 @@ public class Check {
 	@Column
 	private String type;
 	@Column
-	private String name;
-	@Column
 	private String fistUID;
 	@Column
 	private String fistUname;
@@ -48,12 +46,6 @@ public class Check {
 	}
 	public void setType(String type) {
 		this.type = type;
-	}
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
 	}
 	public String getFistUID() {
 		return fistUID;

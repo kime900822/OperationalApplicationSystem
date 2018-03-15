@@ -37,6 +37,8 @@ public class DepartmentAction extends ActionBase {
 	
 	private String did;
 	private String name;
+	private String uid;
+	private String uname;
 	private String addFlag;
 	
 	public DepartmentBIZ getDepartmentBIZ() {
@@ -85,6 +87,24 @@ public class DepartmentAction extends ActionBase {
 				where+=" AND name like '%"+name+"%' ";
 			}else{
 				where+=" where name like '%"+name+"%' ";
+			}
+			
+		}
+		
+		if (!"".equals(uid)&&uid!=null) {
+			if (where.equals("")) {
+				where+=" AND uid like '%"+uid+"%' ";
+			}else{
+				where+=" where uid like '%"+uid+"%' ";
+			}
+			
+		}
+		
+		if (!"".equals(uname)&&uname!=null) {
+			if (where.equals("")) {
+				where+=" AND uname like '%"+uname+"%' ";
+			}else{
+				where+=" where uname like '%"+uname+"%' ";
 			}
 			
 		}

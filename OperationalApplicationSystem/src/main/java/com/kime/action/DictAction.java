@@ -157,18 +157,36 @@ public class DictAction extends ActionBase{
 		
 		if (!"".equals(key)&&key!=null) {
 			if (where.equals("")) {
-				where+=" AND key='"+key+"' ";
+				where+=" AND key like '%"+key+"%' ";
 			}else{
-				where+=" where key='"+key+"' ";
+				where+=" where key like '%"+key+"%' ";
 			}
 			
 		}
 		
 		if (!"".equals(value)&&value!=null) {
 			if (where.equals("")) {
-				where+=" AND value='"+value+"' ";
+				where+=" AND value like '%"+value+"%' ";
 			}else{
-				where+=" where value='"+value+"' ";
+				where+=" where value like '%"+value+"%' ";
+			}
+			
+		}
+		
+		if (!"".equals(keyExplain)&&keyExplain!=null) {
+			if (where.equals("")) {
+				where+=" AND keyExplain like '%"+keyExplain+"%' ";
+			}else{
+				where+=" where keyExplain like '%"+keyExplain+"%' ";
+			}
+			
+		}
+		
+		if (!"".equals(value)&&value!=null) {
+			if (where.equals("")) {
+				where+=" AND value like '%"+value+"%' ";
+			}else{
+				where+=" where value like '%"+value+"%' ";
 			}
 			
 		}

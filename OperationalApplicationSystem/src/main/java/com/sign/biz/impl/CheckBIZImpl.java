@@ -36,7 +36,7 @@ public class CheckBIZImpl extends BizBase implements CheckBIZ {
 			logUtil.logError("新增签核流程："+e.getMessage());
 			return e.getMessage();
 		}
-		logUtil.logInfo("新增签核流程：成功。"+check.getType()+","+check.getName());
+		logUtil.logInfo("新增签核流程：成功。"+check.getType());
 		return null;
 	}
 
@@ -48,7 +48,7 @@ public class CheckBIZImpl extends BizBase implements CheckBIZ {
 			for (Object object : check) {
 				Check tmp=(Check)object;
 				checkDAO.delete(tmp);
-				stringBuilder.append(tmp.getType()+","+tmp.getName()+";");
+				stringBuilder.append(tmp.getType());
 			}			
 		} catch (Exception e) {
 			logUtil.logError("删除签核流程："+e.getMessage());
@@ -67,7 +67,7 @@ public class CheckBIZImpl extends BizBase implements CheckBIZ {
 			logUtil.logError("更新签核流程："+e.getMessage());
 			return e.getMessage();
 		}
-		logUtil.logInfo("更新签核流程：成功。"+check.getType()+","+check.getName());
+		logUtil.logInfo("更新签核流程：成功。"+check.getType());
 		return null;
 	}
 
