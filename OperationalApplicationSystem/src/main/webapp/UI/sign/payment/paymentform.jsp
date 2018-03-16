@@ -103,6 +103,13 @@ function savePayment(){
 	}
 	
 	var o=faceToData();	
+	
+	if(o.UID==null||o.UID==''||o.UID==undefined){
+		BJUI.alertmsg('error', '数据异常，用户为空，请刷新页面重新填写！'); 
+		return false;
+	}
+		
+	
 	BJUI.ajax('doajax', {
 	    url: 'savePayment.action',
 	    loadingmask: true,

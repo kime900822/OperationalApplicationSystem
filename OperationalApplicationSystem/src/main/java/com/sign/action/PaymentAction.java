@@ -17,6 +17,7 @@ import java.util.UUID;
 
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang3.ObjectUtils.Null;
 import org.apache.struts2.convention.annotation.Action;
 import org.omg.CosNaming.NamingContextExtPackage.StringNameHelper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -697,7 +698,12 @@ public class PaymentAction extends ActionBase {
 		try {
 			Payment payment=new Gson().fromJson(json, Payment.class);		
 		
-			
+			if (payment.getUID()==null||payment.getUID().equals("")) {
+				result.setMessage("User can`t be NULL,Plese reflash page!");
+				result.setStatusCode("300");
+				reslutJson=new ByteArrayInputStream(new Gson().toJson(result).getBytes("UTF-8")); 	
+				return SUCCESS;
+			}
 			
 			if (!payment.getId().equals("")&&payment.getId()!=null) {
 /*				if (file_invoice!=null&&!"".equals(file_invoice)) {
