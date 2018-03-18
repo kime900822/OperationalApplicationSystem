@@ -21,5 +21,4 @@ public interface ApproveDAO {
 	
 	public List getApproveByRole(String role);
 	
-	public List getMenuByParentIDRole(String parentID,String role);
 }

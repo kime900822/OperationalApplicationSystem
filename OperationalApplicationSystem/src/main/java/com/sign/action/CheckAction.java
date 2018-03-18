@@ -3,9 +3,15 @@ package com.sign.action;
 import java.io.ByteArrayInputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
+import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.convention.annotation.Action;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -101,6 +107,24 @@ public class CheckAction extends ActionBase{
 		this.attachment = attachment;
 	}
 	
+
+	@Action(value="getCheck4Select",results={@org.apache.struts2.convention.annotation.Result(type="stream",
+			params={
+					"inputName", "reslutJson"
+			})})
+	public String getCheck4Select() throws UnsupportedEncodingException{	
+
+		
+		List<Check> list  =(List<Check>)checkBIZ.query("");		
+		List<Map<String, String>> lMaps=new ArrayList<>();		
+		for (Check check : list) {
+			Map<String, String>map=new HashMap<>();
+			map.put(check.getId(),check.getType());
+			lMaps.add(map);
+		}
+		reslutJson=new ByteArrayInputStream(new Gson().toJson(lMaps).toString().getBytes());  
+		return SUCCESS;
+	}
 	
 	
 	@Action(value="getCheck",results={@org.apache.struts2.convention.annotation.Result(type="stream",

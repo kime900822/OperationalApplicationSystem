@@ -20,6 +20,8 @@ public class CheckHis {
 	@Column
 	private String type;
 	@Column
+	private String tradeId;
+	@Column
 	private String level;
 	@Column
 	private String uId;
@@ -96,6 +98,12 @@ public class CheckHis {
 	}
 	public void setDate(String date) {
 		this.date = date;
+	}
+	public String getTradeId() {
+		return tradeId;
+	}
+	public void setTradeId(String tradeId) {
+		this.tradeId = tradeId;
 	}
 
 	

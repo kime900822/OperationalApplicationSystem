@@ -1,10 +1,16 @@
 <script type="text/javascript">
-	function getCheck(){
-		
-		
-		
-	}
 
+function getCheck(){
+	BJUI.ajax('doajax', {
+	    url: 'getCheck4Select.action',
+	    loadingmask: false,
+	    okCallback: function(json, options) {
+	    	alert(JSON.stringify(json))
+	    	return json;    	
+	    }
+	})	
+	
+}
 
 </script>
 
@@ -30,7 +36,8 @@
                 <th data-options="{name:'type',align:'center',finalWidth:'true',hide:'true'}"></th>
                 <th data-options="{name:'value',align:'left',finalWidth:'true',width:200}">CheckType</th>
                 <th data-options="{name:'key',align:'left',finalWidth:'true',width:200}">TYPE</th>
-                <th data-options="{name:'valueExplain',align:'left',finalWidth:'true',width:200}">审批流程</th>
+                <th data-options="{name:'keyExplain',align:'left',finalWidth:'true',width:200}">USER</th>
+                <th data-options="{name:'valueExplain',align:'left',finalWidth:'true',width:200,type:'select',items:$.getJSON('getCheck4Select.action')}">审批流程</th>
             </tr>
         </thead>
     </table>

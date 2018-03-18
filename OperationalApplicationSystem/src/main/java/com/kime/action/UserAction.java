@@ -54,6 +54,7 @@ import com.kime.model.User;
 import com.kime.utils.LogUtil;
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
+import com.sign.action.CheckAction;
 
 @Controller
 @Scope("prototype")

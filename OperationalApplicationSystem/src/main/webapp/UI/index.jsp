@@ -168,6 +168,7 @@ function bjui_index_exchange() {
 <s:action name="getFatherMenu" namespace="/TEST" ></s:action>
 <s:action name="getAllRole_User" namespace="/TEST" ></s:action>
 <s:action name="getAllDepartment_User" namespace="/TEST" ></s:action>
+<s:action name="getCheck4Select" namespace="/TEST" ></s:action>
     <!--[if lte IE 7]>
         <div id="errorie"><div>您还在使用老掉牙的IE，正常使用系统前请升级您的浏览器到 IE8以上版本 <a target="_blank" href="http://windows.microsoft.com/zh-cn/internet-explorer/ie-8-worldwide-languages">点击升级</a>&nbsp;&nbsp;强烈建议您更改换浏览器：<a href="http://down.tech.sina.com.cn/content/40975.html" target="_blank">谷歌 Chrome</a></div></div>
     <![endif]-->
