@@ -238,7 +238,7 @@ function dataToFace(){
 				<tr>
 					<td width="200px" align="left"><img  style="width:300px;height:60px;" alt="payment" src="../../images/printLogo.png"></td>
 					<td colspan="2"  align="center"><h1 align="left" style="font-weight:bold">Cimtas(NingBo) Steel Processing CO.,LTD 庆达西（宁波）钢构制造有限公司</h1>
-					<h2 align="center" style="font-weight:bold">Paymengt Application Form 付款申请单</h2>
+					<h2 align="center" style="font-weight:bold">Payment Application Form 付款申请单</h2>
 					</td>
 				</tr>
 				<tr>

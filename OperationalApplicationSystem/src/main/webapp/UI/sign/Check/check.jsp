@@ -42,7 +42,7 @@
     }">
         <thead>
             <tr>
-            	<th  rowspan="2" data-options="{name:'id',width:50,align:'center',finalWidth:'true',hide:'true'}" >sid</th>
+            	<th  rowspan="2" data-options="{name:'id',width:50,align:'center',finalWidth:'true',hide:'true'}" >id</th>
             	<th  rowspan="2" data-options="{name:'type',width:150,align:'center',finalWidth:'true'}" >签核类型</th>
             	<th  colspan="2" align="center">First Level</th>
             	<th  colspan="2" align="center">Second Level</th>

@@ -20,9 +20,10 @@ function getCheck(){
         gridTitle : 'CheckType',
         showToolbar: true,
         toolbarItem: 'add,edit,del,save,cancel,|,refresh',
-        local: 'local',
+        dataType: 'jsonp',
         dataUrl: 'getCheckType.action',
-        editUrl: 'modeCheckType.action',
+        editMode: {dialog:{width:'800',height:270,title:'Edit Check',mask:true}},
+        editUrl: 'sign/checkType/checkType-edit.jsp',
         delUrl: 'deleteCheckType.action',
         paging: {pageSize:30, pageCurrent:1},
         linenumberAll: true,
@@ -32,12 +33,12 @@ function getCheck(){
     }">
         <thead>
             <tr>
-                <th data-options="{name:'id',align:'center',finalWidth:'true',hide:'true'}"></th>
-                <th data-options="{name:'type',align:'center',finalWidth:'true',hide:'true'}"></th>
-                <th data-options="{name:'value',align:'left',finalWidth:'true',width:200}">CheckType</th>
-                <th data-options="{name:'key',align:'left',finalWidth:'true',width:200}">TYPE</th>
+                <th data-options="{name:'id',align:'center',finalWidth:'true',hide:'true'}">id</th>
+                <th data-options="{name:'type',align:'center',finalWidth:'true',hide:'true'}">type</th>
+                <th data-options="{name:'key',align:'left',finalWidth:'true',width:200}">CheckType</th>
+                <th data-options="{name:'value',align:'left',finalWidth:'true',width:200}">NAME</th>
                 <th data-options="{name:'keyExplain',align:'left',finalWidth:'true',width:200}">USER</th>
-                <th data-options="{name:'valueExplain',align:'left',finalWidth:'true',width:200,type:'select',items:$.getJSON('getCheck4Select.action')}">审批流程</th>
+                <th data-options="{name:'valueExplain',align:'left',finalWidth:'true',width:200}">Approve</th>
             </tr>
         </thead>
     </table>

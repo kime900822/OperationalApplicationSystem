@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.ParentPackage;
@@ -23,6 +24,7 @@ import com.kime.model.Dict;
 import com.kime.model.Editor;
 import com.kime.model.User;
 import com.sign.model.Beneficiary;
+import com.sign.model.SignMan;
 
 @Controller
 @Scope("prototype")
@@ -367,16 +369,32 @@ public class DictAction extends ActionBase{
 					"inputName", "reslutJson"
 			})})
 	public String getCheckType() throws UnsupportedEncodingException{
-		String where="";
+		String where="WHERE type='CHECKTYPE' ";
 		if (key!=null&&!key.equals("")) {
 			where+=" AND KEY LIKE '%"+key+"%' ";
 		}
 		if (value!=null&&!value.equals("")) {
 			where+=" AND value LIKE '%"+value+"%' ";
 		}
-		List<Dict> list=dictBIZ.getDict("WHERE type='CHECKTYPE' "+where);		
-		reslutJson=new ByteArrayInputStream(new Gson().toJson(list).getBytes("UTF-8"));  
+		List<Dict> list=dictBIZ.getDict(where);		
+		int total=dictBIZ.getDict(where).size();
+		
+		
+		queryResult.setList(list);
+		queryResult.setTotalRow(total);
+		queryResult.setFirstPage(Integer.parseInt(pageCurrent)==1?true:false);
+		queryResult.setPageNumber(Integer.parseInt(pageCurrent));
+		queryResult.setLastPage(total/Integer.parseInt(pageSize) +1==Integer.parseInt(pageCurrent)&&Integer.parseInt(pageCurrent)!=1?true:false);
+		queryResult.setTotalPage(total/Integer.parseInt(pageSize) +1);
+		queryResult.setPageSize(Integer.parseInt(pageSize));
+		String r=callback+"("+new Gson().toJson(queryResult)+")";
+		
+		reslutJson=new ByteArrayInputStream(r.getBytes("UTF-8"));  
+		
+		logUtil.logInfo("查询审批人，条件:"+where);
 		return SUCCESS;
+		
+		
 	}
 	
 	
@@ -428,26 +446,37 @@ public class DictAction extends ActionBase{
 			})})
 	public String modeCheckType() throws UnsupportedEncodingException{
 		
-		List<Dict> list=new Gson().fromJson(json, new TypeToken<ArrayList<Dict>>() {}.getType());
-		Dict object=list.get(0);
+		Dict dict=new Dict();
+		boolean t=true;
+		if (!"".equals(id) && id != null) {
+			dict.setId(id);
+		} else {
+			dict.setId(UUID.randomUUID().toString().replaceAll("-", ""));
+		}
+		dict.setKey(key);
+		dict.setKeyExplain(keyExplain);
+		dict.setType(type);
+		dict.setValue(value);
+		dict.setValueExplain(valueExplain);
+		
 
 		try {
-			if (object.getAddFlag()!=null) {
-				if (dictBIZ.getDict(" where type='CHECKTYPE' and key='"+object.getKey()+"'").size()==1) {
+			if (id == null || "".equals(id)) {
+				if (dictBIZ.getDict(" where type='CHECKTYPE' and key='"+dict.getKey()+"'").size()==1) {
+					t=false;
 					logUtil.logInfo("新增字典:已存在相同type和相同key的记录：");
 					result.setMessage(Message.SAVE_MESSAGE_ERROR_DICT);
 					result.setStatusCode("300");
 				}else{
-					object.setType("CHECKTYPE");
-					dictBIZ.save(object);
-					logUtil.logInfo("新增字典:"+object.getType()+" "+object.getKey());
+					dictBIZ.save(dict);
+					logUtil.logInfo("新增字典:"+dict.getType()+" "+dict.getKey());
 					result.setMessage(Message.SAVE_MESSAGE_SUCCESS);
 					result.setStatusCode("200");
 				}
 				
 			}else{
-				dictBIZ.update(object);
-				logUtil.logInfo("修改字典:"+object.getType()+" "+object.getKey());
+				dictBIZ.update(dict);
+				logUtil.logInfo("修改字典:"+dict.getType()+" "+dict.getKey());
 				result.setMessage(Message.SAVE_MESSAGE_SUCCESS);
 				result.setStatusCode("200");
 			}
@@ -459,7 +488,14 @@ public class DictAction extends ActionBase{
 			result.setStatusCode("300");	
 		}
 
-		reslutJson=new ByteArrayInputStream(new Gson().toJson(result).getBytes("UTF-8"));  
+		if (t) {
+			dict = dictBIZ.getDict( "where id='" + dict.getId() + "'").get(0);
+			String r = callback + "(" + new Gson().toJson(dict) + ")";
+			reslutJson = new ByteArrayInputStream(r.getBytes("UTF-8"));
+		}else{
+			reslutJson = new ByteArrayInputStream(new Gson().toJson(result).getBytes("UTF-8"));
+		}		
+		
 		return SUCCESS;
 		
 	}

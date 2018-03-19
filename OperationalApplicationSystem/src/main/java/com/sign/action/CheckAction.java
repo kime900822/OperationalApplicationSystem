@@ -108,21 +108,15 @@ public class CheckAction extends ActionBase{
 	}
 	
 
-	@Action(value="getCheck4Select",results={@org.apache.struts2.convention.annotation.Result(type="stream",
+	@Action(value="getAllCheck",results={@org.apache.struts2.convention.annotation.Result(type="stream",
 			params={
 					"inputName", "reslutJson"
 			})})
-	public String getCheck4Select() throws UnsupportedEncodingException{	
+	public String getAllCheck() throws UnsupportedEncodingException{	
 
 		
 		List<Check> list  =(List<Check>)checkBIZ.query("");		
-		List<Map<String, String>> lMaps=new ArrayList<>();		
-		for (Check check : list) {
-			Map<String, String>map=new HashMap<>();
-			map.put(check.getId(),check.getType());
-			lMaps.add(map);
-		}
-		reslutJson=new ByteArrayInputStream(new Gson().toJson(lMaps).toString().getBytes());  
+		reslutJson=new ByteArrayInputStream(new Gson().toJson(list).toString().getBytes());  
 		return SUCCESS;
 	}
 	
