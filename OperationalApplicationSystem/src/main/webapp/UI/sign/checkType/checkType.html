@@ -5,7 +5,6 @@ function getCheck(){
 	    url: 'getCheck4Select.action',
 	    loadingmask: false,
 	    okCallback: function(json, options) {
-	    	alert(JSON.stringify(json))
 	    	return json;    	
 	    }
 	})	
@@ -22,7 +21,7 @@ function getCheck(){
         toolbarItem: 'add,edit,del,save,cancel,|,refresh',
         dataType: 'jsonp',
         dataUrl: 'getCheckType.action',
-        editMode: {dialog:{width:'800',height:270,title:'Edit Check',mask:true}},
+        editMode: {dialog:{width:'800',height:300,title:'Edit Check',mask:true}},
         editUrl: 'sign/checkType/checkType-edit.jsp',
         delUrl: 'deleteCheckType.action',
         paging: {pageSize:30, pageCurrent:1},
@@ -38,7 +37,7 @@ function getCheck(){
                 <th data-options="{name:'key',align:'left',finalWidth:'true',width:200}">CheckType</th>
                 <th data-options="{name:'value',align:'left',finalWidth:'true',width:200}">NAME</th>
                 <th data-options="{name:'keyExplain',align:'left',finalWidth:'true',width:200}">USER</th>
-                <th data-options="{name:'valueExplain',align:'left',finalWidth:'true',width:200}">Approve</th>
+                <th data-options="{name:'valueExplain',align:'left',finalWidth:'true',width:200,type:'select',itemattr:{value:'id',label:'type'},items:$.getJSON('getAllCheck.action')}">Approve</th>
             </tr>
         </thead>
     </table>

@@ -9369,15 +9369,19 @@
                             case 'select':
                                 if (!op.items) return
                                 
-                                $.each(op.items, function(i, n) {
-                                    if (op.itemattr) {
-                                        selectoptions.push('<option value="'+ n[op.itemattr.value] +'">'+ n[op.itemattr.label] +'</option>')
-                                    } else {
-                                        $.each(n, function(key, value) {
-                                            selectoptions.push('<option value="'+ key +'">'+ value +'</option>')
-                                        })
-                                    }
-                                })
+
+                               if (op.itemattr) {
+	                               	 $.each(op.items.responseJSON, function(i, n) {
+	                               		 selectoptions.push('<option value="'+ n[op.itemattr.value] +'">'+ n[op.itemattr.label] +'</option>')
+	                               	 })
+                               } else {
+                               	$.each(op.items, function(i, n) {
+                                       $.each(n, function(key, value) {
+                                           selectoptions.push('<option value="'+ key +'">'+ value +'</option>')
+                                       })
+                                   })	                                        
+                               	}
+ 
                                 
                                 that.inputs.push('<select name="'+ name +'" data-toggle="selectpicker"'+ rule + attrs +' data-width="100%">'+ selectoptions.join('') +'</select>')
                                 

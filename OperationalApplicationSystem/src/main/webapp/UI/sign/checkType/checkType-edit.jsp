@@ -9,7 +9,7 @@
 			    loadingmask: false,
 			    okCallback: function(json, options) {
 	                $.each(json, function (i, item) {
-	                    $.CurrentDialog.find('#j_checkTyp_edit_Approve').append("<option value='" + item.type + "'>" + item.type + "</option>")           
+	                    $.CurrentDialog.find('#j_checkTyp_edit_Approve').append("<option value='" + item.id + "'>" + item.type + "</option>")           
 	                })
 	                $.CurrentDialog.find('#j_checkTyp_edit_Approve').selectpicker('val','${param.valueExplain}');
 	                $.CurrentDialog.find('#j_checkTyp_edit_Approve').selectpicker('refresh');
