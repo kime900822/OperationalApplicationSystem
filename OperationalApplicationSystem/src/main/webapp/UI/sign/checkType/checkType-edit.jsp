@@ -15,7 +15,7 @@
 	                $.CurrentDialog.find('#j_checkTyp_edit_Approve').selectpicker('refresh');
 			    }
 			})	
-			
+			getUname()
 		})
 
 		function getUname(){

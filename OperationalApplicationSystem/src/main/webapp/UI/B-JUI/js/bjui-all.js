@@ -7607,22 +7607,42 @@
     }
     
     Datagrid.renderItem = function(value, data, items, itemattr) {
-        if (!items || !items.length) return ''
-        var label = ''
-        
-        $.each(items, function(i, n) {
-            if (itemattr && itemattr.value) {
-                if (n[itemattr.value] == value) {
-                    label = n[itemattr.label]
-                    return false
-                }
-            } else {
-                if (typeof n[value] !== 'undefined') {
-                    label = n[value]
-                    return false
-                }
-            }
-        })
+    	if(!itemattr){
+    	       if (!items || !items.length) return ''
+    	        var label = ''
+    	        
+    	        $.each(items, function(i, n) {
+    	            if (itemattr && itemattr.value) {
+    	                if (n[itemattr.value] == value) {
+    	                    label = n[itemattr.label]
+    	                    return false
+    	                }
+    	            } else {
+    	                if (typeof n[value] !== 'undefined') {
+    	                    label = n[value]
+    	                    return false
+    	                }
+    	            }
+    	        })	
+    	}else{
+    	       if (!items || !items.responseJSON.length) return ''
+    	        var label = ''
+    	        
+    	        $.each(items.responseJSON, function(i, n) {
+    	            if (itemattr && itemattr.value) {
+    	                if (n[itemattr.value] == value) {
+    	                    label = n[itemattr.label]
+    	                    return false
+    	                }
+    	            } else {
+    	                if (typeof n[value] !== 'undefined') {
+    	                    label = n[value]
+    	                    return false
+    	                }
+    	            }
+    	        })
+    	}
+ 
         
         return label
     }
