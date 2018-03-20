@@ -22,7 +22,11 @@ public class Stamp {
 	@Column
 	private String applicationCode;
 	@Column
+	private String formFillerID;
+	@Column
 	private String formFiller;
+	@Column
+	private String departmentOfFormFillerID;
 	@Column
 	private String departmentOfFormFiller;
 	@Column
@@ -39,6 +43,8 @@ public class Stamp {
 	private String stampType;
 	@Column
 	private String documentType;
+	@Column
+	private String projectResponsible;
 	@Column
 	private String chopDate;
 	@Column
@@ -150,6 +156,24 @@ public class Stamp {
 	}
 	public void setChopObject(String chopObject) {
 		this.chopObject = chopObject;
+	}
+	public String getFormFillerID() {
+		return formFillerID;
+	}
+	public void setFormFillerID(String formFillerID) {
+		this.formFillerID = formFillerID;
+	}
+	public String getDepartmentOfFormFillerID() {
+		return departmentOfFormFillerID;
+	}
+	public void setDepartmentOfFormFillerID(String departmentOfFormFillerID) {
+		this.departmentOfFormFillerID = departmentOfFormFillerID;
+	}
+	public String getProjectResponsible() {
+		return projectResponsible;
+	}
+	public void setProjectResponsible(String projectResponsible) {
+		this.projectResponsible = projectResponsible;
 	}
 	
 }

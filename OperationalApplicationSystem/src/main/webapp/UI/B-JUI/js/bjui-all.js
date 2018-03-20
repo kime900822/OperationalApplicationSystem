@@ -490,6 +490,8 @@
                            (new RegExp(".(?:" + ext + ")$", "i")).test(value) ||
                            this.renderMsg("Files that only accept {1} suffixes", ext.replace(/\|/g, ','));
                 }
+                ,int:[/^[0-9]*[1-9][0-9]*$/, "Please fill in integer"]
+                ,phone:[/^[\d-\/&]*$/ , "Please fill in riget contact number"]
             },
             
             // Default error messages
