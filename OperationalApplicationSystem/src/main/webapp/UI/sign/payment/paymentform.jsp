@@ -1082,7 +1082,7 @@ function checkReturn(){
 				</tr>
 				<tr>
 					<td>
-						供应商代码<br>Supplier Code
+						供应商代码/收款人<br>supplier code/Beneficaiary
 					</td>
 					<td>
 						<input type="text" name="supplierCode" id="j_payment_supplierCode" value="" size="19" data-rule="required" onchange="checkSupplierCode(this);">
