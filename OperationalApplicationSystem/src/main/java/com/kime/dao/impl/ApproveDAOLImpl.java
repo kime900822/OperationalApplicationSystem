@@ -32,7 +32,7 @@ public class ApproveDAOLImpl  extends HibernateDaoSupport implements ApproveDAO 
 
 	@Override
 	public List getAllApprove() {
-		List Approve=this.getHibernateTemplate().find("FROM Approve");
+		List Approve=this.getHibernateTemplate().find("FROM Approve ORDER BY order ");
 		return Approve;
 	}
 
@@ -49,7 +49,7 @@ public class ApproveDAOLImpl  extends HibernateDaoSupport implements ApproveDAO 
 
 	@Override
 	public List getApproveByParentID(String parentID) {
-		List Approve=this.getHibernateTemplate().find("FROM Approve where parentID=? ", new String[]{parentID});
+		List Approve=this.getHibernateTemplate().find("FROM Approve where parentID=? ORDER BY order ", new String[]{parentID});
 		return Approve;
 	}
 
@@ -86,6 +86,7 @@ public class ApproveDAOLImpl  extends HibernateDaoSupport implements ApproveDAO 
 		String hql="FROM Approve "+where;
 		return session.createQuery(hql).setFirstResult((pageCurrent-1)*pageSize).setMaxResults(pageSize).list();
 	}
+
 
 
 }

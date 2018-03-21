@@ -211,27 +211,4 @@ public class RoleAction extends ActionBase {
 		return SUCCESS;
 	}
 	
-	@Action(value="getAllRole_User",results={@org.apache.struts2.convention.annotation.Result(type="stream",
-			params={
-					"inputName", "reslutJson"
-			})})
-	public String GetAllRole_User() throws UnsupportedEncodingException{
-		
-		List<Role> lRole=roleBIZ.getRole(" WHERE menuid is null ");
-		StringBuilder stringBuilder =new StringBuilder();
-		stringBuilder.append("[");
-		for (Role role : lRole) {
-			stringBuilder.append("{\'"+role.getRid()+"\':\'"+role.getName()+"\'}");
-			stringBuilder.append(",");
-		}
-		stringBuilder.deleteCharAt(stringBuilder.length()-1);
-		stringBuilder.append("]");
-		String string=stringBuilder.toString();
-		HttpServletRequest request=ServletActionContext.getRequest();
-		HttpSession session=request.getSession();
-		session.setAttribute("allrole", string);
-		
-		return SUCCESS;
-	}
-	
 }

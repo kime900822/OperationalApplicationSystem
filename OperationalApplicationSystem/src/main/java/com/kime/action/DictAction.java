@@ -376,6 +376,12 @@ public class DictAction extends ActionBase{
 		if (value!=null&&!value.equals("")) {
 			where+=" AND value LIKE '%"+value+"%' ";
 		}
+		if (keyExplain!=null&&!keyExplain.equals("")) {
+			where+=" AND value keyExplain '%"+keyExplain+"%' ";
+		}
+		if (valueExplain!=null&&!valueExplain.equals("")) {
+			where+=" AND valueExplain LIKE '%"+valueExplain+"%' ";
+		}
 		List<Dict> list=dictBIZ.getDict(where);		
 		int total=dictBIZ.getDict(where).size();
 		

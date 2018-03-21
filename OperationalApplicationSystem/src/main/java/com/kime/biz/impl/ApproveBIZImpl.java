@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.kime.base.BizBase;
 import com.kime.biz.ApproveBIZ;
 import com.kime.dao.ApproveDAO;
+import com.kime.dao.CommonDAO;
 import com.kime.model.Approve;
 
 @Service
@@ -19,7 +20,8 @@ public class ApproveBIZImpl extends BizBase implements ApproveBIZ {
 	
 	@Autowired
 	ApproveDAO approveDAO;
-
+	@Autowired
+	CommonDAO commonDAO;
 	public ApproveDAO getApproveDAO() {
 		return approveDAO;
 	}
@@ -28,6 +30,14 @@ public class ApproveBIZImpl extends BizBase implements ApproveBIZ {
 		this.approveDAO = approveDAO;
 	}
 
+
+	public CommonDAO getCommonDAO() {
+		return commonDAO;
+	}
+
+	public void setCommonDAO(CommonDAO commonDAO) {
+		this.commonDAO = commonDAO;
+	}
 
 	@Override
 	public List getAllApprove() {
@@ -51,7 +61,12 @@ public class ApproveBIZImpl extends BizBase implements ApproveBIZ {
 	
 	@Override
 	public List getApproveAndChild(String id) {		
-		return getChileApprove(approveDAO.getApproveByID(id));
+		List<Approve> lApproves=new ArrayList<>();
+		Approve approve=approveDAO.getApproveByID(id);
+		if (approve!=null) {
+			lApproves=getChileApprove(approve);
+		}
+		return lApproves;
 	}
 
 	@Override
@@ -117,8 +132,12 @@ public class ApproveBIZImpl extends BizBase implements ApproveBIZ {
 	}
 
 	
-	
-	
+	@Override
+	public List getFirstApproveOfStamp4Select() {
+		String hql="select U from User U WHERE U.uid IN(select A.uid from Approve A,Dict D where A.id=D.valueExplain and D.key='STAMP') ) ";
+		return commonDAO.queryByHql(hql);
+	}
+
 	public List<Approve> getChileApprove(Approve approve){
 		List<Approve> lout=new ArrayList<>();
 		lout.add(approve);

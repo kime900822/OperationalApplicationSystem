@@ -23,12 +23,12 @@ $(function(){
 	
 	//获取一级签核人员
 	BJUI.ajax('doajax', {
-	    url: 'getAllCheck.action',
+	    url: 'getFirstApproveOfStamp4Select.action',
 	    loadingmask: false,
 	    okCallback: function(json, options) {
             $.each(json, function (i, item) {
             	if(item.fistUID!='Dept. Head'){
-                    $.CurrentNavtab.find('#j_stamp_projectResponsible').append("<option value='" + item.id + "'>" + item.fistUname + "</option>")                     		
+                    $.CurrentNavtab.find('#j_stamp_projectResponsible').append("<option value='" + item.uid + "'>" + item.name + "</option>")                     		
             	}
             })
             $.CurrentNavtab.find('#j_stamp_projectResponsible').selectpicker('refresh');

@@ -25,4 +25,6 @@ public interface ApproveBIZ {
 	public List query(String where);
 	
 	public List query(String where, int pageSize, int pageCurrent);
+	
+	public List getFirstApproveOfStamp4Select();
 }

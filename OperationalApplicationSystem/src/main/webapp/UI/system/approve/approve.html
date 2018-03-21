@@ -5,6 +5,7 @@
         showToolbar: true,
         toolbarItem: 'add,edit,del,save,cancel,|,refresh',
         local: 'local',
+        dataType: 'jsonp',
         dataUrl: 'queryApproveType.action',
         editUrl: 'editApproveType.action',
         delUrl: 'deleteAppprvoe.action',
@@ -17,9 +18,9 @@
         <thead>
             <tr>
                 <th data-options="{name:'id',align:'center',finalWidth:'true',hide:'true'}"></th>
-                <th data-options="{name:'type',align:'center',finalWidth:'true',width:200}">Type</th>
+                <th data-options="{name:'type',align:'left',finalWidth:'true',width:200}">Type</th>
                 <th data-options="{name:'description',align:'left',finalWidth:'true',width:400}">Description</th>
-                <th data-options="{name:'tmp1',align:'left',finalWidth:'true',width:400,type:'boolean',render:function(value){return value ? 'YES' : 'NO'}}">System Attachment</th>
+                <th data-options="{name:'tmp1',align:'center',finalWidth:'true',width:60,type:'boolean',render:function(value){return value ? '√' : '×'}}">System Attachment</th>
             </tr>
         </thead>
     </table>

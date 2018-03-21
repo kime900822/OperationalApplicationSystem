@@ -196,29 +196,6 @@ public class DepartmentAction extends ActionBase {
 	}
 	
 	
-	@Action(value="getAllDepartment_User",results={@org.apache.struts2.convention.annotation.Result(type="stream",
-			params={
-					"inputName", "reslutJson"
-			})})
-	public String getAllDepartment_User() throws UnsupportedEncodingException{
-		
-		List<Department> list=departmentBIZ.queryDepartment("");
-		StringBuilder stringBuilder =new StringBuilder();
-		stringBuilder.append("[");
-		for (Department department : list) {
-			stringBuilder.append("{\'"+department.getDid()+"\':\'"+department.getName()+"\'}");
-			stringBuilder.append(",");
-		}
-		stringBuilder.deleteCharAt(stringBuilder.length()-1);
-		stringBuilder.append("]");
-		String string=stringBuilder.toString();
-		HttpServletRequest request=ServletActionContext.getRequest();
-		HttpSession session=request.getSession();
-		session.setAttribute("allDepartment", string);
-		
-		return SUCCESS;
-	}
-	
 	@Action(value="getAllDepartmentOfSign",results={@org.apache.struts2.convention.annotation.Result(type="stream",
 			params={
 					"inputName", "reslutJson"

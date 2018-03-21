@@ -18,4 +18,6 @@ public class BizBase {
 		this.logUtil = logUtil;
 	}
 	
+	
+	
 }

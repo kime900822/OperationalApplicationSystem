@@ -35,7 +35,7 @@ public class ApproveAction extends ActionBase{
 	private String parentid;
 	private String order;
 	private String level;
-	private String tmp1;
+	private boolean tmp1;
 	private String tmp2;
 	private String tmp3;
 	public String getName() {
@@ -98,10 +98,10 @@ public class ApproveAction extends ActionBase{
 	public void setLevel(String level) {
 		this.level = level;
 	}
-	public String getTmp1() {
+	public boolean getTmp1() {
 		return tmp1;
 	}
-	public void setTmp1(String tmp1) {
+	public void setTmp1(boolean tmp1) {
 		this.tmp1 = tmp1;
 	}
 	public String getTmp2() {
@@ -129,6 +129,16 @@ public class ApproveAction extends ActionBase{
 		return SUCCESS;
 	}
 	
+	@Action(value="getFirstApproveOfStamp4Select",results={@org.apache.struts2.convention.annotation.Result(type="stream",
+			params={
+					"inputName", "reslutJson"
+			})})
+	public String getFirstApproveOfStamp4Select() throws UnsupportedEncodingException{	
+
+		List<Approve> lApproves=approveBIZ.getFirstApproveOfStamp4Select();
+		reslutJson=new ByteArrayInputStream(new Gson().toJson(lApproves).getBytes("UTF-8"));  	
+		return SUCCESS;
+	}
 	
 	
 	@Action(value="queryApproveType",results={@org.apache.struts2.convention.annotation.Result(type="stream",
@@ -138,6 +148,13 @@ public class ApproveAction extends ActionBase{
 	public String queryApproveType() throws UnsupportedEncodingException{	
 		String where=" WHERE LEVEL=0 ";
 
+		if (type!=null&&!type.equals("")) {
+			where+=" AND type like '%"+type+"%' ";
+		}
+		if (description!=null&&!description.equals("")) {
+			where+=" AND description like '%"+description+"%' ";
+		}
+		
 		List list  =approveBIZ.query(where, Integer.parseInt(pageSize),Integer.parseInt(pageCurrent));
 		int total=approveBIZ.query(where).size();
 		

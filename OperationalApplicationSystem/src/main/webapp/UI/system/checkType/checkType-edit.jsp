@@ -5,7 +5,7 @@
 		$(function(){
 			
 			BJUI.ajax('doajax', {
-			    url: 'getAllCheck.action',
+			    url: 'getApproveType4Select.action',
 			    loadingmask: false,
 			    okCallback: function(json, options) {
 	                $.each(json, function (i, item) {
@@ -20,6 +20,12 @@
 
 		function getUname(){
 			var id=$.CurrentDialog.find('#j_checkTyp_edit_UserID').val();
+			if(id==''){
+				$.CurrentDialog.find('#j_checkTyp_edit_username').val('');
+				return false;
+			}
+
+			
 			BJUI.ajax('doajax', {
 			    url: 'getUserByID.action',
 			    loadingmask: true,

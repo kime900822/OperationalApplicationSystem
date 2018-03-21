@@ -116,38 +116,6 @@ public class MenuAction extends ActionBase {
 		return SUCCESS;
 	}
 	
-	@Action(value="getFatherMenu",results={@org.apache.struts2.convention.annotation.Result(type="stream",
-			params={
-					"inputName", "reslutJson"
-			})})
-	public String getFatherMenu() throws UnsupportedEncodingException{
-		HttpServletRequest request=ServletActionContext.getRequest();
-		HttpSession session=request.getSession();
-		User user=(User)session.getAttribute("user");
-		if (PropertiesUtil.ReadProperties(Message.SYSTEM_PROPERTIES, "id").equals(user.getUid())) {
-			List lMenus=menuBIZ.getParentMenu();
-			session.setAttribute("parentMenu", lMenus); 
-			for (Object object : lMenus) {
-				Menu m=(Menu)object;
-				String string=menuBIZ.getChildMenu(m.getId());
-				session.setAttribute(m.getId(), string); 
-			}
-			
-		}else{
-			
-			List<Menu> lMenus=menuBIZ.getParentMenuByRole(user.getRole().getName());
-			session.setAttribute("parentMenu", lMenus); 
-			for (Menu m : lMenus) {
-				String string=menuBIZ.getChildMenu_R(m.getId(), user.getRole().getName());
-				session.setAttribute(m.getId(), string); 
-			}
-			
-		}
-
-		
-
-		return SUCCESS;
-	}
 	
 	@Action(value="getChildMenu",results={@org.apache.struts2.convention.annotation.Result(type="stream",
 			params={

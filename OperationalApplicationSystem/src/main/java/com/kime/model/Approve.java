@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.stereotype.Component;
@@ -17,6 +18,8 @@ public class Approve {
 	@GenericGenerator(name = "uuid", strategy = "uuid")
 	private String id;
 	@Column
+	private String parentid;
+	@Column
 	private String type;
 	@Column
 	private String name;
@@ -26,14 +29,12 @@ public class Approve {
 	private String uname;
 	@Column
 	private String description;
-	@Column
-	private String parentid;
 	@Column(name="`order`")
 	private String order;
 	@Column
 	private String level;
 	@Column
-	private String tmp1;
+	private boolean tmp1;
 	@Column
 	private String tmp2;
 	@Column
@@ -86,10 +87,10 @@ public class Approve {
 	public void setLevel(String level) {
 		this.level = level;
 	}
-	public String getTmp1() {
+	public boolean getTmp1() {
 		return tmp1;
 	}
-	public void setTmp1(String tmp1) {
+	public void setTmp1(boolean tmp1) {
 		this.tmp1 = tmp1;
 	}
 	public String getTmp2() {
@@ -110,6 +111,7 @@ public class Approve {
 	public void setName(String name) {
 		this.name = name;
 	}
+
 
 	
 }

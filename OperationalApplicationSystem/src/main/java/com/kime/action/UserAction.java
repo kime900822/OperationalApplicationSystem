@@ -44,14 +44,17 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.kime.base.ActionBase;
 import com.kime.biz.DepartmentBIZ;
+import com.kime.biz.MenuBIZ;
 import com.kime.biz.RoleBIZ;
 import com.kime.biz.UserBIZ;
 import com.kime.infoenum.Message;
 import com.kime.model.Dict;
+import com.kime.model.Menu;
 import com.kime.model.QueryResult;
 import com.kime.model.Result;
 import com.kime.model.User;
 import com.kime.utils.LogUtil;
+import com.kime.utils.PropertiesUtil;
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 import com.sign.action.CheckAction;
@@ -74,6 +77,8 @@ public class UserAction extends ActionBase {
 	private RoleBIZ roleBIZ;
 	@Autowired
 	private DepartmentBIZ departmentBIZ;
+	@Autowired
+	private MenuBIZ menuBIZ;
 
 	private String name;
 	private String password;
@@ -86,6 +91,16 @@ public class UserAction extends ActionBase {
 	private String did;
 	
 
+
+
+	public MenuBIZ getMenuBIZ() {
+		return menuBIZ;
+	}
+
+
+	public void setMenuBIZ(MenuBIZ menuBIZ) {
+		this.menuBIZ = menuBIZ;
+	}
 
 
 	public String getDid() {
@@ -249,6 +264,27 @@ public class UserAction extends ActionBase {
 				}
 				
 			}
+			
+			//获取菜单
+			if (PropertiesUtil.ReadProperties(Message.SYSTEM_PROPERTIES, "id").equals(user.getUid())) {
+				List lMenus=menuBIZ.getParentMenu();
+				session.setAttribute("parentMenu", lMenus); 
+				for (Object object : lMenus) {
+					Menu m=(Menu)object;
+					String string=menuBIZ.getChildMenu(m.getId());
+					session.setAttribute(m.getId(), string); 
+				}
+				
+			}else{			
+				List<Menu> lMenus=menuBIZ.getParentMenuByRole(user.getRole().getName());
+				session.setAttribute("parentMenu", lMenus); 
+				for (Menu m : lMenus) {
+					String string=menuBIZ.getChildMenu_R(m.getId(), user.getRole().getName());
+					session.setAttribute(m.getId(), string); 
+				}
+				
+			}
+
 			
 		} catch (Exception e1) {
 			err_message=e1.getMessage();	
