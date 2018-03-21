@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
@@ -31,8 +32,8 @@ public class ApproveDAOLImpl  extends HibernateDaoSupport implements ApproveDAO 
 
 	@Override
 	public List getAllApprove() {
-		// TODO Auto-generated method stub
-		return null;
+		List Approve=this.getHibernateTemplate().find("FROM Approve");
+		return Approve;
 	}
 
 	@Override
@@ -48,7 +49,8 @@ public class ApproveDAOLImpl  extends HibernateDaoSupport implements ApproveDAO 
 
 	@Override
 	public List getApproveByParentID(String parentID) {
-		return null;
+		List Approve=this.getHibernateTemplate().find("FROM Approve where parentID=? ", new String[]{parentID});
+		return Approve;
 	}
 
 	@Override
@@ -69,10 +71,21 @@ public class ApproveDAOLImpl  extends HibernateDaoSupport implements ApproveDAO 
 		return null;
 	}
 
+
 	@Override
-	public List getApproveByRole(String role) {
-		// TODO Auto-generated method stub
-		return null;
+	public List query(String where) {
+		Session session=this.getSessionFactory().openSession();
+		String hql="FROM Approve "+where;
+		return session.createQuery(hql).list();
 	}
+
+
+	@Override
+	public List query(String where, Integer pageSize, Integer pageCurrent) {
+		Session session=this.getSessionFactory().openSession();
+		String hql="FROM Approve "+where;
+		return session.createQuery(hql).setFirstResult((pageCurrent-1)*pageSize).setMaxResults(pageSize).list();
+	}
+
 
 }

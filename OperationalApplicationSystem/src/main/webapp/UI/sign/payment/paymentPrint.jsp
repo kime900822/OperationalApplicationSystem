@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
+﻿<%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     
     
@@ -311,7 +311,7 @@ function dataToFace(){
 				</tr>
 				<tr height="20px">
 					<td colspan="2" align="center" class="bg">付款项目<br/>Payment Subject</td>
-					<td colspan="2" align="center" class="bg">结算期 <br/>Payment Term</td>
+					<td colspan="2" align="center" class="bg">结算方式 <br/>Payment By</td>
 					<td width="100px" align="center" class="bg" >收货或验收日期<br/>Receiving or Approval date</td>
 					<td width="50px" align="center" class="bg" >订单号<br/>PO No.</td>
 					<td width="60px" align="center" class="bg">币别<br/>Currency</td>

@@ -6,16 +6,6 @@ $(function(){
 	var today = new Date().formatDate('yyyy-MM-dd');
 	$.CurrentNavtab.find('#j_payment_applicationDate').val(today);
 
-	$.CurrentNavtab.find("#upfile_invoice").click(function () {
-        ajaxFileUpload('file1','upfile_invoice_list');
-    })
-	$.CurrentNavtab.find("#upfile_contract").click(function () {
-        ajaxFileUpload('file2','upfile_contract_list');
-    })
-	$.CurrentNavtab.find("#upfile_other").click(function () {
-        ajaxFileUpload('file3','upfile_other_list');
-    })
-
 	//初始化全部缩进
 	$.CurrentNavtab.find('tr.table-parent').each(
 			function(){
@@ -909,43 +899,6 @@ function checkSupplierCode(o){
     }    
 };
 
-
-function ajaxFileUpload(id,tid) {
-	if($.CurrentNavtab.find("#"+id).val()==""||$.CurrentNavtab.find("#"+id).val()==null||$.CurrentNavtab.find("#"+id).val()==undefined){
-		BJUI.alertmsg('error', "Choice file"); 
-		return false;	
-	}else{
-	    $.ajaxFileUpload
-	    (
-	        {
-	            url: 'savefile.action', //用于文件上传的服务器端请求地址
-	            secureuri: false, //是否需要安全协议，一般设置为false
-	            fileElementId: id, //文件上传域的ID
-	            dataType: 'json', //返回值类型 一般设置为json
-	            async :false,
-	            success: function (data, status)  //服务器成功响应处理函数
-	            {
-	                if(data.statusCode=='200'){	                      	
-	                	$.each(data.params.url,function(i,n){               		
-	                		var filename=n.split('/')[1];
-	                		$.CurrentNavtab.find("#"+tid).append(fileToTr(filename,n,true))
-	                	})                	
-	                	BJUI.alertmsg('info', data.message); 
-	                }else{              	
-	                	BJUI.alertmsg('error', data.message); 
-	                }
-	            },
-	            error: function (data, status, e)//服务器响应失败处理函数
-	            {
-	            	BJUI.alertmsg('error', e); 
-	            }
-	        }
-	    )
-	    return false;		
-	}
-
-}
-
 function checkSave(){
 	var err='';
 	if($.CurrentNavtab.find('input:radio:checked').val()==null||$.CurrentNavtab.find('input:radio:checked').val()==''){
@@ -1024,7 +977,7 @@ function checkReturn(){
 				<tr>
 					<td width="250px">Application Date<br>（申请日期）</td>
 					<td width="250px"><input type="text" size="19" name="applicationDate" data-nobtn="true" id="j_payment_applicationDate" value=""  readonly="" ></td>
-					<td width="250px">Request Payment Date<br>(要求付款日期）</td>
+					<td width="250px">Request Payment Date<label style="color:red;font-size:12px"><b>*</b></label><br>(要求付款日期)<label style="color:red;font-size:12px"><b>*</b></label></td>
 					<td width="250px"><input type="text" size="19" name="requestPaymentDate" data-nobtn="true" id="j_payment_requestPaymentDate" value="" data-toggle="datepicker" ></td>					
 				</tr>
 				<tr>
@@ -1152,7 +1105,7 @@ function checkReturn(){
                     	</select>
 					</td>
 					<td>
-						结算期<br>Payment Term
+						结算方式<br>Payment Method
 					</td>	
 					<td>
 						<select name="paymentTerm" data-toggle="selectpicker" id="j_payment_paymentTerm"  data-rule="required" data-width="190px" onchange="changePaymentTerm();" >
@@ -1551,8 +1504,7 @@ function checkReturn(){
 						Attachment1 Invoice （附件：发票）
 					</td>
 					<td>
-						<input type="file" id="file1" name="file" />
-    					<input type="button" value="upload" id="upfile_invoice" />
+						<input type="file" id="file1" name="file" onchange="ajaxFileUpload('file1','upfile_invoice_list');" />
 					</td>
 					<td colspan="2" >
 						<table class="table" id="upfile_invoice_list" >	
@@ -1568,8 +1520,7 @@ function checkReturn(){
 						Attachment2 Contract （附件：合同）
 					</td>
 					<td>
-						<input type="file" id="file2" name="file" />
-    					<input type="button" value="upload" id="upfile_contract" />
+						<input type="file" id="file2" name="file" onchange="ajaxFileUpload('file2','upfile_contract_list');" />
 					</td>
 					<td	colspan="2">
 						<table class="table" id="upfile_contract_list" >	
@@ -1585,8 +1536,7 @@ function checkReturn(){
 						Attachment3 Other （附件：其他）
 					</td>
 					<td>
-						<input type="file" id="file3" name="file" />
-    					<input type="button" value="upload" id="upfile_other" />
+						<input type="file" id="file3" name="file" onchange="ajaxFileUpload('file3','upfile_other_list');" />
 					</td>
 					<td colspan="2">
 						<table class="table" id="upfile_other_list" >	

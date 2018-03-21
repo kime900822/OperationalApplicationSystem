@@ -427,16 +427,13 @@ public class DictAction extends ActionBase{
 					"inputName", "reslutJson"
 			})})
 	public String getCheckType4Select() throws UnsupportedEncodingException{
-			Map<String, String>map=new HashMap<>();
+		List<Dict> ldDicts= new ArrayList<>();
 		try {		
-			List<Dict> ldDicts=dictBIZ.getDict("WHERE type='CHECKTYPE' ");		
-			for (Dict dict : ldDicts) {
-				map.put(dict.getKey(), dict.getValue());
-			}		
+			ldDicts=dictBIZ.getDict("WHERE type='CHECKTYPE' ");			
 		} catch (Exception e) {
 		}
 	
-		reslutJson=new ByteArrayInputStream(new Gson().toJson(map).getBytes("UTF-8"));  
+		reslutJson=new ByteArrayInputStream(new Gson().toJson(ldDicts).getBytes("UTF-8"));  
 		return SUCCESS;
 	}
 	

@@ -13,6 +13,8 @@ public class Approve {
 	@Column
 	private String type;
 	@Column
+	private String name;
+	@Column
 	private String uid;
 	@Column
 	private String uname;
@@ -95,6 +97,12 @@ public class Approve {
 	}
 	public void setTmp3(String tmp3) {
 		this.tmp3 = tmp3;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	

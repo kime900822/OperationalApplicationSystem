@@ -32,6 +32,42 @@ function smalltoBIG(n)
         return head + s.replace(/(零.)*零元/, '元').replace(/(零.)+/g, '零').replace(/^整$/, '零元整');    
     }
 
+//文件上传
+function ajaxFileUpload(id,tid) {
+	if($.CurrentNavtab.find("#"+id).val()==""||$.CurrentNavtab.find("#"+id).val()==null||$.CurrentNavtab.find("#"+id).val()==undefined){
+		BJUI.alertmsg('error', "Choice file"); 
+		return false;	
+	}else{
+	    $.ajaxFileUpload
+	    (
+	        {
+	            url: 'savefile.action', //用于文件上传的服务器端请求地址
+	            secureuri: false, //是否需要安全协议，一般设置为false
+	            fileElementId: id, //文件上传域的ID
+	            dataType: 'json', //返回值类型 一般设置为json
+	            async :false,
+	            success: function (data, status)  //服务器成功响应处理函数
+	            {
+	                if(data.statusCode=='200'){	                      	
+	                	$.each(data.params.url,function(i,n){               		
+	                		var filename=n.split('/')[1];
+	                		$.CurrentNavtab.find("#"+tid).append(fileToTr(filename,n,true))
+	                	})                	
+	                	BJUI.alertmsg('info', data.message); 
+	                }else{              	
+	                	BJUI.alertmsg('error', data.message); 
+	                }
+	            },
+	            error: function (data, status, e)//服务器响应失败处理函数
+	            {
+	            	BJUI.alertmsg('error', e); 
+	            }
+	        }
+	    )
+	    return false;		
+	}
+
+}
 
 
 

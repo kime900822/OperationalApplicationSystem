@@ -19,6 +19,8 @@ public interface ApproveDAO {
 	
 	public List getParentMenu();
 	
-	public List getApproveByRole(String role);
+	public List query(String where);
+	
+	public List query(String where,Integer pageSize,Integer pageCurrent);
 	
 }

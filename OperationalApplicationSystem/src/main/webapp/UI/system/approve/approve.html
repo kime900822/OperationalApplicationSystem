@@ -1,0 +1,26 @@
+<div class="bjui-pageContent">
+    <table class="table table-bordered" data-toggle="datagrid" data-options="{
+        height: '100%',
+        gridTitle : 'Approve Type',
+        showToolbar: true,
+        toolbarItem: 'add,edit,del,save,cancel,|,refresh',
+        local: 'local',
+        dataUrl: 'getApproveType.action',
+        editUrl: 'modeAppprvoeType.action',
+        delUrl: 'deleteAppprvoe.action',
+        paging: {pageSize:30, pageCurrent:1},
+        linenumberAll: true,
+        hScrollbar: true,
+        inlineEditMult: false,
+        addLocation:'last'
+    }">
+        <thead>
+            <tr>
+                <th data-options="{name:'id',align:'center',finalWidth:'true',hide:'true'}"></th>
+                <th data-options="{name:'type',align:'center',finalWidth:'true',width:200}">Type</th>
+                <th data-options="{name:'description',align:'left',finalWidth:'true',width:400}">Description</th>
+                <th data-options="{name:'tmp1',align:'left',finalWidth:'true',width:400,type:'boolean',render:function(value){return value ? 'YES' : 'NO'}}">System Attachment</th>
+            </tr>
+        </thead>
+    </table>
+</div>

@@ -7,7 +7,6 @@ import com.kime.model.Approve;
 
 public interface ApproveBIZ {
 	
-	public void editApprove(Approve approve);
 	
 	public List getAllApprove();
 	
@@ -15,10 +14,15 @@ public interface ApproveBIZ {
 	
 	public String getChildApprove(String parentID);
 	
-	public void deleteApprove(Approve approve);
+	public String delete(List<Approve> approves);
+	
+	public String update(List<Approve> approves);
 	
 	public Approve getApproveById(String id);
 	
-	public List getParentApproveByRole(String role);
+	public List getApproveAndChild(String id);
 	
+	public List query(String where);
+	
+	public List query(String where, int pageSize, int pageCurrent);
 }

@@ -6,39 +6,106 @@ $(function(){
 	var today = new Date().formatDate('yyyy-MM-dd');
 	$.CurrentNavtab.find('#j_stamp_applicationDate').val(today);
 	
+	if('${param.id}'!=null&&'${param.id}'!=''){
+		dataToFace();
+	}
+	//获取文件类型
+	BJUI.ajax('doajax', {
+	    url: 'getCheckType4Select.action',
+	    loadingmask: false,
+	    okCallback: function(json, options) {
+            $.each(json, function (i, item) {
+                $.CurrentNavtab.find('#j_stamp_documentType').append("<option value='" + item.id + "'>" + item.value + "</option>")           
+            })
+            $.CurrentNavtab.find('#j_stamp_documentType').selectpicker('refresh');
+	    }
+	})	
+	
+	//获取一级签核人员
+	BJUI.ajax('doajax', {
+	    url: 'getAllCheck.action',
+	    loadingmask: false,
+	    okCallback: function(json, options) {
+            $.each(json, function (i, item) {
+            	if(item.fistUID!='Dept. Head'){
+                    $.CurrentNavtab.find('#j_stamp_projectResponsible').append("<option value='" + item.id + "'>" + item.fistUname + "</option>")                     		
+            	}
+            })
+            $.CurrentNavtab.find('#j_stamp_projectResponsible').selectpicker('refresh');
+	    }
+	})
+	
+	
 	
 	
 })
 
+function faceToData(){
+	var o=$.CurrentNavtab.find("#j_stamp_form").serializeJson();
+	o.formFiller='${user.name}';
+	o.formFillID='${user.uid}';
+	o.departmentOfFormFiller='${user.department.name}';
+	o.departmentOfFormFillerID='${user.department.did}';
+	o.id=$.CurrentNavtab.find("#j_stamp_id").val();
+	return o;
+}
 
-	function getUser() {
-		var id = $.CurrentNavtab.find('#j_stamp_applicantID').val();
-		BJUI.ajax('doajax', {
-			url : 'getUserByID.action',
-			loadingmask : true,
-			data : {
-				uid : id
-			},
-			okCallback : function(json, options) {
-				if (json.length > 0) {
-					$.CurrentNavtab.find('#j_stamp_applicant').val(json[0].name);
-					$.CurrentNavtab.find('#j_stamp_departmentOfApplicant').val(json[0].department.name+"-"+json[0].department.did);
-				} else {
-					BJUI.alertmsg('error', 'userid不存在');
-					$.CurrentNavtab.find('#j_stamp_applicant').val('');
-					$.CurrentNavtab.find('#j_stamp_departmentOfApplicant').val('');
-				}
-			}
-		})
+function dataToFace(){
+	
+	
+	
+}
 
+function checkSave(){
+	var err='';
+	if($.CurrentNavtab.find('input:radio:checked').val()==null||$.CurrentNavtab.find('input:radio:checked').val()==''){
+		err+=" Payment Way can`t be  empty！<br>";		
 	}
+	if($.CurrentNavtab.find('#j_payment_paymentSubject').val()==null||$.CurrentNavtab.find('#j_payment_paymentSubject').val()==''){
+		err+=" Payment Subject can`t be  empty！<br>";				
+	}
+	if($.CurrentNavtab.find('#j_payment_currency_1').val()==null||$.CurrentNavtab.find('#j_payment_currency_1').val()==''){
+		err+=" Currency can`t be  empty！<br>";				
+	}
+	if($.CurrentNavtab.find('#j_payment_usageDescription').val()==null||$.CurrentNavtab.find('#j_payment_usageDescription').val()==''){
+		err+=" Usage Description can`t be  empty！<br>";				
+	}
+	if($.CurrentNavtab.find('#j_payment_supplierCode').val()==null||$.CurrentNavtab.find('#j_payment_supplierCode').val()==''){
+		err+=" Supplier Code can`t be  empty！<br>";				
+	}
+	
+	return err;
+}
+
+
+function getUser() {
+	var id = $.CurrentNavtab.find('#j_stamp_applicantID').val();
+	BJUI.ajax('doajax', {
+		url : 'getUserByID.action',
+		loadingmask : true,
+		data : {
+			uid : id
+		},
+		okCallback : function(json, options) {
+			if (json.length > 0) {
+				$.CurrentNavtab.find('#j_stamp_applicant').val(json[0].name);
+				$.CurrentNavtab.find('#j_stamp_departmentOfApplicant').val(json[0].department.name+"-"+json[0].department.did);
+			} else {
+				BJUI.alertmsg('error', 'userid不存在');
+				$.CurrentNavtab.find('#j_stamp_applicant').val('');
+				$.CurrentNavtab.find('#j_stamp_departmentOfApplicant').val('');
+			}
+		}
+	})
+
+}
+
 </script>
 <div class="bjui-pageContent">
     <div class="bs-example" style="width:1000px">
         <form id="j_stamp_form" data-toggle="ajaxform">
-			<input type="hidden" name="id" id="j_stamp_id" value="">
+			<input type="hidden" name="id" id="j_stamp_id" value="'${param.id}'">
 			<input type="hidden" name="state" id="j_stamp_state" value="">
-			<input type="hidden" name="isPrint" id="j_stamp_isPrint" value="">
             <div class="bjui-row-0" align="center">
             <h2 class="row-label">Stamp Using Application System 借/用 章 申 请 系 统</h2><br> 
             </div>
@@ -113,6 +180,7 @@ $(function(){
 					<td>
 						<select name="documentType" data-toggle="selectpicker" id="j_stamp_documentType" data-rule="required" data-width="190px" >
                         	<option value="" selected></option>
+                        	<option value="1" >Invoice Contract 发票合同</option>
                     	</select>
 					</td>
 					<td>
@@ -197,8 +265,7 @@ $(function(){
 						Attacment Upload:<br>附件上传:
 					</td>
 					<td>
-						<input type="file" id="file1" name="file" />
-    					<input type="button" value="upload" id="upfile_invoice" />
+						<input type="file" id="file" name="file" onchange="ajaxFileUpload('file','upfile_attacment_list');"/>
 					</td>
 					<td colspan="2" >
 						<table class="table" id="upfile_attacment_list" >	
@@ -223,16 +290,8 @@ $(function(){
 	            		<button type="button" id="stamp-save" class="btn-default" data-icon="save" >Save</button>&nbsp;&nbsp;&nbsp;&nbsp;
 	            		<button type="button" id="stamp-submit" class="btn-default" data-icon="arrow-up" >Submit</button>
             		</td>				
-				</tr>
-				<tr>
-					
-					
-				</tr>				
+				</tr>			
 			</table>		
-
-
-
-
 
 
         </form>
