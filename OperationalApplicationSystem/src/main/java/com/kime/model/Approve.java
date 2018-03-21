@@ -1,10 +1,16 @@
 package com.kime.model;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import org.hibernate.annotations.GenericGenerator;
+import javax.persistence.Table;
 
+import org.hibernate.annotations.GenericGenerator;
+import org.springframework.stereotype.Component;
+
+@Component
+@Entity @Table(name = "t_approve")
 public class Approve {
 	@Id
 	@GeneratedValue(generator="uuid")
