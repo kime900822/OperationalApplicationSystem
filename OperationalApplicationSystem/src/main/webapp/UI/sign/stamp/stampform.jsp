@@ -15,7 +15,7 @@ $(function(){
 	    loadingmask: false,
 	    okCallback: function(json, options) {
             $.each(json, function (i, item) {
-                $.CurrentNavtab.find('#j_stamp_documentType').append("<option value='" + item.id + "'>" + item.value + "</option>")           
+                $.CurrentNavtab.find('#j_stamp_documentType').append("<option value='" + item.Id + "'>" + item.value + "</option>")           
             })
             $.CurrentNavtab.find('#j_stamp_documentType').selectpicker('refresh');
 	    }
@@ -43,10 +43,16 @@ $(function(){
 function faceToData(){
 	var o=$.CurrentNavtab.find("#j_stamp_form").serializeJson();
 	o.formFiller='${user.name}';
-	o.formFillID='${user.uid}';
+	o.formFillerID='${user.uid}';
 	o.departmentOfFormFiller='${user.department.name}';
 	o.departmentOfFormFillerID='${user.department.did}';
 	o.id=$.CurrentNavtab.find("#j_stamp_id").val();
+	o.attacmentUpload=listToString($.CurrentNavtab.find('#upfile_invoice_list'));
+	var tmp='';
+	$.each(o.stampType,function(i,item){
+		tmp+=item+'|';	
+	})
+	o.stampType=tmp;
 	return o;
 }
 
@@ -56,22 +62,112 @@ function dataToFace(){
 	
 }
 
-function checkSave(){
+function saveStamp(){
+
+	
+	var o=faceToData();	
+	
+	var err=checkSave(o);
+	if(err!=''){
+		BJUI.alertmsg('warn', err); 
+		return false;
+	}
+	
+	if(o.formFillerID==null||o.formFillerID==''||o.formFillerID==undefined){
+		BJUI.alertmsg('error', '数据异常，用户为空，请刷新页面重新填写！'); 
+		return false;
+	}
+		
+	BJUI.ajax('doajax', {
+	    url: 'saveStamp.action',
+	    loadingmask: true,
+	    data:{json:JSON.stringify(o)},	    
+	    okCallback: function(json, options) {
+            if(json.status='200'){
+            	 BJUI.alertmsg('info', json.message); 
+            	 $.CurrentNavtab.find("#j_stamp_id").val(json.params.id);
+            	 $.CurrentNavtab.find("#j_stamp_applicationCode").val(json.params.applicationCode);
+            }else{
+            	 BJUI.alertmsg('error', json.message); 
+            }
+	    }
+	});		
+	
+	
+}
+
+
+function listToString(id){
+	var tr=$.CurrentNavtab.find(id).find('tr');
+	var s="";
+	$.each(tr,function(i,n){
+		if(i>0){
+			s=s+$.CurrentNavtab.find(n).children().eq(0).find('a').attr('url')+"|";		
+		}
+	})
+	return s;
+}
+
+function fileToTr(name,path,b){
+	if(b){
+		return "<tr><td align='center'><a onclick=\"getFile('"+path.replace('\\','\\\\')+"')\" url='"+path.replace('\\','\\\\')+ "' >"+name+"</></td><td align='center'><a onclick=\"deleteFile('"+path.replace('\\','\\\\')+"',this)\" >Delete</a></td></tr>"
+	}else{
+		return "<tr><td align='center'><a onclick=\"getFile('"+path.replace('\\','\\\\')+"')\" url='"+path.replace('\\','\\\\')+ "' >"+name+"</></td><td align='center'></td></tr>"
+	}
+}
+
+
+function deleteFile(path,o){
+	var pid=$.CurrentNavtab.find("#j_stamp_id").val();
+	BJUI.ajax('doajax', {
+	    url:'deleteFileOfStamp.action',
+	    data:{dfile:path,id:pid},
+	    okCallback: function(json, options) {
+            if(json.status='200'){
+            	 BJUI.alertmsg('info', json.message); 
+            	$.CurrentNavtab.find(o).parent().parent().remove();	
+        		
+            }else{
+            	 BJUI.alertmsg('error', json.message); 
+            }
+	    }
+	})
+	
+}
+
+
+function checkSave(o){
 	var err='';
-	if($.CurrentNavtab.find('input:radio:checked').val()==null||$.CurrentNavtab.find('input:radio:checked').val()==''){
-		err+=" Payment Way can`t be  empty！<br>";		
+	if(o.stampType==null||o.stampType==''){
+		err+=" Stamp Type can`t be empty！<br>";		
 	}
-	if($.CurrentNavtab.find('#j_payment_paymentSubject').val()==null||$.CurrentNavtab.find('#j_payment_paymentSubject').val()==''){
-		err+=" Payment Subject can`t be  empty！<br>";				
+	if(o.applicant==null||o.applicant==''){
+		err+=" Applicant can`t be empty！<br>";				
 	}
-	if($.CurrentNavtab.find('#j_payment_currency_1').val()==null||$.CurrentNavtab.find('#j_payment_currency_1').val()==''){
-		err+=" Currency can`t be  empty！<br>";				
+	if(o.documentType==null||o.documentType==''){
+		err+=" Document Type can`t be  empty！<br>";				
 	}
-	if($.CurrentNavtab.find('#j_payment_usageDescription').val()==null||$.CurrentNavtab.find('#j_payment_usageDescription').val()==''){
-		err+=" Usage Description can`t be  empty！<br>";				
+	
+	if(o.documentType=='1'){
+		if(o.projectResponsible==null||o.projectResponsible==''){
+			err+=" Project Responsible can`t be  empty！<br>";				
+		}	
 	}
-	if($.CurrentNavtab.find('#j_payment_supplierCode').val()==null||$.CurrentNavtab.find('#j_payment_supplierCode').val()==''){
-		err+=" Supplier Code can`t be  empty！<br>";				
+	
+	if((o.chopDate==null||o.chopDate=='')&&(o.lendDate==null||o.lendDate=='')){
+		err+=" Chop Date And Lend Date can`t be all empty！<br>";				
+	}
+	
+	if(o.lendDate!=null&&o.lendDate!=''){
+		if(o.giveBackDate==null||o.giveBackDate==''){
+			err+=" Give Back Date can`t be  empty！<br>";		
+		}	
+	}
+	if(o.chopQty==null||o.chopQty==''){
+		err+=" Chop Qtye can`t be  empty！<br>";				
+	}
+	if(o.chopObject==null||o.chopObject==''){
+		err+=" Chop Object can`t be  empty！<br>";				
 	}
 	
 	return err;
@@ -100,11 +196,21 @@ function getUser() {
 
 }
 
+function setProjectResponsible(){
+	var type=$.CurrentNavtab.find('#j_stamp_documentType').val();
+	if(type!='1'){
+		$.CurrentNavtab.find('#j_stamp_projectResponsible').attr('disabled','disabled')		
+	}else{
+		$.CurrentNavtab.find('#j_stamp_projectResponsible').removeAttr('disabled','disabled')		
+	}
+	
+}
+
 </script>
 <div class="bjui-pageContent">
     <div class="bs-example" style="width:1000px">
         <form id="j_stamp_form" data-toggle="ajaxform">
-			<input type="hidden" name="id" id="j_stamp_id" value="'${param.id}'">
+			<input type="hidden" name="id" id="j_stamp_id" value="${param.id}">
 			<input type="hidden" name="state" id="j_stamp_state" value="">
             <div class="bjui-row-0" align="center">
             <h2 class="row-label">Stamp Using Application System 借/用 章 申 请 系 统</h2><br> 
@@ -178,7 +284,7 @@ function getUser() {
 						Document Type <label style="color:red;font-size:12px"><b>*</b></label>:<br>文件类型  <label style="color:red;font-size:12px"><b>*</b></label>:
 					</td>
 					<td>
-						<select name="documentType" data-toggle="selectpicker" id="j_stamp_documentType" data-rule="required" data-width="190px" >
+						<select name="documentType" data-toggle="selectpicker" id="j_stamp_documentType" data-rule="required" data-width="190px" onchange="setProjectResponsible()">
                         	<option value="" selected></option>
                         	<option value="1" >Invoice Contract 发票合同</option>
                     	</select>
@@ -202,7 +308,7 @@ function getUser() {
 					<td>
 						Chop Date <label style="color:red;font-size:12px"><b>*</b></label>:<br>用印日期 <label style="color:red;font-size:12px"><b>*</b></label>:
 					</td>
-					<td id="j_stamp_beneficiaryE_tr">
+					<td>
 						<input type="text" size="19" name="chopDate" data-toggle="datepicker" placeholder="点击选择日期" data-nobtn="true" id="j_stamp_chopDate" value=""  />
 					</td>
 					<td colspan="2">
@@ -287,7 +393,7 @@ function getUser() {
 				
 				<tr>
 					<td colspan="4" align="center">
-	            		<button type="button" id="stamp-save" class="btn-default" data-icon="save" >Save</button>&nbsp;&nbsp;&nbsp;&nbsp;
+	            		<button type="button" id="stamp-save" class="btn-default" data-icon="save" onClick="saveStamp()" >Save</button>&nbsp;&nbsp;&nbsp;&nbsp;
 	            		<button type="button" id="stamp-submit" class="btn-default" data-icon="arrow-up" >Submit</button>
             		</td>				
 				</tr>			

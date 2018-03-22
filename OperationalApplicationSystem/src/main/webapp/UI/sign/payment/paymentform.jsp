@@ -355,13 +355,6 @@ function deleteFile(o){
 	
 }
 
-function getFile(path){
-	BJUI.ajax('ajaxdownload', {
-	    url:'getFile.action',
-	    data:{dfile:path}
-	})
-	
-}
 
 function deleteFile(path,o){
 	var pid=$.CurrentNavtab.find("#j_payment_id").val();

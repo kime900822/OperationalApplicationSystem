@@ -1,13 +1,19 @@
 package com.sign.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.stereotype.Component;
+
+import com.kime.model.Dict;
+import com.kime.model.Role;
 
 @Component
 @Entity @Table(name = "t_stamp")
@@ -55,6 +61,40 @@ public class Stamp {
 	private String chopQty;
 	@Column
 	private String chopObject;
+	@Column
+	private boolean urgent;
+	@Column
+	private String usageDescription;
+	@Column
+	private String attacmentUpload;
+	@Column
+	private String dateTmp;
+	
+	
+	public String getDateTmp() {
+		return dateTmp;
+	}
+	public void setDateTmp(String dateTmp) {
+		this.dateTmp = dateTmp;
+	}
+	public boolean isUrgent() {
+		return urgent;
+	}
+	public void setUrgent(boolean urgent) {
+		this.urgent = urgent;
+	}
+	public String getUsageDescription() {
+		return usageDescription;
+	}
+	public void setUsageDescription(String usageDescription) {
+		this.usageDescription = usageDescription;
+	}
+	public String getAttacmentUpload() {
+		return attacmentUpload;
+	}
+	public void setAttacmentUpload(String attacmentUpload) {
+		this.attacmentUpload = attacmentUpload;
+	}
 	public String getId() {
 		return id;
 	}

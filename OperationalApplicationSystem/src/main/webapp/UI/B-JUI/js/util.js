@@ -70,6 +70,14 @@ function ajaxFileUpload(id,tid) {
 }
 
 
+function getFile(path){
+	BJUI.ajax('ajaxdownload', {
+	    url:'getFile.action',
+	    data:{dfile:path}
+	})
+	
+}
+
 
 /** 
  * 将数值四舍五入(保留2位小数)后格式化成金额形式 
