@@ -1073,13 +1073,13 @@ function checkReturn(){
 				</tr>
 				<tr>
 					<td>
-						收款人变更<br>Change
+						收款人变更<br>Change Company Information
 					</td>
 					<td>
 						<input  type="checkbox" name="beneficiaryChange" id="j_payment_beneficiaryChange" data-toggle="icheck" value="1" data-label="">
 					</td>
 					<td>
-						银行及账号变更<br>Change
+						银行及账号变更<br>Change Bank Information
 					</td>
 					<td>
 						<input  type="checkbox" name="beneficiaryAccountNOChange" id="j_payment_beneficiaryAccountNOChange" data-toggle="icheck" value="1" data-label="">
