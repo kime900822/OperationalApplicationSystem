@@ -7,7 +7,7 @@ $(function(){
 	$.CurrentNavtab.find('#j_stamp_applicationDate').val(today);
 	
 	if('${param.id}'!=null&&'${param.id}'!=''){
-		dataToFace();
+		dataToFaceStamp();
 	}
 	//获取文件类型
 	BJUI.ajax('doajax', {
@@ -40,7 +40,7 @@ $(function(){
 	
 })
 
-function faceToData(){
+function faceToDataStamp(){
 	var o=$.CurrentNavtab.find("#j_stamp_form").serializeJson();
 	o.formFiller='${user.name}';
 	o.formFillerID='${user.uid}';
@@ -49,25 +49,70 @@ function faceToData(){
 	o.id=$.CurrentNavtab.find("#j_stamp_id").val();
 	o.attacmentUpload=listToString($.CurrentNavtab.find('#upfile_invoice_list'));
 	var tmp='';
-	$.each(o.stampType,function(i,item){
-		tmp+=item+'|';	
-	})
-	o.stampType=tmp;
+	if(typeof o.stampType == 'object' &&  o.stampType ){
+		$.each(o.stampType,function(i,item){
+			tmp+=item+'|';	
+		})	
+		o.stampType=tmp;
+	}
 	return o;
 }
 
-function dataToFace(){
-	
+function dataToFaceStamp(){
+	BJUI.ajax('doajax', {
+	    url: 'getStampByID.action',
+	    loadingmask: true,
+	    data:{id:'${param.id}'},	    
+	    okCallback: function(json, options) {
+	  
+	    
+	    }
+	})
 	
 	
 }
 
-function saveStamp(){
+
+function submitStamp(){
+	
+	if($.CurrentNavtab.find("#j_stamp_id").val()==''){
+		BJUI.alertmsg('confirm', 'Submit?', {
+		    okCall: function() {
+		    	 saveStamp('1');	  
+		    }
+		})
+
+		
+	}
+	
+}
+
+function deleteStamp(){
+	BJUI.alertmsg('confirm', 'Delete?', {
+		   okCall: function() {
+				BJUI.ajax('doajax', {
+				    url: 'deleteStamp.action',
+				    loadingmask: true,
+				    data:{json:JSON.stringify(o)},	    
+				    okCallback: function(json, options) {
+			            if(json.status='200'){
+			            	closeCurrentTab();
+			            }else{
+			            	 BJUI.alertmsg('error', json.message); 
+			            }
+				    }
+				});	
+			  			   
+		   }
+	})
 
 	
-	var o=faceToData();	
-	
-	var err=checkSave(o);
+}
+
+function saveStamp(s){
+	var o=faceToDataStamp();	
+	o.state=s;
+	var err=checkSaveStamp(o);
 	if(err!=''){
 		BJUI.alertmsg('warn', err); 
 		return false;
@@ -87,6 +132,7 @@ function saveStamp(){
             	 BJUI.alertmsg('info', json.message); 
             	 $.CurrentNavtab.find("#j_stamp_id").val(json.params.id);
             	 $.CurrentNavtab.find("#j_stamp_applicationCode").val(json.params.applicationCode);
+            	 showButtonStamp(s);
             }else{
             	 BJUI.alertmsg('error', json.message); 
             }
@@ -96,6 +142,19 @@ function saveStamp(){
 	
 }
 
+
+function showButtonStamp(state){
+	if(state==0){
+		 $.CurrentNavtab.find('#stamp-delete').show();
+	}else if(state==1){		
+		 $.CurrentNavtab.find('#stamp-save').hide();
+		 $.CurrentNavtab.find('#stamp-submit').hide();
+		 $.CurrentNavtab.find('#file').attr('disabled','disabled');
+		 $.CurrentNavtab.find('#j_stamp_delete').hide();
+		 $.CurrentNavtab.find('#stamp-delete').hide();
+	}
+
+}
 
 function listToString(id){
 	var tr=$.CurrentNavtab.find(id).find('tr');
@@ -136,7 +195,7 @@ function deleteFile(path,o){
 }
 
 
-function checkSave(o){
+function checkSaveStamp(o){
 	var err='';
 	if(o.stampType==null||o.stampType==''){
 		err+=" Stamp Type can`t be empty！<br>";		
@@ -377,7 +436,7 @@ function setProjectResponsible(){
 						<table class="table" id="upfile_attacment_list" >	
 							<tr>
 								<th width="400px" align="center">File Name</th>
-								<th width="100px" align="center">Delete</th>
+								<th width="100px" align="center" id="j_stamp_delete">Delete</th>
 							</tr>									
 						</table>
 					</td>
@@ -393,8 +452,9 @@ function setProjectResponsible(){
 				
 				<tr>
 					<td colspan="4" align="center">
-	            		<button type="button" id="stamp-save" class="btn-default" data-icon="save" onClick="saveStamp()" >Save</button>&nbsp;&nbsp;&nbsp;&nbsp;
-	            		<button type="button" id="stamp-submit" class="btn-default" data-icon="arrow-up" >Submit</button>
+	            		<button type="button" id="stamp-save" class="btn-default" data-icon="save" onClick="saveStamp('0')" >Save</button>&nbsp;&nbsp;&nbsp;&nbsp;
+	            		<button type="button" id="stamp-submit" class="btn-default" data-icon="arrow-up" onClick="submitStamp()">Submit</button>&nbsp;&nbsp;&nbsp;&nbsp;
+	            		<button type="button" id="stamp-delete" class="btn-default" data-icon="close" onClick="deleteStamp()" style="display:none">Delete</button>
             		</td>				
 				</tr>			
 			</table>		

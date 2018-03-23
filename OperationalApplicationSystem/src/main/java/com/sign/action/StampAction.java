@@ -1,17 +1,18 @@
 package com.sign.action;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-
-import javax.persistence.Column;
 
 import org.apache.struts2.convention.annotation.Action;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,10 +21,10 @@ import org.springframework.stereotype.Controller;
 import com.google.gson.Gson;
 import com.kime.base.ActionBase;
 import com.kime.infoenum.Message;
-import com.kime.model.Dict;
+import com.kime.model.User;
 import com.kime.utils.CommonUtil;
+import com.kime.utils.ExcelUtil;
 import com.sign.biz.StampBIZ;
-import com.sign.model.Payment;
 import com.sign.model.Stamp;
 import com.sign.other.FileSave;
 
@@ -55,17 +56,43 @@ public class StampAction extends ActionBase{
 		private String giveBackDate;
 		private String chopQty;
 		private String chopObject;
-		private boolean urgent;
+		private String urgent;
 		private String usageDescription;
 		private String attacmentUpload;
 		private String dateTmp;
+		private String state;
 		
 		private File[] file;
 		private String[] fileFileName;
 		private String dfile;
 		
+		private String applicationDate_f;
+		private String applicationDate_t;
+		private String queryType;
+		
+		public String getQueryType() {
+			return queryType;
+		}
+		public void setQueryType(String queryType) {
+			this.queryType = queryType;
+		}
 		public String getDfile() {
 			return dfile;
+		}
+		public String getApplicationDate_f() {
+			return applicationDate_f;
+		}
+		public void setApplicationDate_f(String applicationDate_f) {
+			this.applicationDate_f = applicationDate_f;
+		}
+		public String getApplicationDate_t() {
+			return applicationDate_t;
+		}
+		public void setApplicationDate_t(String applicationDate_t) {
+			this.applicationDate_t = applicationDate_t;
+		}
+		public File[] getFile() {
+			return file;
 		}
 		public void setDfile(String dfile) {
 			this.dfile = dfile;
@@ -75,6 +102,12 @@ public class StampAction extends ActionBase{
 		}
 		public void setFileFileName(String[] fileFileName) {
 			this.fileFileName = fileFileName;
+		}
+		public String getState() {
+			return state;
+		}
+		public void setState(String state) {
+			this.state = state;
 		}
 		public FileSave getFileSave() {
 			return fileSave;
@@ -91,10 +124,10 @@ public class StampAction extends ActionBase{
 		public void setDateTmp(String dateTmp) {
 			this.dateTmp = dateTmp;
 		}
-		public boolean isUrgent() {
+		public String getUrgent() {
 			return urgent;
 		}
-		public void setUrgent(boolean urgent) {
+		public void setUrgent(String urgent) {
 			this.urgent = urgent;
 		}
 		public String getUsageDescription() {
@@ -383,7 +416,7 @@ public class StampAction extends ActionBase{
 					map.put("id", stamp.getId());
 					map.put("applicationCode", code);
 					result.setParams(map);
-					logUtil.logInfo("新增付款申请单:"+stamp.getId());
+					logUtil.logInfo("新增付款申请单:"+stamp.getApplicationCode());
 
 				}
 
@@ -397,5 +430,187 @@ public class StampAction extends ActionBase{
 			reslutJson=new ByteArrayInputStream(new Gson().toJson(result).getBytes("UTF-8")); 	
 			return SUCCESS;
 		}
+		
+		
+		@Action(value="deleteStamp",results={@org.apache.struts2.convention.annotation.Result(type="stream",
+				params={
+						"inputName", "reslutJson"
+				})})
+		public String deleteStamp() throws UnsupportedEncodingException{
+				try {
+					Stamp stamp=stampBIZ.getStamp(" where id='"+id+"'").get(0);
+					stampBIZ.deleteStamp(stamp);
+					
+					result.setMessage(Message.DEL_MESSAGE_SUCCESS);
+					result.setStatusCode("200");
+					logUtil.logInfo("删除用章申请单:"+stamp.getApplicationCode());
+				} catch (Exception e) {
+					logUtil.logInfo("删除用章申请单异常:"+e.getMessage());
+					result.setMessage(e.getMessage());
+					result.setStatusCode("300");
+				}
+		
+			reslutJson=new ByteArrayInputStream(new Gson().toJson(result).getBytes("UTF-8")); 	
+			return SUCCESS;
+		}
+		
+		
+		
+		@Action(value="getStamp",results={@org.apache.struts2.convention.annotation.Result(type="stream",
+				params={
+						"inputName", "reslutJson"
+				})})
+		public String getStamp() throws UnsupportedEncodingException{
+		
+			User user=(User)session.getAttribute("user");
+			String hql="";
+			
+			String where="";
+			
+			if (!"".equals(applicationDate_f)&&applicationDate_f!=null) {
+				where += " AND P.applicationDate>='"+applicationDate_f+"'";
+			}
+			if (!"".equals(applicationDate_t)&&applicationDate_t!=null) {
+				where += " AND P.applicationDate <= '"+applicationDate_t+"'";
+			}
+			if (!"".equals(applicationCode)&&applicationCode!=null) {
+				where += " AND P.code like '%"+applicationCode+"'%";
+			}
+			if (!"".equals(state)&&state!=null) {
+				where += " AND P.state = '"+state+"'";
+			}
+			if (!"".equals(urgent)&&urgent!=null) {
+				where += " AND P.urgent = '"+urgent+"'";
+			}
+			if (!"".equals(stampType)&&stampType!=null) {
+				where += " AND P.stampType like '%"+stampType+"'% ";
+			}
+			if (!"".equals(documentType)&&documentType!=null) {
+				where += " AND P.documentType='"+documentType+"'";
+			}
+			if (!"".equals(departmentOfFormFillerID)&&departmentOfFormFillerID!=null) {
+				where += " AND P.departmentOfFormFillerID like '"+departmentOfFormFillerID+"'";
+			}
+				
+				
+
+			if ("user".equals(queryType)) {
+				hql=" select P from Stamp P where P.formFillerID='"+user.getUid()+"' "+where+" order By P.dateTmp desc";
+			}
+
+			List<Stamp> list=stampBIZ.getStampByHql(hql, Integer.parseInt(pageSize),Integer.parseInt(pageCurrent));
+			int total=stampBIZ.getStampByHql(hql).size();
+			
+			for (Stamp stamp : list) {
+				String tmp=stamp.getStampType().substring(0, stamp.getStampType().length()-1);
+				tmp.replace("|", "<br>");
+				stamp.setStampType(tmp);
+			}
+			
+			queryResult.setList(list);
+			queryResult.setTotalRow(total);
+			queryResult.setFirstPage(Integer.parseInt(pageCurrent)==1?true:false);
+			queryResult.setPageNumber(Integer.parseInt(pageCurrent));
+			queryResult.setLastPage(total/Integer.parseInt(pageSize) +1==Integer.parseInt(pageCurrent)&&Integer.parseInt(pageCurrent)!=1?true:false);
+			queryResult.setTotalPage(total/Integer.parseInt(pageSize) +1);
+			queryResult.setPageSize(Integer.parseInt(pageSize));
+			String r=callback+"("+new Gson().toJson(queryResult)+")";
+			
+			reslutJson=new ByteArrayInputStream(r.getBytes("UTF-8")); 
+			return SUCCESS;
+		}
+		
+		
+		
+		@Action(value="getStampByID",results={@org.apache.struts2.convention.annotation.Result(type="stream",
+				params={
+						"inputName", "reslutJson"
+				})})
+		public String getStampByID() throws UnsupportedEncodingException{
+
+			Stamp Stamp=new Stamp();		
+			try {
+				Stamp=stampBIZ.getStamp(" where id='"+id+"'").get(0);
+				String string=new Gson().toJson(Stamp);
+				reslutJson=new ByteArrayInputStream(new Gson().toJson(Stamp).getBytes("UTF-8")); 	
+				logUtil.logInfo("查询付款申请单:"+Stamp.getId());
+			} catch (Exception e) {
+				logUtil.logInfo("查询付款申请单异常:"+e.getMessage());
+				result.setMessage(e.getMessage());
+				result.setStatusCode("300");
+				reslutJson=new ByteArrayInputStream(new Gson().toJson(result).getBytes("UTF-8")); 	
+			}
+			
+			return SUCCESS;
+		}
+		
+		
+		 /**
+	     * excel导出
+	     * @return
+	     */
+		@Action(value="exportStampExcel",results={@org.apache.struts2.convention.annotation.Result(type="stream",
+				params={
+						"inputName", "reslutJson",
+						"contentType","application/vnd.ms-excel",
+						"contentDisposition","attachment;filename=%{fileName}",
+						"bufferSize","1024"
+				})})
+	    public String exportStampExcel() {
+	        try {
+	        	User user=(User)session.getAttribute("user");
+	        	
+	    		String hql="";
+	    		String where="";
+	    		
+	    		if (!"".equals(applicationDate_f)&&applicationDate_f!=null) {
+					where += " AND P.applicationDate>='"+applicationDate_f+"'";
+				}
+				if (!"".equals(applicationDate_t)&&applicationDate_t!=null) {
+					where += " AND P.applicationDate <= '"+applicationDate_t+"'";
+				}
+				if (!"".equals(applicationCode)&&applicationCode!=null) {
+					where += " AND P.code like '%"+applicationCode+"'%";
+				}
+				if (!"".equals(state)&&state!=null) {
+					where += " AND P.state = '"+state+"'";
+				}
+				if (!"".equals(urgent)&&urgent!=null) {
+					where += " AND P.urgent = '"+urgent+"'";
+				}
+				if (!"".equals(stampType)&&stampType!=null) {
+					where += " AND P.stampType like '%"+stampType+"'% ";
+				}
+				if (!"".equals(documentType)&&documentType!=null) {
+					where += " AND P.documentType='"+documentType+"'";
+				}
+				if (!"".equals(departmentOfFormFillerID)&&departmentOfFormFillerID!=null) {
+					where += " AND P.departmentOfFormFillerID like '"+departmentOfFormFillerID+"'";
+				}
+				if ("user".equals(queryType)) {
+					hql=" select P from Stamp P where P.formFillerID='"+user.getUid()+"' "+where+" order By P.dateTmp desc";
+				}
+
+	    		
+	    		List<Stamp> lStamps=stampBIZ.getStampByHql(hql);
+	        	Class c = (Class) new Stamp().getClass();  
+	        	ByteArrayOutputStream os=ExcelUtil.exportExcel("Stamp", c, lStamps, "yyy-MM-dd");
+	        	byte[] fileContent = os.toByteArray();
+	        	ByteArrayInputStream is = new ByteArrayInputStream(fileContent);
+	        	
+	    		SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");		 
+	    		fileName = "Stamp"+sf.format(new Date()).toString()+ ".xls";
+	    		fileName= new String(fileName.getBytes(), "ISO8859-1");
+	    		//文件流
+	            reslutJson = is;            
+	            logUtil.logInfo("导出Stamp！"+fileName);
+	        }
+	        catch(Exception e) {
+	        	logUtil.logInfo("导出Stamp！"+e.getMessage());
+	            e.printStackTrace();
+	        }
+
+	        return "success";
+	    }
 		
 }

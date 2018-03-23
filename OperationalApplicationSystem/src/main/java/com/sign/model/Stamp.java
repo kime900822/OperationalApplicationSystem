@@ -69,7 +69,8 @@ public class Stamp {
 	private String attacmentUpload;
 	@Column
 	private String dateTmp;
-	
+	@Column
+	private String state;
 	
 	public String getDateTmp() {
 		return dateTmp;
@@ -214,6 +215,12 @@ public class Stamp {
 	}
 	public void setProjectResponsible(String projectResponsible) {
 		this.projectResponsible = projectResponsible;
+	}
+	public String getState() {
+		return state;
+	}
+	public void setState(String state) {
+		this.state = state;
 	}
 	
 }

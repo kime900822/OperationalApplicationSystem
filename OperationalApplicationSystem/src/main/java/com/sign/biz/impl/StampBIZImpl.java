@@ -114,14 +114,12 @@ public class StampBIZImpl extends BizBase implements StampBIZ{
 
 	@Override
 	public List<Stamp> getStampByHql(String hql, Integer pageSize, Integer pageCurrent) {
-		// TODO Auto-generated method stub
-		return null;
+		return stamDAO.queryHql(hql, pageSize, pageCurrent);
 	}
 
 	@Override
 	public List<Stamp> getStampByHql(String hql) {
-		// TODO Auto-generated method stub
-		return null;
+		return stamDAO.queryHql(hql);
 	}
 
 	@Override
