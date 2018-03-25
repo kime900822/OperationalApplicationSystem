@@ -1,4 +1,4 @@
-package com.sign.model;
+package com.kime.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,13 +10,15 @@ import org.hibernate.annotations.GenericGenerator;
 import org.springframework.stereotype.Component;
 
 @Component
-@Entity @Table(name = "t_check_his")
-public class CheckHis {
-	
+@Entity @Table(name = "t_approve_his")
+public class ApproveHis {
+
 	@Id
-	@GeneratedValue(generator="assigned")
-	@GenericGenerator(name = "assigned", strategy = "assigned")
-	private String Id;
+	@GeneratedValue(generator="uuid")
+	@GenericGenerator(name = "uuid", strategy = "uuid")
+	private String id;
+	@Column
+	private String name;
 	@Column
 	private String type;
 	@Column
@@ -28,9 +30,9 @@ public class CheckHis {
 	@Column
 	private String uName;
 	@Column
-	private String rId;
+	private String dId;
 	@Column
-	private String rName;
+	private String dName;
 	@Column
 	private String comment;
 	@Column
@@ -38,18 +40,29 @@ public class CheckHis {
 	@Column
 	private String date;
 
-
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
 	public String getId() {
-		return Id;
+		return id;
 	}
 	public void setId(String id) {
-		Id = id;
+		this.id = id;
 	}
 	public String getType() {
 		return type;
 	}
 	public void setType(String type) {
 		this.type = type;
+	}
+	public String getTradeId() {
+		return tradeId;
+	}
+	public void setTradeId(String tradeId) {
+		this.tradeId = tradeId;
 	}
 	public String getLevel() {
 		return level;
@@ -69,17 +82,17 @@ public class CheckHis {
 	public void setuName(String uName) {
 		this.uName = uName;
 	}
-	public String getrId() {
-		return rId;
+	public String getdId() {
+		return dId;
 	}
-	public void setrId(String rId) {
-		this.rId = rId;
+	public void setdId(String dId) {
+		this.dId = dId;
 	}
-	public String getrName() {
-		return rName;
+	public String getdName() {
+		return dName;
 	}
-	public void setrName(String rName) {
-		this.rName = rName;
+	public void setdName(String dName) {
+		this.dName = dName;
 	}
 	public String getComment() {
 		return comment;
@@ -99,12 +112,5 @@ public class CheckHis {
 	public void setDate(String date) {
 		this.date = date;
 	}
-	public String getTradeId() {
-		return tradeId;
-	}
-	public void setTradeId(String tradeId) {
-		this.tradeId = tradeId;
-	}
-
 	
 }

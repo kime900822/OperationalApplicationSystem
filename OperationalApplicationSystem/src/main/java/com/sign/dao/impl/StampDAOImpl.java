@@ -45,13 +45,13 @@ public class StampDAOImpl extends HibernateDaoSupport implements StampDAO{
 	@Override
 	public List<Stamp> query(String where) {
 		Session session=this.getSessionFactory().openSession();
-		String hql="FROM Approve "+where;
+		String hql="FROM Stamp "+where;
 		return session.createQuery(hql).list();
 	}
 	@Override
 	public List<Stamp> query(String where, Integer pageSize, Integer pageCurrent) {
 		Session session=this.getSessionFactory().openSession();
-		String hql="FROM Approve "+where;
+		String hql="FROM Stamp "+where;
 		return session.createQuery(hql).setFirstResult((pageCurrent-1)*pageSize).setMaxResults(pageSize).list();
 	}
 	@Override

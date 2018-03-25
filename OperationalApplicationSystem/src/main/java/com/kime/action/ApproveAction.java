@@ -3,7 +3,9 @@ package com.kime.action;
 import java.io.ByteArrayInputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.ParentPackage;
@@ -15,8 +17,10 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.kime.base.ActionBase;
 import com.kime.biz.ApproveBIZ;
+import com.kime.biz.ApproveHisBIZ;
 import com.kime.infoenum.Message;
 import com.kime.model.Approve;
+import com.kime.model.ApproveHis;
 
 @Controller
 @Scope("prototype")
@@ -25,6 +29,8 @@ public class ApproveAction extends ActionBase{
 	
 	@Autowired
 	private ApproveBIZ approveBIZ;
+	@Autowired
+	private ApproveHisBIZ approveHisBIZ;
 	
 	private String id;
 	private String type;
@@ -38,6 +44,32 @@ public class ApproveAction extends ActionBase{
 	private boolean tmp1;
 	private String tmp2;
 	private String tmp3;
+	
+	
+	private String tradeId;
+	private String uId;
+	private String uName;
+	private String dId;
+	private String dName;
+	private String comment;
+	private String status;
+	private String date;
+	private String approveId;
+	
+	
+	
+	public String getApproveId() {
+		return approveId;
+	}
+	public void setApproveId(String approveId) {
+		this.approveId = approveId;
+	}
+	public ApproveHisBIZ getApproveHisBIZ() {
+		return approveHisBIZ;
+	}
+	public void setApproveHisBIZ(ApproveHisBIZ approveHisBIZ) {
+		this.approveHisBIZ = approveHisBIZ;
+	}
 	public String getName() {
 		return name;
 	}
@@ -117,6 +149,56 @@ public class ApproveAction extends ActionBase{
 		this.tmp3 = tmp3;
 	}
 
+	
+	
+	public String getTradeId() {
+		return tradeId;
+	}
+	public void setTradeId(String tradeId) {
+		this.tradeId = tradeId;
+	}
+	public String getuId() {
+		return uId;
+	}
+	public void setuId(String uId) {
+		this.uId = uId;
+	}
+	public String getuName() {
+		return uName;
+	}
+	public void setuName(String uName) {
+		this.uName = uName;
+	}
+	public String getdId() {
+		return dId;
+	}
+	public void setdId(String dId) {
+		this.dId = dId;
+	}
+	public String getdName() {
+		return dName;
+	}
+	public void setdName(String dName) {
+		this.dName = dName;
+	}
+	public String getComment() {
+		return comment;
+	}
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	public String getDate() {
+		return date;
+	}
+	public void setDate(String date) {
+		this.date = date;
+	}
 	@Action(value="getApproveType4Select",results={@org.apache.struts2.convention.annotation.Result(type="stream",
 			params={
 					"inputName", "reslutJson"
@@ -252,4 +334,26 @@ public class ApproveAction extends ActionBase{
 		return SUCCESS;
 	}
 	
+	
+	@Action(value="submitApprove",results={@org.apache.struts2.convention.annotation.Result(type="stream",
+			params={
+					"inputName", "reslutJson"
+			})})
+	public String submitApprove() throws UnsupportedEncodingException{	
+		ApproveHis approveHis=new ApproveHis();
+		try {
+			approveHis=approveHisBIZ.save(approveId, comment, status, tradeId,type);
+			result.setStatusCode("200");
+			result.setMessage(status);
+		} catch (Exception e) {
+			result.setStatusCode("300");
+			result.setMessage(e.getMessage());
+		}
+		Map<String, Object> params=new HashMap<>();
+		params.put("data", approveHis);		
+		result.setParams(params);
+		
+		reslutJson=new ByteArrayInputStream(new Gson().toJson(result).getBytes("UTF-8"));  	
+		return SUCCESS;
+	}
 }

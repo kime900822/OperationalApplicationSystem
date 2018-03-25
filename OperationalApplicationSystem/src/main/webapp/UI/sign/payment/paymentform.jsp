@@ -77,13 +77,6 @@ $(function(){
 
 })
 
-function checkForm(i){
-	if(i='save'){
-		
-		
-	}
-}
-
 
 function savePayment(){
 	var err=checkSave()

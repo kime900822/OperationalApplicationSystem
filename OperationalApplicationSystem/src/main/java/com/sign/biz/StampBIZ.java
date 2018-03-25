@@ -15,6 +15,8 @@ public interface StampBIZ {
 	
 	public List<Stamp> getStamp(String where);
 	
+	public Stamp getStampById(String where);
+	
 	public List<Stamp> getStamp(String where,Integer pageSize,Integer pageCurrent);
 	
 	public String getMaxCode();

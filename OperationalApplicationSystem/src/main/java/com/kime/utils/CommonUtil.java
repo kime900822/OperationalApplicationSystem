@@ -7,7 +7,7 @@ public class CommonUtil {
 	
 	public static String getDateTemp(){
 		java.util.Date date=new Date();
-		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH24:mm:ss");
+		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		return sdf.format(date);
 		
 	}

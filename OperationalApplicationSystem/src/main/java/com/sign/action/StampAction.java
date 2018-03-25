@@ -20,7 +20,9 @@ import org.springframework.stereotype.Controller;
 
 import com.google.gson.Gson;
 import com.kime.base.ActionBase;
+import com.kime.biz.ApproveHisBIZ;
 import com.kime.infoenum.Message;
+import com.kime.model.ApproveHis;
 import com.kime.model.User;
 import com.kime.utils.CommonUtil;
 import com.kime.utils.ExcelUtil;
@@ -70,6 +72,7 @@ public class StampAction extends ActionBase{
 		private String applicationDate_t;
 		private String queryType;
 		
+	
 		public String getQueryType() {
 			return queryType;
 		}
@@ -488,8 +491,8 @@ public class StampAction extends ActionBase{
 			if (!"".equals(documentType)&&documentType!=null) {
 				where += " AND P.documentType='"+documentType+"'";
 			}
-			if (!"".equals(departmentOfFormFillerID)&&departmentOfFormFillerID!=null) {
-				where += " AND P.departmentOfFormFillerID like '"+departmentOfFormFillerID+"'";
+			if (!"".equals(applicantID)&&applicantID!=null) {
+				where += " AND P.applicantID like '"+applicantID+"'";
 			}
 				
 				
@@ -497,14 +500,16 @@ public class StampAction extends ActionBase{
 			if ("user".equals(queryType)) {
 				hql=" select P from Stamp P where P.formFillerID='"+user.getUid()+"' "+where+" order By P.dateTmp desc";
 			}
+			if ("approve".equals(queryType)) {
+				hql=" select P from Stamp P where P.nextApprover='"+user.getUid()+"' "+where+" order By P.dateTmp desc";
+			}
 
 			List<Stamp> list=stampBIZ.getStampByHql(hql, Integer.parseInt(pageSize),Integer.parseInt(pageCurrent));
 			int total=stampBIZ.getStampByHql(hql).size();
 			
 			for (Stamp stamp : list) {
 				String tmp=stamp.getStampType().substring(0, stamp.getStampType().length()-1);
-				tmp.replace("|", "<br>");
-				stamp.setStampType(tmp);
+				stamp.setStampType(tmp.replace("|", "<br>"));
 			}
 			
 			queryResult.setList(list);
@@ -530,8 +535,7 @@ public class StampAction extends ActionBase{
 
 			Stamp Stamp=new Stamp();		
 			try {
-				Stamp=stampBIZ.getStamp(" where id='"+id+"'").get(0);
-				String string=new Gson().toJson(Stamp);
+				Stamp=stampBIZ.getStampById(id);
 				reslutJson=new ByteArrayInputStream(new Gson().toJson(Stamp).getBytes("UTF-8")); 	
 				logUtil.logInfo("查询付款申请单:"+Stamp.getId());
 			} catch (Exception e) {
@@ -584,13 +588,16 @@ public class StampAction extends ActionBase{
 				if (!"".equals(documentType)&&documentType!=null) {
 					where += " AND P.documentType='"+documentType+"'";
 				}
-				if (!"".equals(departmentOfFormFillerID)&&departmentOfFormFillerID!=null) {
-					where += " AND P.departmentOfFormFillerID like '"+departmentOfFormFillerID+"'";
+				if (!"".equals(applicantID)&&applicantID!=null) {
+					where += " AND P.applicantID like '"+applicantID+"'";
 				}
+				
 				if ("user".equals(queryType)) {
 					hql=" select P from Stamp P where P.formFillerID='"+user.getUid()+"' "+where+" order By P.dateTmp desc";
 				}
-
+				if ("approve".equals(queryType)) {
+					hql=" select P from Stamp P where P.formFillerID='"+user.getUid()+"' "+where+" order By P.dateTmp desc";
+				}
 	    		
 	    		List<Stamp> lStamps=stampBIZ.getStampByHql(hql);
 	        	Class c = (Class) new Stamp().getClass();  

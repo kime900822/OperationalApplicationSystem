@@ -160,7 +160,7 @@ $(function() {
     <table class="table table-bordered" id="datagrid-stamp-user-filter" data-toggle="datagrid" data-options="{
         height: '100%',
         gridTitle : 'stamp management',
-        dataUrl: 'getStamp.action?queryType=user',
+        dataUrl: 'getStamp.action?queryType=approve',
         dataType: 'jsonp',
         showToolbar: true,
         toolbarItem: 'export',

@@ -257,6 +257,9 @@ function bjui_index_exchange() {
                         	<div style="position:absolute; left: 100px; top:50px">
                         		<a href="getChildMenu.action?id=40289f81605e86cf01605e87be510001" data-toggle="sidenav" data-id-key="targetid"><img src="images/menu/payment.png" height="60"></a>
                         	</div>
+                        	<div style="position:absolute; left: 100px; top:130px">
+                        		<a href="getChildMenu.action?id=40284c816243ad5b016243b365bd0005" data-toggle="sidenav" data-id-key="targetid"><img src="images/menu/stamp.png" height="60"></a>
+                        	</div>
                         </div>
                     </div>
                 </div>

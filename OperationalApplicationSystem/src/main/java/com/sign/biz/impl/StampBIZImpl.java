@@ -11,8 +11,14 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.kime.base.BizBase;
+import com.kime.biz.ApproveBIZ;
+import com.kime.biz.ApproveHisBIZ;
+import com.kime.dao.ApproveDAO;
+import com.kime.dao.ApproveHisDAO;
 import com.kime.dao.CommonDAO;
+import com.kime.dao.DictDAO;
 import com.kime.model.Approve;
+import com.kime.model.Dict;
 import com.sign.biz.StampBIZ;
 import com.sign.dao.StampDAO;
 import com.sign.model.Stamp;
@@ -26,30 +32,13 @@ public class StampBIZImpl extends BizBase implements StampBIZ{
 	private StampDAO stamDAO;
 	@Autowired
 	private CommonDAO commonDAO;
+	@Autowired
+	private DictDAO dictDAO;
+	@Autowired
+	private ApproveBIZ approveBIZ;
+	@Autowired
+	private ApproveHisDAO approveHisDAO;
 	
-	public Approve getApprove() {
-		return approve;
-	}
-
-	public void setApprove(Approve approve) {
-		this.approve = approve;
-	}
-
-	public StampDAO getStamDAO() {
-		return stamDAO;
-	}
-
-	public void setStamDAO(StampDAO stamDAO) {
-		this.stamDAO = stamDAO;
-	}
-
-	public CommonDAO getCommonDAO() {
-		return commonDAO;
-	}
-
-	public void setCommonDAO(CommonDAO commonDAO) {
-		this.commonDAO = commonDAO;
-	}
 
 	@Override
 	public ByteArrayInputStream export() {
@@ -73,14 +62,27 @@ public class StampBIZImpl extends BizBase implements StampBIZ{
 
 	@Override
 	public List<Stamp> getStamp(String where) {
-		// TODO Auto-generated method stub
-		return null;
+		return stamDAO.query(where);
 	}
 
 	@Override
 	public List<Stamp> getStamp(String where, Integer pageSize, Integer pageCurrent) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public Stamp getStampById(String id) {
+		Stamp stamp=stamDAO.query(" where id='"+id+"' ").get(0);
+		if (stamp.getDocumentType().equals("1")) {
+			Dict approveType=dictDAO.query(" where id='"+stamp.getDocumentType()+"'").get(0);		
+			stamp.setApprove(approveBIZ.getApproveAndChild(((Approve)approveBIZ.query(" where uid='"+stamp.getProjectResponsible()+"' and level=0 ").get(0)).getId()));
+		}else{
+			Dict approveType=dictDAO.query(" where id='"+stamp.getDocumentType()+"'").get(0); 
+			stamp.setApprove(approveBIZ.getApproveAndChild(approveType.getValueExplain()));
+		}
+		stamp.setApproveHis(approveHisDAO.getApproveHisByTradeId(stamp.getId()));
+		return stamp;
 	}
 
 	@Override
@@ -92,7 +94,8 @@ public class StampBIZImpl extends BizBase implements StampBIZ{
 		if (list.size()>0) { 
 			String mcode=(String)list.get(0);
 			if (mcode!=null&&!mcode.equals("")) {
-				return  "S"+String.valueOf(Integer.valueOf(mcode.replace("S", "")+1));
+				
+				return  "S"+String.valueOf(Long.valueOf(mcode.replace("S", ""))+1);
 			}		
 		}
 			return "S"+sdf.format(d)+"0001";
@@ -125,6 +128,15 @@ public class StampBIZImpl extends BizBase implements StampBIZ{
 	@Override
 	@Transactional(readOnly=false,propagation=Propagation.REQUIRED,rollbackFor=Exception.class )
 	public void updateStamp(Stamp stamp) {
+		if (stamp.getState().equals("1")) {
+			if (stamp.getProjectResponsible()!=null&&!stamp.getProjectResponsible().equals("")) {
+				stamp.setNextApprover(stamp.getProjectResponsible());
+			}else{
+				Dict approveType=dictDAO.query(" where id='"+stamp.getDocumentType()+"'").get(0);		
+				Approve approve=(Approve)approveBIZ.query(" where id='"+approveType.getValueExplain()+"' and level=0 ").get(0);
+				stamp.setNextApprover(approve.getUid());
+			}
+		}
 		stamDAO.update(stamp);
 		logUtil.logInfo("用章申请单更新成功："+stamp.getApplicationCode());
 		

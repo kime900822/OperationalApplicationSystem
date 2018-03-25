@@ -1,5 +1,7 @@
 package com.sign.model;
 
+import java.util.List;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,10 +10,13 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.stereotype.Component;
 
+import com.kime.model.Approve;
+import com.kime.model.ApproveHis;
 import com.kime.model.Dict;
 import com.kime.model.Role;
 
@@ -62,7 +67,7 @@ public class Stamp {
 	@Column
 	private String chopObject;
 	@Column
-	private boolean urgent;
+	private String urgent;
 	@Column
 	private String usageDescription;
 	@Column
@@ -71,17 +76,31 @@ public class Stamp {
 	private String dateTmp;
 	@Column
 	private String state;
+	@Column
+	private String nextApprover;
+	@Transient
+	private List<Approve> approve;
+	@Transient
+	private List<ApproveHis> approveHis;
 	
+	
+	
+	public String getNextApprover() {
+		return nextApprover;
+	}
+	public void setNextApprover(String nextApprover) {
+		this.nextApprover = nextApprover;
+	}
 	public String getDateTmp() {
 		return dateTmp;
 	}
 	public void setDateTmp(String dateTmp) {
 		this.dateTmp = dateTmp;
 	}
-	public boolean isUrgent() {
+	public String isUrgent() {
 		return urgent;
 	}
-	public void setUrgent(boolean urgent) {
+	public void setUrgent(String urgent) {
 		this.urgent = urgent;
 	}
 	public String getUsageDescription() {
@@ -221,6 +240,21 @@ public class Stamp {
 	}
 	public void setState(String state) {
 		this.state = state;
+	}
+	public String getUrgent() {
+		return urgent;
+	}
+	public List<Approve> getApprove() {
+		return approve;
+	}
+	public void setApprove(List<Approve> approve) {
+		this.approve = approve;
+	}
+	public List<ApproveHis> getApproveHis() {
+		return approveHis;
+	}
+	public void setApproveHis(List<ApproveHis> approveHis) {
+		this.approveHis = approveHis;
 	}
 	
 }

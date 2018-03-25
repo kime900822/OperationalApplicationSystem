@@ -64,8 +64,97 @@ function dataToFaceStamp(){
 	    loadingmask: true,
 	    data:{id:'${param.id}'},	    
 	    okCallback: function(json, options) {
-	  
-	    
+	    	if(json.status='200'){
+	    		$.CurrentNavtab.find("#j_stamp_applicationDate").val(json.applicationDate);
+	    		$.CurrentNavtab.find("#j_stamp_applicationCode").val(json.applicationCode);
+	    		$.CurrentNavtab.find("#j_stamp_formFiller").val(json.formFiller+"-"+json.formFillerID);
+	    		$.CurrentNavtab.find("#j_stamp_departmentOfFormFiller").val(json.departmentOfFormFiller+"-"+json.departmentOfFormFillerID);
+	    		$.CurrentNavtab.find("#j_stamp_applicantID").val(json.applicantID);
+	    		$.CurrentNavtab.find("#j_stamp_applicant").val(json.applicant);
+	    		$.CurrentNavtab.find("#j_stamp_departmentOfApplicant").val(json.departmentOfApplicant+"-"+json.departmentOfApplicantID);
+	    		$.CurrentNavtab.find("#j_stamp_contactNumber").val(json.contactNumber);
+	    		$.CurrentNavtab.find("#j_stamp_documentType").selectpicker().selectpicker('val',json.documentType).selectpicker('refresh');
+	    		if(json.attacmentUpload!=undefined&&json.attacmentUpload!=""){
+		    		$.CurrentNavtab.find("#j_stamp_projectResponsible").selectpicker().selectpicker('val',json.projectResponsible).selectpicker('refresh');
+	    		}
+	    		$.CurrentNavtab.find("#j_stamp_chopDate").val(json.chopDate);
+	    		$.CurrentNavtab.find("#j_stamp_lendDate").val(json.lendDate);
+	    		$.CurrentNavtab.find("#j_stamp_giveBackDate").val(json.giveBackDate);
+	    		$.CurrentNavtab.find("#j_stamp_chopQty").val(json.chopQty);
+	    		if(json.urgent=='1'){
+            		$.CurrentNavtab.find("#j_stamp_urgent").iCheck('check'); 
+            	}
+	    		$.CurrentNavtab.find("#j_stamp_usageDescription").val(json.usageDescription);
+            	$.CurrentNavtab.find("#j_stamp_chopObject").val(json.chopObject);
+	    		var stype=json.stampType.split('|');
+        		
+        		$.each(stype,function(i,item){
+					if(item=='CompanyChop')
+						$.CurrentNavtab.find("#j_stamp_companyChop").iCheck('check'); 
+					if(item=='LegalDeputyChop')
+						$.CurrentNavtab.find("#j_stamp_legalDeputyChop").iCheck('check'); 
+					if(item=='FinancialChop')
+						$.CurrentNavtab.find("#j_stamp_financialChop").iCheck('check'); 
+        		})
+        		
+	    		if(json.attacmentUpload!=undefined&&json.attacmentUpload!=""){
+            		var file=json.attacmentUpload.split('|');
+            		
+            		$.each(file,function(i,n){
+            			var filename=n.split('/')[1];
+            			if(filename!=undefined&&filename!=''){         				
+            				$.CurrentNavtab.find('#upfile_attacment_list').append(fileToTr(filename,n,b));	   
+            			}
+            		})
+            	}
+	    		
+        		var obj=$.CurrentNavtab.find('#stamp_approve_his');
+        		var isReject=false;
+        		var maxLevel=-1;
+        		if(json.approveHis!=undefined&&json.approveHis!=""){
+        			if(json.approveHis[json.approveHis.length-1].status=='Rejected'){
+        				isReject=true;        				
+        			}
+        			$.each(json.approveHis,function(i,item){	  		
+	    				obj.append("<tr><td>"+item.name+"</td><td style='display:none'></td><td>"+item.uId+"</td><td>"+item.uName+"</td><td>"+item.dId+"</td><td>"+item.comment+"</td><td>"+item.status+"</td><td>"+item.date+"</td><td></td></tr>");	    				
+	    				maxLevel=item.level;
+        			})
+        						
+        		}
+	    		
+	    		if(json.approve!=undefined&&json.approve!=""){	    			
+	    			$.each(json.approve,function(i,item){	 
+	    				if(isReject){
+		    				if(i==0){
+		    					if('${user.uid}'==item.uid){
+				    				obj.append("<tr><td>"+item.name+"</td><td style='display:none'>"+item.id+"</td><td>"+item.uid+"</td><td>"+item.uname+"</td><td>"+item.user.did+"</td><td></td><td></td><td></td><td><button type='button' id='stamp-approve' style='width:50px;' onclick='stampApprove(this)'   >√</button>&nbsp;&nbsp;<button type='button' id='stamp-reject'  style='width:50px;' onclick='stampApprove(this)' >×</button></td></tr>");	    				
+		    					}else{
+				    				obj.append("<tr><td>"+item.name+"</td><td style='display:none'>"+item.id+"</td><td>"+item.uid+"</td><td>"+item.uname+"</td><td>"+item.user.did+"</td><td></td><td></td><td></td><td></td></tr>");	    				
+		    					}
+		    				
+		    				}else{
+			    				obj.append("<tr><td>"+item.name+"</td><td style='display:none'>"+item.id+"</td><td>"+item.uid+"</td><td>"+item.uname+"</td><td>"+item.user.did+"</td><td></td><td></td><td></td><td></td></tr>");	    				
+		    				}
+	    				}else{
+	    					if(i>maxLevel){
+			    				if(i==maxLevel+1){
+			    					if('${user.uid}'==item.uid){
+				    				obj.append("<tr><td>"+item.name+"</td><td style='display:none'>"+item.id+"</td><td>"+item.uid+"</td><td>"+item.uname+"</td><td>"+item.user.did+"</td><td></td><td></td><td></td><td><button type='button' id='stamp-approve' style='width:50px;' onclick='stampApprove(this)'   >√</button>&nbsp;&nbsp;<button type='button' id='stamp-reject'  style='width:50px;' onclick='stampApprove(this)' >×</button></td></tr>");	    				
+			    					}else{
+					    				obj.append("<tr><td>"+item.name+"</td><td style='display:none'>"+item.id+"</td><td>"+item.uid+"</td><td>"+item.uname+"</td><td>"+item.user.did+"</td><td></td><td></td><td></td><td></td></tr>");	    				
+			    					}
+			    				}else{
+				    				obj.append("<tr><td>"+item.name+"</td><td style='display:none'>"+item.id+"</td><td>"+item.uid+"</td><td>"+item.uname+"</td><td>"+item.user.did+"</td><td></td><td></td><td></td><td></td></tr>");	    				
+			    				}    						
+	    					}
+	    				}
+	    			})	    			
+	    		}
+        		
+
+	    		
+	    		showButtonStamp(json.state)
+	    	}
 	    }
 	})
 	
@@ -80,9 +169,9 @@ function submitStamp(){
 		    okCall: function() {
 		    	 saveStamp('1');	  
 		    }
-		})
-
-		
+		})	
+	}else{
+		saveStamp('1');	
 	}
 	
 }
@@ -143,6 +232,44 @@ function saveStamp(s){
 }
 
 
+function stampApprove(o){
+	BJUI.alertmsg('prompt', '', {
+		title:'Comment',
+		okCall:function(val) {
+			
+			if($(o).html()=='√'){
+				status='Approved'
+			}else{
+				status='Rejected'
+			}
+			approveId = $(o).parent().siblings().eq(1).html();
+			
+			
+ 			BJUI.ajax('doajax', {
+			    url: 'submitApprove.action',
+			    loadingmask: true,
+			    data:{status:status,comment:val,tradeId:$.CurrentNavtab.find("#j_stamp_id").val(),approveId:approveId,type:'STAMP'},	    
+			    okCallback: function(json, options) {
+		            if(json.status='200'){
+		            	 BJUI.alertmsg('info', json.message); 
+		            	 $(o).parent().siblings().eq(5).html(json.params.data.comment);
+		            	 $(o).parent().siblings().eq(6).html(json.params.data.status);
+		            	 $(o).parent().siblings().eq(7).html(json.params.data.date);
+		            	 $(o).hide().siblings().hide();
+		            }else{
+		            	 BJUI.alertmsg('error', json.message); 
+		            }
+			    }
+			});		 
+			
+			
+		}
+	}
+	
+	)
+}
+
+
 function showButtonStamp(state){
 	if(state==0){
 		 $.CurrentNavtab.find('#stamp-delete').show();
@@ -152,6 +279,19 @@ function showButtonStamp(state){
 		 $.CurrentNavtab.find('#file').attr('disabled','disabled');
 		 $.CurrentNavtab.find('#j_stamp_delete').hide();
 		 $.CurrentNavtab.find('#stamp-delete').hide();
+		 $("input[id*='j_stamp']").attr('disabled','disabled');
+		 $("select[id*='j_stamp']").attr('disabled','disabled');
+		 $("textarea[id*='j_stamp']").attr('disabled','disabled');
+		 $.CurrentNavtab.find('#stamp_approve_his').show();
+	}else if(state==2){		
+		 $.CurrentNavtab.find('#stamp-save').hide();
+		 $.CurrentNavtab.find('#stamp-submit').hide();
+		 $.CurrentNavtab.find('#file').attr('disabled','disabled');
+		 $.CurrentNavtab.find('#j_stamp_delete').hide();
+		 $.CurrentNavtab.find('#stamp-delete').hide();
+		 $("input[id*='j_stamp']").attr('disabled','disabled');
+		 $("select[id*='j_stamp']").attr('disabled','disabled');
+		 $("textarea[id*='j_stamp']").attr('disabled','disabled').show();	
 	}
 
 }
@@ -286,13 +426,13 @@ function setProjectResponsible(){
 						Form Filler:<br>填单人:
 					</td>
 					<td>
-						<input type="text" name="formFiller" size="19" value="${user.uid}-${user.name}" readonly=""  id="j_stamp_contacturalstampDate"  >
+						<input type="text" name="formFiller" size="19" value="${user.name}-${user.uid}" readonly=""  id="j_stamp_formFiller"  >
 					</td>
 					<td>
 						Department of Form Filler:<br>填单人部门:
 					</td>
 					<td>
-						<input type="text" name="departmentOfFormFiller" value="${user.department.name}-${user.department.did}" readonly="" id="j_stamp_code" size="19">
+						<input type="text" name="departmentOfFormFiller" value="${user.department.name}-${user.department.did}" readonly="" id="j_stamp_departmentOfFormFiller" size="19">
 					</td>					
 				</tr>
 				<tr>
@@ -457,6 +597,41 @@ function setProjectResponsible(){
 	            		<button type="button" id="stamp-delete" class="btn-default" data-icon="close" onClick="deleteStamp()" style="display:none">Delete</button>
             		</td>				
 				</tr>			
+				<tr>
+					<td colspan="4">
+						<table class="table" width="100%" id="stamp_approve_his" style="display:none">
+							<tr>
+								<th width="80px">
+								
+								</th>
+								<th style="display:none;">
+								
+								</th>
+								<th width="80px" >
+									Cimtas ID
+								</th>
+								<th width="120px" >
+									Approvel Name
+								</th>
+								<th width="80px" >
+									BU NO.
+								</th>
+								<th width="230px" >
+									Comment
+								</th>
+								<th width="80px" >
+									Status
+								</th>
+								<th width="150px" >
+									Operation Date
+								</th>
+								<th width="150px"align="center" >
+									Operation
+								</th>
+							</tr>					
+						</table>	
+					</td>
+				</tr>
 			</table>		
 
 
