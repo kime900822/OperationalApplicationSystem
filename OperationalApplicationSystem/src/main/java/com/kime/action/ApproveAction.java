@@ -217,7 +217,7 @@ public class ApproveAction extends ActionBase{
 			})})
 	public String getFirstApproveOfStamp4Select() throws UnsupportedEncodingException{	
 
-		List<Approve> lApproves=approveBIZ.getFirstApproveOfStamp4Select();
+		List<Approve> lApproves=approveBIZ.getFirstApproveOfStamp4Select(type);
 		reslutJson=new ByteArrayInputStream(new Gson().toJson(lApproves).getBytes("UTF-8"));  	
 		return SUCCESS;
 	}

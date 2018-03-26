@@ -503,6 +503,9 @@ public class StampAction extends ActionBase{
 			if ("approve".equals(queryType)) {
 				hql=" select P from Stamp P where P.nextApprover='"+user.getUid()+"' "+where+" order By P.dateTmp desc";
 			}
+			if ("all".equals(queryType)) {
+				hql=" select P from Stamp P where 1=1 "+where+" order By P.dateTmp desc";
+			}
 
 			List<Stamp> list=stampBIZ.getStampByHql(hql, Integer.parseInt(pageSize),Integer.parseInt(pageCurrent));
 			int total=stampBIZ.getStampByHql(hql).size();
@@ -597,6 +600,9 @@ public class StampAction extends ActionBase{
 				}
 				if ("approve".equals(queryType)) {
 					hql=" select P from Stamp P where P.formFillerID='"+user.getUid()+"' "+where+" order By P.dateTmp desc";
+				}
+				if ("all".equals(queryType)) {
+					hql=" select P from Stamp P where 1=1 "+where+" order By P.dateTmp desc";
 				}
 	    		
 	    		List<Stamp> lStamps=stampBIZ.getStampByHql(hql);

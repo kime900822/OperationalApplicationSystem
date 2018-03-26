@@ -10,9 +10,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.kime.base.BizBase;
 import com.kime.biz.ApproveBIZ;
+import com.kime.biz.UserBIZ;
 import com.kime.dao.ApproveDAO;
 import com.kime.dao.CommonDAO;
 import com.kime.model.Approve;
+import com.kime.model.User;
 
 @Service
 @Transactional(readOnly=true)
@@ -22,6 +24,9 @@ public class ApproveBIZImpl extends BizBase implements ApproveBIZ {
 	ApproveDAO approveDAO;
 	@Autowired
 	CommonDAO commonDAO;
+	@Autowired
+	UserBIZ userBIZ;
+	
 	public ApproveDAO getApproveDAO() {
 		return approveDAO;
 	}
@@ -99,6 +104,12 @@ public class ApproveBIZImpl extends BizBase implements ApproveBIZ {
 		String msg="";
 		try {
 			for (Approve a : approve) {
+				
+				List<User> lUsers=userBIZ.getUser(" where uid='"+a.getUid()+"'");
+				if (lUsers.size()>0){
+					a.setDid(lUsers.get(0).getDid());
+					a.setDname(lUsers.get(0).getDepartment().getName());
+				}
 				if (a.getId()==null||a.getId().equals("")) {
 					approveDAO.save(a);
 					msg+=" 新增签核人:"+a.getType()+" "+a.getUname()+" /r/n";
@@ -133,8 +144,8 @@ public class ApproveBIZImpl extends BizBase implements ApproveBIZ {
 
 	
 	@Override
-	public List getFirstApproveOfStamp4Select() {
-		String hql="select U from User U WHERE U.uid IN(select A.uid from Approve A,Dict D where A.id=D.valueExplain and D.key='STAMP') ) ";
+	public List getFirstApproveOfStamp4Select(String type) {
+		String hql="select U from User U WHERE U.uid IN(select D.value from Dict D left join Approve A on D.key=A.uid left join Dict D1 on  A.id=D1.valueExplain where D1.id='"+type+"' ) ) ";
 		return commonDAO.queryByHql(hql);
 	}
 

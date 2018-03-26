@@ -31,6 +31,10 @@ public class Approve {
 	@Column
 	private String uname;
 	@Column
+	private String did;
+	@Column
+	private String dname;
+	@Column
 	private String description;
 	@Column(name="`order`")
 	private String order;
@@ -42,15 +46,18 @@ public class Approve {
 	private String tmp2;
 	@Column
 	private String tmp3;
-	@ManyToOne(cascade = CascadeType.REFRESH)
-	@JoinColumn(name="uid",insertable=false,updatable=false)
-	private User user;
 	
-	public User getUser() {
-		return user;
+	public String getDid() {
+		return did;
 	}
-	public void setUser(User user) {
-		this.user = user;
+	public void setDid(String did) {
+		this.did = did;
+	}
+	public String getDname() {
+		return dname;
+	}
+	public void setDname(String dname) {
+		this.dname = dname;
 	}
 	public String getId() {
 		return id;

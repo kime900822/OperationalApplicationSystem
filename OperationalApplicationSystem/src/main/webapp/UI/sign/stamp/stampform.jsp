@@ -21,24 +21,12 @@ $(function(){
 	    }
 	})	
 	
-	//获取一级签核人员
-	BJUI.ajax('doajax', {
-	    url: 'getFirstApproveOfStamp4Select.action',
-	    loadingmask: false,
-	    okCallback: function(json, options) {
-            $.each(json, function (i, item) {
-            	if(item.fistUID!='Dept. Head'){
-                    $.CurrentNavtab.find('#j_stamp_projectResponsible').append("<option value='" + item.uid + "'>" + item.name + "</option>")                     		
-            	}
-            })
-            $.CurrentNavtab.find('#j_stamp_projectResponsible').selectpicker('refresh');
-	    }
-	})
-	
-	
-	
 	
 })
+
+
+
+
 
 function faceToDataStamp(){
 	var o=$.CurrentNavtab.find("#j_stamp_form").serializeJson();
@@ -74,6 +62,7 @@ function dataToFaceStamp(){
 	    		$.CurrentNavtab.find("#j_stamp_departmentOfApplicant").val(json.departmentOfApplicant+"-"+json.departmentOfApplicantID);
 	    		$.CurrentNavtab.find("#j_stamp_contactNumber").val(json.contactNumber);
 	    		$.CurrentNavtab.find("#j_stamp_documentType").selectpicker().selectpicker('val',json.documentType).selectpicker('refresh');
+	    		setProjectResponsible();	
 	    		if(json.attacmentUpload!=undefined&&json.attacmentUpload!=""){
 		    		$.CurrentNavtab.find("#j_stamp_projectResponsible").selectpicker().selectpicker('val',json.projectResponsible).selectpicker('refresh');
 	    		}
@@ -127,24 +116,24 @@ function dataToFaceStamp(){
 	    				if(isReject){
 		    				if(i==0){
 		    					if('${user.uid}'==item.uid){
-				    				obj.append("<tr><td>"+item.name+"</td><td style='display:none'>"+item.id+"</td><td>"+item.uid+"</td><td>"+item.uname+"</td><td>"+item.user.did+"</td><td></td><td></td><td></td><td><button type='button' id='stamp-approve' style='width:50px;' onclick='stampApprove(this)'   >√</button>&nbsp;&nbsp;<button type='button' id='stamp-reject'  style='width:50px;' onclick='stampApprove(this)' >×</button></td></tr>");	    				
+				    				obj.append("<tr><td>"+item.name+"</td><td style='display:none'>"+item.id+"</td><td>"+item.uid+"</td><td>"+item.uname+"</td><td>"+item.did+"</td><td></td><td></td><td></td><td><button type='button' id='stamp-approve' style='width:50px;' onclick='stampApprove(this)'   >√</button>&nbsp;&nbsp;<button type='button' id='stamp-reject'  style='width:50px;' onclick='stampApprove(this)' >×</button></td></tr>");	    				
 		    					}else{
-				    				obj.append("<tr><td>"+item.name+"</td><td style='display:none'>"+item.id+"</td><td>"+item.uid+"</td><td>"+item.uname+"</td><td>"+item.user.did+"</td><td></td><td></td><td></td><td></td></tr>");	    				
+				    				obj.append("<tr><td>"+item.name+"</td><td style='display:none'>"+item.id+"</td><td>"+item.uid+"</td><td>"+item.uname+"</td><td>"+item.did+"</td><td></td><td></td><td></td><td></td></tr>");	    				
 		    					}
 		    				
 		    				}else{
-			    				obj.append("<tr><td>"+item.name+"</td><td style='display:none'>"+item.id+"</td><td>"+item.uid+"</td><td>"+item.uname+"</td><td>"+item.user.did+"</td><td></td><td></td><td></td><td></td></tr>");	    				
+			    				obj.append("<tr><td>"+item.name+"</td><td style='display:none'>"+item.id+"</td><td>"+item.uid+"</td><td>"+item.uname+"</td><td>"+item.did+"</td><td></td><td></td><td></td><td></td></tr>");	    				
 		    				}
 	    				}else{
 	    					if(i>maxLevel){
 			    				if(i==maxLevel+1){
 			    					if('${user.uid}'==item.uid){
-				    				obj.append("<tr><td>"+item.name+"</td><td style='display:none'>"+item.id+"</td><td>"+item.uid+"</td><td>"+item.uname+"</td><td>"+item.user.did+"</td><td></td><td></td><td></td><td><button type='button' id='stamp-approve' style='width:50px;' onclick='stampApprove(this)'   >√</button>&nbsp;&nbsp;<button type='button' id='stamp-reject'  style='width:50px;' onclick='stampApprove(this)' >×</button></td></tr>");	    				
+				    				obj.append("<tr><td>"+item.name+"</td><td style='display:none'>"+item.id+"</td><td>"+item.uid+"</td><td>"+item.uname+"</td><td>"+item.did+"</td><td></td><td></td><td></td><td><button type='button' id='stamp-approve' style='width:50px;' onclick='stampApprove(this)'   >√</button>&nbsp;&nbsp;<button type='button' id='stamp-reject'  style='width:50px;' onclick='stampApprove(this)' >×</button></td></tr>");	    				
 			    					}else{
-					    				obj.append("<tr><td>"+item.name+"</td><td style='display:none'>"+item.id+"</td><td>"+item.uid+"</td><td>"+item.uname+"</td><td>"+item.user.did+"</td><td></td><td></td><td></td><td></td></tr>");	    				
+					    				obj.append("<tr><td>"+item.name+"</td><td style='display:none'>"+item.id+"</td><td>"+item.uid+"</td><td>"+item.uname+"</td><td>"+item.did+"</td><td></td><td></td><td></td><td></td></tr>");	    				
 			    					}
 			    				}else{
-				    				obj.append("<tr><td>"+item.name+"</td><td style='display:none'>"+item.id+"</td><td>"+item.uid+"</td><td>"+item.uname+"</td><td>"+item.user.did+"</td><td></td><td></td><td></td><td></td></tr>");	    				
+				    				obj.append("<tr><td>"+item.name+"</td><td style='display:none'>"+item.id+"</td><td>"+item.uid+"</td><td>"+item.uname+"</td><td>"+item.did+"</td><td></td><td></td><td></td><td></td></tr>");	    				
 			    				}    						
 	    					}
 	    				}
@@ -397,11 +386,21 @@ function getUser() {
 
 function setProjectResponsible(){
 	var type=$.CurrentNavtab.find('#j_stamp_documentType').val();
-	if(type!='1'){
-		$.CurrentNavtab.find('#j_stamp_projectResponsible').attr('disabled','disabled')		
-	}else{
-		$.CurrentNavtab.find('#j_stamp_projectResponsible').removeAttr('disabled','disabled')		
-	}
+	
+	//获取一级签核人员
+	BJUI.ajax('doajax', {
+	    url: 'getFirstApproveOfStamp4Select.action',
+	    loadingmask: false,
+	    data:{type:type},
+	    okCallback: function(json, options) {
+            $.each(json, function (i, item) {
+            	if(item.fistUID!='Dept. Head'){
+                    $.CurrentNavtab.find('#j_stamp_projectResponsible').append("<option value='" + item.uid + "'>" + item.name + "</option>")                     		
+            	}
+            })
+            $.CurrentNavtab.find('#j_stamp_projectResponsible').selectpicker('refresh');
+	    }
+	})
 	
 }
 
@@ -412,7 +411,7 @@ function setProjectResponsible(){
 			<input type="hidden" name="id" id="j_stamp_id" value="${param.id}">
 			<input type="hidden" name="state" id="j_stamp_state" value="">
             <div class="bjui-row-0" align="center">
-            <h2 class="row-label">Stamp Using Application System 借/用 章 申 请 系 统</h2><br> 
+            <h2 class="row-label">Seal Application System 借/用 章 申 请 系 统</h2><br> 
             </div>
 			<table class="table" style="font-size:12px;">
 				<tr>
@@ -465,7 +464,7 @@ function setProjectResponsible(){
 				</tr>
 				<tr>
 					<td>
-						Stamp Type<label style="color:red;font-size:12px"><b>*</b></label>:<br>
+						Seal Type<label style="color:red;font-size:12px"><b>*</b></label>:<br>
 						印章种类 <label style="color:red;font-size:12px"><b>*</b></label>:
 					</td>
 					<td>
@@ -485,7 +484,6 @@ function setProjectResponsible(){
 					<td>
 						<select name="documentType" data-toggle="selectpicker" id="j_stamp_documentType" data-rule="required" data-width="190px" onchange="setProjectResponsible()">
                         	<option value="" selected></option>
-                        	<option value="1" >Invoice Contract 发票合同</option>
                     	</select>
 					</td>
 					<td>
@@ -511,8 +509,7 @@ function setProjectResponsible(){
 						<input type="text" size="19" name="chopDate" data-toggle="datepicker" placeholder="点击选择日期" data-nobtn="true" id="j_stamp_chopDate" value=""  />
 					</td>
 					<td colspan="2">
-						用印日期与借印日期必须填一个<br>
-						填了借印日期，一定要填归还日期
+
 					</td>					
 				</tr>
 				<tr>
@@ -596,7 +593,13 @@ function setProjectResponsible(){
 	            		<button type="button" id="stamp-submit" class="btn-default" data-icon="arrow-up" onClick="submitStamp()">Submit</button>&nbsp;&nbsp;&nbsp;&nbsp;
 	            		<button type="button" id="stamp-delete" class="btn-default" data-icon="close" onClick="deleteStamp()" style="display:none">Delete</button>
             		</td>				
-				</tr>			
+				</tr>	
+				<tr>
+				<td colspan="4" >
+				Approval Route:<br>
+				签核路径:
+				</td>
+				</tr>		
 				<tr>
 					<td colspan="4">
 						<table class="table" width="100%" id="stamp_approve_his" style="display:none">

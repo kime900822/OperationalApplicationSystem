@@ -1,0 +1,53 @@
+<script type="text/javascript">
+
+
+function getUname(a){
+	
+	var id=$.CurrentNavtab.find(a).val();	
+		BJUI.ajax('doajax', {
+		    url: 'getUserByID.action',
+		    loadingmask: true,
+		    data:{uid:id},
+		    okCallback: function(json, options) {
+		    	if(json.length>0){
+		    		$.CurrentNavtab.find('#approveUserCollection_edit_uname').val(json[0].name).change();
+		    	}                         
+		    	else{
+		    		$.CurrentNavtab.find(a).val(''); 	
+		    		$.CurrentNavtab.find('#approveUserCollection_edit_uname').val('');
+		    		BJUI.alertmsg('error','userid不存在'); 	    			
+		    	}
+		    }
+		})			
+
+}
+
+</script>
+
+<div class="bjui-pageContent">
+    <table class="table table-bordered" data-toggle="datagrid" data-options="{
+        height: '100%',
+        gridTitle : 'ApproveUserCollection',
+        showToolbar: true,
+        toolbarItem: 'add,edit,del,save,cancel,|,refresh',
+        dataType: 'jsonp',
+        dataUrl: 'getApproveUserCollection.action',
+        editUrl: 'modApproveUserCollection.action',
+        delUrl: 'deleteApproveUserCollection.action',
+        paging: {pageSize:30, pageCurrent:1},
+        filterThead: false,
+        linenumberAll: true,
+        hScrollbar: true,
+        inlineEditMult: false,
+        addLocation:'last'
+    }">
+        <thead>
+            <tr>
+                <th data-options="{name:'id',align:'center',finalWidth:'true',hide:'true'}">id</th>
+                <th data-options="{name:'key',align:'left',finalWidth:'true',width:200}">CollectionType</th>
+                <th data-options="{name:'value',align:'left',finalWidth:'true',width:100,attrs:{onchange:'getUname(this);'},rule:'required'}">USER ID</th>
+                <th data-options="{name:'valueExplain',align:'left',finalWidth:'true',width:200,attrs:{readonly:'true',id:'approveUserCollection_edit_uname'}}">USER</th>
+            </tr>
+        </thead>
+    </table>
+</div>

@@ -36,28 +36,46 @@ BJUI.ajax('doajax', {
     }
 })	
 
-function getUname(a){
+function getUnameOfApproveList(a){
 	
 	var id=$.CurrentNavtab.find(a).val();
 	if(id=='Dept. Head'){
-		$.CurrentNavtab.find('#approveList_edit_uname').val('Dept. Head'); 			
-	}else{	
-		BJUI.ajax('doajax', {
-		    url: 'getUserByID.action',
-		    loadingmask: true,
-		    data:{uid:id},
-		    okCallback: function(json, options) {
-		    	if(json.length>0){
-		    		$.CurrentNavtab.find('#approveList_edit_uname').val(json[0].name).change();
-		    	}                         
-		    	else{
-		    		$.CurrentNavtab.find(a).val(''); 	
-		    		$.CurrentNavtab.find('#approveList_edit_uname').val('');
-		    		BJUI.alertmsg('error','userid不存在'); 	    			
-		    	}
-		    }
-		})			
+		$.CurrentNavtab.find('#approveList_edit_uname').val('Dept. Head').change(); 	
+		return;
 	}
+	
+	BJUI.ajax('doajax', {
+	    url: 'checkApproveUserCollection.action',
+	    loadingmask: true,
+	    data:{key:id},
+	    okCallback: function(json, options) {
+	    	if(json.length>0){
+	    		$.CurrentNavtab.find('#approveList_edit_uname').val(json[0].key).change();
+	    	}else{
+	    		BJUI.ajax('doajax', {
+	    		    url: 'getUserByID.action',
+	    		    loadingmask: true,
+	    		    data:{uid:id},
+	    		    okCallback: function(json, options) {
+	    		    	if(json.length>0){
+	    		    		$.CurrentNavtab.find('#approveList_edit_uname').val(json[0].name).change();
+	    		    	}                         
+	    		    	else{
+	    		    		$.CurrentNavtab.find(a).val(''); 	
+	    		    		$.CurrentNavtab.find('#approveList_edit_uname').val('');
+	    		    		BJUI.alertmsg('error','无对应数据'); 	    			
+	    		    	}
+	    		    }
+	    		})
+	    		
+	    	}                     
+	    }
+	})	
+	
+	
+	
+			
+
 }
 
 </script>
@@ -117,7 +135,7 @@ function getUname(a){
             <tr>
              	<th data-options="{name:'id',align:'center',finalWidth:'true',hide:'true'}">id</th>
              	<th data-options="{name:'name', align:'left',finalWidth:'true', width:200}">Name</th>
-                <th data-options="{name:'uid', align:'left',finalWidth:'true', width:100,attrs:{onchange:'getUname(this);'},rule:'required'}">UserID</th>
+                <th data-options="{name:'uid', align:'left',finalWidth:'true', width:200,attrs:{onchange:'getUnameOfApproveList(this);'},rule:'required'}">UserID</th>
                 <th data-options="{name:'uname', align:'left',finalWidth:'true', width:200,attrs:{readonly:'true',id:'approveList_edit_uname'}}">User</th>
             </tr>
         </thead>

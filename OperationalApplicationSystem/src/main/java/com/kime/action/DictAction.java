@@ -503,4 +503,131 @@ public class DictAction extends ActionBase{
 		
 	}
 	
+	
+	
+	
+	@Action(value="deletApproveUserCollection",results={@org.apache.struts2.convention.annotation.Result(type="stream",
+			params={
+					"inputName", "reslutJson"
+			})})
+	public String deletApproveUserCollection() throws UnsupportedEncodingException{
+		List<Dict> list=new Gson().fromJson(json, new TypeToken<ArrayList<Dict>>() {}.getType());
+		try {
+			for (Dict dict : list) {
+				dictBIZ.delete(dict);
+				logUtil.logInfo("删除字典:"+dict.getType()+" "+dict.getKey());
+			}
+			result.setMessage(Message.DEL_MESSAGE_SUCCESS);
+			result.setStatusCode("200");
+		} catch (Exception e) {
+			logUtil.logInfo("删除字典:"+e.getMessage());
+			result.setMessage(e.getMessage());
+			result.setStatusCode("300");
+		}
+
+		reslutJson=new ByteArrayInputStream(new Gson().toJson(result).getBytes("UTF-8"));  
+		return SUCCESS;
+	}
+	
+	
+	
+	@Action(value="modApproveUserCollection",results={@org.apache.struts2.convention.annotation.Result(type="stream",
+			params={
+					"inputName", "reslutJson"
+			})})
+	public String modApproveUserCollection() throws UnsupportedEncodingException{
+		
+		List<Dict> list=new Gson().fromJson(json, new TypeToken<ArrayList<Dict>>() {}.getType());
+		Dict dict=list.get(0);
+		if (!"".equals(id) && id != null) {
+			dict.setId(id);
+		} else {
+			dict.setId(UUID.randomUUID().toString().replaceAll("-", ""));
+		}
+		dict.setType("APPROVEUSERCOLLECTION");
+
+		try {
+			if (id == null || "".equals(id)) {
+				if (dictBIZ.getDict(" where type='APPROVEUSERCOLLECTION' and key='"+dict.getKey()+"' and value='"+dict.getValue()+"' ").size()==1) {
+					logUtil.logInfo("新增字典:同个集合维护了相同用户：");
+					result.setMessage(Message.SAVE_MESSAGE_ERROR_DICT);
+					result.setStatusCode("300");
+				}else{
+					dictBIZ.save(dict);
+					logUtil.logInfo("新增字典:"+dict.getType()+" "+dict.getKey());
+					result.setMessage(Message.SAVE_MESSAGE_SUCCESS);
+					result.setStatusCode("200");
+				}
+				
+			}else{
+				dictBIZ.update(dict);
+				logUtil.logInfo("修改字典:"+dict.getType()+" "+dict.getKey());
+				result.setMessage(Message.SAVE_MESSAGE_SUCCESS);
+				result.setStatusCode("200");
+			}
+			
+			
+		} catch (Exception e) {
+			logUtil.logInfo("修改字典:"+e.getMessage());
+			result.setMessage(e.getMessage());
+			result.setStatusCode("300");	
+		}
+
+		reslutJson=new ByteArrayInputStream(new Gson().toJson(result).getBytes("UTF-8"));  
+		return SUCCESS;
+		
+	}
+	
+	
+	@Action(value="getApproveUserCollection",results={@org.apache.struts2.convention.annotation.Result(type="stream",
+			params={
+					"inputName", "reslutJson"
+			})})
+	public String getApproveUserCollection() throws UnsupportedEncodingException{
+		String where="WHERE type='APPROVEUSERCOLLECTION' ";
+		if (key!=null&&!key.equals("")) {
+			where+=" AND KEY LIKE '%"+key+"%' ";
+		}
+		if (value!=null&&!value.equals("")) {
+			where+=" AND value LIKE '%"+value+"%' ";
+		}
+		if (keyExplain!=null&&!keyExplain.equals("")) {
+			where+=" AND value keyExplain '%"+keyExplain+"%' ";
+		}
+		if (valueExplain!=null&&!valueExplain.equals("")) {
+			where+=" AND valueExplain LIKE '%"+valueExplain+"%' ";
+		}
+		List<Dict> list=dictBIZ.getDict(where);		
+		int total=dictBIZ.getDict(where).size();
+		
+		
+		queryResult.setList(list);
+		queryResult.setTotalRow(total);
+		queryResult.setFirstPage(Integer.parseInt(pageCurrent)==1?true:false);
+		queryResult.setPageNumber(Integer.parseInt(pageCurrent));
+		queryResult.setLastPage(total/Integer.parseInt(pageSize) +1==Integer.parseInt(pageCurrent)&&Integer.parseInt(pageCurrent)!=1?true:false);
+		queryResult.setTotalPage(total/Integer.parseInt(pageSize) +1);
+		queryResult.setPageSize(Integer.parseInt(pageSize));
+		String r=callback+"("+new Gson().toJson(queryResult)+")";
+		
+		reslutJson=new ByteArrayInputStream(r.getBytes("UTF-8"));  
+		
+		logUtil.logInfo("查询审批人，条件:"+where);
+		return SUCCESS;
+		
+		
+	}
+	
+	@Action(value="checkApproveUserCollection",results={@org.apache.struts2.convention.annotation.Result(type="stream",
+			params={
+					"inputName", "reslutJson"
+			})})
+	public String checkApproveUserCollection() throws UnsupportedEncodingException{
+		List<Dict> list=dictBIZ.getDict(" where key='"+key+"' and type='APPROVEUSERCOLLECTION' ");		
+		reslutJson=new ByteArrayInputStream(new Gson().toJson(list).getBytes("UTF-8"));  
+		return SUCCESS;
+		
+		
+	}
+	
 }

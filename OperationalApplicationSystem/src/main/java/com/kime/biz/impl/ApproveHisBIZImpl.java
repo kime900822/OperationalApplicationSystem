@@ -60,8 +60,8 @@ public class ApproveHisBIZImpl extends BizBase implements ApproveHisBIZ{
 		approveHis.setType(type);
 		approveHis.setTradeId(tradeId);
 		approveHis.setComment(comment);
-		approveHis.setdId(approve.getUser().getDid());
-		approveHis.setdName(approve.getUser().getDepartment().getName());
+		approveHis.setdId(approve.getDid());
+		approveHis.setdName(approve.getDname());
 		approveHisDAO.save(approveHis);
 		if (type.equals("STAMP")) {
 			Stamp stamp=stampBIZ.getStampById(tradeId);

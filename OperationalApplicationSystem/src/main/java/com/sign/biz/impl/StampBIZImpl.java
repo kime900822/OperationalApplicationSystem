@@ -13,12 +13,16 @@ import org.springframework.transaction.annotation.Transactional;
 import com.kime.base.BizBase;
 import com.kime.biz.ApproveBIZ;
 import com.kime.biz.ApproveHisBIZ;
+import com.kime.biz.DepartmentBIZ;
+import com.kime.biz.UserBIZ;
 import com.kime.dao.ApproveDAO;
 import com.kime.dao.ApproveHisDAO;
 import com.kime.dao.CommonDAO;
 import com.kime.dao.DictDAO;
 import com.kime.model.Approve;
+import com.kime.model.Department;
 import com.kime.model.Dict;
+import com.kime.model.User;
 import com.sign.biz.StampBIZ;
 import com.sign.dao.StampDAO;
 import com.sign.model.Stamp;
@@ -38,6 +42,10 @@ public class StampBIZImpl extends BizBase implements StampBIZ{
 	private ApproveBIZ approveBIZ;
 	@Autowired
 	private ApproveHisDAO approveHisDAO;
+	@Autowired
+	private UserBIZ userBIZ;
+	@Autowired
+	DepartmentBIZ departmentBIZ;
 	
 
 	@Override
@@ -74,12 +82,35 @@ public class StampBIZImpl extends BizBase implements StampBIZ{
 	@Override
 	public Stamp getStampById(String id) {
 		Stamp stamp=stamDAO.query(" where id='"+id+"' ").get(0);
-		if (stamp.getDocumentType().equals("1")) {
-			Dict approveType=dictDAO.query(" where id='"+stamp.getDocumentType()+"'").get(0);		
-			stamp.setApprove(approveBIZ.getApproveAndChild(((Approve)approveBIZ.query(" where uid='"+stamp.getProjectResponsible()+"' and level=0 ").get(0)).getId()));
+		if (stamp.getProjectResponsible()!=null&&!stamp.getProjectResponsible().equals("")) {
+			Dict approveType=dictDAO.query(" where id='"+stamp.getDocumentType()+"'").get(0);	
+			List<Approve> lApproves=approveBIZ.getApproveAndChild(approveType.getValueExplain());
+			List<User> lUsers=userBIZ.getUser(" where uid='"+stamp.getProjectResponsible()+"'");
+			if (lUsers.size()>0) {
+				lApproves.get(0).setUid(lUsers.get(0).getUid());
+				lApproves.get(0).setUname(lUsers.get(0).getName());
+				lApproves.get(0).setDid(lUsers.get(0).getDid());
+				lApproves.get(0).setDname(lUsers.get(0).getDepartment().getName());
+			}
+			
+			stamp.setApprove(lApproves);
 		}else{
 			Dict approveType=dictDAO.query(" where id='"+stamp.getDocumentType()+"'").get(0); 
-			stamp.setApprove(approveBIZ.getApproveAndChild(approveType.getValueExplain()));
+			List<Approve> lApproves=approveBIZ.getApproveAndChild(approveType.getValueExplain());
+			if (lApproves.get(0).getId().equals("Dept. Head")) {
+				List<Department> lDepartments=departmentBIZ.queryDepartment(" where did='"+stamp.getDepartmentOfApplicantID()+"'");
+				if (lDepartments.size()>0) {
+					List<User> lUsers=userBIZ.getUser(" where uid='"+lDepartments.get(0).getUid()+"'");
+					if (lUsers.size()>0) {
+						lApproves.get(0).setUid(lUsers.get(0).getUid());
+						lApproves.get(0).setUname(lUsers.get(0).getName());
+						lApproves.get(0).setDid(lUsers.get(0).getDid());
+						lApproves.get(0).setDname(lUsers.get(0).getDepartment().getName());
+					}					
+				}
+				
+			}
+			stamp.setApprove(lApproves);
 		}
 		stamp.setApproveHis(approveHisDAO.getApproveHisByTradeId(stamp.getId()));
 		return stamp;
