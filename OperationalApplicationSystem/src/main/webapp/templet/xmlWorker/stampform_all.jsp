@@ -9,6 +9,11 @@ function datagrid_tree_operation() {
  return html
 }
 
+
+function datagrid_stampSubject() {
+    return [{'1':'Fixed Asset 固定资产'},{'2':'Raw Material 原材料'},{'3':'Consumable 消耗品'},{'4':'Subcontractor 外包'},{'5':'Service 服务'},{'6':'Petty Cash备用金'},{'7':'Other 其他'}]
+}
+
 function datagrid_stampState() {
     return [{'0':'Save'},{'1':'Submit'},{'2':'Success'}]
 }
@@ -158,7 +163,7 @@ $(function() {
         dataUrl: 'getStamp.action?queryType=all',
         dataType: 'jsonp',
         showToolbar: true,
-        toolbarItem: 'printPDF',
+        toolbarItem: 'export,printPDF',
         editMode: {navtab:{width:'830',height:800,title:'Edit stamp',mask:true,fresh:true}},
         delUrl:'deleteUser.action',
         editUrl: 'sign/stamp/stampform.jsp',
@@ -167,6 +172,7 @@ $(function() {
         contextMenuB: true,
         hScrollbar: true,
         filterThead:false,
+        exportOption: {type:'file', options:{url:'exportStampExcel.action?queryType=user', loadingmask:false}},
         printPDFOption: {type:'file', options:{url:'exportStampExcel.action?queryType=user', loadingmask:false}}
     }">
         <thead>
@@ -178,7 +184,7 @@ $(function() {
 				<th data-options="{name:'state',width:150,align:'center',finalWidth:'true',type:'select', items:datagrid_stampState}">Approval Status</th>
 				<th data-options="{name:'departmentOfFormFillerID',width:150,align:'center',finalWidth:'true'}">BU NO.</th>
 				<th data-options="{name:'applicantID',width:150,align:'center' ,finalWidth:'true'}">Cimtas ID</th>
-				<th data-options="{name:'applicant',width:200,align:'center',finalWidth:'true'}">User Name</th>
+				<th data-options="{name:'applicant',width:200,align:'center',finalWidth:'true',type:'select', items:datagrid_stampSubject}">User Name</th>
 				<th data-options="{name:'documentType',width:200,align:'center',finalWidth:'true',type:'select',itemattr:{value:'Id',label:'value'},items:$.getJSON('getCheckType4Select.action')}">Document Type</th>
 				<th data-options="{name:'stampType',width:180,align:'left',finalWidth:'true'}">Stamp Type</th>
 				<th data-options="{name:'urgent',width:120,align:'center',finalWidth:'true',type:'select', items:datagrid_urgent}">Urgent</th>

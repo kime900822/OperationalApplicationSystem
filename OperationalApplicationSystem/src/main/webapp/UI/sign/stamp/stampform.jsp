@@ -82,8 +82,6 @@ function dataToFaceStamp(){
 						$.CurrentNavtab.find("#j_stamp_companyChop").iCheck('check'); 
 					if(item=='LegalDeputyChop')
 						$.CurrentNavtab.find("#j_stamp_legalDeputyChop").iCheck('check'); 
-					if(item=='FinancialChop')
-						$.CurrentNavtab.find("#j_stamp_financialChop").iCheck('check'); 
         		})
         		
 	    		if(json.attacmentUpload!=undefined&&json.attacmentUpload!=""){
@@ -358,6 +356,9 @@ function checkSaveStamp(o){
 		err+=" Chop Object can`t be  empty！<br>";				
 	}
 	
+	if(o.urgent&&(o.urgentReason==null||o.urgentReason=='')){
+		err+=" Uregnt Reason can`t be  empty！<br>";		
+	}
 	return err;
 }
 
@@ -474,7 +475,6 @@ function setProjectResponsible(){
 						<input type="checkbox" name="stampType" data-toggle="icheck" id="j_stamp_legalDeputyChop" value="LegalDeputyChop" data-label="Legal Deputy Chop 法人章">
 					</td>	
 					<td>
-						<input type="checkbox" name="stampType" data-toggle="icheck" id="j_stamp_financialChop" value="FinancialChop" data-label="Financial Chop 财务章">
 					</td>				
 				</tr>
 				<tr>
@@ -551,7 +551,11 @@ function setProjectResponsible(){
 					<td>
 						<input type="checkbox" name="urgent"  data-toggle="icheck" id="j_stamp_urgent" value="1" data-label="">
 					</td>
-					<td colspan="2">
+					<td>
+						Urgent Reason:<br>申请急件原因:
+					</td>
+					<td colspan="3">
+						<input type="text" name="urgentReason" value="" id="j_stamp_urgentReason" size="19"  />
 					</td>
 				</tr>
 				<tr>

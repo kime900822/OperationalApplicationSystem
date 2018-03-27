@@ -513,6 +513,8 @@ public class StampAction extends ActionBase{
 			for (Stamp stamp : list) {
 				String tmp=stamp.getStampType().substring(0, stamp.getStampType().length()-1);
 				stamp.setStampType(tmp.replace("|", "<br>"));
+				tmp=stamp.getUsageDescription();
+				stamp.setUsageDescription(tmp.replace("/r/n", "<br>"));
 			}
 			
 			queryResult.setList(list);

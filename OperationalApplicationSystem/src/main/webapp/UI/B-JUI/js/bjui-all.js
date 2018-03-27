@@ -371,6 +371,7 @@
 		        query     : 'Query',
 		        'import'  : 'Import',
 		        'export'  : 'Export',
+		        'printPDF'   : 'PrintPDF',
 		        exportf   : 'Export filter',
 		        all       : 'All',
 		        'true'    : 'True',
@@ -614,6 +615,7 @@
         query     : 'Query',
         'import'  : 'Import',
         'export'  : 'Export',
+        'printPDF'   : 'PrintPDF',
         exportf   : 'Export filter',
         all       : 'All',
         'true'    : 'True',
@@ -10438,7 +10440,37 @@
                                         }
                                     }
                                 })
-                        } else if (n === 'exportf') {
+                        }else if(n === 'printpdf') {
+                            that.$toolbar_add = $(btnHtml).attr('data-icon', 'printPDF').addClass('btn-green').text(options.printName || BJUI.getRegional('datagrid.printPDF'))
+                            .appendTo($group)
+                            .on('click', function(e) {
+                                if (options.printPDFOption) {
+                                    var opts = options.printPDFOption
+                                    
+                                    if (typeof opts === 'string')
+                                        opts = opts.toObj()
+                                    
+                                    if (opts.options && opts.options.url) {
+                                        if (!opts.options.data)
+                                            opts.options.data = {}
+                                        
+                                        $.extend(opts.options.data, that.$element.data('filterDatas') || {}, that.sortData || {})
+                                        opts.options.type = 'POST'
+                                        
+                                        if (opts.type === 'dialog') {
+                                            BJUI.dialog(opts.options)
+                                        } else if (opts.type === 'navtab') {
+                                            BJUI.navtab(opts.options)
+                                        } else if (opts.type === 'file') {
+                                            opts.options.target = that.$boxB
+                                            BJUI.ajax('ajaxdownload', opts.options)
+                                        } else {
+                                            BJUI.ajax('doajax', opts.options)
+                                        }
+                                    }
+                                }
+                            })
+                        }else if (n === 'exportf') {
                             that.$toolbar_add = $(btnHtml).attr('data-icon', 'filter').addClass('btn-green').text(options.exportfName || BJUI.getRegional('datagrid.exportf'))
                                 .appendTo($group)
                                 .on('click', function(e) {

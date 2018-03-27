@@ -31,8 +31,6 @@ import com.sign.model.Stamp;
 public class StampBIZImpl extends BizBase implements StampBIZ{
 
 	@Autowired
-	private Approve approve;
-	@Autowired
 	private StampDAO stamDAO;
 	@Autowired
 	private CommonDAO commonDAO;

@@ -69,6 +69,8 @@ public class Stamp {
 	@Column
 	private String urgent;
 	@Column
+	private String urgentReason;
+	@Column
 	private String usageDescription;
 	@Column
 	private String attacmentUpload;
@@ -85,6 +87,12 @@ public class Stamp {
 	
 	
 	
+	public String getUrgentReason() {
+		return urgentReason;
+	}
+	public void setUrgentReason(String urgentReason) {
+		this.urgentReason = urgentReason;
+	}
 	public String getNextApprover() {
 		return nextApprover;
 	}

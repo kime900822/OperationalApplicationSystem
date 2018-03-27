@@ -77,6 +77,10 @@
 <!-- util -->
 <script src="B-JUI/js/util.js"></script>
 <script src="B-JUI/js/ajaxfileupload.js"></script>
+<!-- zoomify -->
+<script src="B-JUI/plugins/zoomify/zoomify.min.js"></script>
+<link href="B-JUI/plugins/zoomify/zoomify.min.css" rel="stylesheet">
+
 <!-- init -->
 <style type="text/css">
 .bar {
@@ -124,6 +128,9 @@ $(function() {
     }, 1000)
     
     bjui_index_exchange()
+    
+    
+    $('#stampTemp').zoomify();
 })
 
 
@@ -156,6 +163,10 @@ function bjui_index_exchange() {
     $('#bjui-navbar').find('> div').attr('class', bjui_index_container)
     $('#bjui-body-box').find('> div').attr('class', bjui_index_container)
 }
+
+
+function showStampImage(){ $('#showStampExplain').show()}
+
 </script>
 <!-- highlight && ZeroClipboard -->
 <link href="assets/prettify.css" rel="stylesheet">
@@ -258,7 +269,25 @@ function bjui_index_exchange() {
                         		<a href="getChildMenu.action?id=40289f81605e86cf01605e87be510001" data-toggle="sidenav" data-id-key="targetid"><img src="images/menu/payment.png" height="60"></a>
                         	</div>
                         	<div style="position:absolute; left: 100px; top:130px">
-                        		<a href="getChildMenu.action?id=40284c816243ad5b016243b365bd0005" data-toggle="sidenav" data-id-key="targetid"><img src="images/menu/stamp.png" height="60"></a>
+                        		<a href="getChildMenu.action?id=40284c816243ad5b016243b365bd0005" data-toggle="sidenav" data-id-key="targetid" onclick="showStampImage()"><img src="images/menu/stamp.png" height="60"></a>
+                        	</div>
+                        	
+                        	<div id="showStampExplain" class="highlight" style="display:none;position:absolute; left:500px;top:130px;width:400px;">
+								<pre class="prettyprint">
+Instruction:
+1.正常情况下的盖章用印申请完成时间为申请审批通过的次日下午4点-5点可以至XX领单子。
+2.急件的情况下直接至XX处等待领取
+3.填单样式参考 下图
+4.附件要求: 下列附件必需提供附件扫描档
+    ① 人事文件 - 个人
+    ② 人事文件 - 合同协议
+    ③ EPZ 新项目
+    ④ 其他业务文件 
+5.系统联系: 
+    审计室 - 167
+</pre>       	
+<img alt="点击查看大图" src="images/temp/stampTemp.png" id="stampTemp"  height="150" width="150" style="left:30px">
+
                         	</div>
                         </div>
                     </div>

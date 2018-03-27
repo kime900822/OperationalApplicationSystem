@@ -17,22 +17,22 @@
     var highlight_html = function(s) {
         return s.replace(/</g, '&lt;').replace(/>/g, '&gt;');
     };
-    a(document).on(BJUI.eventType.afterInitUI, function(event) {
-        a(event.target).find('.highlight').each(function(){
-            var b='<div class="zero-clipboard"><span class="btn-clipboard">Copy</span></div>';
-            var p=a(this).find('> pre.prettyprint');
-            var html=highlight_html(a.trim(p.html()));
-            p.addClass('linenums').html(html);
-            prettyPrint();
-            a(this).before(b);
-        });
-        
-        a(event.target).find(".btn-clipboard").each(function() {
-            var d=new ZeroClipboard(a(this)), e=a("#global-zeroclipboard-html-bridge");
-            d.on("load",function(){e.data("placement","top").attr("title","Copy to clipboard").tooltip()}),
-            d.on("dataRequested",function(b){var c=a(this).parent().nextAll(".highlight").first();b.setText(c[0].innerText)}),
-            d.on("complete",function(){e.attr("title","Copied!").tooltip("fixTitle").tooltip("show").attr("title","Copy to clipboard").tooltip("fixTitle")}),
-            d.on("noflash wrongflash",function(){e.attr("title","Flash required").tooltip("fixTitle").tooltip("show")})
-        });
-    })
+//    a(document).on(BJUI.eventType.afterInitUI, function(event) {
+//        a(event.target).find('.highlight').each(function(){
+//            var b='<div class="zero-clipboard"><span class="btn-clipboard">Copy</span></div>';
+//            var p=a(this).find('> pre.prettyprint');
+//            var html=highlight_html(a.trim(p.html()));
+//            p.addClass('linenums').html(html);
+//            prettyPrint();
+//            a(this).before(b);
+//        });
+//        
+//        a(event.target).find(".btn-clipboard").each(function() {
+//            var d=new ZeroClipboard(a(this)), e=a("#global-zeroclipboard-html-bridge");
+//            d.on("load",function(){e.data("placement","top").attr("title","Copy to clipboard").tooltip()}),
+//            d.on("dataRequested",function(b){var c=a(this).parent().nextAll(".highlight").first();b.setText(c[0].innerText)}),
+//            d.on("complete",function(){e.attr("title","Copied!").tooltip("fixTitle").tooltip("show").attr("title","Copy to clipboard").tooltip("fixTitle")}),
+//            d.on("noflash wrongflash",function(){e.attr("title","Flash required").tooltip("fixTitle").tooltip("show")})
+//        });
+//    })
 })}(jQuery);

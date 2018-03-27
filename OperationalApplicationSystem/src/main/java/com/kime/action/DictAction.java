@@ -4,6 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -23,6 +24,7 @@ import com.kime.infoenum.Message;
 import com.kime.model.Dict;
 import com.kime.model.Editor;
 import com.kime.model.User;
+import com.opensymphony.xwork2.ActionContext;
 import com.sign.model.Beneficiary;
 import com.sign.model.SignMan;
 
@@ -435,7 +437,20 @@ public class DictAction extends ActionBase{
 	public String getCheckType4Select() throws UnsupportedEncodingException{
 		List<Dict> ldDicts= new ArrayList<>();
 		try {		
-			ldDicts=dictBIZ.getDict("WHERE type='CHECKTYPE' ");			
+			User user=(User)session.getAttribute("user");
+			List<Dict> lDictsOfUser=dictBIZ.getDict("WHERE type='CHECKTYPE' and keyExplain='"+user.getUid()+"' ");	
+			ldDicts=dictBIZ.getDict("WHERE type='CHECKTYPE' and keyExplain='' ");
+			for (int i = 0; i < ldDicts.size(); i++) {
+				for (int j = 0; j < lDictsOfUser.size(); j++) {
+					if (ldDicts.get(i).getKey().equals(lDictsOfUser.get(j).getKey())) {
+						ldDicts.get(i).setId(lDictsOfUser.get(j).getId());
+						ldDicts.get(i).setValueExplain(lDictsOfUser.get(j).getValueExplain());
+					}
+									
+				}				
+			}
+			
+			
 		} catch (Exception e) {
 		}
 	
