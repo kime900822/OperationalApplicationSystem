@@ -47,7 +47,8 @@ public class StampAction extends ActionBase{
 		private FileSave fileSave;
 		@Autowired
 		private DictBIZ dictBIZ;
-
+		@Autowired
+		private ApproveHisBIZ approveHisBIZ;
 
 		private String id;
 		private String applicationDate;
@@ -84,6 +85,12 @@ public class StampAction extends ActionBase{
 		private String queryType;
 		
 	
+		public ApproveHisBIZ getApproveHisBIZ() {
+			return approveHisBIZ;
+		}
+		public void setApproveHisBIZ(ApproveHisBIZ approveHisBIZ) {
+			this.approveHisBIZ = approveHisBIZ;
+		}
 		public DictBIZ getDictBIZ() {
 			return dictBIZ;
 		}
@@ -534,6 +541,7 @@ public class StampAction extends ActionBase{
 				tmp=stamp.getUsageDescription();
 				stamp.setUsageDescription(tmp.replace("/r/n", "<br>"));
 				tmp="";
+				stamp.setApproveHis(approveHisBIZ.getApproveHisByTradeId(stamp.getId()));
 				if ( stamp.getApproveHis()!=null) {
 					for (ApproveHis approveHis : stamp.getApproveHis()) {
 						tmp+=approveHis.getuName()+"|";					
@@ -641,6 +649,7 @@ public class StampAction extends ActionBase{
 	    		
 				for (Stamp stamp : lStamps) {
 					String tmp="";
+					stamp.setApproveHis(approveHisBIZ.getApproveHisByTradeId(stamp.getId()));
 					if ( stamp.getApproveHis()!=null) {
 						for (ApproveHis approveHis : stamp.getApproveHis()) {
 							tmp+=approveHis.getuName()+"  ";					
@@ -649,8 +658,7 @@ public class StampAction extends ActionBase{
 							tmp=tmp.substring(0, tmp.length()-1);
 						}						
 					}
-					stamp.setState(tmp);
-					
+					stamp.setState(tmp);					
 					stamp.setUrgent(stamp.getUrgent()==null?"N":"Y");
 					Dict documenttype=dictBIZ.getDict(" where id='"+stamp.getDocumentType()+"'").get(0);
 					stamp.setDocumentType(documenttype.getValue());
