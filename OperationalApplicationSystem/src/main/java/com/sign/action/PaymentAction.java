@@ -19,8 +19,10 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.ObjectUtils.Null;
 import org.apache.struts2.convention.annotation.Action;
+import org.apache.struts2.convention.annotation.ParentPackage;
 import org.omg.CosNaming.NamingContextExtPackage.StringNameHelper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
 import com.analysis.model.Source;
@@ -39,6 +41,8 @@ import com.sign.other.FileSave;
 import com.sign.other.PaymentState;
 
 @Controller
+@Scope("prototype")
+@ParentPackage("Struts 2")
 public class PaymentAction extends ActionBase {
 
 	@Autowired

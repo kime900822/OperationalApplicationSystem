@@ -7,7 +7,9 @@ import java.util.List;
 import java.util.UUID;
 
 import org.apache.struts2.convention.annotation.Action;
+import org.apache.struts2.convention.annotation.ParentPackage;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
 import com.google.gson.Gson;
@@ -19,6 +21,8 @@ import com.sign.model.Beneficiary;
 import com.sign.model.SignMan;
 
 @Controller
+@Scope("prototype")
+@ParentPackage("Struts 2")
 public class SignManAction extends ActionBase {
 
 	@Autowired

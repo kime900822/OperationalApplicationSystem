@@ -15,14 +15,20 @@ import java.util.Map;
 import java.util.UUID;
 
 import org.apache.struts2.convention.annotation.Action;
+import org.apache.struts2.convention.annotation.ParentPackage;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.kime.base.ActionBase;
 import com.kime.biz.ApproveHisBIZ;
+import com.kime.biz.DictBIZ;
 import com.kime.infoenum.Message;
 import com.kime.model.ApproveHis;
+import com.kime.model.Dict;
+import com.kime.model.HeadColumn;
 import com.kime.model.User;
 import com.kime.utils.CommonUtil;
 import com.kime.utils.ExcelUtil;
@@ -31,13 +37,18 @@ import com.sign.model.Stamp;
 import com.sign.other.FileSave;
 
 @Controller
+@Scope("prototype")
+@ParentPackage("Struts 2")
 public class StampAction extends ActionBase{
 
 		@Autowired
 		private StampBIZ stampBIZ;
 		@Autowired
 		private FileSave fileSave;
-		
+		@Autowired
+		private DictBIZ dictBIZ;
+
+
 		private String id;
 		private String applicationDate;
 		private String applicationCode;
@@ -73,6 +84,13 @@ public class StampAction extends ActionBase{
 		private String queryType;
 		
 	
+		public DictBIZ getDictBIZ() {
+			return dictBIZ;
+		}
+		public void setDictBIZ(DictBIZ dictBIZ) {
+			this.dictBIZ = dictBIZ;
+		}
+
 		public String getQueryType() {
 			return queryType;
 		}
@@ -515,6 +533,16 @@ public class StampAction extends ActionBase{
 				stamp.setStampType(tmp.replace("|", "<br>"));
 				tmp=stamp.getUsageDescription();
 				stamp.setUsageDescription(tmp.replace("/r/n", "<br>"));
+				tmp="";
+				if ( stamp.getApproveHis()!=null) {
+					for (ApproveHis approveHis : stamp.getApproveHis()) {
+						tmp+=approveHis.getuName()+"|";					
+					}
+					if (tmp.length()>0) {
+						tmp=tmp.substring(0, tmp.length()-1);
+					}
+				}
+				stamp.setState(tmp);
 			}
 			
 			queryResult.setList(list);
@@ -568,6 +596,8 @@ public class StampAction extends ActionBase{
 	    public String exportStampExcel() {
 	        try {
 	        	User user=(User)session.getAttribute("user");
+	        	List<HeadColumn> lHeadColumns=new Gson().fromJson(thead, new TypeToken<ArrayList<HeadColumn>>() {}.getType());
+	        	
 	        	
 	    		String hql="";
 	    		String where="";
@@ -601,15 +631,34 @@ public class StampAction extends ActionBase{
 					hql=" select P from Stamp P where P.formFillerID='"+user.getUid()+"' "+where+" order By P.dateTmp desc";
 				}
 				if ("approve".equals(queryType)) {
-					hql=" select P from Stamp P where P.formFillerID='"+user.getUid()+"' "+where+" order By P.dateTmp desc";
+					hql=" select P from Stamp P  where P.nextApprove='"+user.getUid()+"' "+where+" order By P.dateTmp desc";
 				}
 				if ("all".equals(queryType)) {
 					hql=" select P from Stamp P where 1=1 "+where+" order By P.dateTmp desc";
 				}
 	    		
 	    		List<Stamp> lStamps=stampBIZ.getStampByHql(hql);
+	    		
+				for (Stamp stamp : lStamps) {
+					String tmp="";
+					if ( stamp.getApproveHis()!=null) {
+						for (ApproveHis approveHis : stamp.getApproveHis()) {
+							tmp+=approveHis.getuName()+"  ";					
+						}
+						if (tmp.length()>0) {
+							tmp=tmp.substring(0, tmp.length()-1);
+						}						
+					}
+					stamp.setState(tmp);
+					
+					stamp.setUrgent(stamp.getUrgent()==null?"N":"Y");
+					Dict documenttype=dictBIZ.getDict(" where id='"+stamp.getDocumentType()+"'").get(0);
+					stamp.setDocumentType(documenttype.getValue());
+					
+				}
+	    		
 	        	Class c = (Class) new Stamp().getClass();  
-	        	ByteArrayOutputStream os=ExcelUtil.exportExcel("Stamp", c, lStamps, "yyy-MM-dd");
+	        	ByteArrayOutputStream os=ExcelUtil.exportExcel("Stamp", c, lStamps, "yyy-MM-dd",lHeadColumns);
 	        	byte[] fileContent = os.toByteArray();
 	        	ByteArrayInputStream is = new ByteArrayInputStream(fileContent);
 	        	
@@ -627,5 +676,9 @@ public class StampAction extends ActionBase{
 
 	        return "success";
 	    }
+		
+		
+		
+
 		
 }

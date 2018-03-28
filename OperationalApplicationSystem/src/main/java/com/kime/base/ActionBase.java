@@ -38,6 +38,14 @@ public class ActionBase extends ActionSupport{
 	protected File upfile;
 	protected String first;
 	
+	protected String thead;
+	
+	public String getThead() {
+		return thead;
+	}
+	public void setThead(String thead) {
+		this.thead = thead;
+	}
 	protected String[] upfileFileName;
 	
 	public HttpSession getSession() {

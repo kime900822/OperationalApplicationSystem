@@ -70,8 +70,9 @@ public class ApproveHisBIZImpl extends BizBase implements ApproveHisBIZ{
 			}
 			else{
 				stamp.setState(StampState.SUCCESS);
+				stamp.setNextApprover("");
 				User user=userBIZ.getUser(" where uid='"+stamp.getApplicantID()+"'").get(0);
-				SendMail.SendMail(user.getEmail(), PropertiesUtil.ReadProperties(Message.MAIL_PROPERTIES, "mailTitleOfStamp"), MessageFormat.format(PropertiesUtil.ReadProperties(Message.MAIL_PROPERTIES, "mailContentOfStamp"),approve.getUname()));
+				SendMail.SendMail(user.getEmail(), PropertiesUtil.ReadProperties(Message.MAIL_PROPERTIES, "mailTitleOfStamp"), PropertiesUtil.ReadProperties(Message.MAIL_PROPERTIES, "mailContentOfStamp"));
 			}
 			stampBIZ.saveStamp(stamp);
 		}

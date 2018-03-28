@@ -9658,6 +9658,7 @@
     
     // DOM to datagrid - setColumnModel
     Datagrid.prototype.setColumnModel = function() {
+    	$.ajaxSettings.async = false;
         var that = this, options = that.options, $trs = that.$thead.find('> tr'), rows = [], ths = [], trLen = $trs.length
         
         if (!that.isDom) {
@@ -9786,6 +9787,7 @@
                 })
             })
         }
+        $.ajaxSettings.async = true;
     }
     
     // create thead by columns
@@ -10414,6 +10416,17 @@
                             that.$toolbar_add = $(btnHtml).attr('data-icon', 'sign-out').addClass('btn-green').text(options.exportName || BJUI.getRegional('datagrid.export'))
                                 .appendTo($group)
                                 .on('click', function(e) {
+                                	var model=that.columnModel;
+                                	var th=[];
+                                	$.each(model,function(i,item){
+
+                                		if(item.hide==false&&item.name!=undefined&&item.hidden==undefined){
+                                			th.push(item);
+                                		}
+                                		
+                                	})
+                                	
+                                	
                                     if (options.exportOption) {
                                         var opts = options.exportOption
                                         
@@ -10423,10 +10436,10 @@
                                         if (opts.options && opts.options.url) {
                                             if (!opts.options.data)
                                                 opts.options.data = {}
-                                            
+                                            opts.options.data['thead']=JSON.stringify(th)
                                             $.extend(opts.options.data, that.$element.data('filterDatas') || {}, that.sortData || {})
                                             opts.options.type = 'POST'
-                                            
+                                          
                                             if (opts.type === 'dialog') {
                                                 BJUI.dialog(opts.options)
                                             } else if (opts.type === 'navtab') {
@@ -10444,6 +10457,15 @@
                             that.$toolbar_add = $(btnHtml).attr('data-icon', 'printPDF').addClass('btn-green').text(options.printName || BJUI.getRegional('datagrid.printPDF'))
                             .appendTo($group)
                             .on('click', function(e) {
+                            	var model=that.columnModel;
+                            	var th=[];
+                            	$.each(model,function(i,item){
+
+                            		if(item.hide==false&&item.name!=undefined&&item.hidden==undefined){
+                            			th.push(item);
+                            		}
+                            		
+                            	})
                                 if (options.printPDFOption) {
                                     var opts = options.printPDFOption
                                     
@@ -10456,7 +10478,7 @@
                                         
                                         $.extend(opts.options.data, that.$element.data('filterDatas') || {}, that.sortData || {})
                                         opts.options.type = 'POST'
-                                        
+                                        opts.options.data['thead']=JSON.stringify(th)	
                                         if (opts.type === 'dialog') {
                                             BJUI.dialog(opts.options)
                                         } else if (opts.type === 'navtab') {
@@ -10464,9 +10486,12 @@
                                         } else if (opts.type === 'file') {
                                             opts.options.target = that.$boxB
                                             BJUI.ajax('ajaxdownload', opts.options)
-                                        } else {
+                                        } else if(opts.type === 'page'){
+                                        	 window.open(opts.options.url);    
+                                        }else {
                                             BJUI.ajax('doajax', opts.options)
                                         }
+                                       
                                     }
                                 }
                             })
@@ -14945,6 +14970,7 @@
                 
                 $lockTd.removeClass(that.classnames.td_edit).removeClass(that.classnames.td_changed).html($td.html())
             }
+
         })
         
         if (that.isTemplate) {

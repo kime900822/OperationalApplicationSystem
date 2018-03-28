@@ -9,9 +9,6 @@ function datagrid_tree_operation() {
  return html
 }
 
-function datagrid_stampState() {
-    return [{'0':'Save'},{'1':'Submit'},{'2':'Success'}]
-}
 
 
 function datagrid_urgent() {
@@ -158,7 +155,7 @@ $(function() {
         dataUrl: 'getStamp.action?queryType=all',
         dataType: 'jsonp',
         showToolbar: true,
-        toolbarItem: 'printPDF',
+        toolbarItem: 'export',
         editMode: {navtab:{width:'830',height:800,title:'Edit stamp',mask:true,fresh:true}},
         delUrl:'deleteUser.action',
         editUrl: 'sign/stamp/stampform.jsp',
@@ -167,7 +164,7 @@ $(function() {
         contextMenuB: true,
         hScrollbar: true,
         filterThead:false,
-        printPDFOption: {type:'file', options:{url:'exportStampExcel.action?queryType=user', loadingmask:false}}
+        exportOption: {type:'file', options:{url:'exportStampExcel.action?queryType=user', loadingmask:false}}
     }">
         <thead>
             <tr>
@@ -175,7 +172,7 @@ $(function() {
             	<th data-options="{name:'id',width:150,align:'center',finalWidth:'true',hide:'true'}">id</th>
             	<th data-options="{name:'applicationCode',width:150,align:'center',finalWidth:'true'}" >Application Code</th>
             	<th data-options="{name:'applicationDate',width:150,align:'center',finalWidth:'true'}" >Application Date</th>
-				<th data-options="{name:'state',width:150,align:'center',finalWidth:'true',type:'select', items:datagrid_stampState}">Approval Status</th>
+				<th data-options="{name:'state',width:150,align:'center',finalWidth:'true'}">Approval Status</th>
 				<th data-options="{name:'departmentOfFormFillerID',width:150,align:'center',finalWidth:'true'}">BU NO.</th>
 				<th data-options="{name:'applicantID',width:150,align:'center' ,finalWidth:'true'}">Cimtas ID</th>
 				<th data-options="{name:'applicant',width:200,align:'center',finalWidth:'true'}">User Name</th>

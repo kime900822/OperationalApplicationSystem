@@ -20,7 +20,9 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.struts2.convention.annotation.Action;
+import org.apache.struts2.convention.annotation.ParentPackage;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
 import com.analysis.model.Sales;
@@ -35,6 +37,8 @@ import com.sign.model.Beneficiary;
 import com.sign.model.Payment;
 
 @Controller
+@Scope("prototype")
+@ParentPackage("Struts 2")
 public class BeneficiaryAction extends ActionBase {
 	
 	@Autowired
