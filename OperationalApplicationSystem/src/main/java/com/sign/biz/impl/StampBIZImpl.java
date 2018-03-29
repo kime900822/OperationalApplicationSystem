@@ -26,6 +26,7 @@ import com.kime.model.User;
 import com.sign.biz.StampBIZ;
 import com.sign.dao.StampDAO;
 import com.sign.model.Stamp;
+import com.sign.other.StampState;
 @Service
 @Transactional(readOnly=true)
 public class StampBIZImpl extends BizBase implements StampBIZ{
@@ -78,7 +79,7 @@ public class StampBIZImpl extends BizBase implements StampBIZ{
 	}
 
 	@Override
-	public Stamp getStampById(String id) {
+	public Stamp getStampById(String id) throws Exception {
 		Stamp stamp=stamDAO.query(" where id='"+id+"' ").get(0);
 		if (stamp.getProjectResponsible()!=null&&!stamp.getProjectResponsible().equals("")) {
 			Dict approveType=dictDAO.query(" where id='"+stamp.getDocumentType()+"'").get(0);	
@@ -95,7 +96,7 @@ public class StampBIZImpl extends BizBase implements StampBIZ{
 		}else{
 			Dict approveType=dictDAO.query(" where id='"+stamp.getDocumentType()+"'").get(0); 
 			List<Approve> lApproves=approveBIZ.getApproveAndChild(approveType.getValueExplain());
-			if (lApproves.get(0).getId().equals("Dept. Head")) {
+			if (lApproves.get(0).getUid().equals("Dept. Head")) {
 				List<Department> lDepartments=departmentBIZ.queryDepartment(" where did='"+stamp.getDepartmentOfApplicantID()+"'");
 				if (lDepartments.size()>0) {
 					List<User> lUsers=userBIZ.getUser(" where uid='"+lDepartments.get(0).getUid()+"'");
@@ -104,7 +105,11 @@ public class StampBIZImpl extends BizBase implements StampBIZ{
 						lApproves.get(0).setUname(lUsers.get(0).getName());
 						lApproves.get(0).setDid(lUsers.get(0).getDid());
 						lApproves.get(0).setDname(lUsers.get(0).getDepartment().getName());
+					}else{
+						throw new Exception(" Department Manager is null");
 					}					
+				}else{
+					throw new Exception(" Department is null");
 				}
 				
 			}
@@ -156,13 +161,27 @@ public class StampBIZImpl extends BizBase implements StampBIZ{
 
 	@Override
 	@Transactional(readOnly=false,propagation=Propagation.REQUIRED,rollbackFor=Exception.class )
-	public void updateStamp(Stamp stamp) {
-		if (stamp.getState().equals("1")) {
+	public void updateStamp(Stamp stamp) throws Exception {
+		if (stamp.getState().equals(StampState.APPROVE)) {
 			if (stamp.getProjectResponsible()!=null&&!stamp.getProjectResponsible().equals("")) {
 				stamp.setNextApprover(stamp.getProjectResponsible());
 			}else{
 				Dict approveType=dictDAO.query(" where id='"+stamp.getDocumentType()+"'").get(0);		
 				Approve approve=(Approve)approveBIZ.query(" where id='"+approveType.getValueExplain()+"' and level=0 ").get(0);
+				if (approve.getUid().equals("Dept. Head")) {
+					List<Department> lDepartments=departmentBIZ.queryDepartment(" where did='"+stamp.getDepartmentOfApplicantID()+"'");
+					if (lDepartments.size()>0) {
+						List<User> lUsers=userBIZ.getUser(" where uid='"+lDepartments.get(0).getUid()+"'");
+						if (lUsers.size()>0) {
+							stamp.setNextApprover(lUsers.get(0).getUid());				
+						}else{
+							throw new Exception(" Department Manager is null");
+						}
+					}
+					else{
+						throw new Exception(" Department is null");
+					}
+				}
 				stamp.setNextApprover(approve.getUid());
 			}
 		}

@@ -47,7 +47,7 @@
             <div class="bjui-row col-2">
                 
 
-                <input type="hidden" name="id" id="j_signman4manager_edit_id" value="${param.Id}"  >
+                <input type="hidden" name="id" id="j_signman4manager_edit_id" value="${param.id}"  >
 				<input type="hidden" name="type" id="j_signman4manager_edit_type" value="SignMan4Manager"  >
                 <label class="row-label">UserID</label>
                 <div class="row-input required">

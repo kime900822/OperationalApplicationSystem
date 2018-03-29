@@ -259,11 +259,12 @@ public class UserAction extends ActionBase {
 			}else{
 				user=userBIZ.login(uid, password);
 				if (user==null) {
-					err_message="User id or password error";
+					session.setAttribute("login_message", "User id or password error");
+					logUtil.logInfo("登录失败！"+err_message.toString());
+					return ERROR;
 				}
 				
 			}
-			
 			//获取菜单
 			if (PropertiesUtil.ReadProperties(Message.SYSTEM_PROPERTIES, "id").equals(user.getUid())) {
 				List lMenus=menuBIZ.getParentMenu();

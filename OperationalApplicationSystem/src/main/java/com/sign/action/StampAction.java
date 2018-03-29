@@ -32,9 +32,11 @@ import com.kime.model.HeadColumn;
 import com.kime.model.User;
 import com.kime.utils.CommonUtil;
 import com.kime.utils.ExcelUtil;
+import com.kime.utils.PDFUtil;
 import com.sign.biz.StampBIZ;
 import com.sign.model.Stamp;
 import com.sign.other.FileSave;
+import com.sign.other.StampState;
 
 @Controller
 @Scope("prototype")
@@ -396,6 +398,63 @@ public class StampAction extends ActionBase{
 	    	return SUCCESS;
 	    }
 		
+		@Action(value="submitStamp",results={@org.apache.struts2.convention.annotation.Result(type="stream",
+				params={
+						"inputName", "reslutJson"
+				})})
+		public String submitStamp() throws UnsupportedEncodingException{
+			try {
+				Stamp stamp=new Gson().fromJson(json, Stamp.class);	
+				
+				if (stamp.getFormFillerID()==null||stamp.getFormFillerID().equals("")) {
+					result.setMessage("User can`t be NULL,Plese reflash page!");
+					result.setStatusCode("300");
+					reslutJson=new ByteArrayInputStream(new Gson().toJson(result).getBytes("UTF-8")); 	
+					return SUCCESS;
+				}
+				
+				if (id==null||id.equals("")) {
+					String[] deStrings=stamp.getDepartmentOfApplicant().split("-");
+					stamp.setDepartmentOfApplicant(deStrings[0]);
+					stamp.setDepartmentOfApplicantID(deStrings[1]);
+					
+					String code=stampBIZ.getMaxCode();
+					stamp.setApplicationCode(code);
+					id=UUID.randomUUID().toString().replaceAll("-", "");
+					stamp.setId(id);
+					stamp.setDateTmp(CommonUtil.getDateTemp());
+					stamp.setState(StampState.SAVE);
+					stampBIZ.saveStamp(stamp);
+					
+				}
+					stamp=stampBIZ.getStamp(" where id='"+id+"' ").get(0);					
+					stamp.setDateTmp(CommonUtil.getDateTemp());
+					stamp.setState(StampState.APPROVE);
+					stampBIZ.updateStamp(stamp);				
+					result.setMessage(Message.SAVE_MESSAGE_SUCCESS);
+					result.setStatusCode("200");
+					Map<String, String> map=new HashMap<>();
+					map.put("id", stamp.getId());
+					result.setParams(map);
+					logUtil.logInfo("更新用章申请单:"+stamp.getId());	
+					
+
+				
+				
+
+
+				
+			} catch (Exception e) {
+				logUtil.logInfo("新增用章申请单异常:"+e.getMessage());
+				result.setMessage(e.getMessage());
+				result.setStatusCode("300");
+			}
+			
+			reslutJson=new ByteArrayInputStream(new Gson().toJson(result).getBytes("UTF-8")); 	
+			return SUCCESS;
+		}
+		
+		
 		
 		
 		@Action(value="saveStamp",results={@org.apache.struts2.convention.annotation.Result(type="stream",
@@ -417,13 +476,10 @@ public class StampAction extends ActionBase{
 				stamp.setDepartmentOfApplicant(deStrings[0]);
 				stamp.setDepartmentOfApplicantID(deStrings[1]);
 				
-				if (attacmentUpload!=null&&!"".equals(attacmentUpload)) {
-					stamp.setAttacmentUpload(attacmentUpload);
-				}
 				
 				if (!stamp.getId().equals("")&&stamp.getId()!=null) {
 
-			
+					
 					stamp.setDateTmp(CommonUtil.getDateTemp());
 					stampBIZ.updateStamp(stamp);				
 					result.setMessage(Message.SAVE_MESSAGE_SUCCESS);
@@ -431,26 +487,30 @@ public class StampAction extends ActionBase{
 					Map<String, String> map=new HashMap<>();
 					map.put("id", stamp.getId());
 					result.setParams(map);
-					logUtil.logInfo("更新付款申请单:"+stamp.getId());			
+					logUtil.logInfo("更新用章申请单:"+stamp.getId());			
 				}else{
+
+					
 					String code=stampBIZ.getMaxCode();
 					stamp.setApplicationCode(code);
 					stamp.setId(UUID.randomUUID().toString().replaceAll("-", ""));
 					stamp.setDateTmp(CommonUtil.getDateTemp());
+					stamp.setState(StampState.SAVE);
 					stampBIZ.saveStamp(stamp);
 					result.setMessage(Message.SAVE_MESSAGE_SUCCESS);
 					result.setStatusCode("200");
 					Map<String, String> map=new HashMap<>();
 					map.put("id", stamp.getId());
 					map.put("applicationCode", code);
+					map.put("state", stamp.getState());
 					result.setParams(map);
-					logUtil.logInfo("新增付款申请单:"+stamp.getApplicationCode());
+					logUtil.logInfo("新增用章申请单:"+stamp.getApplicationCode());
 
 				}
 
 				
 			} catch (Exception e) {
-				logUtil.logInfo("新增付款申请单异常:"+e.getMessage());
+				logUtil.logInfo("新增用章申请单异常:"+e.getMessage());
 				result.setMessage(e.getMessage());
 				result.setStatusCode("300");
 			}
@@ -492,7 +552,6 @@ public class StampAction extends ActionBase{
 		
 			User user=(User)session.getAttribute("user");
 			String hql="";
-			
 			String where="";
 			
 			if (!"".equals(applicationDate_f)&&applicationDate_f!=null) {
@@ -526,7 +585,7 @@ public class StampAction extends ActionBase{
 				hql=" select P from Stamp P where P.formFillerID='"+user.getUid()+"' "+where+" order By P.dateTmp desc";
 			}
 			if ("approve".equals(queryType)) {
-				hql=" select P from Stamp P where P.nextApprover='"+user.getUid()+"' "+where+" order By P.dateTmp desc";
+				hql="select P from Stamp P left join ApproveHis A on P.id=A.tradeId where (P.nextApprover='"+user.getUid()+"' OR A.uId='"+user.getUid()+"' )  " +where+" order By P.dateTmp desc";
 			}
 			if ("all".equals(queryType)) {
 				hql=" select P from Stamp P where 1=1 "+where+" order By P.dateTmp desc";
@@ -578,9 +637,9 @@ public class StampAction extends ActionBase{
 			try {
 				Stamp=stampBIZ.getStampById(id);
 				reslutJson=new ByteArrayInputStream(new Gson().toJson(Stamp).getBytes("UTF-8")); 	
-				logUtil.logInfo("查询付款申请单:"+Stamp.getId());
+				logUtil.logInfo("查询用章申请单:"+Stamp.getId());
 			} catch (Exception e) {
-				logUtil.logInfo("查询付款申请单异常:"+e.getMessage());
+				logUtil.logInfo("查询用章申请单异常:"+e.getMessage());
 				result.setMessage(e.getMessage());
 				result.setStatusCode("300");
 				reslutJson=new ByteArrayInputStream(new Gson().toJson(result).getBytes("UTF-8")); 	
@@ -686,7 +745,96 @@ public class StampAction extends ActionBase{
 	    }
 		
 		
-		
+		@Action(value="exportStampPDF",results={@org.apache.struts2.convention.annotation.Result(type="stream",
+				params={
+						"inputName", "reslutJson",
+						"contentType","application/vnd.ms-excel",
+						"contentDisposition","attachment;filename=%{fileName}",
+						"bufferSize","1024"
+				})})
+	    public String exportStampPDF() {
+	        try {
+	        	User user=(User)session.getAttribute("user");
+	        	List<HeadColumn> lHeadColumns=new Gson().fromJson(thead, new TypeToken<ArrayList<HeadColumn>>() {}.getType());
+	        	
+	        	
+	    		String hql="";
+	    		String where="";
+	    		
+	    		if (!"".equals(applicationDate_f)&&applicationDate_f!=null) {
+					where += " AND P.applicationDate>='"+applicationDate_f+"'";
+				}
+				if (!"".equals(applicationDate_t)&&applicationDate_t!=null) {
+					where += " AND P.applicationDate <= '"+applicationDate_t+"'";
+				}
+				if (!"".equals(applicationCode)&&applicationCode!=null) {
+					where += " AND P.code like '%"+applicationCode+"'%";
+				}
+				if (!"".equals(state)&&state!=null) {
+					where += " AND P.state = '"+state+"'";
+				}
+				if (!"".equals(urgent)&&urgent!=null) {
+					where += " AND P.urgent = '"+urgent+"'";
+				}
+				if (!"".equals(stampType)&&stampType!=null) {
+					where += " AND P.stampType like '%"+stampType+"'% ";
+				}
+				if (!"".equals(documentType)&&documentType!=null) {
+					where += " AND P.documentType='"+documentType+"'";
+				}
+				if (!"".equals(applicantID)&&applicantID!=null) {
+					where += " AND P.applicantID like '"+applicantID+"'";
+				}
+				
+				if ("user".equals(queryType)) {
+					hql=" select P from Stamp P where P.formFillerID='"+user.getUid()+"' "+where+" order By P.dateTmp desc";
+				}
+				if ("approve".equals(queryType)) {
+					hql=" select P from Stamp P  where P.nextApprove='"+user.getUid()+"' "+where+" order By P.dateTmp desc";
+				}
+				if ("all".equals(queryType)) {
+					hql=" select P from Stamp P where 1=1 "+where+" order By P.dateTmp desc";
+				}
+	    		
+	    		List<Stamp> lStamps=stampBIZ.getStampByHql(hql);
+	    		
+				for (Stamp stamp : lStamps) {
+					String tmp="";
+					stamp.setApproveHis(approveHisBIZ.getApproveHisByTradeId(stamp.getId()));
+					if ( stamp.getApproveHis()!=null) {
+						for (ApproveHis approveHis : stamp.getApproveHis()) {
+							tmp+=approveHis.getuName()+"  ";					
+						}
+						if (tmp.length()>0) {
+							tmp=tmp.substring(0, tmp.length()-1);
+						}						
+					}
+					stamp.setState(tmp);					
+					stamp.setUrgent(stamp.getUrgent()==null?"N":"Y");
+					Dict documenttype=dictBIZ.getDict(" where id='"+stamp.getDocumentType()+"'").get(0);
+					stamp.setDocumentType(documenttype.getValue());
+					
+				}
+	    		
+	        	Class c = (Class) new Stamp().getClass();  
+	        	ByteArrayOutputStream os=PDFUtil.exportPDF("Seal", c, lStamps, "yyy-MM-dd",lHeadColumns);
+	        	byte[] fileContent = os.toByteArray();
+	        	ByteArrayInputStream is = new ByteArrayInputStream(fileContent);
+	        	
+	    		SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");		 
+	    		fileName = "Seal"+sf.format(new Date()).toString()+ ".pdf";
+	    		fileName= new String(fileName.getBytes(), "ISO8859-1");
+	    		//文件流
+	            reslutJson = is;            
+	            logUtil.logInfo("导出Stamp！"+fileName);
+	        }
+	        catch(Exception e) {
+	        	logUtil.logInfo("导出Stamp！"+e.getMessage());
+	            e.printStackTrace();
+	        }
+
+	        return "success";
+	    }
 
 		
 }

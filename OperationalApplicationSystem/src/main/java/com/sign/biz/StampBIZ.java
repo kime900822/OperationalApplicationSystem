@@ -15,7 +15,7 @@ public interface StampBIZ {
 	
 	public List<Stamp> getStamp(String where);
 	
-	public Stamp getStampById(String where);
+	public Stamp getStampById(String where) throws Exception;
 	
 	public List<Stamp> getStamp(String where,Integer pageSize,Integer pageCurrent);
 	
@@ -29,7 +29,7 @@ public interface StampBIZ {
 
 	public List<Stamp> getStampByHql(String hql);
 
-	public void updateStamp(Stamp stamp);
+	public void updateStamp(Stamp stamp) throws Exception;
 	
 	public void deleteStamp(Stamp stamp);
 }

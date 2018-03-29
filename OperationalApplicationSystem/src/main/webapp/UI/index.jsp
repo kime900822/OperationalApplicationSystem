@@ -80,6 +80,10 @@
 <!-- zoomify -->
 <script src="B-JUI/plugins/zoomify/zoomify.min.js"></script>
 <link href="B-JUI/plugins/zoomify/zoomify.min.css" rel="stylesheet">
+<!-- bootbox -->
+<script src="B-JUI/plugins/bootbox/bootbox.min.js"></script>
+
+
 
 <!-- init -->
 <style type="text/css">
@@ -165,8 +169,8 @@ function bjui_index_exchange() {
 }
 
 
-function showStampImage(id){ $('#'+id).show()}
-function hideStampImage(id){ $('#'+id).hide()}
+function showStampImage(id){ $('#'+id).show(400)}
+function hideStampImage(id){ $('#'+id).hide(400)}
 
 </script>
 <!-- highlight && ZeroClipboard -->
@@ -273,12 +277,15 @@ function hideStampImage(id){ $('#'+id).hide()}
                         		<a href="getChildMenu.action?id=40284c816243ad5b016243b365bd0005" data-toggle="sidenav" data-id-key="targetid" onclick="showStampImage('showStampExplain')"><img src="images/menu/stamp.png" height="60"></a>
                         	</div>
                         	
-                        	<div id="showStampExplain" class="highlight" style="display:none;position:absolute; left:500px;top:50px;width:400px;">
+                        	<div id="showStampExplain" class="highlight" style="display:none;position:absolute; left:500px;top:50px;width:400px">
 								<pre class="prettyprint">
 Instruction:
 1.正常情况下的盖章用印申请完成时间为申请审批通过的次日下午4点-5点可以至XX领单子。
 2.急件的情况下直接至XX处等待领取
 3.填单样式参考 下图
+</pre>   
+<img alt="点击查看大图" src="images/temp/stampTemp.png" id="stampTemp"  height="150" width="150" style="left:30px"><br>
+<pre class="prettyprint">
 4.附件要求: 下列附件必需提供附件扫描档
     ① 人事文件 - 个人
     ② 人事文件 - 合同协议
@@ -287,7 +294,7 @@ Instruction:
 5.系统联系: 
     审计室 - 167
 </pre>       	
-<img alt="点击查看大图" src="images/temp/stampTemp.png" id="stampTemp"  height="150" width="150" style="left:30px">
+
 
                         	</div>
                         </div>

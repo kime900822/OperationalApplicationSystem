@@ -221,6 +221,13 @@
          <artifactId>xmlworker</artifactId>
          <version>5.5.8</version>
      </dependency>
+
+	<dependency>
+	    <groupId>com.itextpdf</groupId>
+	    <artifactId>itext-asian</artifactId>
+	    <version>5.2.0</version>
+	</dependency>
+
             
   </dependencies>
   <build>

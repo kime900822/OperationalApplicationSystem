@@ -399,7 +399,7 @@ public class DictAction extends ActionBase{
 		
 		reslutJson=new ByteArrayInputStream(r.getBytes("UTF-8"));  
 		
-		logUtil.logInfo("查询审批人，条件:"+where);
+		logUtil.logInfo("查询签核类型，条件:"+where);
 		return SUCCESS;
 		
 		
@@ -415,12 +415,12 @@ public class DictAction extends ActionBase{
 		try {
 			for (Dict dict : list) {
 				dictBIZ.delete(dict);
-				logUtil.logInfo("删除字典:"+dict.getType()+" "+dict.getKey());
+				logUtil.logInfo("新增签核类型:"+dict.getType()+" "+dict.getKey());
 			}
 			result.setMessage(Message.DEL_MESSAGE_SUCCESS);
 			result.setStatusCode("200");
 		} catch (Exception e) {
-			logUtil.logInfo("删除字典:"+e.getMessage());
+			logUtil.logInfo("新增签核类型:"+e.getMessage());
 			result.setMessage(e.getMessage());
 			result.setStatusCode("300");
 		}
@@ -480,28 +480,28 @@ public class DictAction extends ActionBase{
 
 		try {
 			if (id == null || "".equals(id)) {
-				if (dictBIZ.getDict(" where type='CHECKTYPE' and key='"+dict.getKey()+"'").size()==1) {
+				if (dictBIZ.getDict(" where type='CHECKTYPE' and key='"+dict.getKey()+"' and Value='"+dict.getValue()+"'").size()==1) {
 					t=false;
-					logUtil.logInfo("新增字典:已存在相同type和相同key的记录：");
+					logUtil.logInfo("新增签核类型:已存在相同type,key,name的记录：");
 					result.setMessage(Message.SAVE_MESSAGE_ERROR_DICT);
 					result.setStatusCode("300");
 				}else{
 					dictBIZ.save(dict);
-					logUtil.logInfo("新增字典:"+dict.getType()+" "+dict.getKey());
+					logUtil.logInfo("新增签核类型:"+dict.getType()+" "+dict.getKey());
 					result.setMessage(Message.SAVE_MESSAGE_SUCCESS);
 					result.setStatusCode("200");
 				}
 				
 			}else{
 				dictBIZ.update(dict);
-				logUtil.logInfo("修改字典:"+dict.getType()+" "+dict.getKey());
+				logUtil.logInfo("新增签核类型:"+dict.getType()+" "+dict.getKey());
 				result.setMessage(Message.SAVE_MESSAGE_SUCCESS);
 				result.setStatusCode("200");
 			}
 			
 			
 		} catch (Exception e) {
-			logUtil.logInfo("修改字典:"+e.getMessage());
+			logUtil.logInfo("新增签核类型:"+e.getMessage());
 			result.setMessage(e.getMessage());
 			result.setStatusCode("300");	
 		}
@@ -521,21 +521,21 @@ public class DictAction extends ActionBase{
 	
 	
 	
-	@Action(value="deletApproveUserCollection",results={@org.apache.struts2.convention.annotation.Result(type="stream",
+	@Action(value="deleteApproveUserCollection",results={@org.apache.struts2.convention.annotation.Result(type="stream",
 			params={
 					"inputName", "reslutJson"
 			})})
-	public String deletApproveUserCollection() throws UnsupportedEncodingException{
+	public String deleteApproveUserCollection() throws UnsupportedEncodingException{
 		List<Dict> list=new Gson().fromJson(json, new TypeToken<ArrayList<Dict>>() {}.getType());
 		try {
 			for (Dict dict : list) {
 				dictBIZ.delete(dict);
-				logUtil.logInfo("删除字典:"+dict.getType()+" "+dict.getKey());
+				logUtil.logInfo("删除签核用户集合:"+dict.getType()+" "+dict.getKey());
 			}
 			result.setMessage(Message.DEL_MESSAGE_SUCCESS);
 			result.setStatusCode("200");
 		} catch (Exception e) {
-			logUtil.logInfo("删除字典:"+e.getMessage());
+			logUtil.logInfo("签核用户集合:"+e.getMessage());
 			result.setMessage(e.getMessage());
 			result.setStatusCode("300");
 		}
@@ -554,36 +554,34 @@ public class DictAction extends ActionBase{
 		
 		List<Dict> list=new Gson().fromJson(json, new TypeToken<ArrayList<Dict>>() {}.getType());
 		Dict dict=list.get(0);
-		if (!"".equals(id) && id != null) {
-			dict.setId(id);
-		} else {
+		if (dict.getId() == null||"".equals(dict.getId()) ) {
 			dict.setId(UUID.randomUUID().toString().replaceAll("-", ""));
 		}
 		dict.setType("APPROVEUSERCOLLECTION");
 
 		try {
-			if (id == null || "".equals(id)) {
+			if (dict.getId() == null||"".equals(dict.getId()) ) {
 				if (dictBIZ.getDict(" where type='APPROVEUSERCOLLECTION' and key='"+dict.getKey()+"' and value='"+dict.getValue()+"' ").size()==1) {
-					logUtil.logInfo("新增字典:同个集合维护了相同用户：");
+					logUtil.logInfo("新增签核用户集合:同个集合维护了相同用户：");
 					result.setMessage(Message.SAVE_MESSAGE_ERROR_DICT);
 					result.setStatusCode("300");
 				}else{
 					dictBIZ.save(dict);
-					logUtil.logInfo("新增字典:"+dict.getType()+" "+dict.getKey());
+					logUtil.logInfo("新增签核用户集合:"+dict.getType()+" "+dict.getKey());
 					result.setMessage(Message.SAVE_MESSAGE_SUCCESS);
 					result.setStatusCode("200");
 				}
 				
 			}else{
 				dictBIZ.update(dict);
-				logUtil.logInfo("修改字典:"+dict.getType()+" "+dict.getKey());
+				logUtil.logInfo("修改签核用户集合:"+dict.getType()+" "+dict.getKey());
 				result.setMessage(Message.SAVE_MESSAGE_SUCCESS);
 				result.setStatusCode("200");
 			}
 			
 			
 		} catch (Exception e) {
-			logUtil.logInfo("修改字典:"+e.getMessage());
+			logUtil.logInfo("修改签核用户集合:"+e.getMessage());
 			result.setMessage(e.getMessage());
 			result.setStatusCode("300");	
 		}
@@ -627,7 +625,7 @@ public class DictAction extends ActionBase{
 		
 		reslutJson=new ByteArrayInputStream(r.getBytes("UTF-8"));  
 		
-		logUtil.logInfo("查询审批人，条件:"+where);
+		logUtil.logInfo("查询签核用户集合，条件:"+where);
 		return SUCCESS;
 		
 		

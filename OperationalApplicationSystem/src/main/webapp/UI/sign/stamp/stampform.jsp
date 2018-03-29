@@ -7,7 +7,7 @@ $(function(){
 	$.CurrentNavtab.find('#j_stamp_applicationDate').val(today);
 	
 	if('${param.id}'!=null&&'${param.id}'!=''){
-		dataToFaceStamp();
+		dataToFaceStamp('${param.id}');
 	}
 	//获取文件类型
 	BJUI.ajax('doajax', {
@@ -15,7 +15,7 @@ $(function(){
 	    loadingmask: false,
 	    okCallback: function(json, options) {
             $.each(json, function (i, item) {
-                $.CurrentNavtab.find('#j_stamp_documentType').append("<option value='" + item.Id + "'>" + item.value + "</option>")           
+                $.CurrentNavtab.find('#j_stamp_documentType').append("<option value='" + item.id + "'>" + item.value + "</option>")           
             })
             $.CurrentNavtab.find('#j_stamp_documentType').selectpicker('refresh');
 	    }
@@ -35,7 +35,7 @@ function faceToDataStamp(){
 	o.departmentOfFormFiller='${user.department.name}';
 	o.departmentOfFormFillerID='${user.department.did}';
 	o.id=$.CurrentNavtab.find("#j_stamp_id").val();
-	o.attacmentUpload=listToString($.CurrentNavtab.find('#upfile_invoice_list'));
+	o.attacmentUpload=listToString($.CurrentNavtab.find('#upfile_attacment_list'));
 	var tmp='';
 	if(typeof o.stampType == 'object' &&  o.stampType ){
 		$.each(o.stampType,function(i,item){
@@ -46,13 +46,15 @@ function faceToDataStamp(){
 	return o;
 }
 
-function dataToFaceStamp(){
+function dataToFaceStamp(id){
 	BJUI.ajax('doajax', {
 	    url: 'getStampByID.action',
 	    loadingmask: true,
-	    data:{id:'${param.id}'},	    
+	    data:{id:id},	    
 	    okCallback: function(json, options) {
 	    	if(json.status='200'){
+	    		$.CurrentNavtab.find('#upfile_attacment_list').children().eq(0).siblings().remove();
+	    		
 	    		$.CurrentNavtab.find("#j_stamp_applicationDate").val(json.applicationDate);
 	    		$.CurrentNavtab.find("#j_stamp_applicationCode").val(json.applicationCode);
 	    		$.CurrentNavtab.find("#j_stamp_formFiller").val(json.formFiller+"-"+json.formFillerID);
@@ -63,7 +65,7 @@ function dataToFaceStamp(){
 	    		$.CurrentNavtab.find("#j_stamp_contactNumber").val(json.contactNumber);
 	    		$.CurrentNavtab.find("#j_stamp_documentType").selectpicker().selectpicker('val',json.documentType).selectpicker('refresh');
 	    		setProjectResponsible();	
-	    		if(json.attacmentUpload!=undefined&&json.attacmentUpload!=""){
+	    		if(json.projectResponsible!=undefined&&json.projectResponsible!=""){
 		    		$.CurrentNavtab.find("#j_stamp_projectResponsible").selectpicker().selectpicker('val',json.projectResponsible).selectpicker('refresh');
 	    		}
 	    		$.CurrentNavtab.find("#j_stamp_chopDate").val(json.chopDate);
@@ -83,6 +85,12 @@ function dataToFaceStamp(){
 					if(item=='LegalDeputyChop')
 						$.CurrentNavtab.find("#j_stamp_legalDeputyChop").iCheck('check'); 
         		})
+        		
+        		var b=false;
+        		if(json.state==0&&'${user.uid}'==json.applicantID){
+        			b=true;
+        		}
+        		
         		
 	    		if(json.attacmentUpload!=undefined&&json.attacmentUpload!=""){
             		var file=json.attacmentUpload.split('|');
@@ -114,7 +122,7 @@ function dataToFaceStamp(){
 	    				if(isReject){
 		    				if(i==0){
 		    					if('${user.uid}'==item.uid){
-				    				obj.append("<tr><td>"+item.name+"</td><td style='display:none'>"+item.id+"</td><td>"+item.uid+"</td><td>"+item.uname+"</td><td>"+item.did+"</td><td></td><td></td><td></td><td><button type='button' id='stamp-approve' style='width:50px;' onclick='stampApprove(this)'   >√</button>&nbsp;&nbsp;<button type='button' id='stamp-reject'  style='width:50px;' onclick='stampApprove(this)' >×</button></td></tr>");	    				
+				    				obj.append("<tr><td>"+item.name+"</td><td style='display:none'>"+item.id+"</td><td>"+item.uid+"</td><td>"+item.uname+"</td><td>"+item.did+"</td><td></td><td></td><td></td><td><button type='button' id='stamp-approve' class='btn btn-success' vstyle='width:50px;' onclick='stampApprove(this)'   >√</button>&nbsp;&nbsp;<button type='button' id='stamp-reject'  style='width:50px;' class='btn btn-danger' onclick='stampApprove(this)' >×</button></td></tr>");	    				
 		    					}else{
 				    				obj.append("<tr><td>"+item.name+"</td><td style='display:none'>"+item.id+"</td><td>"+item.uid+"</td><td>"+item.uname+"</td><td>"+item.did+"</td><td></td><td></td><td></td><td></td></tr>");	    				
 		    					}
@@ -126,7 +134,7 @@ function dataToFaceStamp(){
 	    					if(i>maxLevel){
 			    				if(i==maxLevel+1){
 			    					if('${user.uid}'==item.uid){
-				    				obj.append("<tr><td>"+item.name+"</td><td style='display:none'>"+item.id+"</td><td>"+item.uid+"</td><td>"+item.uname+"</td><td>"+item.did+"</td><td></td><td></td><td></td><td><button type='button' id='stamp-approve' style='width:50px;' onclick='stampApprove(this)'   >√</button>&nbsp;&nbsp;<button type='button' id='stamp-reject'  style='width:50px;' onclick='stampApprove(this)' >×</button></td></tr>");	    				
+				    				obj.append("<tr><td>"+item.name+"</td><td style='display:none'>"+item.id+"</td><td>"+item.uid+"</td><td>"+item.uname+"</td><td>"+item.did+"</td><td></td><td></td><td></td><td><button type='button' id='stamp-approve' class='btn btn-success' style='width:50px;' onclick='stampApprove(this)'   >√</button>&nbsp;&nbsp;<button type='button' id='stamp-reject'  style='width:50px;' class='btn btn-danger' onclick='stampApprove(this)' >×</button></td></tr>");	    				
 			    					}else{
 					    				obj.append("<tr><td>"+item.name+"</td><td style='display:none'>"+item.id+"</td><td>"+item.uid+"</td><td>"+item.uname+"</td><td>"+item.did+"</td><td></td><td></td><td></td><td></td></tr>");	    				
 			    					}
@@ -145,22 +153,46 @@ function dataToFaceStamp(){
 	    }
 	})
 	
-	
 }
 
 
 function submitStamp(){
+	var id=$.CurrentNavtab.find("#j_stamp_id").val();
 	
-	if($.CurrentNavtab.find("#j_stamp_id").val()==''){
+	if(id==''){
 		BJUI.alertmsg('confirm', 'Submit?', {
 		    okCall: function() {
-		    	 saveStamp('1');	  
+		    	submitStampAjax(id)
 		    }
 		})	
 	}else{
-		saveStamp('1');	
+		submitStampAjax(id)
 	}
 	
+}
+
+function submitStampAjax(id){
+	var o=faceToDataStamp();	
+	var err=checkSaveStamp(o);
+	if(err!=''){
+		BJUI.alertmsg('warn', err); 
+		return false;
+	}
+	
+	BJUI.ajax('doajax', {
+	    url: 'submitStamp.action',
+	    loadingmask: true,
+	    data:{id:id,json:JSON.stringify(o)},	    
+	    okCallback: function(json, options) {
+            if(json.status='200'){
+            	BJUI.alertmsg('info', json.message); 
+            	showButtonStamp('1');
+				dataToFaceStamp(json.params.id)          		 
+            }else{
+            	 BJUI.alertmsg('error', json.message); 
+            }
+	    }
+	})	
 }
 
 function deleteStamp(){
@@ -185,19 +217,15 @@ function deleteStamp(){
 	
 }
 
-function saveStamp(s){
+function saveStamp(){
 	var o=faceToDataStamp();	
-	o.state=s;
 	var err=checkSaveStamp(o);
 	if(err!=''){
 		BJUI.alertmsg('warn', err); 
 		return false;
 	}
 	
-	if(o.formFillerID==null||o.formFillerID==''||o.formFillerID==undefined){
-		BJUI.alertmsg('error', '数据异常，用户为空，请刷新页面重新填写！'); 
-		return false;
-	}
+
 		
 	BJUI.ajax('doajax', {
 	    url: 'saveStamp.action',
@@ -208,7 +236,13 @@ function saveStamp(s){
             	 BJUI.alertmsg('info', json.message); 
             	 $.CurrentNavtab.find("#j_stamp_id").val(json.params.id);
             	 $.CurrentNavtab.find("#j_stamp_applicationCode").val(json.params.applicationCode);
-            	 showButtonStamp(s);
+            	 showButtonStamp('0');
+               	 BJUI.alertmsg('confirm', '保存成功，是否提交？',{
+             		    okCall: function() {
+             		    	submitStamp();
+           		    	 }	  
+           		    });  
+
             }else{
             	 BJUI.alertmsg('error', json.message); 
             }
@@ -220,7 +254,44 @@ function saveStamp(s){
 
 
 function stampApprove(o){
-	BJUI.alertmsg('prompt', '', {
+	
+	bootbox.prompt("Comment?", function (result) {
+		if(result!=null){
+		if($(o).html()=='√'){
+			status='Approved'
+		}else{
+			status='Rejected'
+		}
+		if(status=='Rejected'&&(result==''||result==undefined)){
+			bootbox.alert("Comment can`t empty!");
+			 return false;
+		}
+		
+		approveId = $(o).parent().siblings().eq(1).html();
+		
+		
+			BJUI.ajax('doajax', {
+		    url: 'submitApprove.action',
+		    loadingmask: true,
+		    data:{status:status,comment:result,tradeId:$.CurrentNavtab.find("#j_stamp_id").val(),approveId:approveId,type:'STAMP'},	    
+		    okCallback: function(json, options) {
+	            if(json.status='200'){
+	            	 BJUI.alertmsg('info', json.message); 
+	            	 $(o).parent().siblings().eq(5).html(json.params.data.comment);
+	            	 $(o).parent().siblings().eq(6).html(json.params.data.status);
+	            	 $(o).parent().siblings().eq(7).html(json.params.data.date);
+	            	 $(o).hide().siblings().hide();
+	            }else{
+	            	 BJUI.alertmsg('error', json.message); 
+	            }
+		    }
+		});		
+		}
+	})
+		             
+		             
+		             
+/* 	BJUI.alertmsg('prompt', '', {
 		title:'Comment',
 		okCall:function(val) {
 			
@@ -253,7 +324,7 @@ function stampApprove(o){
 		}
 	}
 	
-	)
+	) */
 }
 
 
@@ -359,6 +430,12 @@ function checkSaveStamp(o){
 	if(o.urgent&&(o.urgentReason==null||o.urgentReason=='')){
 		err+=" Uregnt Reason can`t be  empty！<br>";		
 	}
+	if(o.usageDescription==null||o.usageDescription==''){
+		err+=" Usage Description can`t be  empty！<br>";		
+	}
+	if(o.formFillerID==null||o.formFillerID==''||o.formFillerID==undefined){
+		err+= "数据异常，用户为空，请刷新页面重新填写！"; 
+	}
 	return err;
 }
 
@@ -387,12 +464,13 @@ function getUser() {
 
 function setProjectResponsible(){
 	var type=$.CurrentNavtab.find('#j_stamp_documentType').val();
-	
+	$.CurrentNavtab.find('#j_stamp_projectResponsible').find('option').remove().selectpicker('refresh');
 	//获取一级签核人员
 	BJUI.ajax('doajax', {
 	    url: 'getFirstApproveOfStamp4Select.action',
 	    loadingmask: false,
 	    data:{type:type},
+	    async:false,
 	    okCallback: function(json, options) {
             $.each(json, function (i, item) {
             	if(item.fistUID!='Dept. Head'){
@@ -457,10 +535,10 @@ function setProjectResponsible(){
 						<input type="text" name="departmentOfApplicant" value="${user.department.name}-${user.department.did}" id="j_stamp_departmentOfApplicant" readonly=""  size="19">
 					</td>	
 					<td>
-						Contact Number<label style="color:red;font-size:12px"><b>*</b></label>:<br>联系方式 <label style="color:red;font-size:12px"><b>*</b></label>:
+						Contact Number:<br>联系方式 :
 					</td>
 					<td>
-						<input type="text" name="contactNumber" id="j_stamp_contactNumber" value="" size="19" data-rule="required;phone">
+						<input type="text" name="contactNumber" id="j_stamp_contactNumber" value="" size="19" data-rule="phone">
 					</td>
 				</tr>
 				<tr>
@@ -538,7 +616,7 @@ function setProjectResponsible(){
 				</tr>
 				<tr>
 					<td>
-						Chop Object<label style="color:red;font-size:12px"><b>*:</b></label><br>受文单位 <label style="color:red;font-size:12px"><b>*</b></label>:
+						Chop Object<label style="color:red;font-size:12px"><b>*:</b></label>:<br>受文单位 <label style="color:red;font-size:12px"><b>*</b></label>:
 					</td>
 					<td colspan="3">
 						<textarea cols="80" rows="3" id="j_stamp_chopObject"  name="chopObject" data-toggle="autoheight"></textarea>
@@ -552,7 +630,7 @@ function setProjectResponsible(){
 						<input type="checkbox" name="urgent"  data-toggle="icheck" id="j_stamp_urgent" value="1" data-label="">
 					</td>
 					<td>
-						Urgent Reason:<br>申请急件原因:
+						Urgent Reason<label style="color:red;font-size:12px"><b>*</b></label>:<br>申请急件原因<label style="color:red;font-size:12px"><b>*</b></label>:
 					</td>
 					<td colspan="3">
 						<input type="text" name="urgentReason" value="" id="j_stamp_urgentReason" size="19"  />
@@ -560,7 +638,7 @@ function setProjectResponsible(){
 				</tr>
 				<tr>
 					<td>
-						Usage Description:<br>申请原因:
+						Usage Description<label style="color:red;font-size:12px"><b>*</b></label>:<br>申请原因<label style="color:red;font-size:12px"><b>*</b></label>:
 					</td>
 					<td colspan="3">
 						<textarea cols="80" rows="3" id="j_stamp_usageDescription"  name="usageDescription" data-toggle="autoheight"></textarea>
@@ -593,7 +671,7 @@ function setProjectResponsible(){
 				
 				<tr>
 					<td colspan="4" align="center">
-	            		<button type="button" id="stamp-save" class="btn-default" data-icon="save" onClick="saveStamp('0')" >Save</button>&nbsp;&nbsp;&nbsp;&nbsp;
+	            		<button type="button" id="stamp-save" class="btn-default" data-icon="save" onClick="saveStamp()" >Save</button>&nbsp;&nbsp;&nbsp;&nbsp;
 	            		<button type="button" id="stamp-submit" class="btn-default" data-icon="arrow-up" onClick="submitStamp()">Submit</button>&nbsp;&nbsp;&nbsp;&nbsp;
 	            		<button type="button" id="stamp-delete" class="btn-default" data-icon="close" onClick="deleteStamp()" style="display:none">Delete</button>
             		</td>				

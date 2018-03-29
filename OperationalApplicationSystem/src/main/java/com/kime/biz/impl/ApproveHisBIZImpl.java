@@ -49,32 +49,39 @@ public class ApproveHisBIZImpl extends BizBase implements ApproveHisBIZ{
 	@Override
 	@Transactional(readOnly=false,propagation=Propagation.REQUIRED,rollbackFor=Exception.class )
 	public ApproveHis save(String approveid, String comment,String status,String tradeId,String type) {
-		Approve approve=(Approve)approveBIZ.query(" where id='"+approveid+"'").get(0);
-		ApproveHis approveHis=new ApproveHis();
-		approveHis.setDate(CommonUtil.getDateTemp());
-		approveHis.setLevel(approve.getLevel());
-		approveHis.setuName(approve.getUname());
-		approveHis.setuId(approve.getUid());
-		approveHis.setName(approve.getName());
-		approveHis.setStatus(status);
-		approveHis.setType(type);
-		approveHis.setTradeId(tradeId);
-		approveHis.setComment(comment);
-		approveHis.setdId(approve.getDid());
-		approveHis.setdName(approve.getDname());
-		approveHisDAO.save(approveHis);
-		if (type.equals("STAMP")) {
-			Stamp stamp=stampBIZ.getStampById(tradeId);
-			if (stamp.getApprove().size()-1>Integer.parseInt(approve.getLevel())) {
-				stamp.setNextApprover(stamp.getApprove().get(Integer.parseInt(approve.getLevel())+1).getUid());				
+		ApproveHis approveHis;
+		try {
+			Approve approve=(Approve)approveBIZ.query(" where id='"+approveid+"'").get(0);
+			approveHis = new ApproveHis();
+			approveHis.setDate(CommonUtil.getDateTemp());
+			approveHis.setLevel(approve.getLevel());
+			approveHis.setuName(approve.getUname());
+			approveHis.setuId(approve.getUid());
+			approveHis.setName(approve.getName());
+			approveHis.setStatus(status);
+			approveHis.setType(type);
+			approveHis.setTradeId(tradeId);
+			approveHis.setComment(comment);
+			approveHis.setdId(approve.getDid());
+			approveHis.setdName(approve.getDname());
+			approveHisDAO.save(approveHis);
+			if (type.equals("STAMP")) {
+				Stamp stamp=stampBIZ.getStampById(tradeId);
+				if (stamp.getApprove().size()-1>Integer.parseInt(approve.getLevel())) {
+					stamp.setNextApprover(stamp.getApprove().get(Integer.parseInt(approve.getLevel())+1).getUid());	
+					User user=userBIZ.getUser(" where uid='"+stamp.getApplicantID()+"'").get(0);
+					SendMail.SendMail(user.getEmail(), PropertiesUtil.ReadProperties(Message.MAIL_PROPERTIES, "mailTitleOfStampApprove"), MessageFormat.format(PropertiesUtil.ReadProperties(Message.MAIL_PROPERTIES, "mailContentOfStampApprove"),stamp.getApplicationCode(),stamp.getApplicant(),stamp.getUrgentReason()));
+				}
+				else{
+					stamp.setState(StampState.SUCCESS);
+					stamp.setNextApprover("");
+					User user=userBIZ.getUser(" where uid='"+stamp.getApplicantID()+"'").get(0);
+					SendMail.SendMail(user.getEmail(), PropertiesUtil.ReadProperties(Message.MAIL_PROPERTIES, "mailTitleOfStamp"), PropertiesUtil.ReadProperties(Message.MAIL_PROPERTIES, "mailContentOfStamp"));
+				}
+				stampBIZ.updateStamp(stamp);
 			}
-			else{
-				stamp.setState(StampState.SUCCESS);
-				stamp.setNextApprover("");
-				User user=userBIZ.getUser(" where uid='"+stamp.getApplicantID()+"'").get(0);
-				SendMail.SendMail(user.getEmail(), PropertiesUtil.ReadProperties(Message.MAIL_PROPERTIES, "mailTitleOfStamp"), PropertiesUtil.ReadProperties(Message.MAIL_PROPERTIES, "mailContentOfStamp"));
-			}
-			stampBIZ.saveStamp(stamp);
+		} catch (Exception e) {
+			approveHis=null;
 		}
 			
 		return approveHis;

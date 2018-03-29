@@ -16,6 +16,11 @@
 			    }
 			})	
 			getUname()
+			
+			
+			$.CurrentDialog.find('#j_checkTyp_edit_checkType').selectpicker('val','${param.key}');
+            $.CurrentDialog.find('#j_checkTyp_edit_checkType').selectpicker('refresh');
+			
 		})
 
 		function getUname(){
@@ -53,12 +58,15 @@
             <div class="bjui-row col-2">
                 
 
-                <input type="hidden" name="id" id="j_checkType_edit_id" value="${param.Id}"  >
+                <input type="hidden" name="id" id="j_checkType_edit_id" value="${param.id}"  >
  				<input type="hidden" name="type" id="j_checkType_edit_type" value="CHECKTYPE" >
  				
  				<label class="row-label">CheckType</label>
                 <div class="row-input required">
-                    <input type="text" name="key" id="j_checkTyp_edit_checkType" value="${param.key}" data-rule="required">
+                	<select name="key" data-toggle="selectpicker" id="j_checkTyp_edit_checkType" data-rule="required" data-width="100%"  >
+                         <option value="" selected></option>
+                         <option value="STAMP" selected>STAMP</option>
+                    </select>
                 </div>
  				<label class="row-label">Name</label>
                 <div class="row-input required">

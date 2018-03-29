@@ -18,7 +18,7 @@ public class Dict {
 	@Id
 	@GeneratedValue(generator="uuid")
 	@GenericGenerator(name = "uuid", strategy = "uuid")
-	private String Id;
+	private String id;
 	@Column
 	private String type;
 	@Column(name="`key`")
@@ -57,10 +57,10 @@ public class Dict {
 		this.addFlag = addFlag;
 	}
 	public String getId() {
-		return Id;
+		return id;
 	}
 	public void setId(String id) {
-		Id = id;
+		this.id = id;
 	}
 	public String getKeyExplain() {
 		return keyExplain;

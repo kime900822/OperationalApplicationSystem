@@ -33,7 +33,7 @@ $(function() {
 	    loadingmask: false,
 	    okCallback: function(json, options) {
             $.each(json, function (i, item) {
-                $.CurrentNavtab.find('#q_stamp_documentType').append("<option value='" + item.Id + "'>" + item.value + "</option>")           
+                $.CurrentNavtab.find('#q_stamp_documentType').append("<option value='" + item.id + "'>" + item.value + "</option>")           
             })
             $.CurrentNavtab.find('#q_stamp_documentType').selectpicker('refresh');
 	    }
@@ -114,7 +114,7 @@ $(function() {
             	<input type="text" name="departmentOfFormFillerID" value="" id="q_stamp_departmentOfFormFillerID" size="15">
         		</td>
         		<td>
-        		<span>Statue：</span>
+        		<span>Status：</span>
         		</td>
         		<td>
 	            	<select name="state" data-toggle="selectpicker" id="q_stamp_state"  data-width="200px">
@@ -176,7 +176,7 @@ $(function() {
 				<th data-options="{name:'departmentOfFormFillerID',width:150,align:'center',finalWidth:'true'}">BU NO.</th>
 				<th data-options="{name:'applicantID',width:150,align:'center' ,finalWidth:'true'}">Cimtas ID</th>
 				<th data-options="{name:'applicant',width:200,align:'center',finalWidth:'true' }">User Name</th>
-				<th data-options="{name:'documentType',width:200,align:'center',finalWidth:'true',type:'select',itemattr:{value:'Id',label:'value'},items:$.getJSON('getCheckType4Select.action')}">Document Type</th>
+				<th data-options="{name:'documentType',width:200,align:'center',finalWidth:'true',type:'select',itemattr:{value:'id',label:'value'},items:$.getJSON('getCheckType4Select.action')}">Document Type</th>
 				<th data-options="{name:'stampType',width:180,align:'left',finalWidth:'true'}">Stamp Type</th>
 				<th data-options="{name:'urgent',width:120,align:'center',finalWidth:'true',type:'select', items:datagrid_urgent}">Urgent</th>
 				<th data-options="{name:'usageDescription',width:400,align:'left',finalWidth:'true'}">Usage Description</th>            
