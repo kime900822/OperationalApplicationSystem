@@ -35,12 +35,17 @@ import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 import org.apache.poi.ss.formula.functions.T;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.NumberToTextConverter;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.expression.spel.standard.SpelExpressionParser;
+import org.springframework.expression.spel.support.StandardEvaluationContext;
+import org.springframework.util.StringUtils;
 
 import com.analysis.model.Sales;
 import com.kime.model.HeadColumn;
@@ -238,6 +243,8 @@ public static <T>ByteArrayOutputStream  exportExcel(String title, Class class1, 
     // 遍历集合数据，产生数据行
     Iterator<T> it = dataset.iterator();
     int index = 0;
+    HSSFFont font3 = workbook.createFont();
+    font3.setColor(HSSFColor.BLACK.index);
     while (it.hasNext()) {
         index++;
         row = sheet.createRow(index);
@@ -287,8 +294,7 @@ public static <T>ByteArrayOutputStream  exportExcel(String title, Class class1, 
                 // 如果不是图片数据，就利用正则表达式判断textValue是否全部由数字组成
                 if (textValue != null) {
                     HSSFRichTextString richString = new HSSFRichTextString(textValue);
-                    HSSFFont font3 = workbook.createFont();
-                    font3.setColor(HSSFColor.BLACK.index);
+
                     richString.applyFont(font3);
                     cell.setCellValue(richString);
 /*                    Pattern p = Pattern.compile("^\\d+(\\.\\d+)?$");
@@ -343,17 +349,8 @@ public static <T>ByteArrayOutputStream  exportExcel(String title, Class class1, 
     HSSFWorkbook workbook = new HSSFWorkbook();
     // 生成一个表格
     HSSFSheet sheet = workbook.createSheet(title);
-    // 设置表格默认列宽度为15个字节
-    //sheet.setDefaultColumnWidth(15);
+
     
-	//获取表头民
-//	Field[] fs = class1.getDeclaredFields();
-//	String[] headers=new String[fs.length];
-//	for (int i = 0; i < fs.length; i++) {
-//			headers[i]=fs[i].getName();
-//			//宽度自适应
-//			sheet.setColumnWidth(i, fs[i].getName().getBytes().length*2*256);
-//	}
     String[] headers=new String[lColumns.size()];
     String[] fields=new String[lColumns.size()];
     String[] aligns=new String[lColumns.size()];
@@ -418,7 +415,7 @@ public static <T>ByteArrayOutputStream  exportExcel(String title, Class class1, 
     HSSFRow row = sheet.createRow(0);
     for (int i = 0; i < headers.length; i++) {
         HSSFCell cell = row.createCell(i);
-        cell.setCellStyle(style);
+        cell.setCellStyle(getHeaderCellStyle(workbook));
         HSSFRichTextString text = new HSSFRichTextString(headers[i]);
         cell.setCellValue(text);
     }
@@ -426,6 +423,8 @@ public static <T>ByteArrayOutputStream  exportExcel(String title, Class class1, 
     // 遍历集合数据，产生数据行
     Iterator<T> it = dataset.iterator();
     int index = 0;
+    HSSFFont font3 = workbook.createFont();
+    font3.setColor(HSSFColor.BLACK.index);
     while (it.hasNext()) {
         index++;
         row = sheet.createRow(index);
@@ -473,8 +472,6 @@ public static <T>ByteArrayOutputStream  exportExcel(String title, Class class1, 
                 // 如果不是图片数据，就利用正则表达式判断textValue是否全部由数字组成
                 if (textValue != null) {
                     HSSFRichTextString richString = new HSSFRichTextString(textValue);
-                    HSSFFont font3 = workbook.createFont();
-                    font3.setColor(HSSFColor.BLACK.index);
                     richString.applyFont(font3);
                     cell.setCellValue(richString);
 /*                    Pattern p = Pattern.compile("^\\d+(\\.\\d+)?$");
@@ -566,4 +563,48 @@ public static  List FileToList(Class c,File file,String first,String filename,in
 	
 	return list;	
 }
+
+	
+	
+	private static void setColumnWidth(HSSFSheet sheet, List<HeadColumn> headColumns) {
+
+		for (int j = 0; j < headColumns.size(); j++) {
+			int width = Integer.parseInt(headColumns.get(j).getWidth());
+			if (width > 0) {
+				if (width > 1000) {
+					sheet.setColumnWidth(j, width);
+				} else {
+					sheet.setColumnWidth(j, (50 * width));
+				}
+			}
+		}
+
+	}
+
+	
+	
+	private static HSSFCellStyle getHeaderCellStyle(HSSFWorkbook wb) {
+
+		HSSFCellStyle cellStyle = wb.createCellStyle();
+		cellStyle.setFont(getHeaderFont(wb));
+		cellStyle.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+		cellStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+
+		cellStyle.setBorderBottom(HSSFCellStyle.BORDER_THIN); // 下边框
+		cellStyle.setBorderLeft(HSSFCellStyle.BORDER_THIN);// 左边框
+		cellStyle.setBorderTop(HSSFCellStyle.BORDER_THIN);// 上边框
+		cellStyle.setBorderRight(HSSFCellStyle.BORDER_THIN);// 右边框
+		return cellStyle;
+	}
+
+	
+	private static HSSFFont getHeaderFont(HSSFWorkbook wb) {
+
+		HSSFFont font = wb.createFont();
+		font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);// 字体加粗
+		font.setFontName("Times New Roman");
+		font.setFontHeightInPoints((short) 8);
+		return font;
+	}
+
 }
