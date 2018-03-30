@@ -415,12 +415,12 @@ public class DictAction extends ActionBase{
 		try {
 			for (Dict dict : list) {
 				dictBIZ.delete(dict);
-				logUtil.logInfo("新增签核类型:"+dict.getType()+" "+dict.getKey());
+				logUtil.logInfo("删除签核类型:"+dict.getType()+" "+dict.getKey());
 			}
 			result.setMessage(Message.DEL_MESSAGE_SUCCESS);
 			result.setStatusCode("200");
 		} catch (Exception e) {
-			logUtil.logInfo("新增签核类型:"+e.getMessage());
+			logUtil.logInfo("删除签核类型:"+e.getMessage());
 			result.setMessage(e.getMessage());
 			result.setStatusCode("300");
 		}
@@ -494,7 +494,7 @@ public class DictAction extends ActionBase{
 				
 			}else{
 				dictBIZ.update(dict);
-				logUtil.logInfo("新增签核类型:"+dict.getType()+" "+dict.getKey());
+				logUtil.logInfo("修改签核类型:"+dict.getType()+" "+dict.getKey());
 				result.setMessage(Message.SAVE_MESSAGE_SUCCESS);
 				result.setStatusCode("200");
 			}
