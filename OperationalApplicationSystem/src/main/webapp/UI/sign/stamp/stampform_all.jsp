@@ -164,8 +164,8 @@ $(function() {
         contextMenuB: true,
         hScrollbar: true,
         filterThead:false,
-        exportOption: {type:'file', options:{url:'exportStampExcel.action?queryType=all', loadingmask:false}},
-        printPDFOption: {type:'file', options:{url:'exportStampPDF.action?queryType=all', loadingmask:false}}
+        exportOption: {type:'file', options:{url:'exportStampExcel.action?queryType=all', loadingmask:true}},
+        printPDFOption: {type:'file', options:{url:'exportStampPDF.action?queryType=all', loadingmask:true}}
     }">
         <thead>
             <tr>

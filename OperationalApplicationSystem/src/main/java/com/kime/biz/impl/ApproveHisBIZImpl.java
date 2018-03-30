@@ -43,7 +43,7 @@ public class ApproveHisBIZImpl extends BizBase implements ApproveHisBIZ{
 	
 	@Override
 	public List getApproveHisByTradeId(String tradeId) {
-		return approveBIZ.getApproveAndChild(tradeId);
+		return approveHisDAO.getApproveHisByTradeId(tradeId);
 	}
 
 	@Override

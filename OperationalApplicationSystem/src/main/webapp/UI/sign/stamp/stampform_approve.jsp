@@ -163,7 +163,7 @@ $(function() {
         contextMenuB: true,
         hScrollbar: true,
         filterThead:false,
-        exportOption: {type:'file', options:{url:'exportStampExcel.action?queryType=approve', loadingmask:false}}
+        exportOption: {type:'file', options:{url:'exportStampExcel.action?queryType=approve', loadingmask:true}}
     }">
         <thead>
             <tr>

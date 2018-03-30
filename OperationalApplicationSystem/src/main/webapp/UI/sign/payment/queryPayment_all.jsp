@@ -133,7 +133,7 @@ function datagrid_paymentState() {
         contextMenuB: true,
         hScrollbar: true,
         filterThead:false,
-        exportOption: {type:'file', options:{url:'exportPaymentExcel.action?queryType=all', loadingmask:false}}
+        exportOption: {type:'file', options:{url:'exportPaymentExcel.action?queryType=all', loadingmask:true}}
     }">
         <thead>
             <tr>

@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.ObjectUtils.Null;
@@ -35,6 +36,7 @@ import com.kime.model.User;
 import com.kime.utils.CommonUtil;
 import com.kime.utils.ExcelUtil;
 import com.kime.utils.TypeChangeUtil;
+import com.opensymphony.xwork2.ActionContext;
 import com.sign.biz.PaymentBIZ;
 import com.sign.model.Payment;
 import com.sign.other.FileSave;
@@ -1188,6 +1190,10 @@ public class PaymentAction extends ActionBase {
         	ByteArrayOutputStream os=ExcelUtil.exportExcel("Payment", c, lPayments, "yyy-MM-dd");
         	byte[] fileContent = os.toByteArray();
         	ByteArrayInputStream is = new ByteArrayInputStream(fileContent);
+        	
+        	HttpServletResponse response = (HttpServletResponse)
+        			ActionContext.getContext().get(org.apache.struts2.StrutsStatics.HTTP_RESPONSE);
+        	response.setHeader("Set-Cookie", "fileDownload=true; path=/");
         	
     		SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");		 
     		fileName = "Payment"+sf.format(new Date()).toString()+ ".xls";

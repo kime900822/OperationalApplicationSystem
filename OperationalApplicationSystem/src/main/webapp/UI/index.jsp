@@ -279,10 +279,10 @@ function hideStampImage(id){ $('#'+id).hide(400)}
                         	
                         	<div id="showStampExplain" class="highlight" style="display:none;position:absolute; left:500px;top:50px;width:400px">
 								<pre class="prettyprint">
-Instruction:
+<font size="3" color="red">Instruction:</font>
 1.正常情况下的盖章用印申请完成时间为申请审批通过的次日下午4点-5点可以至XX领单子。
 2.急件的情况下直接至XX处等待领取
-3.填单样式参考 下图
+3.填单样式参考 下图(点击放大)
 </pre>   
 <img alt="点击查看大图" src="images/temp/stampTemp.png" id="stampTemp"  height="150" width="150" style="left:30px"><br>
 <pre class="prettyprint">

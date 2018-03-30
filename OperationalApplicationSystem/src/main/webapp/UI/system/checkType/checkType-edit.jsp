@@ -11,14 +11,14 @@
 	                $.each(json, function (i, item) {
 	                    $.CurrentDialog.find('#j_checkTyp_edit_Approve').append("<option value='" + item.id + "'>" + item.type + "</option>")           
 	                })
-	                $.CurrentDialog.find('#j_checkTyp_edit_Approve').selectpicker('val','${param.valueExplain}');
+	                $.CurrentDialog.find('#j_checkTyp_edit_Approve').selectpicker().selectpicker('val','${param.valueExplain}');
 	                $.CurrentDialog.find('#j_checkTyp_edit_Approve').selectpicker('refresh');
 			    }
 			})	
 			getUname()
 			
 			
-			$.CurrentDialog.find('#j_checkTyp_edit_checkType').selectpicker('val','${param.key}');
+			$.CurrentDialog.find('#j_checkTyp_edit_checkType').selectpicker().selectpicker('val','${param.key}');
             $.CurrentDialog.find('#j_checkTyp_edit_checkType').selectpicker('refresh');
 			
 		})

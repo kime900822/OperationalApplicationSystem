@@ -12,7 +12,7 @@ $(function(){
 	//获取文件类型
 	BJUI.ajax('doajax', {
 	    url: 'getCheckType4Select.action',
-	    loadingmask: false,
+	    loadingmask: true,
 	    okCallback: function(json, options) {
             $.each(json, function (i, item) {
                 $.CurrentNavtab.find('#j_stamp_documentType').append("<option value='" + item.id + "'>" + item.value + "</option>")           
@@ -255,7 +255,10 @@ function saveStamp(){
 
 function stampApprove(o){
 	
-	bootbox.prompt("Comment?", function (result) {
+	bootbox.prompt({
+		size:"small",
+		title:"Comment?", 
+		callback:function (result) {
 		if(result!=null){
 		if($(o).html()=='√'){
 			status='Approved'
@@ -287,7 +290,8 @@ function stampApprove(o){
 		    }
 		});		
 		}
-	})
+	}
+})
 		             
 		             
 		             
@@ -484,6 +488,10 @@ function setProjectResponsible(){
 }
 
 </script>
+
+
+
+
 <div class="bjui-pageContent">
     <div class="bs-example" style="width:1000px">
         <form id="j_stamp_form" data-toggle="ajaxform">
@@ -592,13 +600,13 @@ function setProjectResponsible(){
 				</tr>
 				<tr>
 					<td>
-						Lend Date <label style="color:red;font-size:12px"><b>*</b></label>:<br>借印日期  <label style="color:red;font-size:12px"><b>*</b></label>:
+						Lend Date:<br>借印日期 :
 					</td>
 					<td>
 						<input type="text" size="19" name="lendDate" data-toggle="datepicker" placeholder="点击选择日期" data-nobtn="true" id="j_stamp_lendDate" value=""  />
 					</td>
 					<td>
-						Give Back Date <label style="color:red;font-size:12px"><b>*</b></label>:<br>归还日期 <label style="color:red;font-size:12px"><b>*</b></label>:
+						Give Back Date:<br>归还日期 :
 					</td>
 					<td>
 						<input type="text" size="19" name="giveBackDate" data-toggle="datepicker" placeholder="点击选择日期" data-nobtn="true" id="j_stamp_giveBackDate" value=""  />
@@ -630,7 +638,7 @@ function setProjectResponsible(){
 						<input type="checkbox" name="urgent"  data-toggle="icheck" id="j_stamp_urgent" value="1" data-label="">
 					</td>
 					<td>
-						Urgent Reason<label style="color:red;font-size:12px"><b>*</b></label>:<br>申请急件原因<label style="color:red;font-size:12px"><b>*</b></label>:
+						Urgent Reason:<br>申请急件原因:
 					</td>
 					<td colspan="3">
 						<input type="text" name="urgentReason" value="" id="j_stamp_urgentReason" size="19"  />

@@ -18,6 +18,7 @@ import java.util.function.Supplier;
 import javax.annotation.Resource;
 import javax.jws.soap.SOAPBinding.Use;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
@@ -759,6 +760,9 @@ public class UserAction extends ActionBase {
                 row.createCell(7).setCellValue(user.getDate());
 			}
             
+        	HttpServletResponse response = (HttpServletResponse)
+        			ActionContext.getContext().get(org.apache.struts2.StrutsStatics.HTTP_RESPONSE);
+        	response.setHeader("Set-Cookie", "fileDownload=true; path=/");
 
             //第七步，将文件存到流中
             ByteArrayOutputStream os = new ByteArrayOutputStream();

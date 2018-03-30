@@ -14,6 +14,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.ParentPackage;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +35,7 @@ import com.kime.model.User;
 import com.kime.utils.CommonUtil;
 import com.kime.utils.ExcelUtil;
 import com.kime.utils.PDFUtil;
+import com.opensymphony.xwork2.ActionContext;
 import com.sign.biz.StampBIZ;
 import com.sign.model.Stamp;
 import com.sign.other.FileSave;
@@ -723,6 +726,10 @@ public class StampAction extends ActionBase{
 					stamp.setDocumentType(documenttype.getValue());
 					
 				}
+				
+	        	HttpServletResponse response = (HttpServletResponse)
+	        			ActionContext.getContext().get(org.apache.struts2.StrutsStatics.HTTP_RESPONSE);
+	        	response.setHeader("Set-Cookie", "fileDownload=true; path=/");
 	    		
 	        	Class c = (Class) new Stamp().getClass();  
 	        	ByteArrayOutputStream os=ExcelUtil.exportExcel("Stamp", c, lStamps, "yyy-MM-dd",lHeadColumns);
@@ -821,6 +828,10 @@ public class StampAction extends ActionBase{
 	        	byte[] fileContent = os.toByteArray();
 	        	ByteArrayInputStream is = new ByteArrayInputStream(fileContent);
 	        	
+	        	HttpServletResponse response = (HttpServletResponse)
+	        			ActionContext.getContext().get(org.apache.struts2.StrutsStatics.HTTP_RESPONSE);
+	        	response.setHeader("Set-Cookie", "fileDownload=true; path=/");
+	        	
 	    		SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");		 
 	    		fileName = "Seal"+sf.format(new Date()).toString()+ ".pdf";
 	    		fileName= new String(fileName.getBytes(), "ISO8859-1");
@@ -832,6 +843,7 @@ public class StampAction extends ActionBase{
 	        	logUtil.logInfo("导出Stamp！"+e.getMessage());
 	            e.printStackTrace();
 	        }
+	        
 
 	        return "success";
 	    }

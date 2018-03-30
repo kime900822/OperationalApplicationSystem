@@ -5208,7 +5208,6 @@
     
     Bjuiajax.prototype.ajaxdownload = function(option) {
         var that = this, $target, options = $.extend({}, {loadingmask: false}, typeof option === 'object' && option)
-        
         $.extend(that.options, options)
         
         if (options.target) {
