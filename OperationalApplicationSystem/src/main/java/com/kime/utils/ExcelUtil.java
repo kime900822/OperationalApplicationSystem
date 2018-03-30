@@ -37,8 +37,10 @@ import org.apache.poi.ss.formula.functions.T;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.DateUtil;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.VerticalAlignment;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.NumberToTextConverter;
@@ -310,7 +312,7 @@ public static <T>ByteArrayOutputStream  exportExcel(String title, Class class1, 
     HSSFWorkbook workbook = new HSSFWorkbook();
     // 生成一个表格
     HSSFSheet sheet = workbook.createSheet(title);
-
+    sheet.setDisplayGridlines(false);
     
     String[] headers=new String[lColumns.size()];
     String[] fields=new String[lColumns.size()];
@@ -333,22 +335,28 @@ public static <T>ByteArrayOutputStream  exportExcel(String title, Class class1, 
     comment.setAuthor("Analysis");
     
     //表名
+    CellStyle cellStyle=getTitleCellStyle(workbook);
     HSSFRow row = sheet.createRow(0);
-    HSSFCell cell = row.createCell(0);
-    cell.setCellStyle(getTitleCellStyle(workbook));
-    HSSFRichTextString text = new HSSFRichTextString(title);
-    cell.setCellValue(text);
+    for (int i = 0; i < headers.length; i++) {
+    HSSFCell cell = row.createCell(i);
+    cell.setCellStyle(cellStyle);
+	    if (i==0) {
+	    	HSSFRichTextString text = new HSSFRichTextString(title);
+	    	cell.setCellValue(text);
+		}
+    }
+    
     //合并
     CellRangeAddress cra =new CellRangeAddress(0, 0, 0, lColumns.size()-1);
     sheet.addMergedRegion(cra);  
     
     // 产生表格标题行
-    CellStyle cellStyle=getHeaderCellStyle(workbook);
+    cellStyle=getHeaderCellStyle(workbook);
     row = sheet.createRow(1);
     for (int i = 0; i < headers.length; i++) {
-        cell = row.createCell(i);
+    	HSSFCell cell = row.createCell(i);
         cell.setCellStyle(cellStyle);
-        text = new HSSFRichTextString(headers[i]);
+        HSSFRichTextString text = new HSSFRichTextString(headers[i]);
         cell.setCellValue(text);
     }
 
@@ -362,7 +370,7 @@ public static <T>ByteArrayOutputStream  exportExcel(String title, Class class1, 
         T t = (T) it.next();
 
         for (int i = 0; i < headers.length; i++) {
-            cell = row.createCell(i);
+        	HSSFCell cell = row.createCell(i);
             cell.setCellStyle(cellStyle);
             String fieldName = fields[i];
             String getMethodName = "get" + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
@@ -402,8 +410,8 @@ public static <T>ByteArrayOutputStream  exportExcel(String title, Class class1, 
                 }
                 // 如果不是图片数据，就利用正则表达式判断textValue是否全部由数字组成
                 if (textValue != null) {
-                    HSSFRichTextString richString = new HSSFRichTextString(textValue);
-                    cell.setCellValue(richString);
+                    HSSFRichTextString text = new HSSFRichTextString(textValue);
+                    cell.setCellValue(text);
                 }
             } catch (SecurityException e) {
                 e.printStackTrace();
@@ -525,10 +533,19 @@ public static  List FileToList(Class c,File file,String first,String filename,in
 	
 	private static HSSFCellStyle getHeaderCellStyle(HSSFWorkbook wb) {
 
+		HSSFFont font = wb.createFont();
+		font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);// 字体加粗
+		font.setFontName("Times New Roman");
+		font.setFontHeightInPoints((short) 8);
+		font.setBold(true);
+		
 		HSSFCellStyle cellStyle = wb.createCellStyle();
-		cellStyle.setFont(getHeaderFont(wb));
+		cellStyle.setFont(font);
 		cellStyle.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
 		cellStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+		cellStyle.setFillPattern(CellStyle.SOLID_FOREGROUND);
+		cellStyle.setFillForegroundColor(HSSFColor.GREY_25_PERCENT.index);
+
 
 		cellStyle.setBorderBottom(HSSFCellStyle.BORDER_THIN); // 下边框
 		cellStyle.setBorderLeft(HSSFCellStyle.BORDER_THIN);// 左边框
@@ -539,8 +556,14 @@ public static  List FileToList(Class c,File file,String first,String filename,in
 
 	private static HSSFCellStyle getTitleCellStyle(HSSFWorkbook wb) {
 
+		HSSFFont font = wb.createFont();
+		font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);// 字体加粗
+		font.setFontName("Times New Roman");
+		font.setFontHeightInPoints((short) 14);
+		font.setBold(true);
+		
 		HSSFCellStyle cellStyle = wb.createCellStyle();
-		cellStyle.setFont(getHeaderFont(wb));
+		cellStyle.setFont(font);
 		cellStyle.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
 		cellStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER);
 
@@ -549,23 +572,9 @@ public static  List FileToList(Class c,File file,String first,String filename,in
 		cellStyle.setBorderTop(HSSFCellStyle.BORDER_THIN);// 上边框
 		cellStyle.setBorderRight(HSSFCellStyle.BORDER_THIN);// 右边框
 		
-		HSSFFont font = wb.createFont();
-		font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);// 字体加粗
-		font.setFontName("Times New Roman");
-		font.setFontHeightInPoints((short) 14);
-		font.setBold(true);
+
 		
 		return cellStyle;
 	}
 	
-	private static HSSFFont getHeaderFont(HSSFWorkbook wb) {
-
-		HSSFFont font = wb.createFont();
-		font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);// 字体加粗
-		font.setFontName("Times New Roman");
-		font.setFontHeightInPoints((short) 8);
-		font.setBold(true);
-		return font;
-	}
-
 }

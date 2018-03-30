@@ -28,10 +28,12 @@ import org.springframework.stereotype.Controller;
 
 import com.analysis.model.Source;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.kime.base.ActionBase;
 import com.kime.biz.DictBIZ;
 import com.kime.infoenum.Message;
 import com.kime.model.Dict;
+import com.kime.model.HeadColumn;
 import com.kime.model.User;
 import com.kime.utils.CommonUtil;
 import com.kime.utils.ExcelUtil;
@@ -1141,6 +1143,7 @@ public class PaymentAction extends ActionBase {
     public String exportPaymentExcel() {
         try {
         	User user=(User)session.getAttribute("user");
+        	List<HeadColumn> lHeadColumns=new Gson().fromJson(thead, new TypeToken<ArrayList<HeadColumn>>() {}.getType());
         	
     		String hql="";
     		String where="";
@@ -1187,7 +1190,7 @@ public class PaymentAction extends ActionBase {
     		}
     		List<Payment> lPayments=paymentBIZ.getPaymentByHql(hql);
         	Class c = (Class) new Payment().getClass();  
-        	ByteArrayOutputStream os=ExcelUtil.exportExcel("Payment", c, lPayments, "yyy-MM-dd");
+        	ByteArrayOutputStream os=ExcelUtil.exportExcel("Payment", c, lPayments, "yyy-MM-dd",lHeadColumns);
         	byte[] fileContent = os.toByteArray();
         	ByteArrayInputStream is = new ByteArrayInputStream(fileContent);
         	
