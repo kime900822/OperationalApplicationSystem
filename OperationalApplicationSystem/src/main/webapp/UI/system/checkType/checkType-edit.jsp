@@ -96,7 +96,7 @@
 </div>
 <div class="bjui-pageFooter">
     <ul>
-        <li><button type="button" class="btn-close" data-icon="close">Cancle</button></li>
+        <li><button type="button" class="btn-close" data-icon="close">Cancel</button></li>
         <li><button type="submit" class="btn-default" data-icon="save">Save</button></li>
     </ul>
 </div>

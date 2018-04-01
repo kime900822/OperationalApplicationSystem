@@ -80,7 +80,7 @@ public class ApproveBIZImpl extends BizBase implements ApproveBIZ {
 		String log="";
 		try {
 			for (Approve approve : approves) {
-				List<Approve> list=approveDAO.query(" where ParentID='"+approve.getId()+"' or ID= '"+approve.getId()+"' ");
+				List<Approve> list= getApproveAndChild(approve.getId());
 				for (Approve dApprove : list) {
 					approveDAO.delete(dApprove);
 					log+=" 删除签核步骤成功:"+dApprove.getType()+" "+dApprove.getUname()+" /r/n";

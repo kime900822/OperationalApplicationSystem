@@ -4,7 +4,9 @@
 <script type="text/javascript">
 $(function(){
 	var today = new Date().formatDate('yyyy-MM-dd');
+	var chopDate=new Date(new Date().setDate(new Date().getDate()+5)).formatDate('yyyy-MM-dd');
 	$.CurrentNavtab.find('#j_stamp_applicationDate').val(today);
+	$.CurrentNavtab.find('#j_stamp_chopDate').val(chopDate);
 	
 	if('${param.id}'!=null&&'${param.id}'!=''){
 		dataToFaceStamp('${param.id}');
@@ -237,7 +239,7 @@ function saveStamp(){
             	 $.CurrentNavtab.find("#j_stamp_id").val(json.params.id);
             	 $.CurrentNavtab.find("#j_stamp_applicationCode").val(json.params.applicationCode);
             	 showButtonStamp('0');
-               	 BJUI.alertmsg('confirm', '保存成功，是否提交？',{
+               	 BJUI.alertmsg('confirm', 'Save successfully, submit or not ? ',{
              		    okCall: function() {
              		    	submitStamp();
            		    	 }	  
@@ -440,6 +442,12 @@ function checkSaveStamp(o){
 	if(o.formFillerID==null||o.formFillerID==''||o.formFillerID==undefined){
 		err+= "数据异常，用户为空，请刷新页面重新填写！"; 
 	}
+	if($.CurrentNavtab.find('#j_stamp_projectResponsible').find('option').length>1){
+		if($.CurrentNavtab.find('#j_stamp_projectResponsible').val()==null||$.CurrentNavtab.find('#j_stamp_projectResponsible').val()==''){
+			err+= "Project Responsible can`t be  empty！<br>"; 
+		}
+	}
+
 	return err;
 }
 
@@ -468,7 +476,9 @@ function getUser() {
 
 function setProjectResponsible(){
 	var type=$.CurrentNavtab.find('#j_stamp_documentType').val();
-	$.CurrentNavtab.find('#j_stamp_projectResponsible').find('option').remove().selectpicker('refresh');
+	$.CurrentNavtab.find('#j_stamp_projectResponsible').find('option').remove().append("<option value=''></option>").selectpicker('refresh');
+	$.CurrentNavtab.find('#j_stamp_projectResponsible').append("<option value=''></option>").selectpicker('refresh');
+	
 	//获取一级签核人员
 	BJUI.ajax('doajax', {
 	    url: 'getFirstApproveOfStamp4Select.action',
@@ -567,16 +577,18 @@ function setProjectResponsible(){
 					<td>
 						Document Type <label style="color:red;font-size:12px"><b>*</b></label>:<br>文件类型  <label style="color:red;font-size:12px"><b>*</b></label>:
 					</td>
-					<td>
-						<select name="documentType" data-toggle="selectpicker" id="j_stamp_documentType" data-rule="required" data-width="190px" onchange="setProjectResponsible()">
+					<td colspan="3">
+						<select name="documentType" data-toggle="selectpicker" id="j_stamp_documentType" data-rule="required" data-width="500px" onchange="setProjectResponsible()">
                         	<option value="" selected></option>
                     	</select>
 					</td>
+				</tr>
+				<tr>
 					<td>
 						Project Responsible:<br>审批人选择 :
 					</td>
-					<td>
-						<select name="projectResponsible" data-toggle="selectpicker" id="j_stamp_projectResponsible" data-width="190px" >
+					<td colspan="3">
+						<select name="projectResponsible" data-toggle="selectpicker" id="j_stamp_projectResponsible" data-width="500px" >
                         	<option value="" selected></option>
                         </select>
 					</td>					
