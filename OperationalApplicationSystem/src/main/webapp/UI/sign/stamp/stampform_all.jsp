@@ -156,7 +156,7 @@ $(function() {
         dataType: 'jsonp',
         showToolbar: true,
         toolbarItem: 'export,printPDF',
-        editMode: {navtab:{width:'830',height:800,title:'Edit stamp',mask:true,fresh:true}},
+        editMode: {navtab:{width:'830',height:800,title:'Edit Seal',mask:true,fresh:true}},
         delUrl:'deleteUser.action',
         editUrl: 'sign/stamp/stampform.jsp',
         paging: {pageSize:30, pageCurrent:1},

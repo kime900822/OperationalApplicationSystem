@@ -54,16 +54,9 @@ public class ApproveAction extends ActionBase{
 	private String comment;
 	private String status;
 	private String date;
-	private String approveId;
+
 	
 	
-	
-	public String getApproveId() {
-		return approveId;
-	}
-	public void setApproveId(String approveId) {
-		this.approveId = approveId;
-	}
 	public ApproveHisBIZ getApproveHisBIZ() {
 		return approveHisBIZ;
 	}
@@ -342,9 +335,9 @@ public class ApproveAction extends ActionBase{
 	public String submitApprove() throws UnsupportedEncodingException{	
 		ApproveHis approveHis=new ApproveHis();
 		try {
-			approveHis=approveHisBIZ.save(approveId, comment, status, tradeId,type);
+			approveHis=approveHisBIZ.save(level, comment, status, tradeId,type);
 			result.setStatusCode("200");
-			result.setMessage(status);
+			result.setMessage("Success");
 		} catch (Exception e) {
 			result.setStatusCode("300");
 			result.setMessage(e.getMessage());

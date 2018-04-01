@@ -14,6 +14,7 @@ import com.sign.dao.PaymentDAO;
 import com.sign.dao.StampDAO;
 import com.sign.model.Payment;
 import com.sign.model.Stamp;
+import com.sign.model.StampApprove;
 
 @Repository
 public class StampDAOImpl extends HibernateDaoSupport implements StampDAO{
@@ -58,8 +59,13 @@ public class StampDAOImpl extends HibernateDaoSupport implements StampDAO{
 	public List<Stamp> queryHql(String hql, Integer pageSize, Integer pageCurrent) {
 		Session session=this.getSessionFactory().openSession();
 		return session.createQuery(hql).setFirstResult((pageCurrent-1)*pageSize).setMaxResults(pageSize).list();
-	}  
-	
+	}
+	@Override
+	public void save(StampApprove stampApprove) {
+		this.getHibernateTemplate().save(stampApprove);
+	}
+
+
 
 
 }

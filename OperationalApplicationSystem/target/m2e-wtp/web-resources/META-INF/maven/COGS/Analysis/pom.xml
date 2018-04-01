@@ -132,11 +132,7 @@
 	    <artifactId>aopalliance</artifactId>
 	    <version>1.0</version>
 	</dependency>
-	<dependency>
-	    <groupId>org.springframework.boot</groupId>
-	    <artifactId>spring-boot-starter-aop</artifactId>
-	    <version>1.4.1.RELEASE</version>
-	</dependency>
+
 	<!-- aop -->
 
 
@@ -231,6 +227,6 @@
             
   </dependencies>
   <build>
-    <finalName>Analysis</finalName>
+    <finalName>OperationalApplicationSystem</finalName>
   </build>
 </project>

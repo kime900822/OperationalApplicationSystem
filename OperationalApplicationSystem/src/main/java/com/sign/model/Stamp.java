@@ -1,5 +1,6 @@
 package com.sign.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -9,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -80,24 +82,32 @@ public class Stamp {
 	private String state;
 	@Column
 	private String nextApprover;
-	@Transient
-	private List<Approve> approve;
-	@Transient
-	private List<ApproveHis> approveHis;
+	@OneToMany(cascade = CascadeType.REFRESH)
+	@JoinColumn(name="tradeId")
+	private List<ApproveHis> approveHis = new ArrayList<>();
+	@OneToMany(cascade = CascadeType.REFRESH)
+	@JoinColumn(name="tradeId")
+	private List<StampApprove> stampApprove = new ArrayList<>();
 	
 	
 	
-	public String getUrgentReason() {
-		return urgentReason;
-	}
-	public void setUrgentReason(String urgentReason) {
-		this.urgentReason = urgentReason;
-	}
 	public String getNextApprover() {
 		return nextApprover;
 	}
 	public void setNextApprover(String nextApprover) {
 		this.nextApprover = nextApprover;
+	}
+	public List<StampApprove> getStampApprove() {
+		return stampApprove;
+	}
+	public void setStampApprove(List<StampApprove> stampApprove) {
+		this.stampApprove = stampApprove;
+	}
+	public String getUrgentReason() {
+		return urgentReason;
+	}
+	public void setUrgentReason(String urgentReason) {
+		this.urgentReason = urgentReason;
 	}
 	public String getDateTmp() {
 		return dateTmp;
@@ -251,12 +261,6 @@ public class Stamp {
 	}
 	public String getUrgent() {
 		return urgent;
-	}
-	public List<Approve> getApprove() {
-		return approve;
-	}
-	public void setApprove(List<Approve> approve) {
-		this.approve = approve;
 	}
 	public List<ApproveHis> getApproveHis() {
 		return approveHis;

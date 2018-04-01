@@ -379,7 +379,7 @@ public class StampAction extends ActionBase{
 			    		if (id!=null&&!id.equals("")) {
 							Stamp t=stampBIZ.getStamp(" where id='"+id+"'").get(0);
 							t.setAttacmentUpload(t.getAttacmentUpload().replaceAll(dfile+"|", ""));
-							stampBIZ.updateStamp(t);
+							stampBIZ.update(t);
 						}
 		    			result.setMessage("Delete Success!");
 						result.setStatusCode("200");
@@ -407,7 +407,7 @@ public class StampAction extends ActionBase{
 				})})
 		public String submitStamp() throws UnsupportedEncodingException{
 			try {
-				Stamp stamp=new Gson().fromJson(json, Stamp.class);	
+ 				Stamp stamp=new Gson().fromJson(json, Stamp.class);	
 				
 				if (stamp.getFormFillerID()==null||stamp.getFormFillerID().equals("")) {
 					result.setMessage("User can`t be NULL,Plese reflash page!");
@@ -433,7 +433,7 @@ public class StampAction extends ActionBase{
 					stamp=stampBIZ.getStamp(" where id='"+id+"' ").get(0);					
 					stamp.setDateTmp(CommonUtil.getDateTemp());
 					stamp.setState(StampState.APPROVE);
-					stampBIZ.updateStamp(stamp);				
+					stampBIZ.update(stamp);		
 					result.setMessage(Message.SAVE_MESSAGE_SUCCESS);
 					result.setStatusCode("200");
 					Map<String, String> map=new HashMap<>();
@@ -484,7 +484,7 @@ public class StampAction extends ActionBase{
 
 					
 					stamp.setDateTmp(CommonUtil.getDateTemp());
-					stampBIZ.updateStamp(stamp);				
+					stampBIZ.update(stamp);				
 					result.setMessage(Message.SAVE_MESSAGE_SUCCESS);
 					result.setStatusCode("200");
 					Map<String, String> map=new HashMap<>();
@@ -588,7 +588,7 @@ public class StampAction extends ActionBase{
 				hql=" select P from Stamp P where P.formFillerID='"+user.getUid()+"' "+where+" order By P.dateTmp desc";
 			}
 			if ("approve".equals(queryType)) {
-				hql="select P from Stamp P left join ApproveHis A on P.id=A.tradeId where (P.nextApprover='"+user.getUid()+"' OR A.uId='"+user.getUid()+"' )  " +where+" order By P.dateTmp desc";
+				hql="select P from Stamp P left join StampApprove B on P.id=B.tradeId left join ApproveHis A on  A.level=B.level and P.id=A.tradeId  where (B.uid='"+user.getUid()+"' and A.id is null) OR A.uId='"+user.getUid()+"' )  " +where+" order By P.dateTmp desc";
 			}
 			if ("all".equals(queryType)) {
 				hql=" select P from Stamp P where 1=1 "+where+" order By P.dateTmp desc";
@@ -598,12 +598,15 @@ public class StampAction extends ActionBase{
 			int total=stampBIZ.getStampByHql(hql).size();
 			
 			for (Stamp stamp : list) {
-				String tmp=stamp.getStampType().substring(0, stamp.getStampType().length()-1);
+				String tmp="";
+				if(stamp.getStampType().indexOf("|")>0)
+					tmp=stamp.getStampType().substring(0, stamp.getStampType().length()-1);
+				else
+					tmp=stamp.getStampType();
 				stamp.setStampType(tmp.replace("|", "<br>"));
 				tmp=stamp.getUsageDescription();
 				stamp.setUsageDescription(tmp.replace("/r/n", "<br>"));
 				tmp="";
-				stamp.setApproveHis(approveHisBIZ.getApproveHisByTradeId(stamp.getId()));
 				if ( stamp.getApproveHis()!=null) {
 					for (ApproveHis approveHis : stamp.getApproveHis()) {
 						tmp+=approveHis.getuName()+"|";					
@@ -701,7 +704,7 @@ public class StampAction extends ActionBase{
 					hql=" select P from Stamp P where P.formFillerID='"+user.getUid()+"' "+where+" order By P.dateTmp desc";
 				}
 				if ("approve".equals(queryType)) {
-					hql=" select P from Stamp P  where P.nextApprove='"+user.getUid()+"' "+where+" order By P.dateTmp desc";
+					hql="select P from Stamp P left join StampApprove B on P.id=B.tradeId left join ApproveHis A on  A.level=B.level and P.id=A.tradeId  where (B.uid='"+user.getUid()+"' and A.id is null) OR A.uId='"+user.getUid()+"' )  " +where+" order By P.dateTmp desc";
 				}
 				if ("all".equals(queryType)) {
 					hql=" select P from Stamp P where 1=1 "+where+" order By P.dateTmp desc";
@@ -711,7 +714,6 @@ public class StampAction extends ActionBase{
 	    		
 				for (Stamp stamp : lStamps) {
 					String tmp="";
-					stamp.setApproveHis(approveHisBIZ.getApproveHisByTradeId(stamp.getId()));
 					if ( stamp.getApproveHis()!=null) {
 						for (ApproveHis approveHis : stamp.getApproveHis()) {
 							tmp+=approveHis.getuName()+"  ";					
@@ -797,7 +799,7 @@ public class StampAction extends ActionBase{
 					hql=" select P from Stamp P where P.formFillerID='"+user.getUid()+"' "+where+" order By P.dateTmp desc";
 				}
 				if ("approve".equals(queryType)) {
-					hql=" select P from Stamp P  where P.nextApprove='"+user.getUid()+"' "+where+" order By P.dateTmp desc";
+					hql="select P from Stamp P left join StampApprove B on P.id=B.tradeId left join ApproveHis A on  A.level=B.level and P.id=A.tradeId  where (B.uid='"+user.getUid()+"' and A.id is null) OR A.uId='"+user.getUid()+"' )  " +where+" order By P.dateTmp desc";
 				}
 				if ("all".equals(queryType)) {
 					hql=" select P from Stamp P where 1=1 "+where+" order By P.dateTmp desc";
@@ -807,7 +809,6 @@ public class StampAction extends ActionBase{
 	    		
 				for (Stamp stamp : lStamps) {
 					String tmp="";
-					stamp.setApproveHis(approveHisBIZ.getApproveHisByTradeId(stamp.getId()));
 					if ( stamp.getApproveHis()!=null) {
 						for (ApproveHis approveHis : stamp.getApproveHis()) {
 							tmp+=approveHis.getuName()+"  ";					

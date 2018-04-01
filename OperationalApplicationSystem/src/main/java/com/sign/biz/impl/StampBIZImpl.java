@@ -2,6 +2,7 @@ package com.sign.biz.impl;
 
 import java.io.ByteArrayInputStream;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -26,10 +27,12 @@ import com.kime.model.User;
 import com.sign.biz.StampBIZ;
 import com.sign.dao.StampDAO;
 import com.sign.model.Stamp;
+import com.sign.model.StampApprove;
 import com.sign.other.StampState;
+
 @Service
-@Transactional(readOnly=true)
-public class StampBIZImpl extends BizBase implements StampBIZ{
+@Transactional(readOnly = true)
+public class StampBIZImpl extends BizBase implements StampBIZ {
 
 	@Autowired
 	private StampDAO stamDAO;
@@ -40,12 +43,9 @@ public class StampBIZImpl extends BizBase implements StampBIZ{
 	@Autowired
 	private ApproveBIZ approveBIZ;
 	@Autowired
-	private ApproveHisDAO approveHisDAO;
-	@Autowired
 	private UserBIZ userBIZ;
 	@Autowired
 	DepartmentBIZ departmentBIZ;
-	
 
 	@Override
 	public ByteArrayInputStream export() {
@@ -54,17 +54,17 @@ public class StampBIZImpl extends BizBase implements StampBIZ{
 	}
 
 	@Override
-	@Transactional(readOnly=false,propagation=Propagation.REQUIRED,rollbackFor=Exception.class )
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void saveStamp(Stamp stamp) {
 		stamDAO.save(stamp);
-		logUtil.logInfo("用章申请单保存成功："+stamp.getApplicationCode());
+		logUtil.logInfo("用章申请单保存成功：" + stamp.getApplicationCode());
 	}
 
 	@Override
-	@Transactional(readOnly=false,propagation=Propagation.REQUIRED,rollbackFor=Exception.class )
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void submitStamp(Stamp stamp) throws Exception {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -80,73 +80,39 @@ public class StampBIZImpl extends BizBase implements StampBIZ{
 
 	@Override
 	public Stamp getStampById(String id) throws Exception {
-		Stamp stamp=stamDAO.query(" where id='"+id+"' ").get(0);
-		if (stamp.getProjectResponsible()!=null&&!stamp.getProjectResponsible().equals("")) {
-			Dict approveType=dictDAO.query(" where id='"+stamp.getDocumentType()+"'").get(0);	
-			List<Approve> lApproves=approveBIZ.getApproveAndChild(approveType.getValueExplain());
-			List<User> lUsers=userBIZ.getUser(" where uid='"+stamp.getProjectResponsible()+"'");
-			if (lUsers.size()>0) {
-				lApproves.get(0).setUid(lUsers.get(0).getUid());
-				lApproves.get(0).setUname(lUsers.get(0).getName());
-				lApproves.get(0).setDid(lUsers.get(0).getDid());
-				lApproves.get(0).setDname(lUsers.get(0).getDepartment().getName());
-			}
-			
-			stamp.setApprove(lApproves);
-		}else{
-			Dict approveType=dictDAO.query(" where id='"+stamp.getDocumentType()+"'").get(0); 
-			List<Approve> lApproves=approveBIZ.getApproveAndChild(approveType.getValueExplain());
-			if (lApproves.get(0).getUid().equals("Dept. Head")) {
-				List<Department> lDepartments=departmentBIZ.queryDepartment(" where did='"+stamp.getDepartmentOfApplicantID()+"'");
-				if (lDepartments.size()>0) {
-					List<User> lUsers=userBIZ.getUser(" where uid='"+lDepartments.get(0).getUid()+"'");
-					if (lUsers.size()>0) {
-						lApproves.get(0).setUid(lUsers.get(0).getUid());
-						lApproves.get(0).setUname(lUsers.get(0).getName());
-						lApproves.get(0).setDid(lUsers.get(0).getDid());
-						lApproves.get(0).setDname(lUsers.get(0).getDepartment().getName());
-					}else{
-						throw new Exception(" Department Manager is null");
-					}					
-				}else{
-					throw new Exception(" Department is null");
-				}
-				
-			}
-			stamp.setApprove(lApproves);
-		}
-		stamp.setApproveHis(approveHisDAO.getApproveHisByTradeId(stamp.getId()));
+		Stamp stamp = stamDAO.query(" where id='" + id + "' ").get(0);
 		return stamp;
 	}
 
 	@Override
 	public String getMaxCode() {
-		Date d=new Date();
-		SimpleDateFormat sdf=new SimpleDateFormat("yyyyMM");
-		String hql="SELECT MAX(P.applicationCode) FROM Stamp P where SUBSTR(P.applicationCode,2,6)='"+sdf.format(d)+"'";
-		List list= commonDAO.queryByHql(hql);
-		if (list.size()>0) { 
-			String mcode=(String)list.get(0);
-			if (mcode!=null&&!mcode.equals("")) {
-				
-				return  "S"+String.valueOf(Long.valueOf(mcode.replace("S", ""))+1);
-			}		
+		Date d = new Date();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMM");
+		String hql = "SELECT MAX(P.applicationCode) FROM Stamp P where SUBSTR(P.applicationCode,2,6)='" + sdf.format(d)
+				+ "'";
+		List list = commonDAO.queryByHql(hql);
+		if (list.size() > 0) {
+			String mcode = (String) list.get(0);
+			if (mcode != null && !mcode.equals("")) {
+
+				return "S" + String.valueOf(Long.valueOf(mcode.replace("S", "")) + 1);
+			}
 		}
-			return "S"+sdf.format(d)+"0001";
+		return "S" + sdf.format(d) + "0001";
 	}
 
 	@Override
-	@Transactional(readOnly=false,propagation=Propagation.REQUIRED,rollbackFor=Exception.class )
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void approveStamp(Stamp stamp) throws Exception {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
-	@Transactional(readOnly=false,propagation=Propagation.REQUIRED,rollbackFor=Exception.class )
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void rejectStamp(Stamp stamp) throws Exception {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -159,44 +125,88 @@ public class StampBIZImpl extends BizBase implements StampBIZ{
 		return stamDAO.queryHql(hql);
 	}
 
+	
+	
+
 	@Override
-	@Transactional(readOnly=false,propagation=Propagation.REQUIRED,rollbackFor=Exception.class )
-	public void updateStamp(Stamp stamp) throws Exception {
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void update(Stamp stamp) throws Exception {
 		if (stamp.getState().equals(StampState.APPROVE)) {
-			if (stamp.getProjectResponsible()!=null&&!stamp.getProjectResponsible().equals("")) {
-				stamp.setNextApprover(stamp.getProjectResponsible());
-			}else{
-				Dict approveType=dictDAO.query(" where id='"+stamp.getDocumentType()+"'").get(0);		
-				Approve approve=(Approve)approveBIZ.query(" where id='"+approveType.getValueExplain()+"' and level=0 ").get(0);
-				if (approve.getUid().equals("Dept. Head")) {
-					List<Department> lDepartments=departmentBIZ.queryDepartment(" where did='"+stamp.getDepartmentOfApplicantID()+"'");
-					if (lDepartments.size()>0) {
-						List<User> lUsers=userBIZ.getUser(" where uid='"+lDepartments.get(0).getUid()+"'");
-						if (lUsers.size()>0) {
-							stamp.setNextApprover(lUsers.get(0).getUid());				
-						}else{
+			List<StampApprove> lStampApprove = new ArrayList<>();
+			if (stamp.getProjectResponsible() != null && !stamp.getProjectResponsible().equals("")) {
+				Dict approveType = dictDAO.query(" where id='" + stamp.getDocumentType() + "'").get(0);
+				List<Approve> lApproves = approveBIZ.getApproveAndChild(approveType.getValueExplain());			
+				for (Approve approve : lApproves) {
+					StampApprove tmp = new StampApprove();
+					tmp.setUid(approve.getUid());
+					tmp.setDid(approve.getDid());
+					tmp.setName(approve.getName());
+					tmp.setUname(approve.getUname());
+					tmp.setDname(approve.getDname());
+					tmp.setLevel(approve.getLevel());
+					lStampApprove.add(tmp);
+				}
+
+				List<User> lUsers = userBIZ.getUser(" where uid='" + stamp.getProjectResponsible() + "'");
+				if (lUsers.size() > 0) {
+					lStampApprove.get(0).setUid(lUsers.get(0).getUid());
+					lStampApprove.get(0).setUname(lUsers.get(0).getName());
+					lStampApprove.get(0).setDid(lUsers.get(0).getDid());
+					lStampApprove.get(0).setDname(lUsers.get(0).getDepartment().getName());
+				}
+
+				stamp.setStampApprove(lStampApprove);
+
+			} else {
+				Dict approveType = dictDAO.query(" where id='" + stamp.getDocumentType() + "'").get(0);
+				List<Approve> lApproves = approveBIZ.getApproveAndChild(approveType.getValueExplain());
+				if (lApproves.get(0).getUid().equals("Dept. Head")) {
+					List<Department> lDepartments = departmentBIZ
+							.queryDepartment(" where did='" + stamp.getDepartmentOfApplicantID() + "'");
+					if (lDepartments.size() > 0) {
+						List<User> lUsers = userBIZ.getUser(" where uid='" + lDepartments.get(0).getUid() + "'");
+						if (lUsers.size() > 0) {
+							lApproves.get(0).setUid(lUsers.get(0).getUid());
+							lApproves.get(0).setUname(lUsers.get(0).getName());
+							lApproves.get(0).setDid(lUsers.get(0).getDid());
+							lApproves.get(0).setDname(lUsers.get(0).getDepartment().getName());
+						} else {
 							throw new Exception(" Department Manager is null");
 						}
-					}
-					else{
+					} else {
 						throw new Exception(" Department is null");
 					}
+
 				}
-				stamp.setNextApprover(approve.getUid());
+				for (Approve approve : lApproves) {
+					StampApprove tmp = new StampApprove();
+					tmp.setUid(approve.getUid());
+					tmp.setName(approve.getName());
+					tmp.setDid(approve.getDid());
+					tmp.setUname(approve.getUname());
+					tmp.setDname(approve.getDname());
+					tmp.setLevel(approve.getLevel());
+					lStampApprove.add(tmp);
+				}
+
+			}
+			for (StampApprove approve : lStampApprove) {
+				stamDAO.save(approve);
 			}
 		}
+
+		stamp.setApproveHis(null);
 		stamDAO.update(stamp);
-		logUtil.logInfo("用章申请单更新成功："+stamp.getApplicationCode());
-		
+		logUtil.logInfo("用章申请单更新成功：" + stamp.getApplicationCode());
+
 	}
 
 	@Override
-	@Transactional(readOnly=false,propagation=Propagation.REQUIRED,rollbackFor=Exception.class )
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void deleteStamp(Stamp stamp) {
 		stamDAO.delete(stamp);
-		logUtil.logInfo("用章申请单删除成功："+stamp.getApplicationCode());
-		
+		logUtil.logInfo("用章申请单删除成功：" + stamp.getApplicationCode());
+
 	}
 
-	
 }

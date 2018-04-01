@@ -8,9 +8,7 @@ $(function(){
 	$.CurrentNavtab.find('#j_stamp_applicationDate').val(today);
 	$.CurrentNavtab.find('#j_stamp_chopDate').val(chopDate);
 	
-	if('${param.id}'!=null&&'${param.id}'!=''){
-		dataToFaceStamp('${param.id}');
-	}
+
 	//获取文件类型
 	BJUI.ajax('doajax', {
 	    url: 'getCheckType4Select.action',
@@ -20,9 +18,13 @@ $(function(){
                 $.CurrentNavtab.find('#j_stamp_documentType').append("<option value='" + item.id + "'>" + item.value + "</option>")           
             })
             $.CurrentNavtab.find('#j_stamp_documentType').selectpicker('refresh');
+        	if('${param.id}'!=null&&'${param.id}'!=''){
+        		dataToFaceStamp('${param.id}');
+        	}
 	    }
 	})	
 	
+
 	
 })
 
@@ -55,7 +57,7 @@ function dataToFaceStamp(id){
 	    data:{id:id},	    
 	    okCallback: function(json, options) {
 	    	if(json.status='200'){
-	    		$.CurrentNavtab.find('#upfile_attacment_list').children().eq(0).siblings().remove();
+
 	    		
 	    		$.CurrentNavtab.find("#j_stamp_applicationDate").val(json.applicationDate);
 	    		$.CurrentNavtab.find("#j_stamp_applicationCode").val(json.applicationCode);
@@ -82,9 +84,9 @@ function dataToFaceStamp(id){
 	    		var stype=json.stampType.split('|');
         		
         		$.each(stype,function(i,item){
-					if(item=='CompanyChop')
+					if(item=='Company Chop')
 						$.CurrentNavtab.find("#j_stamp_companyChop").iCheck('check'); 
-					if(item=='LegalDeputyChop')
+					if(item=='Legal Deputy Chop')
 						$.CurrentNavtab.find("#j_stamp_legalDeputyChop").iCheck('check'); 
         		})
         		
@@ -93,7 +95,8 @@ function dataToFaceStamp(id){
         			b=true;
         		}
         		
-        		
+        		$.CurrentNavtab.find('#upfile_attacment_list').children().children().eq(0).siblings().remove();
+
 	    		if(json.attacmentUpload!=undefined&&json.attacmentUpload!=""){
             		var file=json.attacmentUpload.split('|');
             		
@@ -119,36 +122,35 @@ function dataToFaceStamp(id){
         						
         		}
 	    		
-	    		if(json.approve!=undefined&&json.approve!=""){	    			
-	    			$.each(json.approve,function(i,item){	 
+	    		if(json.stampApprove!=undefined&&json.approve!=""){	    			
+	    			$.each(json.stampApprove,function(i,item){	 
 	    				if(isReject){
 		    				if(i==0){
 		    					if('${user.uid}'==item.uid){
-				    				obj.append("<tr><td>"+item.name+"</td><td style='display:none'>"+item.id+"</td><td>"+item.uid+"</td><td>"+item.uname+"</td><td>"+item.did+"</td><td></td><td></td><td></td><td><button type='button' id='stamp-approve' class='btn btn-success' vstyle='width:50px;' onclick='stampApprove(this)'   >√</button>&nbsp;&nbsp;<button type='button' id='stamp-reject'  style='width:50px;' class='btn btn-danger' onclick='stampApprove(this)' >×</button></td></tr>");	    				
+				    				obj.append("<tr><td>"+item.name+"</td><td style='display:none'>"+item.level+"</td><td>"+item.uid+"</td><td>"+item.uname+"</td><td>"+item.did+"</td><td></td><td></td><td></td><td><button type='button' id='stamp-approve' class='btn btn-success' style='width:50px;' onclick='stampApprove(this)'   >√</button>&nbsp;&nbsp;<button type='button' id='stamp-reject'  style='width:50px;' class='btn btn-danger' onclick='stampApprove(this)' >×</button></td></tr>");	    				
 		    					}else{
-				    				obj.append("<tr><td>"+item.name+"</td><td style='display:none'>"+item.id+"</td><td>"+item.uid+"</td><td>"+item.uname+"</td><td>"+item.did+"</td><td></td><td></td><td></td><td></td></tr>");	    				
+				    				obj.append("<tr><td>"+item.name+"</td><td style='display:none'>"+item.level+"</td><td>"+item.uid+"</td><td>"+item.uname+"</td><td>"+item.did+"</td><td></td><td></td><td></td><td></td></tr>");	    				
 		    					}
 		    				
 		    				}else{
-			    				obj.append("<tr><td>"+item.name+"</td><td style='display:none'>"+item.id+"</td><td>"+item.uid+"</td><td>"+item.uname+"</td><td>"+item.did+"</td><td></td><td></td><td></td><td></td></tr>");	    				
+			    				obj.append("<tr><td>"+item.name+"</td><td style='display:none'>"+item.level+"</td><td>"+item.uid+"</td><td>"+item.uname+"</td><td>"+item.did+"</td><td></td><td></td><td></td><td></td></tr>");	    				
 		    				}
 	    				}else{
 	    					if(i>maxLevel){
 			    				if(i==maxLevel+1){
-			    					if('${user.uid}'==item.uid){
-				    				obj.append("<tr><td>"+item.name+"</td><td style='display:none'>"+item.id+"</td><td>"+item.uid+"</td><td>"+item.uname+"</td><td>"+item.did+"</td><td></td><td></td><td></td><td><button type='button' id='stamp-approve' class='btn btn-success' style='width:50px;' onclick='stampApprove(this)'   >√</button>&nbsp;&nbsp;<button type='button' id='stamp-reject'  style='width:50px;' class='btn btn-danger' onclick='stampApprove(this)' >×</button></td></tr>");	    				
+			    					if('${user.uid}'==item.uid){			    						
+				    					obj.append("<tr><td>"+item.name+"</td><td style='display:none'>"+item.level+"</td><td>"+item.uid+"</td><td>"+item.uname+"</td><td>"+item.did+"</td><td></td><td></td><td></td><td><button type='button' id='stamp-approve' class='btn btn-success' style='width:50px;' onclick='stampApprove(this)'   >√</button>&nbsp;&nbsp;<button type='button' id='stamp-reject'  style='width:50px;' class='btn btn-danger' onclick='stampApprove(this)' >×</button></td></tr>");	    				
 			    					}else{
-					    				obj.append("<tr><td>"+item.name+"</td><td style='display:none'>"+item.id+"</td><td>"+item.uid+"</td><td>"+item.uname+"</td><td>"+item.did+"</td><td></td><td></td><td></td><td></td></tr>");	    				
+					    				obj.append("<tr><td>"+item.name+"</td><td style='display:none'>"+item.level+"</td><td>"+item.uid+"</td><td>"+item.uname+"</td><td>"+item.did+"</td><td></td><td></td><td></td><td></td></tr>");	    				
 			    					}
 			    				}else{
-				    				obj.append("<tr><td>"+item.name+"</td><td style='display:none'>"+item.id+"</td><td>"+item.uid+"</td><td>"+item.uname+"</td><td>"+item.did+"</td><td></td><td></td><td></td><td></td></tr>");	    				
+				    				obj.append("<tr><td>"+item.name+"</td><td style='display:none'>"+item.level+"</td><td>"+item.uid+"</td><td>"+item.uname+"</td><td>"+item.did+"</td><td></td><td></td><td></td><td></td></tr>");	    				
 			    				}    						
 	    					}
 	    				}
 	    			})	    			
 	    		}
         		
-
 	    		
 	    		showButtonStamp(json.state)
 	    	}
@@ -272,13 +274,13 @@ function stampApprove(o){
 			 return false;
 		}
 		
-		approveId = $(o).parent().siblings().eq(1).html();
+		level = $(o).parent().siblings().eq(1).html();
 		
 		
 			BJUI.ajax('doajax', {
 		    url: 'submitApprove.action',
 		    loadingmask: true,
-		    data:{status:status,comment:result,tradeId:$.CurrentNavtab.find("#j_stamp_id").val(),approveId:approveId,type:'STAMP'},	    
+		    data:{status:status,comment:result,tradeId:$.CurrentNavtab.find("#j_stamp_id").val(),level:level,type:'STAMP'},	    
 		    okCallback: function(json, options) {
 	            if(json.status='200'){
 	            	 BJUI.alertmsg('info', json.message); 
@@ -402,7 +404,7 @@ function deleteFile(path,o){
 function checkSaveStamp(o){
 	var err='';
 	if(o.stampType==null||o.stampType==''){
-		err+=" Stamp Type can`t be empty！<br>";		
+		err+=" Seal Type can`t be empty！<br>";		
 	}
 	if(o.applicant==null||o.applicant==''){
 		err+=" Applicant can`t be empty！<br>";				
@@ -565,10 +567,10 @@ function setProjectResponsible(){
 						印章种类 <label style="color:red;font-size:12px"><b>*</b></label>:
 					</td>
 					<td>
-						<input type="checkbox" name="stampType" data-toggle="icheck" id="j_stamp_companyChop" value="CompanyChop" data-label="Company Chop 公章">
+						<input type="checkbox" name="stampType" data-toggle="icheck" id="j_stamp_companyChop" value="Company Chop" data-label="Company Chop 公章">
 					</td>
 					<td>
-						<input type="checkbox" name="stampType" data-toggle="icheck" id="j_stamp_legalDeputyChop" value="LegalDeputyChop" data-label="Legal Deputy Chop 法人章">
+						<input type="checkbox" name="stampType" data-toggle="icheck" id="j_stamp_legalDeputyChop" value="Legal Deputy Chop" data-label="Legal Deputy Chop 法人章">
 					</td>	
 					<td>
 					</td>				
