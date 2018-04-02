@@ -155,7 +155,7 @@ public class StampBIZImpl extends BizBase implements StampBIZ {
 					lStampApprove.get(0).setDname(lUsers.get(0).getDepartment().getName());
 				}
 
-				stamp.setStampApprove(lStampApprove);
+				//stamp.setStampApprove(lStampApprove);
 
 			} else {
 				Dict approveType = dictDAO.query(" where id='" + stamp.getDocumentType() + "'").get(0);
@@ -190,9 +190,10 @@ public class StampBIZImpl extends BizBase implements StampBIZ {
 				}
 
 			}
-			for (StampApprove approve : lStampApprove) {
-				stamDAO.save(approve);
-			}
+			stamp.setStampApprove(lStampApprove);
+//			for (StampApprove approve : lStampApprove) {
+//				stamDAO.save(approve);
+//			}
 		}
 
 		stamp.setApproveHis(null);
@@ -207,6 +208,12 @@ public class StampBIZImpl extends BizBase implements StampBIZ {
 		stamDAO.delete(stamp);
 		logUtil.logInfo("用章申请单删除成功：" + stamp.getApplicationCode());
 
+	}
+
+	@Override
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void updateOfApporve(Stamp stamp) throws Exception {
+		stamDAO.update(stamp);	
 	}
 
 }

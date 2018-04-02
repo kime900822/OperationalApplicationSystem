@@ -327,7 +327,6 @@ public class ApproveAction extends ActionBase{
 		return SUCCESS;
 	}
 	
-	
 	@Action(value="submitApprove",results={@org.apache.struts2.convention.annotation.Result(type="stream",
 			params={
 					"inputName", "reslutJson"
@@ -349,4 +348,5 @@ public class ApproveAction extends ActionBase{
 		reslutJson=new ByteArrayInputStream(new Gson().toJson(result).getBytes("UTF-8"));  	
 		return SUCCESS;
 	}
+
 }

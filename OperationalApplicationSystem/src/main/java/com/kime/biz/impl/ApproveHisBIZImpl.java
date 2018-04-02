@@ -62,11 +62,13 @@ public class ApproveHisBIZImpl extends BizBase implements ApproveHisBIZ{
 				approveHis.setName(approve.getName());
 				approveHis.setStatus(status);
 				approveHis.setType(type);
-				approveHis.setTradeId(tradeId);
+				//approveHis.setTradeId(tradeId);
 				approveHis.setComment(comment);
 				approveHis.setdId(approve.getDid());
 				approveHis.setdName(approve.getDname());
-				approveHisDAO.save(approveHis);		
+				//approveHisDAO.save(approveHis);
+				stamp.getApproveHis().add(approveHis);
+				//stamp.setApproveHis(null);
 				
 				if (stamp.getStampApprove().size()-1>Integer.parseInt(approve.getLevel())) {
 					stamp.setNextApprover(stamp.getStampApprove().get(Integer.parseInt(approve.getLevel())+1).getUid());
@@ -78,10 +80,11 @@ public class ApproveHisBIZImpl extends BizBase implements ApproveHisBIZ{
 					User user=userBIZ.getUser(" where uid='"+stamp.getApplicantID()+"'").get(0);
 					SendMail.SendMail(user.getEmail(), PropertiesUtil.ReadProperties(Message.MAIL_PROPERTIES, "mailTitleOfStamp"), PropertiesUtil.ReadProperties(Message.MAIL_PROPERTIES, "mailContentOfStamp"));
 				}
-				stampBIZ.update(stamp);
+
+				stampBIZ.updateOfApporve(stamp);
 			}
 		} catch (Exception e) {
-			approveHis=null;
+			logUtil.logError(e.getMessage());
 		}
 			
 		return approveHis;

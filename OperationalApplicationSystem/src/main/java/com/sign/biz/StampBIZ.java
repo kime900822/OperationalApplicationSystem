@@ -30,6 +30,8 @@ public interface StampBIZ {
 	public List<Stamp> getStampByHql(String hql);
 
 	public void update(Stamp stamp) throws Exception;
+	
+	public void updateOfApporve(Stamp stamp) throws Exception;
 		
 	public void deleteStamp(Stamp stamp);
 }

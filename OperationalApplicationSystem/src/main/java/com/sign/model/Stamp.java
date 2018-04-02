@@ -82,10 +82,10 @@ public class Stamp {
 	private String state;
 	@Column
 	private String nextApprover;
-	@OneToMany(cascade = CascadeType.REFRESH)
+	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name="tradeId")
 	private List<ApproveHis> approveHis = new ArrayList<>();
-	@OneToMany(cascade = CascadeType.REFRESH)
+	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name="tradeId")
 	private List<StampApprove> stampApprove = new ArrayList<>();
 	
