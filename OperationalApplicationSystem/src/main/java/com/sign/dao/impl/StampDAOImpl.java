@@ -64,6 +64,12 @@ public class StampDAOImpl extends HibernateDaoSupport implements StampDAO{
 	public void save(StampApprove stampApprove) {
 		this.getHibernateTemplate().save(stampApprove);
 	}
+	@Override
+	public List<StampApprove> queryStampApprove(String tradeId) {
+		Session session=this.getSessionFactory().openSession();
+		String hql="FROM StampApprove where tradeId='"+tradeId+"'";
+		return session.createQuery(hql).list();
+	}
 
 
 

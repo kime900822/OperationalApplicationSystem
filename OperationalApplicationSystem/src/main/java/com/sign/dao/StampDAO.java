@@ -22,4 +22,6 @@ public interface StampDAO {
 	public List<Stamp> queryHql(String hql, Integer pageSize, Integer pageCurrent);
 	
 	public void save(StampApprove stampApprove);
+	
+	public List<StampApprove> queryStampApprove(String tradeId);
 }

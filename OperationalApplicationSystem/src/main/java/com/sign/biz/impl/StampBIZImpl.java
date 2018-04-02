@@ -43,6 +43,8 @@ public class StampBIZImpl extends BizBase implements StampBIZ {
 	@Autowired
 	private ApproveBIZ approveBIZ;
 	@Autowired
+	private ApproveHisBIZ approveHisBIZ;
+	@Autowired
 	private UserBIZ userBIZ;
 	@Autowired
 	DepartmentBIZ departmentBIZ;
@@ -81,6 +83,8 @@ public class StampBIZImpl extends BizBase implements StampBIZ {
 	@Override
 	public Stamp getStampById(String id) throws Exception {
 		Stamp stamp = stamDAO.query(" where id='" + id + "' ").get(0);
+		stamp.setApproveHis(approveHisBIZ.getApproveHisByTradeId(stamp.getId()));
+		stamp.setStampApprove(stamDAO.queryStampApprove(stamp.getId()));
 		return stamp;
 	}
 
@@ -190,13 +194,12 @@ public class StampBIZImpl extends BizBase implements StampBIZ {
 				}
 
 			}
-			stamp.setStampApprove(lStampApprove);
-//			for (StampApprove approve : lStampApprove) {
-//				stamDAO.save(approve);
-//			}
+			//stamp.setStampApprove(lStampApprove);
+			for (StampApprove approve : lStampApprove) {
+				stamDAO.save(approve);
+			}
 		}
 
-		stamp.setApproveHis(null);
 		stamDAO.update(stamp);
 		logUtil.logInfo("用章申请单更新成功：" + stamp.getApplicationCode());
 

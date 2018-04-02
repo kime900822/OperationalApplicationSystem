@@ -588,7 +588,7 @@ public class StampAction extends ActionBase{
 				hql=" select P from Stamp P where P.formFillerID='"+user.getUid()+"' "+where+" order By P.dateTmp desc";
 			}
 			if ("approve".equals(queryType)) {
-				hql="select P from Stamp P left join StampApprove B on P.id=B.tradeId left join ApproveHis A on  A.level=B.level and P.id=A.tradeId  where (B.uid='"+user.getUid()+"' and A.id is null) OR A.uId='"+user.getUid()+"' )  " +where+" order By P.dateTmp desc";
+				hql="select P from Stamp P left join ApproveHis A on  P.id=A.tradeId  where P.nextApprover='"+user.getUid()+"' OR A.uId='"+user.getUid()+"' order By P.dateTmp desc";
 			}
 			if ("all".equals(queryType)) {
 				hql=" select P from Stamp P where 1=1 "+where+" order By P.dateTmp desc";
@@ -607,8 +607,9 @@ public class StampAction extends ActionBase{
 				tmp=stamp.getUsageDescription();
 				stamp.setUsageDescription(tmp.replace("/r/n", "<br>"));
 				tmp="";
-				if ( stamp.getApproveHis()!=null) {
-					for (ApproveHis approveHis : stamp.getApproveHis()) {
+				List<ApproveHis> lApproveHis=approveHisBIZ.getApproveHisByTradeId(stamp.getId());
+				if ( lApproveHis.size()>0) {
+					for (ApproveHis approveHis : lApproveHis) {
 						tmp+=approveHis.getuName()+"|";					
 					}
 					if (tmp.length()>0) {
@@ -704,7 +705,7 @@ public class StampAction extends ActionBase{
 					hql=" select P from Stamp P where P.formFillerID='"+user.getUid()+"' "+where+" order By P.dateTmp desc";
 				}
 				if ("approve".equals(queryType)) {
-					hql="select P from Stamp P left join StampApprove B on P.id=B.tradeId left join ApproveHis A on  A.level=B.level and P.id=A.tradeId  where (B.uid='"+user.getUid()+"' and A.id is null) OR A.uId='"+user.getUid()+"' )  " +where+" order By P.dateTmp desc";
+					hql="select P from Stamp P left join ApproveHis A on  P.id=A.tradeId  where P.nextApprover='"+user.getUid()+"' OR A.uId='"+user.getUid()+"' order By P.dateTmp desc";
 				}
 				if ("all".equals(queryType)) {
 					hql=" select P from Stamp P where 1=1 "+where+" order By P.dateTmp desc";
@@ -714,13 +715,14 @@ public class StampAction extends ActionBase{
 	    		
 				for (Stamp stamp : lStamps) {
 					String tmp="";
-					if ( stamp.getApproveHis()!=null) {
-						for (ApproveHis approveHis : stamp.getApproveHis()) {
-							tmp+=approveHis.getuName()+"  ";					
+					List<ApproveHis> lApproveHis=approveHisBIZ.getApproveHisByTradeId(stamp.getId());
+					if ( lApproveHis.size()>0) {
+						for (ApproveHis approveHis : lApproveHis) {
+							tmp+=approveHis.getuName()+"|";					
 						}
 						if (tmp.length()>0) {
 							tmp=tmp.substring(0, tmp.length()-1);
-						}						
+						}
 					}
 					stamp.setState(tmp);					
 					stamp.setUrgent(stamp.getUrgent()==null?"N":"Y");
@@ -799,7 +801,7 @@ public class StampAction extends ActionBase{
 					hql=" select P from Stamp P where P.formFillerID='"+user.getUid()+"' "+where+" order By P.dateTmp desc";
 				}
 				if ("approve".equals(queryType)) {
-					hql="select P from Stamp P left join StampApprove B on P.id=B.tradeId left join ApproveHis A on  A.level=B.level and P.id=A.tradeId  where (B.uid='"+user.getUid()+"' and A.id is null) OR A.uId='"+user.getUid()+"' )  " +where+" order By P.dateTmp desc";
+					hql="select P from Stamp P left join ApproveHis A on  P.id=A.tradeId  where P.nextApprover='"+user.getUid()+"' OR A.uId='"+user.getUid()+"' order By P.dateTmp desc";
 				}
 				if ("all".equals(queryType)) {
 					hql=" select P from Stamp P where 1=1 "+where+" order By P.dateTmp desc";
@@ -809,13 +811,14 @@ public class StampAction extends ActionBase{
 	    		
 				for (Stamp stamp : lStamps) {
 					String tmp="";
-					if ( stamp.getApproveHis()!=null) {
-						for (ApproveHis approveHis : stamp.getApproveHis()) {
-							tmp+=approveHis.getuName()+"  ";					
+					List<ApproveHis> lApproveHis=approveHisBIZ.getApproveHisByTradeId(stamp.getId());
+					if ( lApproveHis.size()>0) {
+						for (ApproveHis approveHis : lApproveHis) {
+							tmp+=approveHis.getuName()+"|";					
 						}
 						if (tmp.length()>0) {
 							tmp=tmp.substring(0, tmp.length()-1);
-						}						
+						}
 					}
 					stamp.setState(tmp);					
 					stamp.setUrgent(stamp.getUrgent()==null?"N":"Y");
