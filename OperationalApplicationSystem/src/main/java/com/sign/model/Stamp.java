@@ -84,8 +84,7 @@ public class Stamp {
 	private String nextApprover;
 	@Transient
 	private List<ApproveHis> approveHis = new ArrayList<>();
-	@OneToMany(cascade = CascadeType.REFRESH)
-	@JoinColumn(name="tradeId")
+	@Transient
 	private List<StampApprove> stampApprove = new ArrayList<>();
 	
 	

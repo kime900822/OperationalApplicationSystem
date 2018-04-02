@@ -144,6 +144,7 @@ public class StampBIZImpl extends BizBase implements StampBIZ {
 					StampApprove tmp = new StampApprove();
 					tmp.setUid(approve.getUid());
 					tmp.setDid(approve.getDid());
+					tmp.setTradeId(stamp.getId());
 					tmp.setName(approve.getName());
 					tmp.setUname(approve.getUname());
 					tmp.setDname(approve.getDname());
@@ -157,6 +158,7 @@ public class StampBIZImpl extends BizBase implements StampBIZ {
 					lStampApprove.get(0).setUname(lUsers.get(0).getName());
 					lStampApprove.get(0).setDid(lUsers.get(0).getDid());
 					lStampApprove.get(0).setDname(lUsers.get(0).getDepartment().getName());
+					stamp.setNextApprover(lUsers.get(0).getUid());
 				}
 
 				//stamp.setStampApprove(lStampApprove);
@@ -174,6 +176,7 @@ public class StampBIZImpl extends BizBase implements StampBIZ {
 							lApproves.get(0).setUname(lUsers.get(0).getName());
 							lApproves.get(0).setDid(lUsers.get(0).getDid());
 							lApproves.get(0).setDname(lUsers.get(0).getDepartment().getName());
+							stamp.setNextApprover(lUsers.get(0).getUid());
 						} else {
 							throw new Exception(" Department Manager is null");
 						}
@@ -181,12 +184,15 @@ public class StampBIZImpl extends BizBase implements StampBIZ {
 						throw new Exception(" Department is null");
 					}
 
+				}else{
+					stamp.setNextApprover(lApproves.get(0).getUid());
 				}
 				for (Approve approve : lApproves) {
 					StampApprove tmp = new StampApprove();
 					tmp.setUid(approve.getUid());
 					tmp.setName(approve.getName());
 					tmp.setDid(approve.getDid());
+					tmp.setTradeId(stamp.getId());
 					tmp.setUname(approve.getUname());
 					tmp.setDname(approve.getDname());
 					tmp.setLevel(approve.getLevel());
