@@ -255,11 +255,12 @@ public class UserAction extends ActionBase {
 		
 		String err_message = null;
 		try {
-			if ("".equals(uid)&&"".equals(password)) {
+			if ("".equals(uid)||"".equals(password)) {
 				err_message="Please enter your id and password";
 			}else{
 				user=userBIZ.login(uid, password);
 				if (user==null) {
+					err_message="Id or password wrong！";
 					session.setAttribute("login_message", "User id or password error");
 					logUtil.logInfo("登录失败！"+err_message.toString());
 					return ERROR;

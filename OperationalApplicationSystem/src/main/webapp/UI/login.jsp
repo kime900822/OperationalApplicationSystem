@@ -136,6 +136,11 @@ function checkform(){
         $.cookie(COOKIE_NAME, null, { path: '/' });  //删除cookie
     }
     
+    if( $("#j_uid").val()==''||$("#j_password").val()==''){
+    	BJUI.alertmsg('warn', 'Id and password can`t null!');	
+    	return false;
+    }
+    
     $("#login_ok").attr("disabled", true).val('login..');
     /*
     var key = CryptoJS.enc.Base64.parse($("#j_randomKey").val());

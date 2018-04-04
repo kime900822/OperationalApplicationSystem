@@ -40,7 +40,7 @@
 			<interceptor name="loginInterceptor"  
 				class="com.kime.intercept.LoginInterceptor">  
 				<!-- 设置忽略方法 -->
-				<param name="excludeMethods">Logout,Login</param>
+				<param name="excludeMethods">Logout</param>
 			</interceptor>  
 			<!-- 拦截器栈 -->  
 			<interceptor-stack name="mystack">  
@@ -55,7 +55,8 @@
 		<!--global-results放的位置顺序不对会报错， 全局变量error -->  
 		<global-results>  
 			<!-- LoginInterceptor中的Action.LOGIN对应找到name -->  
-			<result name="login" type="dispatcher">/UI/error.json</result>         
+			<result name="error" type="dispatcher">/UI/error.json</result>  
+			<result name="login" type="dispatcher">/UI/login.jsp</result>         
 		</global-results>
 		
 		
