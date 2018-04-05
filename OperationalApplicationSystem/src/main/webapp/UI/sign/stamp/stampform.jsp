@@ -126,7 +126,6 @@ function dataToFaceStamp(id){
 	    		if(json.stampApprove!=undefined&&json.stampApprove!=""){	    			
 	    			$.each(json.stampApprove,function(i,item){	 
 	    				if(isReject&&json.state!='Inform Approval'){
-	    					alert(json.state)
 		    				if(i==0){
 		    					if('${user.uid}'==item.uid&&json.state=='Level1 Approval'){
 				    				obj.append("<tr><td>"+item.name+"</td><td style='display:none'>"+item.level+"</td><td>"+item.uid+"</td><td>"+item.uname+"</td><td>"+item.did+"</td><td></td><td></td><td></td><td><button type='button' id='stamp-approve' class='btn btn-success' style='width:50px;' name='Approved' onclick='stampApprove(this)'   >√</button>&nbsp;&nbsp;<button type='button' id='stamp-reject'  style='width:50px;' class='btn btn-danger' name='Rejected' onclick='stampApprove(this)' >×</button></td></tr>");	    				
