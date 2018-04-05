@@ -162,7 +162,7 @@ public class DepartmentAction extends ActionBase {
 		Department department=list.get(0);
 
 		try {
-			if (department.getAddFlag().equals("true")) {
+			if (department.getDid()==null||department.getDid().equals("")) {
 				departmentBIZ.saveDepartment(department);
 				logUtil.logInfo("新增部门信息:"+department.getDid());
 			}else{
