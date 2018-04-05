@@ -327,26 +327,6 @@ public class ApproveAction extends ActionBase{
 		return SUCCESS;
 	}
 	
-	@Action(value="submitApprove",results={@org.apache.struts2.convention.annotation.Result(type="stream",
-			params={
-					"inputName", "reslutJson"
-			})})
-	public String submitApprove() throws UnsupportedEncodingException{	
-		ApproveHis approveHis=new ApproveHis();
-		try {
-			approveHis=approveHisBIZ.save(level, comment, status, tradeId,type);
-			result.setStatusCode("200");
-			result.setMessage("Success");
-		} catch (Exception e) {
-			result.setStatusCode("300");
-			result.setMessage(e.getMessage());
-		}
-		Map<String, Object> params=new HashMap<>();
-		params.put("data", approveHis);		
-		result.setParams(params);
-		
-		reslutJson=new ByteArrayInputStream(new Gson().toJson(result).getBytes("UTF-8"));  	
-		return SUCCESS;
-	}
+
 
 }

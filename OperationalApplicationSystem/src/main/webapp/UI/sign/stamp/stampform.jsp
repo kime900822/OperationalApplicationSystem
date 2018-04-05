@@ -108,26 +108,28 @@ function dataToFaceStamp(id){
             		})
             	}
 	    		
-        		var obj=$.CurrentNavtab.find('#stamp_approve_his');
+	    		$.CurrentNavtab.find('#stamp_approve_his').children().children().eq(0).siblings().remove();
+        		var obj=$.CurrentNavtab.find('#stamp_approve_his');     		
         		var isReject=false;
         		var maxLevel=-1;
         		if(json.approveHis!=undefined&&json.approveHis!=""){
-        			if(json.approveHis[json.approveHis.length-1].status=='Rejected'){
+        			if(json.approveHis[json.approveHis.length-1].status=='Rejected'&&json.state!='Inform Rejected'){
         				isReject=true;        				
         			}
         			$.each(json.approveHis,function(i,item){	  		
 	    				obj.append("<tr><td>"+item.name+"</td><td style='display:none'></td><td>"+item.uId+"</td><td>"+item.uName+"</td><td>"+item.dId+"</td><td>"+item.comment+"</td><td>"+item.status+"</td><td>"+item.date+"</td><td></td></tr>");	    				
-	    				maxLevel=item.level;
+	    				maxLevel=parseInt(item.level);
         			})
         						
         		}
 	    		
-	    		if(json.stampApprove!=undefined&&json.approve!=""){	    			
+	    		if(json.stampApprove!=undefined&&json.stampApprove!=""){	    			
 	    			$.each(json.stampApprove,function(i,item){	 
-	    				if(isReject){
+	    				if(isReject&&json.state!='Inform Approval'){
+	    					alert(json.state)
 		    				if(i==0){
-		    					if('${user.uid}'==item.uid){
-				    				obj.append("<tr><td>"+item.name+"</td><td style='display:none'>"+item.level+"</td><td>"+item.uid+"</td><td>"+item.uname+"</td><td>"+item.did+"</td><td></td><td></td><td></td><td><button type='button' id='stamp-approve' class='btn btn-success' style='width:50px;' onclick='stampApprove(this)'   >√</button>&nbsp;&nbsp;<button type='button' id='stamp-reject'  style='width:50px;' class='btn btn-danger' onclick='stampApprove(this)' >×</button></td></tr>");	    				
+		    					if('${user.uid}'==item.uid&&json.state=='Level1 Approval'){
+				    				obj.append("<tr><td>"+item.name+"</td><td style='display:none'>"+item.level+"</td><td>"+item.uid+"</td><td>"+item.uname+"</td><td>"+item.did+"</td><td></td><td></td><td></td><td><button type='button' id='stamp-approve' class='btn btn-success' style='width:50px;' name='Approved' onclick='stampApprove(this)'   >√</button>&nbsp;&nbsp;<button type='button' id='stamp-reject'  style='width:50px;' class='btn btn-danger' name='Rejected' onclick='stampApprove(this)' >×</button></td></tr>");	    				
 		    					}else{
 				    				obj.append("<tr><td>"+item.name+"</td><td style='display:none'>"+item.level+"</td><td>"+item.uid+"</td><td>"+item.uname+"</td><td>"+item.did+"</td><td></td><td></td><td></td><td></td></tr>");	    				
 		    					}
@@ -136,10 +138,10 @@ function dataToFaceStamp(id){
 			    				obj.append("<tr><td>"+item.name+"</td><td style='display:none'>"+item.level+"</td><td>"+item.uid+"</td><td>"+item.uname+"</td><td>"+item.did+"</td><td></td><td></td><td></td><td></td></tr>");	    				
 		    				}
 	    				}else{
-	    					if(i>maxLevel){
+	    					if(i>maxLevel&&json.state!='Inform Approval'){    						
 			    				if(i==maxLevel+1){
 			    					if('${user.uid}'==item.uid){			    						
-				    					obj.append("<tr><td>"+item.name+"</td><td style='display:none'>"+item.level+"</td><td>"+item.uid+"</td><td>"+item.uname+"</td><td>"+item.did+"</td><td></td><td></td><td></td><td><button type='button' id='stamp-approve' class='btn btn-success' style='width:50px;' onclick='stampApprove(this)'   >√</button>&nbsp;&nbsp;<button type='button' id='stamp-reject'  style='width:50px;' class='btn btn-danger' onclick='stampApprove(this)' >×</button></td></tr>");	    				
+				    					obj.append("<tr><td>"+item.name+"</td><td style='display:none'>"+item.level+"</td><td>"+item.uid+"</td><td>"+item.uname+"</td><td>"+item.did+"</td><td></td><td></td><td></td><td><button type='button' id='stamp-approve' class='btn btn-success' style='width:50px;' name='Approved' onclick='stampApprove(this)'   >√</button>&nbsp;&nbsp;<button type='button' id='stamp-reject'  style='width:50px;' class='btn btn-danger' name='Rejected' onclick='stampApprove(this)' >×</button></td></tr>");	    				
 			    					}else{
 					    				obj.append("<tr><td>"+item.name+"</td><td style='display:none'>"+item.level+"</td><td>"+item.uid+"</td><td>"+item.uname+"</td><td>"+item.did+"</td><td></td><td></td><td></td><td></td></tr>");	    				
 			    					}
@@ -147,11 +149,19 @@ function dataToFaceStamp(id){
 				    				obj.append("<tr><td>"+item.name+"</td><td style='display:none'>"+item.level+"</td><td>"+item.uid+"</td><td>"+item.uname+"</td><td>"+item.did+"</td><td></td><td></td><td></td><td></td></tr>");	    				
 			    				}    						
 	    					}
+	    					
+	    					if(json.state=='Inform Approval'){	    	
+	    						if(i==maxLevel){
+	    							if('${user.uid}'==item.uid){			    						
+				    					obj.append("<tr><td>"+item.name+"</td><td style='display:none'>"+item.level+"</td><td>"+item.uid+"</td><td>"+item.uname+"</td><td>"+item.did+"</td><td></td><td></td><td></td><td><button type='button' id='stamp-approve' class='btn btn-success' style='width:50px;' name='Approved' onclick='stampApprove(this)'   >√</button>&nbsp;&nbsp;<button type='button' id='stamp-reject'  style='width:50px;' class='btn btn-danger' name='Rejected' onclick='stampApprove(this)' >×</button></td></tr>");	    				
+			    					}else{
+					    				obj.append("<tr><td>"+item.name+"</td><td style='display:none'>"+item.level+"</td><td>"+item.uid+"</td><td>"+item.uname+"</td><td>"+item.did+"</td><td></td><td></td><td></td><td></td></tr>");	    				
+			    					}
+	    						}	    						
+	    					}
 	    				}
 	    			})	    			
 	    		}
-        		
-	    		
 	    		showButtonStamp(json.state)
 	    	}
 	    }
@@ -190,7 +200,7 @@ function submitStampAjax(id){
 	    okCallback: function(json, options) {
             if(json.status='200'){
             	BJUI.alertmsg('info', json.message); 
-            	showButtonStamp('1');
+            	showButtonStamp('Level1 Approval');
 				dataToFaceStamp(json.params.id)          		 
             }else{
             	 BJUI.alertmsg('error', json.message); 
@@ -240,7 +250,7 @@ function saveStamp(){
             	 BJUI.alertmsg('info', json.message); 
             	 $.CurrentNavtab.find("#j_stamp_id").val(json.params.id);
             	 $.CurrentNavtab.find("#j_stamp_applicationCode").val(json.params.applicationCode);
-            	 showButtonStamp('0');
+            	 showButtonStamp('Submit Required');
                	 BJUI.alertmsg('confirm', 'Save successfully, submit or not ? ',{
              		    okCall: function() {
              		    	submitStamp();
@@ -264,11 +274,7 @@ function stampApprove(o){
 		title:"Comment?", 
 		callback:function (result) {
 		if(result!=null){
-		if($(o).html()=='√'){
-			status='Approved'
-		}else{
-			status='Rejected'
-		}
+		status=$(o).attr('name')
 		if(status=='Rejected'&&(result==''||result==undefined)){
 			bootbox.alert("Comment can`t empty!");
 			 return false;
@@ -278,9 +284,9 @@ function stampApprove(o){
 		
 		
 			BJUI.ajax('doajax', {
-		    url: 'submitApprove.action',
+		    url: 'StampApprove.action',
 		    loadingmask: true,
-		    data:{status:status,comment:result,tradeId:$.CurrentNavtab.find("#j_stamp_id").val(),level:level,type:'STAMP'},	    
+		    data:{status:status,comment:result,tradeId:$.CurrentNavtab.find("#j_stamp_id").val(),level:level},	    
 		    okCallback: function(json, options) {
 	            if(json.status='200'){
 	            	 BJUI.alertmsg('info', json.message); 
@@ -337,9 +343,13 @@ function stampApprove(o){
 
 
 function showButtonStamp(state){
-	if(state==0){
+	if(state=='Submit Required'||state.indexOf('Rejected')>0){
+		if(state=='Inform Rejected'){
+			$.CurrentNavtab.find('#j_stamp_documentType').attr('disabled','disabled');
+			$.CurrentNavtab.find('#j_stamp_projectResponsible').attr('disabled','disabled');
+		}
 		 $.CurrentNavtab.find('#stamp-delete').show();
-	}else if(state==1){		
+	}else if(state.indexOf('Approval')>0){		
 		 $.CurrentNavtab.find('#stamp-save').hide();
 		 $.CurrentNavtab.find('#stamp-submit').hide();
 		 $.CurrentNavtab.find('#file').attr('disabled','disabled');
@@ -348,8 +358,7 @@ function showButtonStamp(state){
 		 $("input[id*='j_stamp']").attr('disabled','disabled');
 		 $("select[id*='j_stamp']").attr('disabled','disabled');
 		 $("textarea[id*='j_stamp']").attr('disabled','disabled');
-		 $.CurrentNavtab.find('#stamp_approve_his').show();
-	}else if(state==2){		
+	}else if(state=='END Approve'){		
 		 $.CurrentNavtab.find('#stamp-save').hide();
 		 $.CurrentNavtab.find('#stamp-submit').hide();
 		 $.CurrentNavtab.find('#file').attr('disabled','disabled');
@@ -706,8 +715,8 @@ function setProjectResponsible(){
 				</tr>		
 				<tr>
 					<td colspan="4">
-						<table class="table" width="100%" id="stamp_approve_his" style="display:none">
-							<tr>
+						<table class="table" width="100%" id="stamp_approve_his" >
+							<tr name='head'>
 								<th width="80px">
 								
 								</th>

@@ -118,9 +118,16 @@ $(function() {
         		<td>
 	            	<select name="state" data-toggle="selectpicker" id="q_stamp_state"  data-width="200px">
 		              <option value=""></option>
-		              <option value="0" >Save</option>
-		              <option value="1" >Approve</option>
-		              <option value="2" >Success</option>
+		              <option value="Submit Required" >Submit Required</option>
+		              <option value="Level1 Approval" >Level1 Approval</option>
+		              <option value="Level1 Rejected" >Level1 Rejected</option>
+		              <option value="Level2 Approval" >Level2 Approval</option>
+		              <option value="Level2 Rejected" >Level2 Rejected</option>
+		              <option value="Level3 Approval" >Level3 Approval</option>	
+		              <option value="Level3 Rejected" >Level3 Rejected</option>	              
+		              <option value="Inform Approval" >Inform Approval</option>
+		              <option value="Inform Rejected" >Inform Rejected</option>		              
+		              <option value="END Approve" >END Approve</option>
 	            	</select>
         		</td>
         	</tr>   

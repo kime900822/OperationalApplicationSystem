@@ -49,45 +49,14 @@ public class ApproveHisBIZImpl extends BizBase implements ApproveHisBIZ{
 
 	@Override
 	@Transactional(readOnly=false,propagation=Propagation.REQUIRED,rollbackFor=Exception.class )
-	public ApproveHis save(String level, String comment,String status,String tradeId,String type) {
-		ApproveHis approveHis=new ApproveHis();
-		try {
-			if (type.equals("STAMP")) {
-				Stamp stamp=stampBIZ.getStampById(tradeId);
-				StampApprove approve=stamp.getStampApprove().get(Integer.parseInt(level));
-				approveHis.setDate(CommonUtil.getDateTemp());
-				approveHis.setLevel(approve.getLevel());
-				approveHis.setuName(approve.getUname());
-				approveHis.setuId(approve.getUid());
-				approveHis.setName(approve.getName());
-				approveHis.setStatus(status);
-				approveHis.setType(type);
-				approveHis.setTradeId(tradeId);
-				approveHis.setComment(comment);
-				approveHis.setdId(approve.getDid());
-				approveHis.setdName(approve.getDname());
-				approveHisDAO.save(approveHis);
-				//stamp.getApproveHis().add(approveHis);
-				
-				if (stamp.getStampApprove().size()-1>Integer.parseInt(approve.getLevel())) {
-					stamp.setNextApprover(stamp.getStampApprove().get(Integer.parseInt(approve.getLevel())+1).getUid());
-					User user=userBIZ.getUser(" where uid='"+stamp.getApplicantID()+"'").get(0);
-					SendMail.SendMail(user.getEmail(), PropertiesUtil.ReadProperties(Message.MAIL_PROPERTIES, "mailTitleOfStampApprove"), MessageFormat.format(PropertiesUtil.ReadProperties(Message.MAIL_PROPERTIES, "mailContentOfStampApprove"),stamp.getApplicationCode(),stamp.getApplicant(),stamp.getUrgentReason()));
-				}else{
-					stamp.setState(StampState.SUCCESS);
-					stamp.setNextApprover("");
-					User user=userBIZ.getUser(" where uid='"+stamp.getApplicantID()+"'").get(0);
-					SendMail.SendMail(user.getEmail(), PropertiesUtil.ReadProperties(Message.MAIL_PROPERTIES, "mailTitleOfStamp"), PropertiesUtil.ReadProperties(Message.MAIL_PROPERTIES, "mailContentOfStamp"));
-				}
+	public void delete(ApproveHis approveHis) {
+		approveHisDAO.delete(approveHis);		
+	}
 
-				stampBIZ.updateOfApporve(stamp);
-				
-			}
-		} catch (Exception e) {
-			logUtil.logError(e.getMessage());
-		}
-			
-		return approveHis;
+	@Override
+	@Transactional(readOnly=false,propagation=Propagation.REQUIRED,rollbackFor=Exception.class )
+	public void save(ApproveHis approveHis) {
+		approveHisDAO.save(approveHis);		
 	}
 
 

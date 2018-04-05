@@ -38,7 +38,7 @@ public class CommonDAOImpl extends HibernateDaoSupport implements CommonDAO{
 	public List queryBySql(String sql) {
 		Session session=this.getSessionFactory().openSession();
 		List<Object[]> list =session.createSQLQuery(sql).list();
-		return null;
+		return list;
 	}
 
 }

@@ -3,6 +3,7 @@ package com.sign.biz;
 import java.io.ByteArrayInputStream;
 import java.util.List;
 
+import com.kime.model.ApproveHis;
 import com.sign.model.Stamp;
 
 public interface StampBIZ {
@@ -21,17 +22,15 @@ public interface StampBIZ {
 	
 	public String getMaxCode();
 
-	public void approveStamp(Stamp stamp) throws Exception;
-
-	public void rejectStamp(Stamp stamp) throws Exception;
-
 	public List<Stamp> getStampByHql(String hql, Integer pageSize, Integer pageCurrent);
 
 	public List<Stamp> getStampByHql(String hql);
 
 	public void update(Stamp stamp) throws Exception;
-	
-	public void updateOfApporve(Stamp stamp) throws Exception;
 		
 	public void deleteStamp(Stamp stamp);
+	
+	public void updateOfApporve(Stamp stamp) throws Exception;
+
+	ApproveHis StampApprove(String level, String comment, String status, String tradeId);
 }

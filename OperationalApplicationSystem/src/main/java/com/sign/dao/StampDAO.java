@@ -23,5 +23,7 @@ public interface StampDAO {
 	
 	public void save(StampApprove stampApprove);
 	
+	public void delete(StampApprove stampApprove);
+	
 	public List<StampApprove> queryStampApprove(String tradeId);
 }

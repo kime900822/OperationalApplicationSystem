@@ -1,6 +1,7 @@
 package com.sign.biz.impl;
 
 import java.io.ByteArrayInputStream;
+import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.itextpdf.text.Element;
 import com.kime.base.BizBase;
 import com.kime.biz.ApproveBIZ;
 import com.kime.biz.ApproveHisBIZ;
@@ -20,10 +22,15 @@ import com.kime.dao.ApproveDAO;
 import com.kime.dao.ApproveHisDAO;
 import com.kime.dao.CommonDAO;
 import com.kime.dao.DictDAO;
+import com.kime.infoenum.Message;
 import com.kime.model.Approve;
+import com.kime.model.ApproveHis;
 import com.kime.model.Department;
 import com.kime.model.Dict;
 import com.kime.model.User;
+import com.kime.utils.CommonUtil;
+import com.kime.utils.PropertiesUtil;
+import com.kime.utils.mail.SendMail;
 import com.sign.biz.StampBIZ;
 import com.sign.dao.StampDAO;
 import com.sign.model.Stamp;
@@ -35,7 +42,7 @@ import com.sign.other.StampState;
 public class StampBIZImpl extends BizBase implements StampBIZ {
 
 	@Autowired
-	private StampDAO stamDAO;
+	private StampDAO stampDAO;
 	@Autowired
 	private CommonDAO commonDAO;
 	@Autowired
@@ -58,7 +65,7 @@ public class StampBIZImpl extends BizBase implements StampBIZ {
 	@Override
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void saveStamp(Stamp stamp) {
-		stamDAO.save(stamp);
+		stampDAO.save(stamp);
 		logUtil.logInfo("用章申请单保存成功：" + stamp.getApplicationCode());
 	}
 
@@ -71,7 +78,7 @@ public class StampBIZImpl extends BizBase implements StampBIZ {
 
 	@Override
 	public List<Stamp> getStamp(String where) {
-		return stamDAO.query(where);
+		return stampDAO.query(where);
 	}
 
 	@Override
@@ -82,9 +89,9 @@ public class StampBIZImpl extends BizBase implements StampBIZ {
 
 	@Override
 	public Stamp getStampById(String id) throws Exception {
-		Stamp stamp = stamDAO.query(" where id='" + id + "' ").get(0);
+		Stamp stamp = stampDAO.query(" where id='" + id + "' ").get(0);
 		stamp.setApproveHis(approveHisBIZ.getApproveHisByTradeId(stamp.getId()));
-		stamp.setStampApprove(stamDAO.queryStampApprove(stamp.getId()));
+		stamp.setStampApprove(stampDAO.queryStampApprove(stamp.getId()));
 		return stamp;
 	}
 
@@ -106,36 +113,71 @@ public class StampBIZImpl extends BizBase implements StampBIZ {
 	}
 
 	@Override
-	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public void approveStamp(Stamp stamp) throws Exception {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public void rejectStamp(Stamp stamp) throws Exception {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
 	public List<Stamp> getStampByHql(String hql, Integer pageSize, Integer pageCurrent) {
-		return stamDAO.queryHql(hql, pageSize, pageCurrent);
+		return stampDAO.queryHql(hql, pageSize, pageCurrent);
 	}
 
 	@Override
 	public List<Stamp> getStampByHql(String hql) {
-		return stamDAO.queryHql(hql);
+		return stampDAO.queryHql(hql);
 	}
 
+	@Override
+	@Transactional(readOnly=false,propagation=Propagation.REQUIRED,rollbackFor=Exception.class )
+	public ApproveHis StampApprove(String level, String comment,String status,String tradeId) {
+		ApproveHis approveHis=new ApproveHis();
+		try {
+				Stamp stamp=getStampById(tradeId);
+				StampApprove approve=stamp.getStampApprove().get(Integer.parseInt(level));
+				approveHis.setDate(CommonUtil.getDateTemp());
+				approveHis.setLevel(approve.getLevel());
+				approveHis.setuName(approve.getUname());
+				approveHis.setuId(approve.getUid());
+				approveHis.setName(approve.getName());
+				approveHis.setStatus(status);
+				approveHis.setType("STAMP");
+				approveHis.setTradeId(tradeId);
+				approveHis.setComment(comment);
+				approveHis.setdId(approve.getDid());
+				approveHis.setdName(approve.getDname());
+				approveHisBIZ.save(approveHis);
+				//stamp.getApproveHis().add(approveHis);
+				if (stamp.getStampApprove().size()-1>Integer.parseInt(approve.getLevel())) {
+					if (status.equals("Rejected")) {
+						for (StampApprove  stampApprove : stamp.getStampApprove()) {
+							stampDAO.delete(stampApprove);
+						}	
+						stamp.setNextApprover("");
+					}else{				
+						stamp.setNextApprover(stamp.getStampApprove().get(Integer.parseInt(approve.getLevel())+1).getUid());
+						User user=userBIZ.getUser(" where uid='"+stamp.getApplicantID()+"'").get(0);
+						SendMail.SendMail(user.getEmail(), PropertiesUtil.ReadProperties(Message.MAIL_PROPERTIES, "mailTitleOfStampApprove"), MessageFormat.format(PropertiesUtil.ReadProperties(Message.MAIL_PROPERTIES, "mailContentOfStampApprove"),stamp.getApplicationCode(),stamp.getApplicant(),stamp.getUrgentReason()));
 	
+					}
+					stamp.setState(getStampState(Integer.parseInt(level), status));
+				}else{
+					if (!status.equals("Rejected")) {
+						User user=userBIZ.getUser(" where uid='"+stamp.getApplicantID()+"'").get(0);
+						SendMail.SendMail(user.getEmail(), PropertiesUtil.ReadProperties(Message.MAIL_PROPERTIES, "mailTitleOfStamp"), PropertiesUtil.ReadProperties(Message.MAIL_PROPERTIES, "mailContentOfStamp"));						
+					}
+					stamp.setNextApprover("");
+					stamp.setState(getStampState(3, status));
+				}
+
+				updateOfApporve(stamp);
+				
+		} catch (Exception e) {
+			logUtil.logError(e.getMessage());
+		}
+			
+		return approveHis;
+	}
 	
 
 	@Override
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void update(Stamp stamp) throws Exception {
-		if (stamp.getState().equals(StampState.APPROVE)) {
+		if (stamp.getState().equals(StampState.SUBMIT)) {
 			List<StampApprove> lStampApprove = new ArrayList<>();
 			if (stamp.getProjectResponsible() != null && !stamp.getProjectResponsible().equals("")) {
 				Dict approveType = dictDAO.query(" where id='" + stamp.getDocumentType() + "'").get(0);
@@ -201,12 +243,23 @@ public class StampBIZImpl extends BizBase implements StampBIZ {
 
 			}
 			//stamp.setStampApprove(lStampApprove);
+			
+			//删除原有审批流程
+			List<StampApprove> lApproves=(List<StampApprove>) commonDAO.queryByHql("From StampApprove where tradeId='"+stamp.getId()+"'");
+			if (lApproves.size()>0) {
+				for (StampApprove stampApprove :lApproves) {
+					stampDAO.delete(stampApprove);				
+				}
+			}
+			
+			
+			//保存新审批流程
 			for (StampApprove approve : lStampApprove) {
-				stamDAO.save(approve);
+				stampDAO.save(approve);
 			}
 		}
 
-		stamDAO.update(stamp);
+		stampDAO.update(stamp);
 		logUtil.logInfo("用章申请单更新成功：" + stamp.getApplicationCode());
 
 	}
@@ -214,7 +267,13 @@ public class StampBIZImpl extends BizBase implements StampBIZ {
 	@Override
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void deleteStamp(Stamp stamp) {
-		stamDAO.delete(stamp);
+		for (StampApprove stampApprove :(List<StampApprove>)commonDAO.queryByHql(" From StampApprove where tradeId='"+stamp.getId()+"'")) {
+			stampDAO.delete(stampApprove);
+		}
+		for (ApproveHis approveHis :(List<ApproveHis>)commonDAO.queryByHql(" From ApproveHis where tradeId='"+stamp.getId()+"'")) {
+			approveHisBIZ.delete(approveHis);
+		}	
+		stampDAO.delete(stamp);
 		logUtil.logInfo("用章申请单删除成功：" + stamp.getApplicationCode());
 
 	}
@@ -222,7 +281,33 @@ public class StampBIZImpl extends BizBase implements StampBIZ {
 	@Override
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void updateOfApporve(Stamp stamp) throws Exception {
-		stamDAO.update(stamp);	
+		stampDAO.update(stamp);	
+	}
+	
+	public String getStampState(Integer level,String status){
+		if (status.equals("Rejected")) {
+			if (level==0) {
+				return StampState.LEVEL1_REJECT;
+			}else if (level==1) {
+				return StampState.LEVEL2_REJECT;
+			}else if (level==2) {
+				return StampState.LEVEL3_REJECT;
+			}else if (level==3) {
+				return StampState.INFORM_REJECT;
+			}
+		}else{
+			if (level==0) {
+				return StampState.LEVEL1;
+			}else if (level==1) {
+				return StampState.LEVEL2;
+			}else if (level==2) {
+				return StampState.LEVEL3;
+			}else if (level==3) {
+				return StampState.INFORM;
+			}
+		}
+		return "";
+		
 	}
 
 }

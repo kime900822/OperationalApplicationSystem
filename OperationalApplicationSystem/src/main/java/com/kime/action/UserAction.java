@@ -255,6 +255,10 @@ public class UserAction extends ActionBase {
 		
 		String err_message = null;
 		try {
+			if (uid==null||password==null) {
+				return ERROR;
+			}
+			
 			if ("".equals(uid)||"".equals(password)) {
 				err_message="Please enter your id and password";
 			}else{
@@ -264,28 +268,31 @@ public class UserAction extends ActionBase {
 					session.setAttribute("login_message", "User id or password error");
 					logUtil.logInfo("登录失败！"+err_message.toString());
 					return ERROR;
+				}else{
+					//获取菜单
+					if (PropertiesUtil.ReadProperties(Message.SYSTEM_PROPERTIES, "id").equals(user.getUid())) {
+						List lMenus=menuBIZ.getParentMenu();
+						session.setAttribute("parentMenu", lMenus); 
+						for (Object object : lMenus) {
+							Menu m=(Menu)object;
+							String string=menuBIZ.getChildMenu(m.getId());
+							session.setAttribute(m.getId(), string); 
+						}
+						
+					}else{			
+						List<Menu> lMenus=menuBIZ.getParentMenuByRole(user.getRole().getName());
+						session.setAttribute("parentMenu", lMenus); 
+						for (Menu m : lMenus) {
+							String string=menuBIZ.getChildMenu_R(m.getId(), user.getRole().getName());
+							session.setAttribute(m.getId(), string); 
+						}
+						
+					}
+					
 				}
 				
 			}
-			//获取菜单
-			if (PropertiesUtil.ReadProperties(Message.SYSTEM_PROPERTIES, "id").equals(user.getUid())) {
-				List lMenus=menuBIZ.getParentMenu();
-				session.setAttribute("parentMenu", lMenus); 
-				for (Object object : lMenus) {
-					Menu m=(Menu)object;
-					String string=menuBIZ.getChildMenu(m.getId());
-					session.setAttribute(m.getId(), string); 
-				}
-				
-			}else{			
-				List<Menu> lMenus=menuBIZ.getParentMenuByRole(user.getRole().getName());
-				session.setAttribute("parentMenu", lMenus); 
-				for (Menu m : lMenus) {
-					String string=menuBIZ.getChildMenu_R(m.getId(), user.getRole().getName());
-					session.setAttribute(m.getId(), string); 
-				}
-				
-			}
+
 
 			
 		} catch (Exception e1) {

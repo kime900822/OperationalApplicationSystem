@@ -7,4 +7,5 @@ public interface CommonDAO {
 	public List queryByHql(String hql);
 	
 	public List queryBySql(String sql);
+	
 }

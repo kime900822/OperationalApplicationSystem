@@ -89,7 +89,38 @@ public class StampAction extends ActionBase{
 		private String applicationDate_t;
 		private String queryType;
 		
+		
+		private String tradeId;
+		private String comment;
+		private String status;
+		private String level;
+		
+		
 	
+		public String getTradeId() {
+			return tradeId;
+		}
+		public void setTradeId(String tradeId) {
+			this.tradeId = tradeId;
+		}
+		public String getComment() {
+			return comment;
+		}
+		public void setComment(String comment) {
+			this.comment = comment;
+		}
+		public String getStatus() {
+			return status;
+		}
+		public void setStatus(String status) {
+			this.status = status;
+		}
+		public String getLevel() {
+			return level;
+		}
+		public void setLevel(String level) {
+			this.level = level;
+		}
 		public ApproveHisBIZ getApproveHisBIZ() {
 			return approveHisBIZ;
 		}
@@ -426,24 +457,28 @@ public class StampAction extends ActionBase{
 					id=UUID.randomUUID().toString().replaceAll("-", "");
 					stamp.setId(id);
 					stamp.setDateTmp(CommonUtil.getDateTemp());
-					stamp.setState(StampState.SAVE);
+					stamp.setState(StampState.SUBMIT);
 					stampBIZ.saveStamp(stamp);
 					
-				}
+				}else{
 					stamp=stampBIZ.getStamp(" where id='"+id+"' ").get(0);					
 					stamp.setDateTmp(CommonUtil.getDateTemp());
-					stamp.setState(StampState.APPROVE);
+					if (!stamp.getState().equals(StampState.INFORM_REJECT)) {
+						stamp.setState(StampState.SUBMIT);
+					}else{
+						stamp.setState(StampState.LEVEL3);
+					}
+					
 					stampBIZ.update(stamp);		
 					result.setMessage(Message.SAVE_MESSAGE_SUCCESS);
-					result.setStatusCode("200");
-					Map<String, String> map=new HashMap<>();
-					map.put("id", stamp.getId());
-					result.setParams(map);
-					logUtil.logInfo("更新用章申请单:"+stamp.getId());	
-					
+					result.setStatusCode("200");				
+					logUtil.logInfo("提交用章申请单:"+stamp.getApplicationCode());	
+				}
 
-				
-				
+					
+				Map<String, String> map=new HashMap<>();
+				map.put("id", stamp.getId());
+				result.setParams(map);
 
 
 				
@@ -489,6 +524,8 @@ public class StampAction extends ActionBase{
 					result.setStatusCode("200");
 					Map<String, String> map=new HashMap<>();
 					map.put("id", stamp.getId());
+					map.put("applicationCode", stamp.getApplicationCode());
+					map.put("state", stamp.getState());
 					result.setParams(map);
 					logUtil.logInfo("更新用章申请单:"+stamp.getId());			
 				}else{
@@ -546,6 +583,30 @@ public class StampAction extends ActionBase{
 		}
 		
 		
+		@Action(value="StampApprove",results={@org.apache.struts2.convention.annotation.Result(type="stream",
+				params={
+						"inputName", "reslutJson"
+				})})
+		public String StampApprove() throws UnsupportedEncodingException{	
+			ApproveHis approveHis=new ApproveHis();
+			try {
+				approveHis=stampBIZ.StampApprove(level, comment, status, tradeId);
+				result.setStatusCode("200");
+				result.setMessage("Success");
+			} catch (Exception e) {
+				result.setStatusCode("300");
+				result.setMessage(e.getMessage());
+			}
+			Map<String, Object> params=new HashMap<>();
+			params.put("data", approveHis);		
+			result.setParams(params);
+			
+			reslutJson=new ByteArrayInputStream(new Gson().toJson(result).getBytes("UTF-8"));  	
+			return SUCCESS;
+		}
+		
+		
+		
 		
 		@Action(value="getStamp",results={@org.apache.struts2.convention.annotation.Result(type="stream",
 				params={
@@ -588,7 +649,7 @@ public class StampAction extends ActionBase{
 				hql=" select P from Stamp P where P.formFillerID='"+user.getUid()+"' "+where+" order By P.dateTmp desc";
 			}
 			if ("approve".equals(queryType)) {
-				hql="select P from Stamp P left join ApproveHis A on  P.id=A.tradeId  where P.nextApprover='"+user.getUid()+"' OR A.uId='"+user.getUid()+"' order By P.dateTmp desc";
+				hql="select S from Stamp S where S.id in (select P.id from Stamp P left join ApproveHis A on  P.id=A.tradeId  where P.nextApprover='"+user.getUid()+"' OR A.uId='"+user.getUid()+"' ) order By S.dateTmp desc";
 			}
 			if ("all".equals(queryType)) {
 				hql=" select P from Stamp P where 1=1 "+where+" order By P.dateTmp desc";
@@ -606,17 +667,6 @@ public class StampAction extends ActionBase{
 				stamp.setStampType(tmp.replace("|", "<br>"));
 				tmp=stamp.getUsageDescription();
 				stamp.setUsageDescription(tmp.replace("/r/n", "<br>"));
-				tmp="";
-				List<ApproveHis> lApproveHis=approveHisBIZ.getApproveHisByTradeId(stamp.getId());
-				if ( lApproveHis.size()>0) {
-					for (ApproveHis approveHis : lApproveHis) {
-						tmp+=approveHis.getuName()+"|";					
-					}
-					if (tmp.length()>0) {
-						tmp=tmp.substring(0, tmp.length()-1);
-					}
-				}
-				stamp.setState(tmp);
 			}
 			
 			queryResult.setList(list);
@@ -705,7 +755,7 @@ public class StampAction extends ActionBase{
 					hql=" select P from Stamp P where P.formFillerID='"+user.getUid()+"' "+where+" order By P.dateTmp desc";
 				}
 				if ("approve".equals(queryType)) {
-					hql="select P from Stamp P left join ApproveHis A on  P.id=A.tradeId  where P.nextApprover='"+user.getUid()+"' OR A.uId='"+user.getUid()+"' order By P.dateTmp desc";
+					hql="select S from Stamp S where S.id in (select P.id from Stamp P left join ApproveHis A on  P.id=A.tradeId  where P.nextApprover='"+user.getUid()+"' OR A.uId='"+user.getUid()+"' ) order By S.dateTmp desc";
 				}
 				if ("all".equals(queryType)) {
 					hql=" select P from Stamp P where 1=1 "+where+" order By P.dateTmp desc";
@@ -714,21 +764,9 @@ public class StampAction extends ActionBase{
 	    		List<Stamp> lStamps=stampBIZ.getStampByHql(hql);
 	    		
 				for (Stamp stamp : lStamps) {
-					String tmp="";
-					List<ApproveHis> lApproveHis=approveHisBIZ.getApproveHisByTradeId(stamp.getId());
-					if ( lApproveHis.size()>0) {
-						for (ApproveHis approveHis : lApproveHis) {
-							tmp+=approveHis.getuName()+"|";					
-						}
-						if (tmp.length()>0) {
-							tmp=tmp.substring(0, tmp.length()-1);
-						}
-					}
-					stamp.setState(tmp);					
 					stamp.setUrgent(stamp.getUrgent()==null?"N":"Y");
 					Dict documenttype=dictBIZ.getDict(" where id='"+stamp.getDocumentType()+"'").get(0);
-					stamp.setDocumentType(documenttype.getValue());
-					
+					stamp.setDocumentType(documenttype.getValue());				
 				}
 				
 	        	HttpServletResponse response = (HttpServletResponse)
@@ -801,7 +839,7 @@ public class StampAction extends ActionBase{
 					hql=" select P from Stamp P where P.formFillerID='"+user.getUid()+"' "+where+" order By P.dateTmp desc";
 				}
 				if ("approve".equals(queryType)) {
-					hql="select P from Stamp P left join ApproveHis A on  P.id=A.tradeId  where P.nextApprover='"+user.getUid()+"' OR A.uId='"+user.getUid()+"' order By P.dateTmp desc";
+					hql="select S from Stamp S where S.id in (select P.id from Stamp P left join ApproveHis A on  P.id=A.tradeId  where P.nextApprover='"+user.getUid()+"' OR A.uId='"+user.getUid()+"' ) order By S.dateTmp desc";
 				}
 				if ("all".equals(queryType)) {
 					hql=" select P from Stamp P where 1=1 "+where+" order By P.dateTmp desc";
@@ -810,21 +848,9 @@ public class StampAction extends ActionBase{
 	    		List<Stamp> lStamps=stampBIZ.getStampByHql(hql);
 	    		
 				for (Stamp stamp : lStamps) {
-					String tmp="";
-					List<ApproveHis> lApproveHis=approveHisBIZ.getApproveHisByTradeId(stamp.getId());
-					if ( lApproveHis.size()>0) {
-						for (ApproveHis approveHis : lApproveHis) {
-							tmp+=approveHis.getuName()+"|";					
-						}
-						if (tmp.length()>0) {
-							tmp=tmp.substring(0, tmp.length()-1);
-						}
-					}
-					stamp.setState(tmp);					
 					stamp.setUrgent(stamp.getUrgent()==null?"N":"Y");
 					Dict documenttype=dictBIZ.getDict(" where id='"+stamp.getDocumentType()+"'").get(0);
-					stamp.setDocumentType(documenttype.getValue());
-					
+					stamp.setDocumentType(documenttype.getValue());				
 				}
 	    		
 	        	Class c = (Class) new Stamp().getClass();  

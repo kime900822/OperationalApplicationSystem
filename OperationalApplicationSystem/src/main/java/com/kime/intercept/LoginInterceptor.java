@@ -26,19 +26,22 @@ public class LoginInterceptor extends MethodFilterInterceptor  {
 		String actionname=invocation.getInvocationContext().getName();
 		Map<String, String[]> param=invocation.getInvocationContext().getParameters().toMap();
 		
-		try {
-			String uid=param.get("uid")[0];
-			String password=param.get("password")[0];
-			if (user==null&&actionname.equals("login")&&(uid.equals("")||password.equals(""))) {
+		if (user==null) {
+			try {
+				String uid=param.get("uid")[0];
+				String password=param.get("password")[0];
+				if (user==null&&actionname.equals("login")&&(uid.equals("")||password.equals(""))) {
+					return Action.LOGIN;
+				}
+				if (user==null&&actionname.equals("login")&&!uid.equals("")&&!password.equals("")) {
+					return invocation.invoke(); 
+				}
+				
+			} catch (Exception e) {
 				return Action.LOGIN;
 			}
-			if (user==null&&actionname.equals("login")&&!uid.equals("")&&!password.equals("")) {
-				return invocation.invoke(); 
-			}
-			
-		} catch (Exception e) {
-			return Action.LOGIN;
 		}
+
 		
 
 		

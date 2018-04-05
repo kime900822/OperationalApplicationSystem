@@ -8,7 +8,8 @@ public interface ApproveHisBIZ {
 	
 	public List getApproveHisByTradeId(String tradeId);
 	
-	public ApproveHis save(String level,String comment,String status,String tradeId,String type);
+	public void delete(ApproveHis approveHis);
 	
+	public void save(ApproveHis approveHis);
 		
 }
