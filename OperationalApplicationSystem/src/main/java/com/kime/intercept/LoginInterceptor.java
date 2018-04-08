@@ -28,14 +28,19 @@ public class LoginInterceptor extends MethodFilterInterceptor  {
 		
 		if (user==null) {
 			try {
-				String uid=param.get("uid")[0];
-				String password=param.get("password")[0];
-				if (user==null&&actionname.equals("login")&&(uid.equals("")||password.equals(""))) {
-					return Action.LOGIN;
+				if (actionname.equals("login")) {
+					String uid=param.get("uid")[0];
+					String password=param.get("password")[0];
+					if (uid.equals("")||password.equals("")) {
+						return Action.LOGIN;
+					}
+					if (!uid.equals("")&&!password.equals("")) {
+						return invocation.invoke(); 
+					}
+				}else{
+					return Action.ERROR; 
 				}
-				if (user==null&&actionname.equals("login")&&!uid.equals("")&&!password.equals("")) {
-					return invocation.invoke(); 
-				}
+
 				
 			} catch (Exception e) {
 				return Action.LOGIN;
