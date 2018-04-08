@@ -31,7 +31,7 @@ public class ApproveHsiDAOImpl extends HibernateDaoSupport implements ApproveHis
 	@Override
 	public List getApproveHisByTradeId(String tradeId) {
 		Session session=this.getSessionFactory().openSession();
-		String hql="FROM ApproveHis where tradeId='"+tradeId+"' ";
+		String hql="FROM ApproveHis where tradeId='"+tradeId+"' ORDER BY date ";
 		return session.createQuery(hql).list();
 	}
 

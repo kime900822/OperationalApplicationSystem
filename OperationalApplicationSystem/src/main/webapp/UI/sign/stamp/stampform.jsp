@@ -273,7 +273,7 @@ function stampApprove(o){
 		title:"Comment?", 
 		callback:function (result) {
 		if(result!=null){
-		status=$(o).attr('name')
+		approveState=$(o).attr('name')
 		if(status=='Rejected'&&(result==''||result==undefined)){
 			bootbox.alert("Comment can`t empty!");
 			 return false;
@@ -285,7 +285,7 @@ function stampApprove(o){
 			BJUI.ajax('doajax', {
 		    url: 'StampApprove.action',
 		    loadingmask: true,
-		    data:{status:status,comment:result,tradeId:$.CurrentNavtab.find("#j_stamp_id").val(),level:level},	    
+		    data:{approveState:approveState,comment:result,tradeId:$.CurrentNavtab.find("#j_stamp_id").val(),level:level},	    
 		    okCallback: function(json, options) {
 	            if(json.status='200'){
 	            	 BJUI.alertmsg('info', json.message); 

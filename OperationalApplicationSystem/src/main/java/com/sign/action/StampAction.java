@@ -92,11 +92,16 @@ public class StampAction extends ActionBase{
 		
 		private String tradeId;
 		private String comment;
-		private String status;
 		private String level;
-		
+		private String approveState;
 		
 	
+		public String getApproveState() {
+			return approveState;
+		}
+		public void setApproveState(String approveState) {
+			this.approveState = approveState;
+		}
 		public String getTradeId() {
 			return tradeId;
 		}
@@ -108,12 +113,6 @@ public class StampAction extends ActionBase{
 		}
 		public void setComment(String comment) {
 			this.comment = comment;
-		}
-		public String getStatus() {
-			return status;
-		}
-		public void setStatus(String status) {
-			this.status = status;
 		}
 		public String getLevel() {
 			return level;
@@ -590,7 +589,7 @@ public class StampAction extends ActionBase{
 		public String StampApprove() throws UnsupportedEncodingException{	
 			ApproveHis approveHis=new ApproveHis();
 			try {
-				approveHis=stampBIZ.StampApprove(level, comment, status, tradeId);
+				approveHis=stampBIZ.StampApprove(level, comment, approveState, tradeId);
 				result.setStatusCode("200");
 				result.setMessage("Success");
 			} catch (Exception e) {

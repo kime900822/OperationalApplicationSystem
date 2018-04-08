@@ -32,5 +32,5 @@ public interface StampBIZ {
 	
 	public void updateOfApporve(Stamp stamp) throws Exception;
 
-	ApproveHis StampApprove(String level, String comment, String status, String tradeId);
+	ApproveHis StampApprove(String level, String comment, String approveState, String tradeId);
 }

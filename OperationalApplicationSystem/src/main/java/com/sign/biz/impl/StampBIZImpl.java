@@ -124,7 +124,7 @@ public class StampBIZImpl extends BizBase implements StampBIZ {
 
 	@Override
 	@Transactional(readOnly=false,propagation=Propagation.REQUIRED,rollbackFor=Exception.class )
-	public ApproveHis StampApprove(String level, String comment,String status,String tradeId) {
+	public ApproveHis StampApprove(String level, String comment,String approveState,String tradeId) {
 		ApproveHis approveHis=new ApproveHis();
 		try {
 				Stamp stamp=getStampById(tradeId);
@@ -134,7 +134,7 @@ public class StampBIZImpl extends BizBase implements StampBIZ {
 				approveHis.setuName(approve.getUname());
 				approveHis.setuId(approve.getUid());
 				approveHis.setName(approve.getName());
-				approveHis.setStatus(status);
+				approveHis.setStatus(approveState);
 				approveHis.setType("STAMP");
 				approveHis.setTradeId(tradeId);
 				approveHis.setComment(comment);
@@ -143,7 +143,7 @@ public class StampBIZImpl extends BizBase implements StampBIZ {
 				approveHisBIZ.save(approveHis);
 				//stamp.getApproveHis().add(approveHis);
 				if (stamp.getStampApprove().size()-1>Integer.parseInt(approve.getLevel())) {
-					if (status.equals("Rejected")) {
+					if (approveState.equals("Rejected")) {
 						for (StampApprove  stampApprove : stamp.getStampApprove()) {
 							stampDAO.delete(stampApprove);
 						}	
@@ -154,14 +154,14 @@ public class StampBIZImpl extends BizBase implements StampBIZ {
 						SendMail.SendMail(user.getEmail(), PropertiesUtil.ReadProperties(Message.MAIL_PROPERTIES, "mailTitleOfStampApprove"), MessageFormat.format(PropertiesUtil.ReadProperties(Message.MAIL_PROPERTIES, "mailContentOfStampApprove"),stamp.getApplicationCode(),stamp.getApplicant(),stamp.getUrgentReason()));
 	
 					}
-					stamp.setState(getStampState(Integer.parseInt(level), status));
+					stamp.setState(getStampState(Integer.parseInt(level), approveState));
 				}else{
-					if (!status.equals("Rejected")) {
+					if (!approveState.equals("Rejected")) {
 						User user=userBIZ.getUser(" where uid='"+stamp.getApplicantID()+"'").get(0);
 						SendMail.SendMail(user.getEmail(), PropertiesUtil.ReadProperties(Message.MAIL_PROPERTIES, "mailTitleOfStamp"), PropertiesUtil.ReadProperties(Message.MAIL_PROPERTIES, "mailContentOfStamp"));						
 					}
 					stamp.setNextApprover("");
-					stamp.setState(getStampState(3, status));
+					stamp.setState(getStampState(3, approveState));
 				}
 
 				updateOfApporve(stamp);
