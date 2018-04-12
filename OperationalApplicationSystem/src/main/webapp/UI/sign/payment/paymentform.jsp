@@ -206,6 +206,7 @@ function changePaymentTerm(){
 			$.CurrentNavtab.find('#j_payment_paymentDays_'+i).append("<option value=''></option>").append("<option value='30Days'>30Days</option>").append("<option value='45Days'>45Days</option>").append("<option value='60Days'>60Days</option>").append("<option value='90Days'>90Days</option>").append("<option value='120Days'>120Days</option>").selectpicker('refresh');
 		}		
 	}	
+
 }
 
 function accPayment(){	
@@ -479,7 +480,8 @@ function showButton(state,print,uid,documentAuditid,deptManagerid){
 		$.CurrentNavtab.find('#payment-reject').hide();
 		$.CurrentNavtab.find('#payment-print').show();
 		$.CurrentNavtab.find('#payment-delete').hide();
-		if(print=='1'){
+		$.CurrentNavtab.find('#j_payment_contacturalPaymentDate').removeAttr('readonly')
+/* 		if(print=='1'){
 			$.CurrentNavtab.find('#payment-assign').show();
 			$.CurrentNavtab.find('#payment-acc').show();
 			$.CurrentNavtab.find('#payment-invalid-tr').show();
@@ -489,7 +491,12 @@ function showButton(state,print,uid,documentAuditid,deptManagerid){
 			$.CurrentNavtab.find('#payment-acc').hide();
 			$.CurrentNavtab.find('#payment-invalid-tr').hide();
 			$.CurrentNavtab.find('#payment-return-tr').hide();					
-		}
+		} */
+		$.CurrentNavtab.find('#payment-assign').show();
+		$.CurrentNavtab.find('#payment-acc').show();
+		$.CurrentNavtab.find('#payment-invalid-tr').show();
+		$.CurrentNavtab.find('#payment-return-tr').show();	
+		
 		$.CurrentNavtab.find('#j_payment_documentAudit').val('${user.name}')
 		$("input[id*='j_payment']").attr('disabled','disabled');
 		$("select[id*='j_payment']").attr('disabled','disabled');
@@ -732,6 +739,24 @@ function faceToData(){
 	o.departmentName='${user.department.name}';
 	o.departmentID='${user.department.did}';
 	o.isPrint=$.CurrentNavtab.find("#j_payment_isPrint").val();
+	if(o.paymentTerm=='1'||o.paymentTerm=='2'||o.paymentTerm=='6'){
+		o.contacturalPaymentDate=o.requestPaymentDate;
+		$.CurrentNavtab.find("#j_payment_contacturalPaymentDate").val(o.requestPaymentDate);		
+	}else{	
+		var maxDate=new Date('1900','01','01');
+		for(var i=1;i<7;i++){		
+			var tmp=$.CurrentNavtab.find("#j_payment_receivingOrApprovalDate_"+i).val();
+			var days=$.CurrentNavtab.find("#j_payment_paymentDays_"+i).val()
+			if(tmp!=''||tmp!=undefined){
+				var tmpDate=new Date(new Date().setDate(stringToDate(tmp).getDate()+parseInt(days.replace('Days',''))));
+				if(maxDate<tmpDate){
+					maxDate=tmpDate;
+				}
+			}		
+		}
+		o.contacturalPaymentDate=maxDate.formatDate('yyyy-MM-dd');
+		$.CurrentNavtab.find("#j_payment_contacturalPaymentDate").val(maxDate.formatDate('yyyy-MM-dd'));		
+	}
 	return o;
 }
 
@@ -892,6 +917,12 @@ function checkSave(){
 	}
 	if($.CurrentNavtab.find('#j_payment_paymentSubject').val()==null||$.CurrentNavtab.find('#j_payment_paymentSubject').val()==''){
 		err+=" Payment Subject can`t be  empty！<br>";				
+	}	
+	if($.CurrentNavtab.find('#j_payment_requestPaymentDate').val()==null||$.CurrentNavtab.find('#j_payment_requestPaymentDate').val()==''){
+		err+=" Request PaymentDate can`t be  empty！<br>";				
+	}
+	if($.CurrentNavtab.find('#j_payment_supplierCode').val()==null||$.CurrentNavtab.find('#j_payment_supplierCode').val()==''){
+		err+=" Supplier Code / Beneficaiary Subject can`t be  empty！<br>";				
 	}
 	if($.CurrentNavtab.find('#j_payment_currency_1').val()==null||$.CurrentNavtab.find('#j_payment_currency_1').val()==''){
 		err+=" Currency can`t be  empty！<br>";				
@@ -951,7 +982,7 @@ function checkReturn(){
 
 </script>
 <div class="bjui-pageContent">
-    <div class="bs-example" style="width:1000px">
+    <div class="bs-example" style="width:1100px">
         <form id="j_payment_form" data-toggle="ajaxform">
 			<input type="hidden" name="id" id="j_payment_id" value="">
 			<input type="hidden" name="state" id="j_payment_state" value="">
@@ -964,14 +995,14 @@ function checkReturn(){
 					<td width="250px">Application Date<br>（申请日期）</td>
 					<td width="250px"><input type="text" size="19" name="applicationDate" data-nobtn="true" id="j_payment_applicationDate" value=""  readonly="" ></td>
 					<td width="250px">Request Payment Date<label style="color:red;font-size:12px"><b>*</b></label><br>(要求付款日期)<label style="color:red;font-size:12px"><b>*</b></label></td>
-					<td width="250px"><input type="text" size="19" name="requestPaymentDate" data-nobtn="true" id="j_payment_requestPaymentDate" value="" data-toggle="datepicker" ></td>					
+					<td width="250px"><input type="text" size="19" name="requestPaymentDate" data-nobtn="true" placeholder="点击选择日期" id="j_payment_requestPaymentDate" value="" data-toggle="datepicker" ></td>					
 				</tr>
 				<tr>
 					<td>
 						Contactural Payment Date<br>（合同付款日期）
 					</td>
 					<td>
-						<input type="text" name="contacturalPaymentDate" size="19" value="" data-nobtn="true" id="j_payment_contacturalPaymentDate"  data-toggle="datepicker" >
+						<input type="text" name="contacturalPaymentDate" size="19" value="" data-nobtn="true" id="j_payment_contacturalPaymentDate" readonly="" >
 					</td>
 					<td>
 						Sequential Code(流水码)
@@ -1021,7 +1052,7 @@ function checkReturn(){
 				</tr>
 				<tr>
 					<td>
-						供应商代码/收款人<br>supplier code/Beneficaiary
+						供应商代码/收款人  <label style="color:red;font-size:12px"><b>*</b></label><br>Supplier Code/Beneficaiary  <label style="color:red;font-size:12px"><b>*</b></label>
 					</td>
 					<td>
 						<input type="text" name="supplierCode" id="j_payment_supplierCode" value="" size="19" data-rule="required" onchange="checkSupplierCode(this);">
@@ -1129,7 +1160,7 @@ function checkReturn(){
 									收货或验收日期<br>Receiving or Approval date
 								</td>
 								<td>
-									<input type="text" name="receivingOrApprovalDate_1" size="19" data-nobtn="true" id="j_payment_receivingOrApprovalDate_1" value="" data-toggle="datepicker" data-rule="date">
+									<input type="text" name="receivingOrApprovalDate_1" size="19" data-nobtn="true" id="j_payment_receivingOrApprovalDate_1" placeholder="点击选择日期" value="" data-toggle="datepicker" data-rule="date">
 								</td>
 							</tr>
 							<tr class="child_row_01 child_row">
@@ -1183,7 +1214,7 @@ function checkReturn(){
 									收货或验收日期<br>Receiving or Approval date
 								</td>
 								<td>
-									<input type="text" name="receivingOrApprovalDate_2" data-nobtn="true" id="j_payment_receivingOrApprovalDate_2" value="" size="19" data-toggle="datepicker" data-rule="date">
+									<input type="text" name="receivingOrApprovalDate_2" data-nobtn="true" id="j_payment_receivingOrApprovalDate_2" value="" size="19" data-toggle="datepicker" placeholder="点击选择日期"  data-rule="date">
 								</td>
 							</tr>
 							<tr class="child_row_02 child_row">
@@ -1236,7 +1267,7 @@ function checkReturn(){
 									收货或验收日期<br>Receiving or Approval date
 								</td>
 								<td>
-									<input type="text" name="receivingOrApprovalDate_3" size="19" data-nobtn="true" id="j_payment_receivingOrApprovalDate_3" size="19"  value="" data-toggle="datepicker" data-rule="date">
+									<input type="text" name="receivingOrApprovalDate_3" size="19" data-nobtn="true" id="j_payment_receivingOrApprovalDate_3" size="19"  value="" data-toggle="datepicker" placeholder="点击选择日期" data-rule="date">
 								</td>
 							</tr>
 							<tr class="child_row_03 child_row">
@@ -1289,7 +1320,7 @@ function checkReturn(){
 									收货或验收日期<br>Receiving or Approval date
 								</td>
 								<td>
-									<input type="text" name="receivingOrApprovalDate_4" size="19" data-nobtn="true" size="19" id="j_payment_receivingOrApprovalDate_4" value="" data-toggle="datepicker" data-rule="date">
+									<input type="text" name="receivingOrApprovalDate_4" size="19" data-nobtn="true" size="19" id="j_payment_receivingOrApprovalDate_4" value="" data-toggle="datepicker" placeholder="点击选择日期" data-rule="date">
 								</td>
 							</tr>
 							<tr class="child_row_04 child_row">
@@ -1342,7 +1373,7 @@ function checkReturn(){
 									收货或验收日期<br>Receiving or Approval date
 								</td>
 								<td>
-									<input type="text" name="receivingOrApprovalDate_5" size="19" data-nobtn="true" id="j_payment_receivingOrApprovalDate_5" size="19" value="" data-toggle="datepicker" data-rule="date">
+									<input type="text" name="receivingOrApprovalDate_5" size="19" data-nobtn="true" id="j_payment_receivingOrApprovalDate_5" size="19" value="" data-toggle="datepicker" placeholder="点击选择日期" data-rule="date">
 								</td>
 							</tr>
 							<tr class="child_row_05 child_row">
@@ -1395,7 +1426,7 @@ function checkReturn(){
 									收货或验收日期<br>Receiving or Approval date
 								</td>
 								<td>
-									<input type="text" name="receivingOrApprovalDate_6" size="19" data-nobtn="true" id="j_payment_receivingOrApprovalDate_6" size="19" value="" data-toggle="datepicker" data-rule="date">
+									<input type="text" name="receivingOrApprovalDate_6" size="19" data-nobtn="true" id="j_payment_receivingOrApprovalDate_6" size="19" value="" data-toggle="datepicker" placeholder="点击选择日期" data-rule="date">
 								</td>
 							</tr>
 							<tr class="child_row_06 child_row">

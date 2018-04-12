@@ -107,7 +107,7 @@ function dataToFace(){
             		$("#AdvanceWriteoff").attr('checked','checked');
             	}
             	if(json.urgent=='1'){
-            		$("#urgent").html("●");
+            		$("#urgent").html("Urgent : ●");
             	}
             	$("#UID").html(json.UID+'<br>'+json.UName);
             	$("#departmentID").html(json.departmentName+'<br>'+json.departmentID);
@@ -229,7 +229,7 @@ function dataToFace(){
 					<td  width="930px"></td>
 					<td  width="70px"></td>
 				</tr>
-				<tr height="10px">
+				<tr height="10px" style="font-size:14px;">
 					<td colspan="2" align="right" >
 						<label>NO:</label>
 					</td>
@@ -242,10 +242,10 @@ function dataToFace(){
 					</td>
 				</tr>
 				<tr>
-					<td colspan="2" align="right" style="">
-						<label style="font-size:10px">Urgent:</label>
+					<td  colspan="2" align="right" width="20px">
+					&nbsp&nbsp&nbsp<label id="urgent" ></label>
 					</td>
-					<td align="center" width="20px" style="text-align: left;">&nbsp&nbsp&nbsp<label id="urgent" ></label></td>
+					<td></td>
 				</tr>
 			</table>		
 			
