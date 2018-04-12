@@ -243,7 +243,7 @@ function dataToFace(){
 				</tr>
 				<tr>
 					<td  colspan="2" align="right" width="20px">
-					&nbsp&nbsp&nbsp<label id="urgent" ></label>
+					&nbsp&nbsp&nbsp<label id="urgent" style="font-size:14px;color: red" ></label>
 					</td>
 					<td></td>
 				</tr>
