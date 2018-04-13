@@ -23,7 +23,7 @@ function datagrid_paymentState() {
 }
 </script>
 <div class="bjui-pageHeader" style="background-color:#fefefe; border-bottom:none;">
-<form data-toggle="ajaxsearch" data-options="{searchDatagrid:$.CurrentNavtab.find('#datagrid-payment-all-filter')}">
+<form data-toggle="ajaxsearch" data-options="{searchDatagrid:$.CurrentNavtab.find('#datagrid-payment-all-filter')}" id="datagrid-payment-all-query">
     <fieldset>
         <legend style="font-weight:normal;">Search：</legend>
         <div style="margin:0; padding:1px 5px 5px;">
@@ -133,7 +133,7 @@ function datagrid_paymentState() {
         contextMenuB: true,
         hScrollbar: true,
         filterThead:false,
-        exportOption: {type:'file', options:{url:'exportPaymentExcel.action?queryType=all', loadingmask:true}}
+        exportOption: {type:'file', options:{url:'exportPaymentExcel.action?queryType=all', loadingmask:true,queryForm:$.CurrentNavtab.find('#datagrid-payment-all-query')}}
     }">
         <thead>
             <tr>

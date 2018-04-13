@@ -41,7 +41,7 @@ $(function(){
 
 </script>
 <div class="bjui-pageHeader" style="background-color:#fefefe; border-bottom:none;">
-<form data-toggle="ajaxsearch" data-options="{searchDatagrid:$.CurrentNavtab.find('#datagrid-payment-user-filter')}">
+<form data-toggle="ajaxsearch" data-options="{searchDatagrid:$.CurrentNavtab.find('#datagrid-payment-user-filter')}" id="datagrid-payment-user-query">
     <fieldset>
         <legend style="font-weight:normal;">Search：</legend>
         <div style="margin:0; padding:1px 5px 5px;">
@@ -138,7 +138,7 @@ $(function(){
         contextMenuB: true,
         hScrollbar: true,
         filterThead:false,
-        exportOption: {type:'file', options:{url:'exportPaymentExcel.action?queryType=user', loadingmask:false}}
+        exportOption: {type:'file', options:{url:'exportPaymentExcel.action?queryType=user', loadingmask:false,queryForm:$.CurrentNavtab.find('#datagrid-payment-user-query')}}
     }">
         <thead>
             <tr>

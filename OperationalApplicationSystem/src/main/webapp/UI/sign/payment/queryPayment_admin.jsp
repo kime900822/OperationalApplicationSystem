@@ -39,7 +39,7 @@ $(function(){
 
 </script>
 <div class="bjui-pageHeader" style="background-color:#fefefe; border-bottom:none;">
-<form data-toggle="ajaxsearch" data-options="{searchDatagrid:$.CurrentNavtab.find('#datagrid-payment-user-filter')}">
+<form data-toggle="ajaxsearch" data-options="{searchDatagrid:$.CurrentNavtab.find('#datagrid-payment-admin-filter')}" id="datagrid-payment-admin-query">
     <fieldset>
         <legend style="font-weight:normal;">Search：</legend>
         <div style="margin:0; padding:1px 5px 5px;">
@@ -134,7 +134,7 @@ $(function(){
 </form>
 </div>
 <div class="bjui-pageContent" id="div-user">
-    <table class="table table-bordered" id="datagrid-payment-user-filter" data-toggle="datagrid" data-options="{
+    <table class="table table-bordered" id="datagrid-payment-admin-filter" data-toggle="datagrid" data-options="{
         height: '100%',
         gridTitle : 'Payment management',
         dataUrl: 'getPayment.action?queryType=admin',
@@ -149,7 +149,7 @@ $(function(){
         contextMenuB: true,
         hScrollbar: true,
         filterThead:false,
-        exportOption: {type:'file', options:{url:'exportPaymentExcel.action?queryType=admin', loadingmask:true}}
+        exportOption: {type:'file', options:{url:'exportPaymentExcel.action?queryType=admin', loadingmask:true,queryForm:$.CurrentNavtab.find('#datagrid-payment-admin-query')}}
     }">
         <thead>
             <tr>

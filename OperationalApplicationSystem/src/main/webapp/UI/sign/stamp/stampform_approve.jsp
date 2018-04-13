@@ -46,7 +46,7 @@ $(function() {
 
 </script>
 <div class="bjui-pageHeader" style="background-color:#fefefe; border-bottom:none;">
-<form data-toggle="ajaxsearch" data-options="{searchDatagrid:$.CurrentNavtab.find('#datagrid-stamp-user-filter')}">
+<form data-toggle="ajaxsearch" data-options="{searchDatagrid:$.CurrentNavtab.find('#datagrid-stamp-approve-filter')}" id="datagrid-stamp-approve-query">
     <fieldset>
         <legend style="font-weight:normal;">Search：</legend>
         <div style="margin:0; padding:1px 5px 5px;">
@@ -155,7 +155,7 @@ $(function() {
 </form>
 </div>
 <div class="bjui-pageContent" id="div-user">
-    <table class="table table-bordered" id="datagrid-stamp-user-filter" data-toggle="datagrid" data-options="{
+    <table class="table table-bordered" id="datagrid-stamp-approve-filter" data-toggle="datagrid" data-options="{
         height: '100%',
         gridTitle : 'stamp management',
         dataUrl: 'getStamp.action?queryType=approve',
@@ -170,7 +170,7 @@ $(function() {
         contextMenuB: true,
         hScrollbar: true,
         filterThead:false,
-        exportOption: {type:'file', options:{url:'exportStampExcel.action?queryType=approve', loadingmask:true}}
+        exportOption: {type:'file', options:{url:'exportStampExcel.action?queryType=approve', loadingmask:true,queryForm:$.CurrentNavtab.find('#datagrid-stamp-approve-query')}}
     }">
         <thead>
             <tr>

@@ -145,7 +145,7 @@ public class ApproveBIZImpl extends BizBase implements ApproveBIZ {
 	
 	@Override
 	public List getFirstApproveOfStamp4Select(String type) {
-		String hql="select U from User U WHERE U.uid IN(select D.value from Dict D left join Approve A on D.key=A.uid left join Dict D1 on  A.id=D1.valueExplain where D1.id='"+type+"' ) ) ";
+		String hql="select U from User U WHERE U.uid IN(select D.value from Dict D left join Approve A on D.key=A.uid left join Dict D1 on  A.id=D1.valueExplain  where D1.id='"+type+"' And D.type='APPROVEUSERCOLLECTION' ) ) ";
 		return commonDAO.queryByHql(hql);
 	}
 

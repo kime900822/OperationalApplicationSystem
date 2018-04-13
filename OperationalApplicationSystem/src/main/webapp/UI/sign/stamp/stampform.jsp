@@ -40,6 +40,8 @@ function faceToDataStamp(){
 	o.departmentOfFormFillerID='${user.department.did}';
 	o.id=$.CurrentNavtab.find("#j_stamp_id").val();
 	o.attacmentUpload=listToString($.CurrentNavtab.find('#upfile_attacment_list'));
+	o.documentType=$.CurrentNavtab.find("#j_stamp_documentType").val();
+	o.projectResponsible=$.CurrentNavtab.find("#j_stamp_projectResponsible").val();
 	var tmp='';
 	if(typeof o.stampType == 'object' &&  o.stampType ){
 		$.each(o.stampType,function(i,item){
@@ -274,11 +276,11 @@ function stampApprove(o){
 		callback:function (result) {
 		if(result!=null){
 		approveState=$(o).attr('name')
-		if(status=='Rejected'&&(result==''||result==undefined)){
+		if(approveState=='Rejected'&&(result==''||result==undefined)){
 			bootbox.alert("Comment can`t empty!");
 			 return false;
 		}
-		
+
 		level = $(o).parent().siblings().eq(1).html();
 		
 		
@@ -419,12 +421,6 @@ function checkSaveStamp(o){
 	}
 	if(o.documentType==null||o.documentType==''){
 		err+=" Document Type can`t be  empty！<br>";				
-	}
-	
-	if(o.documentType=='1'){
-		if(o.projectResponsible==null||o.projectResponsible==''){
-			err+=" Project Responsible can`t be  empty！<br>";				
-		}	
 	}
 	
 	if((o.chopDate==null||o.chopDate=='')&&(o.lendDate==null||o.lendDate=='')){

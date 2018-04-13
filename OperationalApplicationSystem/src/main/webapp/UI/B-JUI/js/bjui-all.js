@@ -10436,6 +10436,12 @@
                                             if (!opts.options.data)
                                                 opts.options.data = {}
                                             opts.options.data['thead']=JSON.stringify(th)
+                                            
+                                            var queryForm=opts.options.queryForm.serializeJson();
+                                            for (var key in queryForm) {
+                                            	opts.options.data[key]=queryForm[key]	
+                                            }
+                                            
                                             $.extend(opts.options.data, that.$element.data('filterDatas') || {}, that.sortData || {})
                                             opts.options.type = 'POST'
                                           
@@ -10468,6 +10474,8 @@
                                 if (options.printPDFOption) {
                                     var opts = options.printPDFOption
                                     
+
+                                    
                                     if (typeof opts === 'string')
                                         opts = opts.toObj()
                                     
@@ -10478,6 +10486,12 @@
                                         $.extend(opts.options.data, that.$element.data('filterDatas') || {}, that.sortData || {})
                                         opts.options.type = 'POST'
                                         opts.options.data['thead']=JSON.stringify(th)	
+                                        
+                                        var queryForm=opts.options.queryForm.serializeJson();
+                                        for (var key in queryForm) {
+                                        	opts.options.data[key]=queryForm[key]	
+                                        }
+                                        
                                         if (opts.type === 'dialog') {
                                             BJUI.dialog(opts.options)
                                         } else if (opts.type === 'navtab') {

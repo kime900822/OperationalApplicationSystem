@@ -47,7 +47,7 @@ $(function() {
 
 </script>
 <div class="bjui-pageHeader" style="background-color:#fefefe; border-bottom:none;">
-<form data-toggle="ajaxsearch" data-options="{searchDatagrid:$.CurrentNavtab.find('#datagrid-stamp-user-filter')}">
+<form data-toggle="ajaxsearch" data-options="{searchDatagrid:$.CurrentNavtab.find('#datagrid-stamp-all-filter')}" id="datagrid-stamp-all-query">
     <fieldset>
         <legend style="font-weight:normal;">Search：</legend>
         <div style="margin:0; padding:1px 5px 5px;">
@@ -156,7 +156,7 @@ $(function() {
 </form>
 </div>
 <div class="bjui-pageContent" id="div-user">
-    <table class="table table-bordered" id="datagrid-stamp-user-filter" data-toggle="datagrid" data-options="{
+    <table class="table table-bordered" id="datagrid-stamp-all-filter" data-toggle="datagrid" data-options="{
         height: '100%',
         gridTitle : 'stamp management',
         dataUrl: 'getStamp.action?queryType=all',
@@ -171,8 +171,8 @@ $(function() {
         contextMenuB: true,
         hScrollbar: true,
         filterThead:false,
-        exportOption: {type:'file', options:{url:'exportStampExcel.action?queryType=all', loadingmask:true}},
-        printPDFOption: {type:'file', options:{url:'exportStampPDF.action?queryType=all', loadingmask:true}}
+        exportOption: {type:'file', options:{url:'exportStampExcel.action?queryType=all', loadingmask:true,queryForm:$.CurrentNavtab.find('#datagrid-stamp-user-query')}},
+        printPDFOption: {type:'file', options:{url:'exportStampPDF.action?queryType=all', loadingmask:true,queryForm:$.CurrentNavtab.find('#datagrid-stamp-user-query')}}
     }">
         <thead>
             <tr>

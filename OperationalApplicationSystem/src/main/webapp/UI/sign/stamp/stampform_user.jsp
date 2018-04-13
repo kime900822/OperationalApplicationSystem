@@ -47,7 +47,7 @@ $(function() {
 
 </script>
 <div class="bjui-pageHeader" style="background-color:#fefefe; border-bottom:none;">
-<form data-toggle="ajaxsearch" data-options="{searchDatagrid:$.CurrentNavtab.find('#datagrid-stamp-user-filter')}">
+<form data-toggle="ajaxsearch" data-options="{searchDatagrid:$.CurrentNavtab.find('#datagrid-stamp-user-filter')}" id="datagrid-stamp-user-query">
     <fieldset>
         <legend style="font-weight:normal;">Search：</legend>
         <div style="margin:0; padding:1px 5px 5px;">
@@ -171,7 +171,7 @@ $(function() {
         contextMenuB: true,
         hScrollbar: true,
         filterThead:false,
-        exportOption: {type:'file', options:{url:'exportStampExcel.action?queryType=user', loadingmask:true}}
+        exportOption: {type:'file', options:{url:'exportStampExcel.action?queryType=user', loadingmask:true,queryForm:$.CurrentNavtab.find('#datagrid-stamp-user-query')}}
     }">
         <thead>
             <tr>
