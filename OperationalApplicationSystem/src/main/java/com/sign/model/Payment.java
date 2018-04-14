@@ -427,7 +427,51 @@ public class Payment {
 	@Column
 	private String dateTemp;
 	
+	@Column
+	private String originalApplicationCode;
 	
+	@Column
+	private String AdvanceWriteoffWay;
+	
+	@Column
+	private String AdvanceWriteOffCurrency;
+	
+	@Column
+	private String AdvanceWriteOffAmount;
+	
+	
+	public String getOriginalApplicationCode() {
+		return originalApplicationCode;
+	}
+
+	public void setOriginalApplicationCode(String originalApplicationCode) {
+		this.originalApplicationCode = originalApplicationCode;
+	}
+
+	public String getAdvanceWriteoffWay() {
+		return AdvanceWriteoffWay;
+	}
+
+	public void setAdvanceWriteoffWay(String advanceWriteoffWay) {
+		AdvanceWriteoffWay = advanceWriteoffWay;
+	}
+
+	public String getAdvanceWriteOffCurrency() {
+		return AdvanceWriteOffCurrency;
+	}
+
+	public void setAdvanceWriteOffCurrency(String advanceWriteOffCurrency) {
+		AdvanceWriteOffCurrency = advanceWriteOffCurrency;
+	}
+
+	public String getAdvanceWriteOffAmount() {
+		return AdvanceWriteOffAmount;
+	}
+
+	public void setAdvanceWriteOffAmount(String advanceWriteOffAmount) {
+		AdvanceWriteOffAmount = advanceWriteOffAmount;
+	}
+
 	public String getBeneficiaryE() {
 		return beneficiaryE;
 	}

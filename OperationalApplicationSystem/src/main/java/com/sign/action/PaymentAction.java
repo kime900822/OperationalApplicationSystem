@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import javax.persistence.Column;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
@@ -155,6 +156,10 @@ public class PaymentAction extends ActionBase {
 	private String currency_6;
 	private String amount_6;
 	
+	private String originalApplicationCode;
+	private String AdvanceWriteoffWay;
+	private String AdvanceWriteOffCurrency;
+	private String AdvanceWriteOffAmount;
 	
 	private String usageDescription;
 	private String amountInFigures;
@@ -173,6 +178,30 @@ public class PaymentAction extends ActionBase {
 	private String generalManager;
 	
 	
+	public String getOriginalApplicationCode() {
+		return originalApplicationCode;
+	}
+	public void setOriginalApplicationCode(String originalApplicationCode) {
+		this.originalApplicationCode = originalApplicationCode;
+	}
+	public String getAdvanceWriteoffWay() {
+		return AdvanceWriteoffWay;
+	}
+	public void setAdvanceWriteoffWay(String advanceWriteoffWay) {
+		AdvanceWriteoffWay = advanceWriteoffWay;
+	}
+	public String getAdvanceWriteOffCurrency() {
+		return AdvanceWriteOffCurrency;
+	}
+	public void setAdvanceWriteOffCurrency(String advanceWriteOffCurrency) {
+		AdvanceWriteOffCurrency = advanceWriteOffCurrency;
+	}
+	public String getAdvanceWriteOffAmount() {
+		return AdvanceWriteOffAmount;
+	}
+	public void setAdvanceWriteOffAmount(String advanceWriteOffAmount) {
+		AdvanceWriteOffAmount = advanceWriteOffAmount;
+	}
 	public String getBeneficiaryE() {
 		return beneficiaryE;
 	}
@@ -1042,7 +1071,44 @@ public class PaymentAction extends ActionBase {
 
 		Payment payment=new Payment();		
 		try {
-			payment=paymentBIZ.getPayment(" where id='"+id+"'").get(0);
+			List<Payment> list=paymentBIZ.getPayment(" where id='"+id+"'");
+			if (list.size()>0) {
+				payment=list.get(0);
+			}else {
+				result.setMessage("No payment");
+				result.setStatusCode("300");
+				return SUCCESS;
+			}
+			String string=new Gson().toJson(payment);
+			reslutJson=new ByteArrayInputStream(new Gson().toJson(payment).getBytes("UTF-8")); 	
+			logUtil.logInfo("查询付款申请单:"+payment.getId());
+		} catch (Exception e) {
+			logUtil.logInfo("查询付款申请单异常:"+e.getMessage());
+			result.setMessage(e.getMessage());
+			result.setStatusCode("300");
+			reslutJson=new ByteArrayInputStream(new Gson().toJson(result).getBytes("UTF-8")); 	
+		}
+		
+		return SUCCESS;
+	}
+	
+	@Action(value="getPaymentByCode",results={@org.apache.struts2.convention.annotation.Result(type="stream",
+			params={
+					"inputName", "reslutJson"
+			})})
+	public String getPaymentByCode() throws UnsupportedEncodingException{
+
+		Payment payment=new Payment();		
+		try {
+			List<Payment> list=paymentBIZ.getPayment(" where code='"+code+"'");
+			if (list.size()>0) {
+				payment=list.get(0);
+			}else {
+				result.setMessage("No payment");
+				result.setStatusCode("300");
+				reslutJson=new ByteArrayInputStream(new Gson().toJson(result).getBytes("UTF-8")); 	
+				return SUCCESS;
+			}
 			String string=new Gson().toJson(payment);
 			reslutJson=new ByteArrayInputStream(new Gson().toJson(payment).getBytes("UTF-8")); 	
 			logUtil.logInfo("查询付款申请单:"+payment.getId());

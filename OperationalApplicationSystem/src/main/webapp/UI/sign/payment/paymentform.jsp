@@ -341,6 +341,26 @@ function isChange(){
 		$.CurrentNavtab.find("#j_payment_beneficiaryAccountBank_tr").removeAttr("style");
 	})
 	
+	$.CurrentNavtab.find("#j_payment_advanceWriteoff").on('ifChecked',function(){
+		$.CurrentNavtab.find('[type=AdvanceWriteoffTr]').show();
+	})
+	$.CurrentNavtab.find("#j_payment_advanceWriteoff").on('ifUnchecked',function(){
+		$.CurrentNavtab.find('[type=AdvanceWriteoffTr]').hide();
+	})
+	
+	
+	$.CurrentNavtab.find("#j_payment_advanceWriteoffWay_all").on('ifChecked',function(){
+		for(var i=0;i<7;i++){			
+			$.CurrentNavtab.find("#j_payment_amount_"+i+"_t").attr('disabled','disabled');
+		}
+	})
+	$.CurrentNavtab.find("#j_payment_advanceWriteoffWay_party").on('ifChecked',function(){
+		for(var i=0;i<7;i++){			
+			$.CurrentNavtab.find("#j_payment_amount_"+i+"_t").removeAttr('disabled');
+		}
+	})
+
+	
 }
 
 //删除当前所在行
@@ -773,6 +793,7 @@ function changeAmount(){
 	var amount4=$.CurrentNavtab.find("#j_payment_amount_4_t").val().replace(/\,/g, "").replace(" ", "");
 	var amount5=$.CurrentNavtab.find("#j_payment_amount_5_t").val().replace(/\,/g, "").replace(" ", "");
 	var amount6=$.CurrentNavtab.find("#j_payment_amount_6_t").val().replace(/\,/g, "").replace(" ", "");
+	var amount7=$.CurrentNavtab.find("#j_payment_advanceWriteOffAmount_t").val().replace(/\,/g, "").replace(" ", "");
 	
 	var c1=$.CurrentNavtab.find("#j_payment_amount_1_t").val(formatCurrency(amount1)).val()
 	var c2=$.CurrentNavtab.find("#j_payment_amount_2_t").val(formatCurrency(amount2)).val()
@@ -780,7 +801,8 @@ function changeAmount(){
 	var c4=$.CurrentNavtab.find("#j_payment_amount_4_t").val(formatCurrency(amount4)).val()
 	var c5=$.CurrentNavtab.find("#j_payment_amount_5_t").val(formatCurrency(amount5)).val()
 	var c6=$.CurrentNavtab.find("#j_payment_amount_6_t").val(formatCurrency(amount6)).val()
-	
+	var c7=$.CurrentNavtab.find("#j_payment_advanceWriteOffAmount_t").val(formatCurrency(amount7)).val()
+
 	
 	var total=0;
 	if(amount1!="0.00"&&amount1!=""){
@@ -830,6 +852,11 @@ function changeAmount(){
 	}else{
 		$.CurrentNavtab.find("#j_payment_amount_6").val('')
 		$.CurrentNavtab.find("#row_06_title").html("PO&nbsp6");
+	}
+	
+	if($.CurrentNavtab.find("#j_payment_advanceWriteoff").is(':checked')&&amount7!="0.00"&&amount7!=""){
+		$.CurrentNavtab.find("#j_payment_advanceWriteOffAmount").val(amount7)
+		total=total-amount7
 	}
 	
 	$.CurrentNavtab.find("#j_payment_amountInFigures").val(total);
@@ -980,6 +1007,105 @@ function checkReturn(){
 }
 
 
+function getOriginalPayment(){
+	
+	BJUI.ajax('doajax', {
+	    url: 'getPaymentByCode.action',
+	    loadingmask: true,
+	    data:{code:$.CurrentNavtab.find("#j_payment_originalCode").val()},	    
+	    okCallback: function(json, options) {
+            if(json.status='200'){
+            	
+            	$.CurrentNavtab.find("#j_payment_beneficiary").val(json.beneficiary);
+            	$.CurrentNavtab.find("#j_payment_beneficiaryE").val(json.beneficiaryE);
+            	$.CurrentNavtab.find("#j_payment_beneficiaryAccountNO").val(json.beneficiaryAccountNO);
+            	$.CurrentNavtab.find("#j_payment_beneficiaryAccountBank").val(json.beneficiaryAccountBank);
+                if(json.beneficiaryChange=='1'){
+            		$.CurrentNavtab.find("#j_payment_beneficiaryChange").iCheck('check'); 
+            		$.CurrentNavtab.find("#j_payment_beneficiary_tr").attr("style","background-color: #9ACD32");
+            		$.CurrentNavtab.find("#j_payment_beneficiaryE_tr").attr("style","background-color: #9ACD32");
+            	}
+                if(json.beneficiaryAccountNOChange=='1'){
+            		$.CurrentNavtab.find("#j_payment_beneficiaryAccountNOChange").iCheck('check'); 
+            		$.CurrentNavtab.find("#j_payment_beneficiaryAccountNO_tr").attr("style","background-color: #EEC900");
+            		$.CurrentNavtab.find("#j_payment_beneficiaryAccountBank_tr").attr("style","background-color: #EEC900");
+            	}
+                $.CurrentNavtab.find("#j_payment_paymentSubject").selectpicker().selectpicker('val',json.paymentSubject).selectpicker('refresh');
+                $.CurrentNavtab.find("#j_payment_paymentTerm").selectpicker().selectpicker('val',json.paymentTerm).selectpicker('refresh');
+                changePaymentTerm();
+                
+                $.CurrentNavtab.find("#j_payment_advanceWriteOffCurrency").val(json.currency_1);
+                
+            	$.CurrentNavtab.find("#j_payment_paymentDays_1").selectpicker().selectpicker('val',json.paymentDays_1).selectpicker('refresh');
+            	$.CurrentNavtab.find("#j_payment_receivingOrApprovalDate_1").val(json.receivingOrApprovalDate_1);
+            	$.CurrentNavtab.find("#j_payment_PONo_1").val(json.PONo_1);
+            	$.CurrentNavtab.find("#j_payment_currency_1").selectpicker().selectpicker('val',json.currency_1).selectpicker('refresh');
+            	if(json.amount_1!=''&&json.amount_1!=null){
+            		$.CurrentNavtab.find("#j_payment_amount_1_t").val(json.amount_1);
+            		$.CurrentNavtab.find("#j_payment_amount_1_t").attr('disabled','disabled');
+            	}
+            	$.CurrentNavtab.find("#j_payment_paymentDays_2").selectpicker().selectpicker('val',json.paymentDays_2).selectpicker('refresh');
+            	$.CurrentNavtab.find("#j_payment_receivingOrApprovalDate_2").val(json.receivingOrApprovalDate_2);
+            	$.CurrentNavtab.find("#j_payment_PONo_2").val(json.PONo_2);
+            	$.CurrentNavtab.find("#j_payment_currency_2").selectpicker().selectpicker('val',json.currency_2).selectpicker('refresh');
+            	if(json.amount_2!=''&&json.amount_2!=null){
+            		$.CurrentNavtab.find("#j_payment_amount_2_t").val(json.amount_2);
+            		$.CurrentNavtab.find("#j_payment_amount_2_t").attr('disabled','disabled');
+            	}
+            		
+            	$.CurrentNavtab.find("#j_payment_paymentDays_3").selectpicker().selectpicker('val',json.paymentDays_3).selectpicker('refresh');
+            	$.CurrentNavtab.find("#j_payment_receivingOrApprovalDate_3").val(json.receivingOrApprovalDate_3);
+            	$.CurrentNavtab.find("#j_payment_PONo_3").val(json.PONo_3);
+            	$.CurrentNavtab.find("#j_payment_currency_3").selectpicker().selectpicker('val',json.currency_3).selectpicker('refresh');
+            	if(json.amount_3!=''&&json.amount_3!=null){
+            		$.CurrentNavtab.find("#j_payment_amount_3_t").val(json.amount_3);
+            		$.CurrentNavtab.find("#j_payment_amount_3_t").attr('disabled','disabled');
+            	}
+            		
+            	$.CurrentNavtab.find("#j_payment_paymentDays_4").selectpicker().selectpicker('val',json.paymentDays_4).selectpicker('refresh');
+            	$.CurrentNavtab.find("#j_payment_receivingOrApprovalDate_4").val(json.receivingOrApprovalDate_4);
+            	$.CurrentNavtab.find("#j_payment_PONo_4").val(json.PONo_4);
+            	$.CurrentNavtab.find("#j_payment_currency_4").selectpicker().selectpicker('val',json.currency_4).selectpicker('refresh');
+            	if(json.amount_4!=''&& json.amount_4!=null){
+            		$.CurrentNavtab.find("#j_payment_amount_4_t").val(json.amount_4);
+            		$.CurrentNavtab.find("#j_payment_amount_4_t").attr('disabled','disabled');
+            	}
+            		
+            	$.CurrentNavtab.find("#j_payment_paymentDays_5").selectpicker().selectpicker('val',json.paymentDays_5).selectpicker('refresh');
+            	$.CurrentNavtab.find("#j_payment_receivingOrApprovalDate_5").val(json.receivingOrApprovalDate_5);
+            	$.CurrentNavtab.find("#j_payment_PONo_5").val(json.PONo_5);
+            	$.CurrentNavtab.find("#j_payment_currency_5").selectpicker().selectpicker('val',json.currency_5).selectpicker('refresh');
+            	if(json.amount_5!=''&& json.amount_5!=null){
+            		$.CurrentNavtab.find("#j_payment_amount_5_t").val(json.amount_5);
+            		$.CurrentNavtab.find("#j_payment_amount_5_t").attr('disabled','disabled');
+            	}
+            		
+            	$.CurrentNavtab.find("#j_payment_paymentDays_6").selectpicker().selectpicker('val',json.paymentDays_6).selectpicker('refresh');
+            	$.CurrentNavtab.find("#j_payment_receivingOrApprovalDate_6").val(json.receivingOrApprovalDate_6);
+            	$.CurrentNavtab.find("#j_payment_PONo_6").val(json.PONo_6);
+            	$.CurrentNavtab.find("#j_payment_currency_6").selectpicker().selectpicker('val',json.currency_6).selectpicker('refresh');
+            	if(json.amount_6!=''&& json.amount_6!=null){
+            		$.CurrentNavtab.find("#j_payment_amount_6_t").val(json.amount_6);
+            		$.CurrentNavtab.find("#j_payment_amount_6_t").attr('disabled','disabled');
+            	}
+            		
+            	$.CurrentNavtab.find("#j_payment_supplierCode").val(json.supplierCode);
+            	$.CurrentNavtab.find("#j_payment_usageDescription").val(json.usageDescription);
+            	if(json.amountInFigures!=''&&json.amountInFigures!=null){
+            		$.CurrentNavtab.find("#j_payment_amountInFigures").val(json.amountInFigures);
+            	}
+            	     
+            	changeAmount();
+            }else{
+            	 BJUI.alertmsg('error', json.message); 
+            	 $.CurrentNavtab.find("#j_payment_originalCode").val('');
+            }
+	    }
+	});	
+	
+	
+}
+
 </script>
 <div class="bjui-pageContent">
     <div class="bs-example" style="width:1100px">
@@ -1017,14 +1143,57 @@ function checkReturn(){
 						Payment Way <label style="color:red;font-size:12px"><b>*</b></label>
 					</td>
 					<td>
-						<input type="radio" name="payType" data-toggle="icheck" id="j_payment_cash" value="Cash" data-label="支付现金 <br>Cash">
+						<input type="radio" name="payType" data-toggle="icheck" id="j_payment_cash" value="Cash"  data-label="支付现金 <br>Cash">
 					</td>
 					<td>
-						<input type="radio" name="payType" data-toggle="icheck" id="j_payment_banking" value="Banking" data-label="银行支付 <br>Banking">
+						<input type="radio" name="payType" data-toggle="icheck" id="j_payment_banking" value="Banking"  data-label="银行支付 <br>Banking">
 					</td>	
 					<td>
-						<input type="radio" name="payType" data-toggle="icheck" id="j_payment_advanceWriteoff" value="AdvanceWriteoff" data-label="核销预付  <br>Advance Write-off">
+						<input type="radio" name="payType" data-toggle="icheck" id="j_payment_advanceWriteoff" value="AdvanceWriteoff"  data-label="核销预付  <br>Advance Write-off">
 					</td>				
+				</tr>
+				<tr type="AdvanceWriteoffTr" style="display:none">
+					<td>
+						原预付款流水单号  <br>
+						Original Advance Payment Sequential Code:
+					</td>
+					<td>
+						<input type="text" name="originalCode" value="" id="j_payment_originalCode" onchange="getOriginalPayment();" data-rule="required" size="19">
+					</td>
+					<td colspan="2">
+					</td>
+				</tr>
+				<tr type="AdvanceWriteoffTr" style="display:none">
+					<td>
+						核销方式  <label style="color:red;font-size:12px"><b>*</b></label><br>
+						Advance Write-off way <label style="color:red;font-size:12px"><b>*</b></label>
+					</td>
+					<td>
+						<input type="radio" name="advanceWriteoffWay" data-toggle="icheck" id="j_payment_advanceWriteoffWay_all" value="A" data-label="A. 全部核销<br>All Amount Write-off">
+					</td>
+					<td>
+						<input type="radio" name="advanceWriteoffWay" data-toggle="icheck" id="j_payment_advanceWriteoffWay_party" value="B" data-label="B. 部分核销 <br>Part Amount Write-off">
+					</td>
+					<td>
+					</td>
+				</tr>
+				<tr type="AdvanceWriteoffTr" style="display:none">
+					<td>
+						核销预付币别  <label style="color:red;font-size:12px"><b>*</b></label><br>
+						Advance Write-off Amount Currency <label style="color:red;font-size:12px"><b>*</b></label>
+					</td>
+					<td>
+						<input type="text" name="advanceWriteOffCurrency" value="" id="j_payment_advanceWriteOffCurrency" data-rule="required" size="19" readonly="" >
+					</td>
+					<td>
+						核销预付金额  <label style="color:red;font-size:12px"><b>*</b></label><br>
+						Advance Write-off Amount <label style="color:red;font-size:12px"><b>*</b></label>
+					</td>
+					<td>
+						<input type="text" name="advanceWriteOffAmount_t" value="" id="j_payment_advanceWriteOffAmount_t" data-rule="required" size="19" onchange="changeAmount()">
+						<input type="hidden" name="advanceWriteOffAmount" value="" id="j_payment_advanceWriteOffAmount" data-rule="required" size="19">
+						
+					</td>
 				</tr>
 				<tr>
 
