@@ -431,13 +431,13 @@ public class Payment {
 	private String originalApplicationCode;
 	
 	@Column
-	private String AdvanceWriteoffWay;
+	private String advanceWriteoffWay;
 	
 	@Column
-	private String AdvanceWriteOffCurrency;
+	private String advanceWriteOffCurrency;
 	
 	@Column
-	private String AdvanceWriteOffAmount;
+	private String advanceWriteOffAmount;
 	
 	
 	public String getOriginalApplicationCode() {
@@ -448,28 +448,30 @@ public class Payment {
 		this.originalApplicationCode = originalApplicationCode;
 	}
 
+
+
 	public String getAdvanceWriteoffWay() {
-		return AdvanceWriteoffWay;
+		return advanceWriteoffWay;
 	}
 
 	public void setAdvanceWriteoffWay(String advanceWriteoffWay) {
-		AdvanceWriteoffWay = advanceWriteoffWay;
+		this.advanceWriteoffWay = advanceWriteoffWay;
 	}
 
 	public String getAdvanceWriteOffCurrency() {
-		return AdvanceWriteOffCurrency;
+		return advanceWriteOffCurrency;
 	}
 
 	public void setAdvanceWriteOffCurrency(String advanceWriteOffCurrency) {
-		AdvanceWriteOffCurrency = advanceWriteOffCurrency;
+		this.advanceWriteOffCurrency = advanceWriteOffCurrency;
 	}
 
 	public String getAdvanceWriteOffAmount() {
-		return AdvanceWriteOffAmount;
+		return advanceWriteOffAmount;
 	}
 
 	public void setAdvanceWriteOffAmount(String advanceWriteOffAmount) {
-		AdvanceWriteOffAmount = advanceWriteOffAmount;
+		this.advanceWriteOffAmount = advanceWriteOffAmount;
 	}
 
 	public String getBeneficiaryE() {

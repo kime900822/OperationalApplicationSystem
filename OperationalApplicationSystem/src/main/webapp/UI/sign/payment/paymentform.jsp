@@ -618,7 +618,17 @@ function dataToFace(){
             		$.CurrentNavtab.find("#j_payment_banking").iCheck('check'); 
             	}else if(json.payType=='AdvanceWriteoff'){
             		$.CurrentNavtab.find("#j_payment_advanceWriteoff").iCheck('check'); 
+            		if(json.advanceWriteoffWay=='A'){
+            			$.CurrentNavtab.find("#j_payment_advanceWriteoffWay_all").iCheck('check'); 
+            		}else if(json.advanceWriteoffWay=='B'){
+            			$.CurrentNavtab.find("#j_payment_advanceWriteoffWay_party").iCheck('check');     			
+            		}
+            		$.CurrentNavtab.find("#j_payment_originalCode").val(json.originalApplicationCode)
+            		$.CurrentNavtab.find("#j_payment_advanceWriteOffCurrency").val(json.advanceWriteOffCurrency)
+            		$.CurrentNavtab.find("#j_payment_advanceWriteOffAmount_t").val(json.advanceWriteOffAmount)          		
             	}
+            	
+            	
             	if(json.urgent=='1'){
             		$.CurrentNavtab.find("#j_payment_urgent").iCheck('check'); 
             	}
@@ -1158,7 +1168,7 @@ function getOriginalPayment(){
 						Original Advance Payment Sequential Code:
 					</td>
 					<td>
-						<input type="text" name="originalCode" value="" id="j_payment_originalCode" onchange="getOriginalPayment();" data-rule="required" size="19">
+						<input type="text" name="originalApplicationCode" value="" id="j_payment_originalCode" onchange="getOriginalPayment();" data-rule="required" size="19">
 					</td>
 					<td colspan="2">
 					</td>
