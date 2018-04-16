@@ -13,6 +13,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
@@ -30,8 +32,10 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.kime.base.ActionBase;
 import com.kime.infoenum.Message;
+import com.kime.model.HeadColumn;
 import com.kime.model.User;
 import com.kime.utils.ExcelUtil;
+import com.opensymphony.xwork2.ActionContext;
 import com.sign.biz.BeneficiaryBIZ;
 import com.sign.model.Beneficiary;
 import com.sign.model.Payment;
@@ -47,11 +51,25 @@ public class BeneficiaryAction extends ActionBase {
 	private Beneficiary beneficiary;
 	
 	private String name;
-	private String accno;	
+	private String ename;
+	private String accno;
+	private String accbank;
 	private String addFlag;
 	private String supplierCode;
 	
 
+	public String getEname() {
+		return ename;
+	}
+	public void setEname(String ename) {
+		this.ename = ename;
+	}
+	public String getAccbank() {
+		return accbank;
+	}
+	public void setAccbank(String accbank) {
+		this.accbank = accbank;
+	}
 	public String getSupplierCode() {
 		return supplierCode;
 	}
@@ -101,13 +119,36 @@ public class BeneficiaryAction extends ActionBase {
 		String where="";
 		if (!"".equals(accno)&&accno!=null) {
 			where+=" where accno like '%"+accno+"%' ";
-		}
-		
+		}		
 		if (!"".equals(name)&&name!=null) {
 			if (where.equals("")) {
-				where+=" AND name like '%"+name+"%' ";
-			}else{
 				where+=" where name like '%"+name+"%' ";
+			}else{
+				where+=" AND name like '%"+name+"%' ";
+			}
+			
+		}		
+		if (!"".equals(ename)&&ename!=null) {
+			if (where.equals("")) {
+				where+=" where ename like '%"+ename+"%' ";
+			}else{
+				where+=" AND ename like '%"+ename+"%' ";
+			}
+			
+		}	
+		if (!"".equals(accbank)&&accbank!=null) {
+			if (where.equals("")) {
+				where+=" where accbank like '%"+accbank+"%' ";
+			}else{
+				where+=" AND accbank like '%"+accbank+"%' ";
+			}
+			
+		}
+		if (!"".equals(supplierCode)&&supplierCode!=null) {
+			if (where.equals("")) {
+				where+=" where supplierCode like '%"+supplierCode+"%' ";
+			}else{
+				where+=" AND supplierCode like '%"+supplierCode+"%' ";
 			}
 			
 		}
@@ -129,6 +170,19 @@ public class BeneficiaryAction extends ActionBase {
 		return SUCCESS;
 	}
 	
+	
+	@Action(value="getBeneficiaryForSearch",results={@org.apache.struts2.convention.annotation.Result(type="stream",
+			params={
+					"inputName", "reslutJson"
+			})})
+	public String getBeneficiaryForSearch() throws UnsupportedEncodingException{	
+
+		List list  =beneficiaryBIZ.queryBeneficiary("");
+		reslutJson=new ByteArrayInputStream(new Gson().toJson(list).getBytes("UTF-8"));  
+		
+		logUtil.logInfo("查询收款人信息，条件:"+"");
+		return SUCCESS;
+	}
 	
 	
 	@Action(value="deleteBeneficiary",results={@org.apache.struts2.convention.annotation.Result(type="stream",
@@ -234,12 +288,17 @@ public class BeneficiaryAction extends ActionBase {
 			})})
     public String exportBeneficiary() {
         try {
-
+        	List<HeadColumn> lHeadColumns=new Gson().fromJson(thead, new TypeToken<ArrayList<HeadColumn>>() {}.getType());
         	List<Beneficiary> lBeneficiaries=beneficiaryBIZ.queryBeneficiary("");
         	Class c = (Class) new Beneficiary().getClass();  
-        	ByteArrayOutputStream os=ExcelUtil.exportExcel("Beneficiary", c, lBeneficiaries, "yyy-MM-dd");
+        	ByteArrayOutputStream os = ExcelUtil.exportExcel("Beneficiary", c, lBeneficiaries, "yyy-MM-dd",lHeadColumns);
         	byte[] fileContent = os.toByteArray();
         	ByteArrayInputStream is = new ByteArrayInputStream(fileContent);
+        	
+        	HttpServletResponse response = (HttpServletResponse)
+        			ActionContext.getContext().get(org.apache.struts2.StrutsStatics.HTTP_RESPONSE);
+        	response.setHeader("Set-Cookie", "fileDownload=true; path=/");
+        	
         	
     		SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");		 
     		fileName = "Beneficiary"+sf.format(new Date()).toString()+ ".xls";

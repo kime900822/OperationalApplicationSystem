@@ -10437,10 +10437,14 @@
                                                 opts.options.data = {}
                                             opts.options.data['thead']=JSON.stringify(th)
                                             
-                                            var queryForm=opts.options.queryForm.serializeJson();
-                                            for (var key in queryForm) {
-                                            	opts.options.data[key]=queryForm[key]	
+                                            
+                                            if(opts.options.queryForm){
+                                                var queryForm=opts.options.queryForm.serializeJson();
+                                                for (var key in queryForm) {
+                                                	opts.options.data[key]=queryForm[key]	
+                                                }
                                             }
+
                                             
                                             $.extend(opts.options.data, that.$element.data('filterDatas') || {}, that.sortData || {})
                                             opts.options.type = 'POST'

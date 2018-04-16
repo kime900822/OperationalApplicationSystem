@@ -105,6 +105,7 @@ function dataToFace(){
             		$("#Banking").attr('checked','checked');
             	}else if(json.payType=='AdvanceWriteoff'){
             		$("#AdvanceWriteoff").attr('checked','checked');
+            		$("#AdvanceWriteoffText").html(json.advanceWriteoffWay+",Amount:"+json.advanceWriteOffCurrency+" "+formatCurrency(json.advanceWriteOffAmount))
             	}
             	if(json.urgent=='1'){
             		$("#urgent").html("Urgent : ●");
@@ -269,7 +270,8 @@ function dataToFace(){
 					<td >
 					</td>
 					<td colspan="3">
-						<input type="checkbox" id="AdvanceWriteoff"><label>&nbsp&nbsp核销预付 Advance Write-off&nbsp&nbsp&nbsp&nbsp</label> 
+						<input type="checkbox" id="AdvanceWriteoff"><label>&nbsp&nbsp核销预付 Advance Write-off&nbsp&nbsp&nbsp&nbsp</label>
+						<u id="AdvanceWriteoffText"></u>
 					</td>
 				</tr>
 			</table>            

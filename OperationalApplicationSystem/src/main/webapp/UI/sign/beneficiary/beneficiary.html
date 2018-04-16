@@ -5,7 +5,7 @@
 <div class="bjui-pageContent" id="div-user">
     <table class="table table-bordered" id="datagrid-edit-filter" data-toggle="datagrid" data-options="{
         height: '100%',
-        gridTitle : '渚涘簲鍟嗙淮鎶�',
+        gridTitle : '供应商对照表',
         showToolbar: true,
         dataType: 'jsonp',
         toolbarItem: 'add,edit,del,save,cancel,|,import,export,refresh',
@@ -18,11 +18,11 @@
         contextMenuB: true,
         hScrollbar: true,
         importOption: {type:'dialog', options:{url:'sign/beneficiary/beneficiary-import.html', width:500, height:300, title:'Import Beneficiary'}},
-        exportOption: {type:'file', options:{url:'exportBeneficiary.action', loadingmask:false}}
+        exportOption: {type:'file', options:{url:'exportBeneficiary.action', loadingmask:true}}
     }">
         <thead>
             <tr>
-            	<th data-options="{name:'supplierCode',width:350,align:'center',finalWidth:'true'}" >SupplierCode</th>	
+            	<th data-options="{name:'supplierCode',width:100,align:'center',finalWidth:'true'}" >SupplierCode</th>	
             	<th data-options="{name:'name',width:200,align:'center',finalWidth:'true'}">Name</th>
             	<th data-options="{name:'ename',width:200,align:'center',finalWidth:'true'}">EName</th>
             	<th data-options="{name:'accno',width:350,align:'center',finalWidth:'true'}" >AccNO</th>	

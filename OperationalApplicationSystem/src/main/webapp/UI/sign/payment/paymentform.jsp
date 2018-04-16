@@ -1234,7 +1234,23 @@ function getOriginalPayment(){
 						供应商代码/收款人  <label style="color:red;font-size:12px"><b>*</b></label><br>Supplier Code/Beneficaiary  <label style="color:red;font-size:12px"><b>*</b></label>
 					</td>
 					<td>
-						<input type="text" name="supplierCode" id="j_payment_supplierCode" value="" size="19" data-rule="required" onchange="checkSupplierCode(this);">
+						<input type="text" name="supplierCode" id="j_payment_supplierCode" value="" data-toggle="findgrid" size="19" data-options="{
+            group: '',
+            include: 'supplierCode,beneficiary:name,beneficiaryE:ename,beneficiaryAccountNO:accno,beneficiaryAccountBank:accbank',
+            dialogOptions: {title:'查找供应商代码/收款人'},
+            empty:false,
+            gridOptions: {
+                local: 'local',
+                dataUrl: 'getBeneficiaryForSearch.action',
+                columns: [
+                    {name:'supplierCode', label:'SupplierCode', width:100},
+                    {name:'name',width:200,label:'Name'},
+                    {name:'ename',width:200,label:'EName'},
+                    {name:'accno',width:300,label:'AccNO'},
+                    {name:'accbank',width:300,label:'AccBank'}
+                ]
+            }
+        }" placeholder="点放大镜按钮查找" data-rule="required" >
 					</td>
 					<td colspan="2">
 					</td>

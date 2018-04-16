@@ -1255,11 +1255,21 @@ public class PaymentAction extends ActionBase {
     			hql=" select P from Payment P where 1=1 "+where+" order By P.dateTemp desc";
     		}
     		List<Payment> lPayments=paymentBIZ.getPaymentByHql(hql);
+    		for (Payment payment : lPayments) {
+				payment.setState(PaymentState.getState(payment.getState()));
+				payment.setPaymentSubject(PaymentState.getPaymentSubject(payment.getPaymentSubject()));
+    			if (payment.getUrgent()==null||payment.getUrgent().equals("")) {
+    				payment.setUrgent("N");
+				}else {
+					payment.setUrgent("Y");
+				}
+    			
+			}
         	Class c = (Class) new Payment().getClass();  
         	ByteArrayOutputStream os=ExcelUtil.exportExcel("Payment", c, lPayments, "yyy-MM-dd",lHeadColumns);
         	byte[] fileContent = os.toByteArray();
         	ByteArrayInputStream is = new ByteArrayInputStream(fileContent);
-        	
+        	   	
         	HttpServletResponse response = (HttpServletResponse)
         			ActionContext.getContext().get(org.apache.struts2.StrutsStatics.HTTP_RESPONSE);
         	response.setHeader("Set-Cookie", "fileDownload=true; path=/");
