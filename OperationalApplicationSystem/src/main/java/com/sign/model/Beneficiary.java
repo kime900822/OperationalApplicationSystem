@@ -22,6 +22,8 @@ public class Beneficiary {
 	private String accno;
 	@Column
 	private String accbank;
+	@Column
+	private String oversea;
 	@Id
 	@GeneratedValue(generator="assigned")
 	@GenericGenerator(name = "assigned", strategy = "assigned")
@@ -30,6 +32,12 @@ public class Beneficiary {
 	private String addFlag;
 	
 	
+	public String getOversea() {
+		return oversea;
+	}
+	public void setOversea(String oversea) {
+		this.oversea = oversea;
+	}
 	public String getSupplierCode() {
 		return supplierCode;
 	}

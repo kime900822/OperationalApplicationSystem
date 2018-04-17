@@ -906,47 +906,6 @@ function checkPoNO(o){
 }
 
 
-function checkSupplierCode(o){
-	 var str = $(o).val();
-    var ret =  /^\d{5,6}$/;
-    if($.CurrentNavtab.find(o).val()==""||$.CurrentNavtab.find(o).val()==null){
-    	$.CurrentNavtab.find("#j_payment_beneficiary").val('');
-     	$.CurrentNavtab.find("#j_payment_beneficiaryAccountNO").val('');
-     	$.CurrentNavtab.find("#j_payment_beneficiaryE").val('');
-     	$.CurrentNavtab.find("#j_payment_beneficiaryAccountBank").val('');
-    	return;
-    }
-    	
-    
-    if(!ret.test(str)){
-   	 $.CurrentNavtab.find(o).val("")
-   	 BJUI.alertmsg('error', 'Plese Enter Right Type'); 
-    }else{
-    	BJUI.ajax('doajax', {
-    	    url: 'getBeneficiaryByCode.action',
-    	    loadingmask: true,
-    	    data:{supplierCode:str},	   
-    	    okalert:false,
-    	    okCallback: function(json, options) {
-                if(json.statue=='300'){
-                	BJUI.alertmsg('error', " Code is not maintain!"); 
-                	$.CurrentNavtab.find(o).val("");
-                	$.CurrentNavtab.find("#j_payment_beneficiary").val('');
-                 	$.CurrentNavtab.find("#j_payment_beneficiaryAccountNO").val('');
-                 	$.CurrentNavtab.find("#j_payment_beneficiaryE").val('');
-                 	$.CurrentNavtab.find("#j_payment_beneficiaryAccountBank").val('');
-                	
-                }else{
-                	$.CurrentNavtab.find("#j_payment_beneficiary").val(json.name);
-                	$.CurrentNavtab.find("#j_payment_beneficiaryAccountNO").val(json.accno);
-                	$.CurrentNavtab.find("#j_payment_beneficiaryE").val(json.ename);
-                	$.CurrentNavtab.find("#j_payment_beneficiaryAccountBank").val(json.accbank);
-                }
-    	    }
-    	});	  	
-    }    
-};
-
 function checkSave(){
 	var err='';
 	if($.CurrentNavtab.find('input:radio:checked').val()==null||$.CurrentNavtab.find('input:radio:checked').val()==''){

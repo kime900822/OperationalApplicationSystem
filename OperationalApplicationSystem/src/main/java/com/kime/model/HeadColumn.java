@@ -41,4 +41,11 @@ public class HeadColumn {
 		this.label = label;
 	}
 	
+	public HeadColumn(String name,String width,String align,String lable) {
+		this.name=name;
+		this.width=width;
+		this.align=align;
+		this.label=lable;				
+	}
+	
 }

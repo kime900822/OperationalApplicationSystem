@@ -56,8 +56,15 @@ public class BeneficiaryAction extends ActionBase {
 	private String accbank;
 	private String addFlag;
 	private String supplierCode;
-	
+	private String oversea;
 
+	
+	public String getOversea() {
+		return oversea;
+	}
+	public void setOversea(String oversea) {
+		this.oversea = oversea;
+	}
 	public String getEname() {
 		return ename;
 	}
@@ -338,26 +345,30 @@ public class BeneficiaryAction extends ActionBase {
 		                HSSFRow row = sheet.getRow(i);
 		
 		                Beneficiary beneficiary=new Beneficiary();
-		    			HSSFCell cell=row.getCell(0);
+		    			HSSFCell cell=row.getCell(1);
 		    			cell.setCellType(CellType.STRING);
 		    			beneficiary.setName(cell.getStringCellValue().trim());
 		    				
-		    			cell=row.getCell(1);
+		    			cell=row.getCell(2);
 		    			cell.setCellType(CellType.STRING);
 		    			beneficiary.setEname(cell.getStringCellValue().trim());
 		    				
-		    			cell=row.getCell(2);
+		    			cell=row.getCell(3);
 		    			cell.setCellType(CellType.STRING);
 		    			beneficiary.setAccno(cell.getStringCellValue().trim());	 
 		    				
-		    			cell=row.getCell(3);
+		    			cell=row.getCell(4);
 		    			cell.setCellType(CellType.STRING);
 		    			beneficiary.setAccbank(cell.getStringCellValue().trim());
 		    				
-		    			cell=row.getCell(4);
+		    			cell=row.getCell(0);
 		    			cell.setCellType(CellType.STRING);
 		    			beneficiary.setSupplierCode(cell.getStringCellValue().trim());
 		    			
+		    			
+		    			cell=row.getCell(5);
+		    			cell.setCellType(CellType.STRING);
+		    			beneficiary.setOversea(cell.getStringCellValue().trim());
 
 		    			lBeneficiaries.add(beneficiary);
 		            }
