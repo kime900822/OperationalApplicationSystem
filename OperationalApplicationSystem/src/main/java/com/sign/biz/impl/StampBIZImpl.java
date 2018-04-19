@@ -148,25 +148,32 @@ public class StampBIZImpl extends BizBase implements StampBIZ {
 							stampDAO.delete(stampApprove);
 						}	
 						stamp.setNextApprover("");
+						stamp.setState(approveHis.getName()+" Rejected");
 					}else{				
 						stamp.setNextApprover(stamp.getStampApprove().get(Integer.parseInt(approve.getLevel())+1).getUid());
+						stamp.setState(stamp.getStampApprove().get(Integer.parseInt(approve.getLevel())+1).getName()+" Approval");
 						User user=userBIZ.getUser(" where uid='"+stamp.getApplicantID()+"'").get(0);
 						SendMail.SendMail(user.getEmail(), PropertiesUtil.ReadProperties(Message.MAIL_PROPERTIES, "mailTitleOfStampApprove"), MessageFormat.format(PropertiesUtil.ReadProperties(Message.MAIL_PROPERTIES, "mailContentOfStampApprove"),stamp.getApplicationCode(),stamp.getApplicant(),stamp.getUrgentReason()));
 	
 					}
-					if (stamp.getStampApprove().size()-2==Integer.parseInt(approve.getLevel())) {
-						stamp.setState(getStampState(2, approveState));
-					}else {
-						stamp.setState(getStampState(Integer.parseInt(level), approveState));
-					}
+//					if (stamp.getStampApprove().size()-2==Integer.parseInt(approve.getLevel())) {
+//						stamp.setState(getStampState(2, approveState));
+//					}else {
+//						stamp.setState(getStampState(Integer.parseInt(level), approveState));
+//					}
+					
+					
+					
 
 				}else{
 					if (!approveState.equals("Rejected")) {
 						User user=userBIZ.getUser(" where uid='"+stamp.getApplicantID()+"'").get(0);
+						stamp.setState(StampState.INFORM);
 						SendMail.SendMail(user.getEmail(), PropertiesUtil.ReadProperties(Message.MAIL_PROPERTIES, "mailTitleOfStamp"), PropertiesUtil.ReadProperties(Message.MAIL_PROPERTIES, "mailContentOfStamp"));						
 					}
 					stamp.setNextApprover("");
-					stamp.setState(getStampState(3, approveState));
+					//stamp.setState(getStampState(3, approveState));
+					stamp.setState(approveHis.getName()+" Rejected");
 				}
 
 				updateOfApporve(stamp);

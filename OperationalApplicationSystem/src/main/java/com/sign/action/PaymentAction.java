@@ -1209,7 +1209,10 @@ public class PaymentAction extends ActionBase {
     public String exportPaymentExcel() {
         try {
         	User user=(User)session.getAttribute("user");
-        	List<HeadColumn> lHeadColumns=new Gson().fromJson(thead, new TypeToken<ArrayList<HeadColumn>>() {}.getType());
+        	//List<HeadColumn> lHeadColumns=new Gson().fromJson(thead, new TypeToken<ArrayList<HeadColumn>>() {}.getType());
+        	//List<HeadColumn> lHeadColumns = new ArrayList<>();
+        	
+        	
         	
     		String hql="";
     		String where="";
@@ -1266,7 +1269,7 @@ public class PaymentAction extends ActionBase {
     			
 			}
         	Class c = (Class) new Payment().getClass();  
-        	ByteArrayOutputStream os=ExcelUtil.exportExcel("Payment", c, lPayments, "yyy-MM-dd",lHeadColumns);
+        	ByteArrayOutputStream os=ExcelUtil.exportExcel("Payment", c, lPayments, "yyy-MM-dd");
         	byte[] fileContent = os.toByteArray();
         	ByteArrayInputStream is = new ByteArrayInputStream(fileContent);
         	   	

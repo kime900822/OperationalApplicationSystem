@@ -171,8 +171,8 @@ $(function() {
         contextMenuB: true,
         hScrollbar: true,
         filterThead:false,
-        exportOption: {type:'file', options:{url:'exportStampExcel.action?queryType=all', loadingmask:true,queryForm:$.CurrentNavtab.find('#datagrid-stamp-user-query')}},
-        printPDFOption: {type:'file', options:{url:'exportStampPDF.action?queryType=all', loadingmask:true,queryForm:$.CurrentNavtab.find('#datagrid-stamp-user-query')}}
+        exportOption: {type:'file', options:{url:'exportStampExcel.action?queryType=all', loadingmask:true,queryForm:$.CurrentNavtab.find('#datagrid-stamp-all-query')}},
+        printPDFOption: {type:'file', options:{url:'exportStampPDF.action?queryType=all', loadingmask:true,queryForm:$.CurrentNavtab.find('#datagrid-stamp-all-query')}}
     }">
         <thead>
             <tr>

@@ -456,16 +456,16 @@ public class StampAction extends ActionBase{
 					id=UUID.randomUUID().toString().replaceAll("-", "");
 					stamp.setId(id);
 					stamp.setDateTmp(CommonUtil.getDateTemp());
-					stamp.setState(StampState.SUBMIT);
+					stamp.setState(StampState.SAVE);
 					stampBIZ.saveStamp(stamp);
 					
 				}else{
 					stamp=stampBIZ.getStamp(" where id='"+id+"' ").get(0);					
 					stamp.setDateTmp(CommonUtil.getDateTemp());
 					if (!stamp.getState().equals(StampState.INFORM_REJECT)) {
-						stamp.setState(StampState.SUBMIT);
+						stamp.setState(stamp.getStampApprove().get(0).getName()+" Approval");
 					}else{
-						stamp.setState(StampState.LEVEL3);
+						stamp.setState(stamp.getStampApprove().get(stamp.getStampApprove().size()-1).getName()+" Approval");
 					}
 					
 					stampBIZ.update(stamp);		
@@ -618,28 +618,28 @@ public class StampAction extends ActionBase{
 			String where="";
 			
 			if (!"".equals(applicationDate_f)&&applicationDate_f!=null) {
-				where += " AND P.applicationDate>='"+applicationDate_f+"'";
+				where += " AND P.applicationDate>='"+applicationDate_f+"' ";
 			}
 			if (!"".equals(applicationDate_t)&&applicationDate_t!=null) {
-				where += " AND P.applicationDate <= '"+applicationDate_t+"'";
+				where += " AND P.applicationDate <= '"+applicationDate_t+"' ";
 			}
 			if (!"".equals(applicationCode)&&applicationCode!=null) {
-				where += " AND P.code like '%"+applicationCode+"'%";
+				where += " AND P.applicationCode like '%"+applicationCode+"%' ";
 			}
 			if (!"".equals(state)&&state!=null) {
-				where += " AND P.state = '"+state+"'";
+				where += " AND P.state = '"+state+"' ";
 			}
 			if (!"".equals(urgent)&&urgent!=null) {
-				where += " AND P.urgent = '"+urgent+"'";
+				where += " AND P.urgent = '"+urgent+"' ";
 			}
 			if (!"".equals(stampType)&&stampType!=null) {
-				where += " AND P.stampType like '%"+stampType+"'% ";
+				where += " AND P.stampType like '%"+stampType+"%' ";
 			}
 			if (!"".equals(documentType)&&documentType!=null) {
-				where += " AND P.documentType='"+documentType+"'";
+				where += " AND P.documentType='"+documentType+"' ";
 			}
 			if (!"".equals(applicantID)&&applicantID!=null) {
-				where += " AND P.applicantID like '"+applicantID+"'";
+				where += " AND P.applicantID like '%"+applicantID+"%' ";
 			}
 				
 				
@@ -648,7 +648,7 @@ public class StampAction extends ActionBase{
 				hql=" select P from Stamp P where P.formFillerID='"+user.getUid()+"' "+where+" order By P.dateTmp desc";
 			}
 			if ("approve".equals(queryType)) {
-				hql="select S from Stamp S where S.id in (select P.id from Stamp P left join ApproveHis A on  P.id=A.tradeId  where P.nextApprover='"+user.getUid()+"' OR A.uId='"+user.getUid()+"' ) order By S.dateTmp desc";
+				hql="select S from Stamp S where S.id in (select P.id from Stamp P left join ApproveHis A on  P.id=A.tradeId  where (P.nextApprover='"+user.getUid()+"' OR A.uId='"+user.getUid()+"') "+where+" ) order By S.dateTmp desc";
 			}
 			if ("all".equals(queryType)) {
 				hql=" select P from Stamp P where 1=1 "+where+" order By P.dateTmp desc";
@@ -725,36 +725,36 @@ public class StampAction extends ActionBase{
 	    		String hql="";
 	    		String where="";
 	    		
-	    		if (!"".equals(applicationDate_f)&&applicationDate_f!=null) {
-					where += " AND P.applicationDate>='"+applicationDate_f+"'";
+				if (!"".equals(applicationDate_f)&&applicationDate_f!=null) {
+					where += " AND P.applicationDate>='"+applicationDate_f+"' ";
 				}
 				if (!"".equals(applicationDate_t)&&applicationDate_t!=null) {
-					where += " AND P.applicationDate <= '"+applicationDate_t+"'";
+					where += " AND P.applicationDate <= '"+applicationDate_t+"' ";
 				}
 				if (!"".equals(applicationCode)&&applicationCode!=null) {
-					where += " AND P.code like '%"+applicationCode+"'%";
+					where += " AND P.applicationCode like '%"+applicationCode+"%' ";
 				}
 				if (!"".equals(state)&&state!=null) {
-					where += " AND P.state = '"+state+"'";
+					where += " AND P.state = '"+state+"' ";
 				}
 				if (!"".equals(urgent)&&urgent!=null) {
-					where += " AND P.urgent = '"+urgent+"'";
+					where += " AND P.urgent = '"+urgent+"' ";
 				}
 				if (!"".equals(stampType)&&stampType!=null) {
-					where += " AND P.stampType like '%"+stampType+"'% ";
+					where += " AND P.stampType like '%"+stampType+"%' ";
 				}
 				if (!"".equals(documentType)&&documentType!=null) {
-					where += " AND P.documentType='"+documentType+"'";
+					where += " AND P.documentType='"+documentType+"' ";
 				}
 				if (!"".equals(applicantID)&&applicantID!=null) {
-					where += " AND P.applicantID like '"+applicantID+"'";
+					where += " AND P.applicantID like '%"+applicantID+"%' ";
 				}
 				
 				if ("user".equals(queryType)) {
 					hql=" select P from Stamp P where P.formFillerID='"+user.getUid()+"' "+where+" order By P.dateTmp desc";
 				}
 				if ("approve".equals(queryType)) {
-					hql="select S from Stamp S where S.id in (select P.id from Stamp P left join ApproveHis A on  P.id=A.tradeId  where P.nextApprover='"+user.getUid()+"' OR A.uId='"+user.getUid()+"' ) order By S.dateTmp desc";
+					hql="select S from Stamp S where S.id in (select P.id from Stamp P left join ApproveHis A on  P.id=A.tradeId  where (P.nextApprover='"+user.getUid()+"' OR A.uId='"+user.getUid()+"' )"+where+" ) order By S.dateTmp desc";
 				}
 				if ("all".equals(queryType)) {
 					hql=" select P from Stamp P where 1=1 "+where+" order By P.dateTmp desc";
@@ -809,39 +809,29 @@ public class StampAction extends ActionBase{
 	    		String hql="";
 	    		String where="";
 	    		
-	    		if (!"".equals(applicationDate_f)&&applicationDate_f!=null) {
-					where += " AND P.applicationDate>='"+applicationDate_f+"'";
+				if (!"".equals(applicationDate_f)&&applicationDate_f!=null) {
+					where += " AND P.applicationDate>='"+applicationDate_f+"' ";
 				}
 				if (!"".equals(applicationDate_t)&&applicationDate_t!=null) {
-					where += " AND P.applicationDate <= '"+applicationDate_t+"'";
+					where += " AND P.applicationDate <= '"+applicationDate_t+"' ";
 				}
 				if (!"".equals(applicationCode)&&applicationCode!=null) {
-					where += " AND P.code like '%"+applicationCode+"'%";
+					where += " AND P.applicationCode like '%"+applicationCode+"%' ";
 				}
 				if (!"".equals(state)&&state!=null) {
-					where += " AND P.state = '"+state+"'";
+					where += " AND P.state = '"+state+"' ";
 				}
 				if (!"".equals(urgent)&&urgent!=null) {
-					where += " AND P.urgent = '"+urgent+"'";
+					where += " AND P.urgent = '"+urgent+"' ";
 				}
 				if (!"".equals(stampType)&&stampType!=null) {
-					where += " AND P.stampType like '%"+stampType+"'% ";
+					where += " AND P.stampType like '%"+stampType+"%' ";
 				}
 				if (!"".equals(documentType)&&documentType!=null) {
-					where += " AND P.documentType='"+documentType+"'";
+					where += " AND P.documentType='"+documentType+"' ";
 				}
 				if (!"".equals(applicantID)&&applicantID!=null) {
-					where += " AND P.applicantID like '"+applicantID+"'";
-				}
-				
-				if ("user".equals(queryType)) {
-					hql=" select P from Stamp P where P.formFillerID='"+user.getUid()+"' "+where+" order By P.dateTmp desc";
-				}
-				if ("approve".equals(queryType)) {
-					hql="select S from Stamp S where S.id in (select P.id from Stamp P left join ApproveHis A on  P.id=A.tradeId  where P.nextApprover='"+user.getUid()+"' OR A.uId='"+user.getUid()+"' ) order By S.dateTmp desc";
-				}
-				if ("all".equals(queryType)) {
-					hql=" select P from Stamp P where 1=1 "+where+" order By P.dateTmp desc";
+					where += " AND P.applicantID like '%"+applicantID+"%' ";
 				}
 	    		
 	    		List<Stamp> lStamps=stampBIZ.getStampByHql(hql);

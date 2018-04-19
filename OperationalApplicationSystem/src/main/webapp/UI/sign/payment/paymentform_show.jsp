@@ -61,26 +61,7 @@ function dataToFace(){
                 
                 $("#paymentSubject_"+json.paymentSubject).html("Y")  
                 $("#paymentDays_"+json.paymentTerm).html(json.paymentDays_1)  
-/*                 if(json.paymentDays_1!=""&&json.paymentDays_1!=null){
-                	$("#paymentDays_1").html(json.paymentDays_1+"days");
-                }
-                if(json.paymentDays_2!=""&&json.paymentDays_2!=null){
-                	$("#paymentDays_2").html(json.paymentDays_2+"days");
-                }
-                if(json.paymentDays_3!=""&&json.paymentDays_3!=null){
-                	$("#paymentDays_3").html(json.paymentDays_3+"days");
-                }
-                if(json.paymentDays_4!=""&&json.paymentDays_4!=null){
-                	$("#paymentDays_4").html(json.paymentDays_4+"days");
-                }
-                if(json.paymentDays_5!=""&&json.paymentDays_5!=null){
-                	$("#paymentDays_5").html(json.paymentDays_5+"days");
-                }
-                if(json.paymentDays_6!=""&&json.paymentDays_6!=null){
-                	$("#paymentDays_6").html(json.paymentDays_6+"days");
-                }
- */
-               
+
             	
             	if(json.amount_1!=''&&json.amount_1!=null&&json.amount_1!='0.00'){
             		$("#amount_1").html(formatCurrency(json.amount_1)+"&nbsp&nbsp");
@@ -144,6 +125,38 @@ function dataToFace(){
             		$("#invalid-img").show();
             	}
 
+            	
+            	if(json.file_invoice!=undefined&&json.file_invoice!=""){
+            		var file=json.file_invoice.split('|');
+            		
+            		$.each(file,function(i,n){
+            			var filename=n.split('/')[1];
+            			if(filename!=undefined&&filename!=''){         				
+            				$.CurrentNavtab.find('#upfile_invoice_list').append(fileToTr(filename,n,b));	   
+            			}
+            		})
+            	}
+            	if(json.file_other!=undefined&&json.file_other!=""){
+            		var file=json.file_other.split('|');
+            		$.each(file,function(i,n){
+            			var filename=n.split('/')[1];
+            			if(filename!=undefined&&filename!=''){
+            				$.CurrentNavtab.find('#upfile_other_list').append(fileToTr(filename,n,b));	 
+            			}
+            		})
+            	}
+            	if(json.file_contract!=undefined&&json.file_contract!=""){
+            		var file=json.file_contract.split('|');
+            		$.each(file,function(i,n){
+            			var filename=n.split('/')[1];
+            			if(filename!=undefined&&filename!=''){
+            				$.CurrentNavtab.find('#upfile_contract_list').append(fileToTr(filename,n,b));
+            			}
+            			
+            		})
+            	}
+            	
+            	showButton(json.state,json.isPrint,json.UID,json.documentAuditID,json.deptManagerID);
             }else{
             	 BJUI.alertmsg('error', json.message); 
             }
@@ -152,6 +165,188 @@ function dataToFace(){
 
 	
 }
+
+
+function showButton(state,print,uid,documentAuditid,deptManagerid){	
+	if('${param.viewtype}'=='admin'){
+		if((state=="0"||state=="1")&&print!='1'){
+			$.CurrentNavtab.find('#payment-delete').show();
+			$.CurrentNavtab.find('#payment-print').hide();
+		}else{
+			$.CurrentNavtab.find('#payment-delete').hide();
+			$.CurrentNavtab.find('#payment-print').show();
+		}
+		$.CurrentNavtab.find('#upfile_other').hide();
+		$.CurrentNavtab.find('#upfile_contract').hide();
+		$.CurrentNavtab.find('#upfile_invoice').hide();
+		$.CurrentNavtab.find('#payment-save').show();
+		$.CurrentNavtab.find('#payment-submit').hide();
+		$.CurrentNavtab.find('#payment-approve').hide();
+		$.CurrentNavtab.find('#payment-reject').hide();
+		$.CurrentNavtab.find('#payment-assign').hide();
+		$.CurrentNavtab.find('#payment-acc').hide();
+		$.CurrentNavtab.find('#payment-invalid-tr').hide();
+		$.CurrentNavtab.find('#payment-return-tr').hide();	
+		$("input[id*='j_payment']").attr('disabled','disabled');
+		$("select[id*='j_payment']").attr('disabled','disabled');
+		$("textarea[id*='j_payment']").attr('disabled','disabled')
+	}else{
+	if(state==''){//新建 退回
+		$.CurrentNavtab.find('#payment-save').show();
+		$.CurrentNavtab.find('#payment-submit').hide();
+		$.CurrentNavtab.find('#payment-approve').hide();
+		$.CurrentNavtab.find('#payment-reject').hide();
+		$.CurrentNavtab.find('#payment-assign').hide();
+		$.CurrentNavtab.find('#payment-acc').hide();
+		$.CurrentNavtab.find('#payment-print').hide();
+		$.CurrentNavtab.find('#payment-delete').hide();
+		$.CurrentNavtab.find('#payment-invalid-tr').hide();
+		$.CurrentNavtab.find('#payment-return-tr').hide();	
+	}else if(state=='0'&&uid=='${user.uid}'){//保存后可提交
+		$.CurrentNavtab.find('#payment-save').show();
+		$.CurrentNavtab.find('#payment-submit').show();
+		$.CurrentNavtab.find('#payment-approve').hide();
+		$.CurrentNavtab.find('#payment-reject').hide();
+		$.CurrentNavtab.find('#payment-assign').hide();
+		$.CurrentNavtab.find('#payment-acc').hide();
+		$.CurrentNavtab.find('#payment-print').hide();
+		if(print=='1'){
+			$.CurrentNavtab.find('#payment-delete').hide();
+		}else{
+			$.CurrentNavtab.find('#payment-delete').show();
+		}
+		$.CurrentNavtab.find('#payment-invalid-tr').hide();
+		$.CurrentNavtab.find('#payment-return-tr').hide();	
+	}else if(state=="4"){//财务处理完成  非财务人员查看。可打印
+		$.CurrentNavtab.find('#payment-save').hide();
+		$.CurrentNavtab.find('#payment-submit').hide();
+		$.CurrentNavtab.find('#payment-approve').hide();
+		$.CurrentNavtab.find('#payment-reject').hide();
+		$.CurrentNavtab.find('#payment-assign').hide();
+		$.CurrentNavtab.find('#payment-acc').hide();
+		$.CurrentNavtab.find('#payment-print').show();
+		$.CurrentNavtab.find('#payment-invalid-tr').hide();
+		$.CurrentNavtab.find('#payment-return-tr').hide();					
+		$.CurrentNavtab.find('#payment-delete').hide();
+		$("input[id*='j_payment']").attr('disabled','disabled');
+		$("select[id*='j_payment']").attr('disabled','disabled');	
+		 $("textarea[id*='j_payment']").attr('disabled','disabled')
+		$.CurrentNavtab.find('#upfile_other').hide();
+		$.CurrentNavtab.find('#upfile_contract').hide();
+		$.CurrentNavtab.find('#upfile_invoice').hide();
+	}else if(state=="1"&&deptManagerid=='${user.uid}'){//部门经理审批
+		$.CurrentNavtab.find('#payment-save').hide();
+		$.CurrentNavtab.find('#payment-submit').hide();
+		$.CurrentNavtab.find('#payment-approve').show();
+		$.CurrentNavtab.find('#payment-reject').show();
+		$.CurrentNavtab.find('#payment-assign').hide();
+		$.CurrentNavtab.find('#payment-acc').hide();
+		$.CurrentNavtab.find('#payment-delete').hide();
+		$.CurrentNavtab.find('#payment-print').hide();
+		$.CurrentNavtab.find('#payment-invalid-tr').hide();
+		$.CurrentNavtab.find('#payment-return-tr').hide();		
+		$("input[id*='j_payment']").attr('disabled','disabled');
+		$("select[id*='j_payment']").attr('disabled','disabled');
+		 $("textarea[id*='j_payment']").attr('disabled','disabled')
+		$.CurrentNavtab.find('#upfile_other').hide();
+		$.CurrentNavtab.find('#upfile_contract').hide();
+		$.CurrentNavtab.find('#upfile_invoice').hide();
+	}else if(state=="2"&&documentAuditid=='${user.uid}'){//审批通过 财务处理
+		$.CurrentNavtab.find('#payment-save').hide();
+		$.CurrentNavtab.find('#payment-submit').hide();
+		$.CurrentNavtab.find('#payment-approve').hide();
+		$.CurrentNavtab.find('#payment-reject').hide();
+		$.CurrentNavtab.find('#payment-print').show();
+		$.CurrentNavtab.find('#payment-delete').hide();
+		$.CurrentNavtab.find('#j_payment_contacturalPaymentDate').removeAttr('readonly')
+		$.CurrentNavtab.find('#payment-assign').show();
+		$.CurrentNavtab.find('#payment-acc').show();
+		$.CurrentNavtab.find('#payment-invalid-tr').show();
+		$.CurrentNavtab.find('#payment-return-tr').show();	
+		
+		$.CurrentNavtab.find('#j_payment_documentAudit').val('${user.name}')
+		$("input[id*='j_payment']").attr('disabled','disabled');
+		$("select[id*='j_payment']").attr('disabled','disabled');
+		$("textarea[id*='j_payment']").attr('disabled','disabled')
+		$.CurrentNavtab.find('#j_payment_refNoofBank').removeAttr('disabled');
+		$.CurrentNavtab.find('#j_payment_refNoofBank').removeAttr('readonly').attr('data-rule','required');
+		$.CurrentNavtab.find('#upfile_other').hide();
+		$.CurrentNavtab.find('#upfile_contract').hide();
+		$.CurrentNavtab.find('#upfile_invoice').hide();
+ 	}else if(state=="2"&&documentAuditid!='${user.uid}'){//审批通过 普通员工打印
+		$.CurrentNavtab.find('#payment-save').hide();
+		$.CurrentNavtab.find('#payment-submit').hide();
+		$.CurrentNavtab.find('#payment-approve').hide();
+		$.CurrentNavtab.find('#payment-reject').hide();
+		$.CurrentNavtab.find('#payment-assign').hide();
+		$.CurrentNavtab.find('#payment-acc').hide();
+		$.CurrentNavtab.find('#payment-print').show();
+		$.CurrentNavtab.find('#payment-invalid-tr').hide();
+		$.CurrentNavtab.find('#payment-return-tr').hide();	
+		$.CurrentNavtab.find('#payment-delete').hide();
+		$("input[id*='j_payment']").attr('disabled','disabled');
+		$("select[id*='j_payment']").attr('disabled','disabled'); 
+		$("textarea[id*='j_payment']").attr('disabled','disabled')
+		$.CurrentNavtab.find('#upfile_other').hide();
+		$.CurrentNavtab.find('#upfile_contract').hide();
+		$.CurrentNavtab.find('#upfile_invoice').hide();
+	}else if(state=="3"){//审批未通过，单据作废，
+		$.CurrentNavtab.find('#payment-save').hide();
+		$.CurrentNavtab.find('#payment-submit').hide();
+		$.CurrentNavtab.find('#payment-approve').hide();
+		$.CurrentNavtab.find('#payment-reject').hide();
+		$.CurrentNavtab.find('#payment-assign').hide();
+		$.CurrentNavtab.find('#payment-acc').hide();
+		$.CurrentNavtab.find('#payment-print').hide();
+		$.CurrentNavtab.find('#payment-delete').hide();
+		$.CurrentNavtab.find('#payment-invalid-tr').hide();
+		$.CurrentNavtab.find('#payment-return-tr').hide();	
+		$("input[id*='j_payment']").attr('disabled','disabled');
+		$("select[id*='j_payment']").attr('disabled','disabled');
+		$("textarea[id*='j_payment']").attr('disabled','disabled')
+		$.CurrentNavtab.find('#upfile_other').hide();
+		$.CurrentNavtab.find('#upfile_contract').hide();
+		$.CurrentNavtab.find('#upfile_invoice').hide();
+	}else if(state=="5"){
+		$.CurrentNavtab.find('#payment-save').hide();
+		$.CurrentNavtab.find('#payment-submit').hide();
+		$.CurrentNavtab.find('#payment-approve').hide();
+		$.CurrentNavtab.find('#payment-reject').hide();
+		$.CurrentNavtab.find('#payment-assign').hide();
+		$.CurrentNavtab.find('#payment-acc').hide();
+		$.CurrentNavtab.find('#payment-print').show();
+		$.CurrentNavtab.find('#payment-invalid-tr').hide();
+		$.CurrentNavtab.find('#payment-return-tr').hide();	
+		$.CurrentNavtab.find('#payment-delete').hide();
+		$("input[id*='j_payment']").attr('disabled','disabled');
+		$("select[id*='j_payment']").attr('disabled','disabled');
+		$("textarea[id*='j_payment']").attr('disabled','disabled')
+		$.CurrentNavtab.find('#upfile_other').hide();
+		$.CurrentNavtab.find('#upfile_contract').hide();
+		$.CurrentNavtab.find('#upfile_invoice').hide();
+	}else{
+		$.CurrentNavtab.find('#payment-save').hide();
+		$.CurrentNavtab.find('#payment-submit').hide();
+		$.CurrentNavtab.find('#payment-approve').hide();
+		$.CurrentNavtab.find('#payment-reject').hide();
+		$.CurrentNavtab.find('#payment-assign').hide();
+		$.CurrentNavtab.find('#payment-acc').hide();
+		$.CurrentNavtab.find('#payment-print').hide();
+		$.CurrentNavtab.find('#payment-invalid-tr').hide();
+		$.CurrentNavtab.find('#payment-return-tr').hide();	
+		$.CurrentNavtab.find('#payment-delete').hide();
+		$("input[id*='j_payment']").attr('disabled','disabled');
+		$("select[id*='j_payment']").attr('disabled','disabled');
+		$("textarea[id*='j_payment']").attr('disabled','disabled')
+		$.CurrentNavtab.find('#upfile_other').hide();
+		$.CurrentNavtab.find('#upfile_contract').hide();
+		$.CurrentNavtab.find('#upfile_invoice').hide();
+	}
+	
+	}
+	
+}
+
 
 </script>
 <div id="invalid-img" style="z-index:99;position:absolute;top:200px;left:200px;width:800px;height:400px;display: none;">
@@ -346,6 +541,45 @@ function dataToFace(){
 					<td width="25%">Audit:<br/>审计</td>
 					<td width="10%">Dept. Manager:<br/>部门经理</td>		
 					<td width="15%" align="left"><label id="deptManager"></label></td>		
+				</tr>
+			</table>
+			
+			<table>
+				<tr>
+					<td>
+						 <table class="table" id="upfile_invoice_list" >	
+							<tr>
+								<th width="400px" align="center">File Name</th>
+								<th width="100px" align="center">Delete</th>
+							</tr>									
+						</table>
+					</td>
+					<td>
+						<table class="table" id="upfile_contract_list" >	
+							<tr>
+								<th width="400px" align="center">File Name</th>
+								<th width="100px" align="center">Delete</th>
+							</tr>									
+						</table>
+					</td>
+					<td>
+						<table class="table" id="upfile_other_list" >	
+							<tr>
+								<th width="400px" align="center">File Name</th>
+								<th width="100px" align="center">Delete</th>
+							</tr>									
+						</table>
+					</td>
+				</tr>
+				<tr>
+					<td align="center">
+					
+						<button type="button" id="payment-approve" class="btn-default" data-icon="check" >Approve(同意)</button>
+	            		<button type="button" id="payment-reject" class="btn-default" data-icon="close" >Reject(拒绝)</button>
+	            		<button type="button" id="payment-assign" class="btn-default" data-icon="undo" >Assign(转交)</button>
+	            		<button type="button" id="payment-acc" class="btn-default" data-icon="check" >Approve(同意)</button>
+	            		<button type="button" id="payment-print" class="btn-default" data-icon="print" >Print Out(打印)</button>
+					</td>
 				</tr>
 			</table>
     </div>
