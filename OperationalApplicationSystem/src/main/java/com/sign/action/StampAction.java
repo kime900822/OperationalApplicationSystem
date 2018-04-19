@@ -834,6 +834,18 @@ public class StampAction extends ActionBase{
 					where += " AND P.applicantID like '%"+applicantID+"%' ";
 				}
 	    		
+				
+				if ("user".equals(queryType)) {
+					hql=" select P from Stamp P where P.formFillerID='"+user.getUid()+"' "+where+" order By P.dateTmp desc";
+				}
+				if ("approve".equals(queryType)) {
+					hql="select S from Stamp S where S.id in (select P.id from Stamp P left join ApproveHis A on  P.id=A.tradeId  where (P.nextApprover='"+user.getUid()+"' OR A.uId='"+user.getUid()+"' )"+where+" ) order By S.dateTmp desc";
+				}
+				if ("all".equals(queryType)) {
+					hql=" select P from Stamp P where 1=1 "+where+" order By P.dateTmp desc";
+				}
+				
+				
 	    		List<Stamp> lStamps=stampBIZ.getStampByHql(hql);
 	    		
 				for (Stamp stamp : lStamps) {
