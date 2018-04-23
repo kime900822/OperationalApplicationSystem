@@ -115,7 +115,7 @@ function dataToFaceStamp(id){
         		var isReject=false;
         		var maxLevel=-1;
         		if(json.approveHis!=undefined&&json.approveHis!=""){
-        			if(json.approveHis[json.approveHis.length-1].status=='Rejected'&&json.state!='Inform Rejected'){
+        			if(json.approveHis[json.approveHis.length-1].status=='Rejected'&&json.state!=json.stampApprove[json.stampApprove.length-1].name+' Rejected'){
         				isReject=true;        				
         			}
         			$.each(json.approveHis,function(i,item){	  		
@@ -127,9 +127,9 @@ function dataToFaceStamp(id){
 	    		
 	    		if(json.stampApprove!=undefined&&json.stampApprove!=""&&json.state.indexOf('Rejected')<0){	    			
 	    			$.each(json.stampApprove,function(i,item){	 
-	    				if(isReject&&json.state!='Inform Rejected'){
+	    				if(isReject&&json.state!=json.stampApprove[json.stampApprove.length-1].name+' Approval'){
 		    				if(i==0){
-		    					if('${user.uid}'==item.uid&&json.state=='Level1 Approval'){
+		    					if('${user.uid}'==item.uid&&json.state==json.stampApprove[0].name+' Approval'){
 				    				obj.append("<tr><td>"+item.name+"</td><td style='display:none'>"+item.level+"</td><td>"+item.uid+"</td><td>"+item.uname+"</td><td>"+item.did+"</td><td></td><td></td><td></td><td><button type='button' id='stamp-approve' class='btn btn-success' style='width:50px;' name='Approved' onclick='stampApprove(this)'   >√</button>&nbsp;&nbsp;<button type='button' id='stamp-reject'  style='width:50px;' class='btn btn-danger' name='Rejected' onclick='stampApprove(this)' >×</button></td></tr>");	    				
 		    					}else{
 				    				obj.append("<tr><td>"+item.name+"</td><td style='display:none'>"+item.level+"</td><td>"+item.uid+"</td><td>"+item.uname+"</td><td>"+item.did+"</td><td></td><td></td><td></td><td></td></tr>");	    				
@@ -139,7 +139,7 @@ function dataToFaceStamp(id){
 			    				obj.append("<tr><td>"+item.name+"</td><td style='display:none'>"+item.level+"</td><td>"+item.uid+"</td><td>"+item.uname+"</td><td>"+item.did+"</td><td></td><td></td><td></td><td></td></tr>");	    				
 		    				}
 	    				}else{
-	    					if(i>maxLevel&&json.state!='Inform Rejected'){    						
+	    					if(i>maxLevel&&json.state!=json.stampApprove[json.stampApprove.length-1].name+' Approval'){    						
 			    				if(i==maxLevel+1){
 			    					if('${user.uid}'==item.uid){			    						
 				    					obj.append("<tr><td>"+item.name+"</td><td style='display:none'>"+item.level+"</td><td>"+item.uid+"</td><td>"+item.uname+"</td><td>"+item.did+"</td><td></td><td></td><td></td><td><button type='button' id='stamp-approve' class='btn btn-success' style='width:50px;' name='Approved' onclick='stampApprove(this)'   >√</button>&nbsp;&nbsp;<button type='button' id='stamp-reject'  style='width:50px;' class='btn btn-danger' name='Rejected' onclick='stampApprove(this)' >×</button></td></tr>");	    				
@@ -151,7 +151,7 @@ function dataToFaceStamp(id){
 			    				}    						
 	    					}
 	    					
-	    					if(json.state=='Inform Rejected'){	    	
+	    					if(json.state==json.stampApprove[json.stampApprove.length-1].name+' Approval'){	    	
 	    						if(i==maxLevel){
 	    							if('${user.uid}'==item.uid){			    						
 				    					obj.append("<tr><td>"+item.name+"</td><td style='display:none'>"+item.level+"</td><td>"+item.uid+"</td><td>"+item.uname+"</td><td>"+item.did+"</td><td></td><td></td><td></td><td><button type='button' id='stamp-approve' class='btn btn-success' style='width:50px;' name='Approved' onclick='stampApprove(this)'   >√</button>&nbsp;&nbsp;<button type='button' id='stamp-reject'  style='width:50px;' class='btn btn-danger' name='Rejected' onclick='stampApprove(this)' >×</button></td></tr>");	    				
