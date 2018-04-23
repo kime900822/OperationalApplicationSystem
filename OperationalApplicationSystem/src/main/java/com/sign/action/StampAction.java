@@ -460,13 +460,18 @@ public class StampAction extends ActionBase{
 					stampBIZ.saveStamp(stamp);
 					
 				}else{
-					stamp=stampBIZ.getStamp(" where id='"+id+"' ").get(0);					
+					stamp=stampBIZ.getStampById(id);					
 					stamp.setDateTmp(CommonUtil.getDateTemp());
-					if (!stamp.getState().equals(StampState.INFORM_REJECT)) {
-						stamp.setState(stamp.getStampApprove().get(0).getName()+" Approval");
-					}else{
-						stamp.setState(stamp.getStampApprove().get(stamp.getStampApprove().size()-1).getName()+" Approval");
+					if (!stamp.getState().equals(StampState.SAVE)) {
+						if (!stamp.getState().equals(StampState.INFORM_REJECT)) {
+							stamp.setState(stamp.getStampApprove().get(0).getName()+" Approval");
+						}else{
+							stamp.setState(stamp.getStampApprove().get(stamp.getStampApprove().size()-1).getName()+" Approval");
+						}
+					}else {
+						stamp.setState(StampState.SUBMIT);
 					}
+					
 					
 					stampBIZ.update(stamp);		
 					result.setMessage(Message.SAVE_MESSAGE_SUCCESS);

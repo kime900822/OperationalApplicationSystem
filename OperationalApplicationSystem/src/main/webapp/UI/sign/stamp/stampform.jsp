@@ -216,10 +216,10 @@ function deleteStamp(){
 				BJUI.ajax('doajax', {
 				    url: 'deleteStamp.action',
 				    loadingmask: true,
-				    data:{json:JSON.stringify(o)},	    
+				    data:{id:$.CurrentNavtab.find("#j_stamp_id").val()},	    
 				    okCallback: function(json, options) {
 			            if(json.status='200'){
-			            	closeCurrentTab();
+			            	 BJUI.navtab('closeCurrentTab'); 
 			            }else{
 			            	 BJUI.alertmsg('error', json.message); 
 			            }

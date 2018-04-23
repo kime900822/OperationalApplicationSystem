@@ -215,8 +215,6 @@ public class StampBIZImpl extends BizBase implements StampBIZ {
 					stamp.setNextApprover(lUsers.get(0).getUid());
 				}
 
-				//stamp.setStampApprove(lStampApprove);
-
 			} else {
 				Dict approveType = dictDAO.query(" where id='" + stamp.getDocumentType() + "'").get(0);
 				List<Approve> lApproves = approveBIZ.getApproveAndChild(approveType.getValueExplain());
@@ -254,7 +252,7 @@ public class StampBIZImpl extends BizBase implements StampBIZ {
 				}
 
 			}
-			//stamp.setStampApprove(lStampApprove);
+			stamp.setStampApprove(lStampApprove);
 			
 			//删除原有审批流程
 			List<StampApprove> lApproves=(List<StampApprove>) commonDAO.queryByHql("From StampApprove where tradeId='"+stamp.getId()+"'");
@@ -269,6 +267,8 @@ public class StampBIZImpl extends BizBase implements StampBIZ {
 			for (StampApprove approve : lStampApprove) {
 				stampDAO.save(approve);
 			}
+			
+			stamp.setState(stamp.getStampApprove().get(0).getName()+" Approval");
 		}
 
 		stampDAO.update(stamp);
