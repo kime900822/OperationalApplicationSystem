@@ -125,7 +125,7 @@ function dataToFaceStamp(id){
         						
         		}
 	    		
-	    		if(json.stampApprove!=undefined&&json.stampApprove!=""){	    			
+	    		if(json.stampApprove!=undefined&&json.stampApprove!=""&&json.state.indexOf('Rejected')<0){	    			
 	    			$.each(json.stampApprove,function(i,item){	 
 	    				if(isReject&&json.state!='Inform Rejected'){
 		    				if(i==0){

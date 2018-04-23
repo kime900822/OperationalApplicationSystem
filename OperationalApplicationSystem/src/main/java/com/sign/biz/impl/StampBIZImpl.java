@@ -144,9 +144,6 @@ public class StampBIZImpl extends BizBase implements StampBIZ {
 				//stamp.getApproveHis().add(approveHis);
 				if (stamp.getStampApprove().size()-1>Integer.parseInt(approve.getLevel())) {
 					if (approveState.equals("Rejected")) {
-						for (StampApprove  stampApprove : stamp.getStampApprove()) {
-							stampDAO.delete(stampApprove);
-						}	
 						stamp.setNextApprover("");
 						stamp.setState(approveHis.getName()+" Rejected");
 					}else{				
