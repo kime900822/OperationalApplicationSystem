@@ -1,5 +1,7 @@
 package com.kime.dao.impl;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -27,7 +29,9 @@ public class UserDAOImpl extends HibernateDaoSupport implements UserDAO {
     
 	@Override
 	public User login(String uid, String passWord) {
-		List user=this.getHibernateTemplate().find("FROM User where uid=? and password=? ", new String[]{uid,passWord});
+		Date d1=new Date();
+		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+		List user=this.getHibernateTemplate().find("FROM User where uid=? and password=? and (quitDate is null or quitDate>?)", new String[]{uid,passWord,sdf.format(d1)});
 		if (user.size()>0) {
 			return (User)user.get(0);
 		}

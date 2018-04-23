@@ -176,8 +176,14 @@ public class PaymentAction extends ActionBase {
 	private String financeSupervisor;
 	private String financeManager;
 	private String generalManager;
+	private String handingFee;
 	
-	
+	public String getHandingFee() {
+		return handingFee;
+	}
+	public void setHandingFee(String handingFee) {
+		this.handingFee = handingFee;
+	}
 	public String getOriginalApplicationCode() {
 		return originalApplicationCode;
 	}

@@ -1643,6 +1643,20 @@ function getOriginalPayment(){
 				</tr>
 				<tr>
 					<td>
+						手续费 <label style="color:red;font-size:12px"><b>*</b></label><br>Handing Fee  <label style="color:red;font-size:12px"><b>*</b></label>
+					</td>
+					<td>
+						<input type="radio" name="hanfingFee" data-toggle="icheck" id="j_payment_hanfingFee_our" value="汇款人 Our"  data-label="汇款人 <br>Cash">
+					</td>
+					<td>
+						<input type="radio" name="hanfingFee" data-toggle="icheck" id="j_payment_hanfingFee_ben" value="收款人 Ben"  data-label="收款人 <br>Ben">
+					</td>	
+					<td>
+						<input type="radio" name="hanfingFee" data-toggle="icheck" id="j_payment_hanfingFee_sha" value="共同 Sha"  data-label="共同  <br>Sha">
+					</td>	
+				</tr>
+				<tr>
+					<td>
 						金额(小写)<br>Amount in figures:
 					</td>
 					<td>

@@ -42,6 +42,10 @@ public class User {
 	private String date;
 	@Column
 	private String email;
+	@Column
+	private String isQuit;
+	@Column
+	private String quitDate;
 	@ManyToOne(cascade = CascadeType.REFRESH)
 	@JoinColumn(name="rid",insertable=false,updatable=false)
 	private Role role;
@@ -51,6 +55,19 @@ public class User {
 	@JoinColumn(name="did",insertable=false,updatable=false)
 	private Department department;
 	
+	
+	public String getIsQuit() {
+		return isQuit;
+	}
+	public void setIsQuit(String isQuit) {
+		this.isQuit = isQuit;
+	}
+	public String getQuitDate() {
+		return quitDate;
+	}
+	public void setQuitDate(String quitDate) {
+		this.quitDate = quitDate;
+	}
 	public String getEmail() {
 		return email;
 	}

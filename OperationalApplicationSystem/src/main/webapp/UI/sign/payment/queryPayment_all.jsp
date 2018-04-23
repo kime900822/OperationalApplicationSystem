@@ -19,7 +19,7 @@ function datagrid_urgent() {
 }
 
 function datagrid_paymentState() {
-    return [{'0':'Save'},{'1':'Submit'},{'2':'Approve'},{'3':'REJECT'},{'4':'Finance'},{'5':'Invalid'}]
+    return [{'0':'Submit Required'},{'1':'Manager Approval'},{'2':'Audit Approval'},{'3':'Audit Rejected'},{'4':'Finance Approval'},{'5':'Invalid'},{'6':'Finance Rejected'},{'7':'GM Approval'},{'8':'Payment Completed'}]
 }
 </script>
 <div class="bjui-pageHeader" style="background-color:#fefefe; border-bottom:none;">
@@ -90,12 +90,15 @@ function datagrid_paymentState() {
         		<td>
             	<select name="state" data-toggle="selectpicker" id="q_payment_state"  data-width="80px">
 	              <option value="" >all</option>
-	              <option value="0">Save</option>
-	              <option value="1">Submit</option>
-	              <option value="2">Approve</option>
-	              <option value="3">Reject</option>
-	              <option value="4">Finance</option>
+	              <option value="0">Submit Required</option>
+	              <option value="1">Manager Approval</option>
+	              <option value="2">Audit Approval</option>
+	              <option value="3">Audit Rejected</option>
+	              <option value="4">Finance Approval</option>
 	              <option value="5">Invalid</option>
+	              <option value="6">Finance Rejected</option>
+	              <option value="7">GM Approval</option>
+	              <option value="8">Payment Completed</option>
             	</select>
         		</td>
         		<td colspan="2" align="center">

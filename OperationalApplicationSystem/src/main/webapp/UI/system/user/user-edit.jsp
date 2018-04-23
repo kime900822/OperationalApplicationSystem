@@ -8,6 +8,8 @@
 				$.CurrentDialog.find('#j_user_edit_uid').attr("readonly","");				
 			}
 			
+            $.CurrentDialog.find('#j_user_edit_isQuit').selectpicker().selectpicker('val','${param.isQuit}').selectpicker('refresh');
+			
 			BJUI.ajax('doajax', {
 			    url: 'getAllRole.action',
 			    loadingmask: false,
@@ -74,6 +76,18 @@
                 <label class="row-label">Password</label>
                 <div class="row-input required">
                     <input type="text" name="password"  id="j_user_edit_password" data-rule="Password:required;length(6~)" value="${param.password}">
+                </div>
+                 <label class="row-label">IsQuit</label>
+                <div class="row-input required">
+                    <select name="isQuit" data-toggle="selectpicker" id="j_user_edit_isQuit" data-rule="required" data-width="100%"  >
+                         <option value="" selected></option>
+                         <option value="Y" selected>Y</option>
+                         <option value="N" selected>N</option>
+                    </select>
+                </div>
+                <label class="row-label">QuitDate</label>
+                <div class="row-input required">
+                    <input type="text" name="quitDate"  id="j_user_edit_quitDate"   data-toggle="datepicker" placeholder="点击选择日期" data-nobtn="true"  value="${param.quitDate}">
                 </div>
             </div>
         </form>

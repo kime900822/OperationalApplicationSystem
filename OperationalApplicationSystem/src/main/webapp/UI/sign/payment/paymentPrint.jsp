@@ -206,6 +206,7 @@ function dataToFace(){
             	
             	$("#documentAudit").html("&nbsp&nbsp"+json.documentAudit);
             	$("#deptManager").html("&nbsp&nbsp"+json.deptManager);
+            	$("#handingFee").html("&nbsp&nbsp"+json.handingFee);
             	if(json.state=='5'){
             		$("#invalid-img").show();
             	}
@@ -319,7 +320,7 @@ function dataToFace(){
 					<td width="60px" align="center" class="bg">币别<br/>Currency</td>
 					<td width="110px" align="center" class="bg">金额<br/>Amount</td>
 					<td width="100px" rowspan="8" align="center" >支付用途<br/>Usage<br/>Description</td>
-					<td colspan="4" rowspan="8"  id="usageDescription" style="word-wrap: break-word; word-break: normal;"></td>
+					<td colspan="4" rowspan="6"  id="usageDescription" style="word-wrap: break-word; word-break: normal;"></td>
 				</tr>
 				
 				
@@ -383,6 +384,8 @@ function dataToFace(){
 					<td><label id="PONo_6"></label></td>
 					<td><label id="currency_6"></label></td>
 					<td style="text-align: right"><label id="amount_6"></label></td>
+					<td colspan="2" rowspan="2">手续费<br>Handing&nbsp&nbspFee</td>
+					<td colspan="2" rowspan="2" id="handingFee"></td>
 				</tr>	
 				<tr align="center">
 					<td align="center"><label id="paymentSubject_7"></label></td>

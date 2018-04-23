@@ -439,7 +439,18 @@ public class Payment {
 	@Column
 	private String advanceWriteOffAmount;
 	
+	@Column
+	private String handingFee;
 	
+	
+	public String getHandingFee() {
+		return handingFee;
+	}
+
+	public void setHandingFee(String handingFee) {
+		this.handingFee = handingFee;
+	}
+
 	public String getOriginalApplicationCode() {
 		return originalApplicationCode;
 	}

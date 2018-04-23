@@ -50,7 +50,7 @@
         contextMenuB: true,
         hScrollbar: true,
         importOption: {type:'dialog', options:{url:'system/user/user-import.html', width:500, height:300, title:'Import Users'}},
-        exportOption: {type:'file', options:{url:'exportUserExcel.action', loadingmask:false}}
+        exportOption: {type:'file', options:{url:'exportUserExcel.action', loadingmask:true}}
     }">
         <thead>
             <tr>
@@ -62,6 +62,8 @@
 				<th data-options="{name:'did',width:100,align:'center',finalWidth:'true'}">BU ID</th>
 				<th data-options="{name:'did',width:300,align:'center',finalWidth:'true',type:'select',itemattr:{value:'did',label:'name'},items:$.getJSON('getAllDepartment.action')}">Department</th>
 				<th data-options="{name:'password',width:150,align:'center',finalWidth:'true',hide:'true'}">Password</th>
+				<th data-options="{name:'isQuit',width:50,align:'center',finalWidth:'true',type:'select',items:[{'N':'N'},{'Y':'Y'}]}">IsQuit</th>
+				<th data-options="{name:'quitDate',width:200,align:'center',finalWidth:'true'}">QuitDate</th>
                 <th data-options="{name:'date',align:'center',width:200,type:'date',finalWidth:'true',pattern:'yyyy-MM-dd HH:mm:ss',render:function(value){return value?value.substr(0,19):value}}">Register Date</th>
             </tr>
         </thead>
