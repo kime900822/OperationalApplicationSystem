@@ -1181,6 +1181,9 @@ public class PaymentAction extends ActionBase {
 		if ("admin".equals(queryType)) {
 			hql=" select P from Payment P where 1=1 "+where+" order By P.dateTemp desc";
 		}
+		if ("cashier".equals(queryType)) {
+			hql=" select P from Payment P where P.state='4' "+where+" order By P.dateTemp desc";
+		}
 		List<Payment> list=paymentBIZ.getPaymentByHql(hql, Integer.parseInt(pageSize),Integer.parseInt(pageCurrent));
 		int total=paymentBIZ.getPaymentByHql(hql).size();
 		for (Payment payment : list) {

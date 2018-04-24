@@ -89,19 +89,8 @@ public class UserAction extends ActionBase {
 	private String date;
 	private String email;
 	private String did;
-	private String isQuit;
 	private String quitDate;
 
-
-
-	public String getIsQuit() {
-		return isQuit;
-	}
-
-
-	public void setIsQuit(String isQuit) {
-		this.isQuit = isQuit;
-	}
 
 
 	public String getQuitDate() {
@@ -564,8 +553,7 @@ public class UserAction extends ActionBase {
 		user.setDate(sdf.format(d1));
 		user.setUid(uid);
 		user.setEmail(email);
-		user.setIsQuit(isQuit);
-		if (isQuit.equals("Y")) {
+		if (quitDate!=null&&!quitDate.equals("")) {
 			user.setQuitDate(quitDate);
 		}
 		boolean b=true;

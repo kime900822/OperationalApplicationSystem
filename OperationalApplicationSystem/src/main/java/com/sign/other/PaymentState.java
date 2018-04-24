@@ -35,6 +35,21 @@ public class PaymentState {
 	 */
 	public final static String INVALIDPAYMENT="5";
 	
+	
+	/**
+	 * 退单
+	 */
+	public final static String FINANCEREJECTED="6";
+	
+	/**
+	 * 退单
+	 */
+	public final static String GMAPPROVE="7";
+	
+	/**
+	 * 退单
+	 */
+	public final static String PAYMENTCOMPLETED="8";
 	/**
 	 * 退回状态
 	 */
