@@ -31,34 +31,45 @@ $(function(){
 	
 })	
 
+function getCheckId(){
+	var ids= new Array();
+	var datas = $('#datagrid-payment-admin-filter').data('selectedTrs')
+	if(datas!=undefined){
+		$.each(datas,function(i,n){
+			ids.push(n.cells[3].innerText);						
+		})		
+	}
+	return ids;
+}
+
 
 function FinanceReject(){
-  var datas = $('#datagrid-payment-admin-filter').data('selectedTrs')
-  if(datas==undefined){
+
+  var ids=getCheckId();
+  
+  if(ids==null||ids==undefined){
 	  BJUI.alertmsg('info', 'No row selected');	
 	  return false
   }
   
-  BJUI.alertmsg('prompt', 'Reject原因', {
-	  prompt: {
-		  url:'',
-		  type:'post',
-		  data:{json:json.stringify(datas)},
-		  okCallback:function(json,options){
-			  if(json.status='200'){
-				  
-			  }else{  
-				  BJUI.alertmsg('error', json.message);	
-			  }
-			  
+  BJUI.alertmsg('prompt','Reject原因', {
+	  okCall:function(val){ 
+				BJUI.ajax('doajax', {
+				    url: 'financeRejectPayment.action',
+				    loadingmask: true,
+				    data: {json:JSON.stringify(ids),message:val},
+				    okCallback: function(json, options) {
+				    	if(json.status='200'){
+				    		
+				    		
+				    		
+				    	}
+				    }
+				})	
+				
 		  }
-	  }
-  })
-  
-  
-  alert(datas.length)
-
-
+		  })
+ 
 }
 
 

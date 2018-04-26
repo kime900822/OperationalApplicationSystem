@@ -243,6 +243,15 @@ public class PaymentBIZImpl extends BizBase implements PaymentBIZ {
 		
 	}
 
+	@Override
+	@Transactional(readOnly=false,propagation=Propagation.REQUIRED,rollbackFor=Exception.class )
+	public void financeRejectPayment(String[] ids, String message) {
+		for (String id : ids) {
+			commonDAO.executeHQL(" update Payment set financeRejectMessage='"+message+"' where id='"+id+"'");
+		}
+		
+	}
+
 	
 	
 }

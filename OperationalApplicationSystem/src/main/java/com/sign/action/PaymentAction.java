@@ -61,9 +61,14 @@ public class PaymentAction extends ActionBase {
 	private String[] fileFileName;
 	private String dfile;
 
+	private String message;
 
-
-
+	public String getMessage() {
+		return message;
+	}
+	public void setMessage(String message) {
+		this.message = message;
+	}
 	public String getDfile() {
 		return dfile;
 	}
@@ -1067,6 +1072,29 @@ public class PaymentAction extends ActionBase {
 		reslutJson=new ByteArrayInputStream(new Gson().toJson(result).getBytes("UTF-8")); 	
 		return SUCCESS;
 	}
+	
+	
+	@Action(value="financeRejectPayment",results={@org.apache.struts2.convention.annotation.Result(type="stream",
+			params={
+					"inputName", "reslutJson"
+			})})
+	public String financeRejectPayment() throws UnsupportedEncodingException{
+		try {
+			
+			String[] ids=new Gson().fromJson(json, String[].class);
+			paymentBIZ.financeRejectPayment(ids, message);
+			result.setMessage("Finance reject uccess");
+			result.setStatusCode("200");
+		} catch (Exception e) {
+			logUtil.logInfo("付款申请单拒绝异常:"+e.getMessage());
+			result.setMessage(e.getMessage());
+			result.setStatusCode("300");
+		}
+		
+		reslutJson=new ByteArrayInputStream(new Gson().toJson(result).getBytes("UTF-8")); 	
+		return SUCCESS;
+	}
+	
 	
 	
 	@Action(value="getPaymentByID",results={@org.apache.struts2.convention.annotation.Result(type="stream",

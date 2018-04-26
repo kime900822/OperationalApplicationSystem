@@ -441,8 +441,19 @@ public class Payment {
 	
 	@Column
 	private String handingFee;
+	@Column
+	private String financeRejectMessage;
 	
 	
+	
+	public String getFinanceRejectMessage() {
+		return financeRejectMessage;
+	}
+
+	public void setFinanceRejectMessage(String financeRejectMessage) {
+		this.financeRejectMessage = financeRejectMessage;
+	}
+
 	public String getHandingFee() {
 		return handingFee;
 	}

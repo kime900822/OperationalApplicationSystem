@@ -8,4 +8,8 @@ public interface CommonDAO {
 	
 	public List queryBySql(String sql);
 	
+	public void executeSQL(String sql);
+	
+	public void executeHQL(String hql);
+	
 }

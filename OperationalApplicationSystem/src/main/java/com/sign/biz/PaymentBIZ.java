@@ -42,4 +42,6 @@ public interface PaymentBIZ {
 	public void updatePayment(Payment payment);
 	
 	public void deletePayment(Payment payment);
+	
+	public void financeRejectPayment(String[] ids,String message);
 }
