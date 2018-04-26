@@ -10569,13 +10569,24 @@
                         $custom = options.toolbarCustom
                     }
                     
-                    if ($custom && $custom.length && typeof $custom !== 'string') {
-                        if (hastoolbaritem) {
-                            $custombox.css('margin-left', '5px')
-                        }
-                        $custombox.appendTo(that.$toolbar)
-                        $custom.appendTo($custombox)
+                    if($custom.length>0){
+                    	$.each($custom,function(i,c){
+                    		that.$toolbar_add = $(btnHtml).attr('data-icon', c.icon).addClass(c.class).text(c.name)
+                    		.appendTo($group)
+                    		.on('click', c.function)
+                    	})
+                    	
                     }
+                    else{
+                        if ($custom && $custom.length && typeof $custom !== 'string') {
+                            if (hastoolbaritem) {
+                                $custombox.css('margin-left', '5px')
+                            }
+                            $custombox.appendTo(that.$toolbar)
+                            $custom.appendTo($custombox)
+                        }
+                    }
+
                 }
                 
                 that.$toolbar.initui()

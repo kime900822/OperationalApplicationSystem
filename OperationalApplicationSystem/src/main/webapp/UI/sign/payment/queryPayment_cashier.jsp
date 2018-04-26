@@ -32,6 +32,34 @@ $(function(){
 })	
 
 
+function FinanceReject(){
+  var datas = $('#datagrid-payment-admin-filter').data('selectedTrs')
+  if(datas==undefined){
+	  BJUI.alertmsg('info', 'No row selected');	
+	  return false
+  }
+  
+  BJUI.alertmsg('prompt', 'Reject原因', {
+	  prompt: {
+		  url:'',
+		  type:'post',
+		  data:{json:json.stringify(datas)},
+		  okCallback:function(json,options){
+			  if(json.status='200'){
+				  
+			  }else{  
+				  BJUI.alertmsg('error', json.message);	
+			  }
+			  
+		  }
+	  }
+  })
+  
+  
+  alert(datas.length)
+
+
+}
 
 
 
@@ -144,6 +172,11 @@ $(function(){
         dataType: 'jsonp',
         showToolbar: true,
         toolbarItem: 'export',
+        toolbarCustom:[
+        	{name:'Finance Reject',
+        	 icon:'save',
+        	 class:'btn-green',
+        	 function:FinanceReject}],
         editMode: {navtab:{width:'830',height:800,title:'Edit Payment',mask:true,fresh:true}},
         delUrl:'deleteUser.action',
         editUrl: 'sign/payment/paymentform.jsp?viewtype=cashier',
