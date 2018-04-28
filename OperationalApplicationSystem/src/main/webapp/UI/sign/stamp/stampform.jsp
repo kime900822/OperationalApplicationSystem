@@ -125,8 +125,9 @@ function dataToFaceStamp(id){
         						
         		}
 	    		
-	    		if(json.stampApprove!=undefined&&json.stampApprove!=""&&json.state.indexOf('Rejected')<0){	    			
+	    		if(json.stampApprove!=undefined&&json.stampApprove!=""&&json.state.indexOf('Rejected')<0){	    
 	    			$.each(json.stampApprove,function(i,item){	 
+	    				//非inform reject
 	    				if(isReject&&json.state!=json.stampApprove[json.stampApprove.length-1].name+' Approval'){
 		    				if(i==0){
 		    					if('${user.uid}'==item.uid&&json.state==json.stampApprove[0].name+' Approval'){
@@ -139,7 +140,8 @@ function dataToFaceStamp(id){
 			    				obj.append("<tr><td>"+item.name+"</td><td style='display:none'>"+item.level+"</td><td>"+item.uid+"</td><td>"+item.uname+"</td><td>"+item.did+"</td><td></td><td></td><td></td><td></td></tr>");	    				
 		    				}
 	    				}else{
-	    					if(i>maxLevel&&json.state!=json.stampApprove[json.stampApprove.length-1].name+' Approval'){    						
+	    					//inform reject && 正常情况
+	    					if(i>maxLevel&&json.state!=json.stampApprove[json.stampApprove.length-1].name+' Approval'){   
 			    				if(i==maxLevel+1){
 			    					if('${user.uid}'==item.uid){			    						
 				    					obj.append("<tr><td>"+item.name+"</td><td style='display:none'>"+item.level+"</td><td>"+item.uid+"</td><td>"+item.uname+"</td><td>"+item.did+"</td><td></td><td></td><td></td><td><button type='button' id='stamp-approve' class='btn btn-success' style='width:50px;' name='Approved' onclick='stampApprove(this)'   >√</button>&nbsp;&nbsp;<button type='button' id='stamp-reject'  style='width:50px;' class='btn btn-danger' name='Rejected' onclick='stampApprove(this)' >×</button></td></tr>");	    				
@@ -150,16 +152,15 @@ function dataToFaceStamp(id){
 				    				obj.append("<tr><td>"+item.name+"</td><td style='display:none'>"+item.level+"</td><td>"+item.uid+"</td><td>"+item.uname+"</td><td>"+item.did+"</td><td></td><td></td><td></td><td></td></tr>");	    				
 			    				}    						
 	    					}
-	    					
-	    					if(json.state==json.stampApprove[json.stampApprove.length-1].name+' Approval'){	    	
-	    						if(i==maxLevel){
+	    					if(json.state==json.stampApprove[json.stampApprove.length-1].name+' Approval'){	 
+	    						if(i==maxLevel+1){
 	    							if('${user.uid}'==item.uid){			    						
 				    					obj.append("<tr><td>"+item.name+"</td><td style='display:none'>"+item.level+"</td><td>"+item.uid+"</td><td>"+item.uname+"</td><td>"+item.did+"</td><td></td><td></td><td></td><td><button type='button' id='stamp-approve' class='btn btn-success' style='width:50px;' name='Approved' onclick='stampApprove(this)'   >√</button>&nbsp;&nbsp;<button type='button' id='stamp-reject'  style='width:50px;' class='btn btn-danger' name='Rejected' onclick='stampApprove(this)' >×</button></td></tr>");	    				
 			    					}else{
 					    				obj.append("<tr><td>"+item.name+"</td><td style='display:none'>"+item.level+"</td><td>"+item.uid+"</td><td>"+item.uname+"</td><td>"+item.did+"</td><td></td><td></td><td></td><td></td></tr>");	    				
 			    					}
 	    						}	    						
-	    					}
+	    					} 
 	    				}
 	    			})	    			
 	    		}
