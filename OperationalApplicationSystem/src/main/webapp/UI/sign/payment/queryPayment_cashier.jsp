@@ -60,9 +60,9 @@ function FinanceReject(){
 				    data: {json:JSON.stringify(ids),message:val},
 				    okCallback: function(json, options) {
 				    	if(json.status='200'){
-				    		
-				    		
-				    		
+				    		BJUI.alertmsg('info', json.message);					    		
+				    	}else{
+				    		BJUI.alertmsg('error', json.message);		
 				    	}
 				    }
 				})	
@@ -70,6 +70,28 @@ function FinanceReject(){
 		  }
 		  })
  
+}
+
+function weeklyReport(){	
+	  var ids=getCheckId();
+	  
+	  if(ids==null||ids==undefined){
+		  BJUI.alertmsg('info', 'No row selected');	
+		  return false
+	  }
+
+	  BJUI.ajax('ajaxdownload', {
+		    url:'weeklyReportPayment.action',
+		    data: {json:JSON.stringify(ids),message:val},
+		    loadingmask: true,
+		    successCallback:{
+		    	
+		    	
+		    }
+		})
+
+					
+	
 }
 
 
@@ -184,7 +206,23 @@ function FinanceReject(){
         showToolbar: true,
         toolbarItem: 'export',
         toolbarCustom:[
-        	{name:'Finance Reject',
+        	 {name:'Weekly Report',
+        	 icon:'printPDF',
+        	 class:'btn-green',
+        	 function:weeklyReport},
+        	 {name:'Weekly Report',
+        	 icon:'save',
+        	 class:'btn-green',
+        	 function:FinanceReject},
+        	 {name:'Paid Reset',
+        	 icon:'save',
+        	 class:'btn-green',
+        	 function:FinanceReject},
+        	 {name:'Mail Inform',
+        	 icon:'save',
+        	 class:'btn-green',
+        	 function:FinanceReject},
+        	 {name:'Finance Reject',
         	 icon:'save',
         	 class:'btn-green',
         	 function:FinanceReject}],
@@ -197,7 +235,9 @@ function FinanceReject(){
         contextMenuB: true,
         hScrollbar: true,
         filterThead:false,
-        exportOption: {type:'file', options:{url:'exportPaymentExcel.action?queryType=admin', loadingmask:true,queryForm:$.CurrentNavtab.find('#datagrid-payment-admin-query')}}
+        exportOption: {type:'file', options:{url:'exportPaymentExcel.action?queryType=admin', loadingmask:true,queryForm:$.CurrentNavtab.find('#datagrid-payment-admin-query')}},
+        printPDFOption: {type:'file', options:{url:'exportPaymentExcel.action?queryType=admin', loadingmask:true,queryForm:$.CurrentNavtab.find('#datagrid-payment-admin-query')}},
+        printPDFOption2: {type:'file', options:{url:'exportPaymentExcel.action?queryType=admin', loadingmask:true,queryForm:$.CurrentNavtab.find('#datagrid-payment-admin-query')}}
     }">
         <thead>
             <tr>

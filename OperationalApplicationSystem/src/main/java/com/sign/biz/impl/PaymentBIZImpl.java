@@ -27,6 +27,7 @@ import com.kime.utils.mail.SendMail;
 import com.sign.biz.PaymentBIZ;
 import com.sign.dao.PaymentDAO;
 import com.sign.model.Payment;
+import com.sign.other.PaymentState;
 
 @Service
 @Transactional(readOnly=true)
@@ -245,9 +246,15 @@ public class PaymentBIZImpl extends BizBase implements PaymentBIZ {
 
 	@Override
 	@Transactional(readOnly=false,propagation=Propagation.REQUIRED,rollbackFor=Exception.class )
-	public void financeRejectPayment(String[] ids, String message) {
+	public void financeRejectPayment(String[] ids, String message) throws Exception {
 		for (String id : ids) {
-			commonDAO.executeHQL(" update Payment set financeRejectMessage='"+message+"' where id='"+id+"'");
+			Payment payment=paymentDao.query(" where id='"+id+"'").get(0);
+			if (!payment.getState().equals(PaymentState.FINACEPAYMENT)) {
+				throw new Exception(payment.getCode()+"单子的状态不为Finance,请重新选择");
+			}
+			payment.setFinanceRejectMessage(message);
+			payment.setState(PaymentState.FINANCEREJECTED);
+			paymentDao.update(payment);
 		}
 		
 	}

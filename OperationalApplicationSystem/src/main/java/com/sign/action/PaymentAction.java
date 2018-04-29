@@ -878,7 +878,7 @@ public class PaymentAction extends ActionBase {
 	public String accPayment() throws UnsupportedEncodingException{
 			try {
 				Payment payment=paymentBIZ.getPayment(" where id='"+id+"'").get(0);
-				payment.setState(PaymentState.ACCPAYMENT);
+				payment.setState(PaymentState.FINACEPAYMENT);
 				payment.setDocumentAudit(documentAudit);
 				
 				paymentBIZ.accPayment(payment);
@@ -1083,7 +1083,7 @@ public class PaymentAction extends ActionBase {
 			
 			String[] ids=new Gson().fromJson(json, String[].class);
 			paymentBIZ.financeRejectPayment(ids, message);
-			result.setMessage("Finance reject uccess");
+			result.setMessage("Finance reject success");
 			result.setStatusCode("200");
 		} catch (Exception e) {
 			logUtil.logInfo("付款申请单拒绝异常:"+e.getMessage());
@@ -1094,6 +1094,45 @@ public class PaymentAction extends ActionBase {
 		reslutJson=new ByteArrayInputStream(new Gson().toJson(result).getBytes("UTF-8")); 	
 		return SUCCESS;
 	}
+	
+	
+	@Action(value="weeklyReportPayment",results={@org.apache.struts2.convention.annotation.Result(type="stream",
+			params={
+					"inputName", "reslutJson"
+			})})
+	public String weeklyReportPayment() throws UnsupportedEncodingException{
+		try {
+			
+			String[] ids=new Gson().fromJson(json, String[].class);
+			StringBuffer sb = new StringBuffer();  
+		    for (int i = 0; i < ids.length; i++) {  
+		        sb.append("'").append(ids[i]).append("'").append(",");  
+		    }  
+		    List<Payment> lPayments=paymentBIZ.getPayment("where id in ("+sb.toString().substring(0, sb.length() - 1)+")");
+        	Class c = (Class) new Payment().getClass();  
+        	ByteArrayOutputStream os=ExcelUtil.exportExcel("Weekly Report", c, lPayments, "yyy-MM-dd");
+        	byte[] fileContent = os.toByteArray();
+        	ByteArrayInputStream is = new ByteArrayInputStream(fileContent);
+        	   	
+        	HttpServletResponse response = (HttpServletResponse)
+        			ActionContext.getContext().get(org.apache.struts2.StrutsStatics.HTTP_RESPONSE);
+        	response.setHeader("Set-Cookie", "fileDownload=true; path=/");
+        	
+    		SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");		 
+    		fileName = "Payment"+sf.format(new Date()).toString()+ ".xls";
+    		fileName= new String(fileName.getBytes(), "ISO8859-1");
+    		//文件流
+            reslutJson = is;            
+            logUtil.logInfo("导出weeklyReport！"+fileName);
+        }
+        catch(Exception e) {
+        	logUtil.logInfo("导出weeklyReport！"+e.getMessage());
+            e.printStackTrace();
+        }
+
+        return "success";
+	}
+	
 	
 	
 	

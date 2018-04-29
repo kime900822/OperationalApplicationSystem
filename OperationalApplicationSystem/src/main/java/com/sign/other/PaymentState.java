@@ -17,7 +17,7 @@ public class PaymentState {
 	/**
 	 * 财务待审批
 	 */
-	public final static String ACCPAYMENT="4";
+	public final static String FINACEPAYMENT="4";
 	
 	
 	/**

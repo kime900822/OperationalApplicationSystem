@@ -43,5 +43,5 @@ public interface PaymentBIZ {
 	
 	public void deletePayment(Payment payment);
 	
-	public void financeRejectPayment(String[] ids,String message);
+	public void financeRejectPayment(String[] ids,String message) throws Exception;
 }
