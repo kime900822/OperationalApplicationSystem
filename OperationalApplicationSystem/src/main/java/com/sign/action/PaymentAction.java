@@ -3,7 +3,6 @@ package com.sign.action;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -15,21 +14,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import javax.persistence.Column;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
-import org.apache.commons.lang3.ObjectUtils.Null;
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.ParentPackage;
-import org.omg.CosNaming.NamingContextExtPackage.StringNameHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
-import com.analysis.model.Source;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.kime.base.ActionBase;
 import com.kime.biz.DictBIZ;
 import com.kime.infoenum.Message;
@@ -1102,6 +1095,16 @@ public class PaymentAction extends ActionBase {
 			})})
 	public String weeklyReportPayment() throws UnsupportedEncodingException{
 		try {
+			List<HeadColumn> lColumns=new ArrayList<>();
+			lColumns.add(new HeadColumn("code", "80", "right", "Sequence No."));
+			lColumns.add(new HeadColumn("code", "80", "right", "Applicant"));
+			lColumns.add(new HeadColumn("code", "80", "right", "Business Unit"));
+			lColumns.add(new HeadColumn("code", "80", "right", "Total Amount"));
+			lColumns.add(new HeadColumn("code", "80", "right", "Usage Description"));
+			lColumns.add(new HeadColumn("code", "80", "right", "PO Amount"));
+			lColumns.add(new HeadColumn("code", "80", "right", "Supplier Code"));
+			lColumns.add(new HeadColumn("code", "80", "right", "Ename"));
+			
 			
 			String[] ids=new Gson().fromJson(json, String[].class);
 			StringBuffer sb = new StringBuffer();  
