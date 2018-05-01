@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Entity @Table(name = "v_po")
-public class PyamentPO {
+public class PaymentPO {
 	@Id
 	@GeneratedValue(generator="assigned")
 	@GenericGenerator(name = "assigned", strategy = "assigned")
@@ -22,7 +22,7 @@ public class PyamentPO {
 	@Column
 	private String applicant;
 	@Column
-	private String uid;
+	private String did;
 	@Column
 	private String amountInFigures;
 	@Column
@@ -59,11 +59,11 @@ public class PyamentPO {
 	public void setApplicant(String applicant) {
 		this.applicant = applicant;
 	}
-	public String getUid() {
-		return uid;
+	public String getDid() {
+		return did;
 	}
-	public void setUid(String uid) {
-		this.uid = uid;
+	public void setDid(String did) {
+		this.did = did;
 	}
 	public String getAmountInFigures() {
 		return amountInFigures;

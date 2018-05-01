@@ -889,7 +889,24 @@ public class UserAction extends ActionBase {
     
     
     
-	
+	/**
+	 * 用户查询
+	 * @return
+	 * @throws UnsupportedEncodingException
+	 */
+	@Action(value="getUser4Find",results={@org.apache.struts2.convention.annotation.Result(type="stream",
+			params={
+					"inputName", "reslutJson"
+			})})
+	public String getUser4Find() throws UnsupportedEncodingException{
+		
+
+				
+		List<User> luser=userBIZ.getUser("");
+		
+		reslutJson=new ByteArrayInputStream(new Gson().toJson(luser).getBytes("UTF-8"));
+		return SUCCESS;
+	}
 
 }
 

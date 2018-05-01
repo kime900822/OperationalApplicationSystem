@@ -39,10 +39,13 @@ public class DictAction extends ActionBase{
 	protected UserBIZ userBIZ;
 	protected String type;
 	protected String key;
+	protected String keyName;
 	protected String value;
+	protected String valueName;
 	protected String keyExplain;
 	protected String valueExplain;
 	protected String id;
+	
 	
 	public DictBIZ getDictBIZ() {
 		return dictBIZ;
@@ -108,6 +111,22 @@ public class DictAction extends ActionBase{
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public String getKeyName() {
+		return keyName;
+	}
+
+	public void setKeyName(String keyName) {
+		this.keyName = keyName;
+	}
+
+	public String getValueName() {
+		return valueName;
+	}
+
+	public void setValueName(String valueName) {
+		this.valueName = valueName;
 	}
 
 	@Action(value="getALLSign",results={@org.apache.struts2.convention.annotation.Result(type="stream",
@@ -640,6 +659,88 @@ public class DictAction extends ActionBase{
 		reslutJson=new ByteArrayInputStream(new Gson().toJson(list).getBytes("UTF-8"));  
 		return SUCCESS;
 		
+		
+	}
+	
+	
+	
+	@Action(value="setAgentEmployee",results={@org.apache.struts2.convention.annotation.Result(type="stream",
+			params={
+					"inputName", "reslutJson"
+			})})
+	public String setAgentEmployee() throws UnsupportedEncodingException{
+		
+		try {
+			Dict dict=new Dict();
+			dict.setKey(key);
+			dict.setKeyName(keyName);
+			dict.setKeyExplain(keyExplain);
+			dict.setValue(value);
+			dict.setValueName(valueName);
+			dict.setValueExplain(valueExplain);
+			dict.setType("AGENTEMPLOYEE");
+			if (dictBIZ.getDict(" where type='AGENTEMPLOYEE' and key='"+key+"'").size()>0) {
+				result.setMessage(" 已存在代理信息，请删除重新维护");
+				result.setStatusCode("300");
+				reslutJson=new ByteArrayInputStream(new Gson().toJson(result).getBytes("UTF-8"));  
+				return SUCCESS;
+			}
+			dictBIZ.save(dict);
+			result.setMessage("Success");
+			result.setStatusCode("200");
+			
+		} catch (Exception e) {
+			result.setMessage(e.getMessage());
+			result.setStatusCode("300");
+		}
+
+		reslutJson=new ByteArrayInputStream(new Gson().toJson(result).getBytes("UTF-8"));  
+		return SUCCESS;
+		
+	}
+	
+	@Action(value="deleteAgentEmployee",results={@org.apache.struts2.convention.annotation.Result(type="stream",
+			params={
+					"inputName", "reslutJson"
+			})})
+	public String deleteAgentEmployee() throws UnsupportedEncodingException{
+		
+		try {
+			Dict dict=dictBIZ.getDict(" where type='AGENTEMPLOYEE' and key='"+key+"'").get(0);
+			dictBIZ.delete(dict);
+			result.setMessage("Success");
+			result.setStatusCode("200");
+		} catch (Exception e) {
+			result.setMessage(e.getMessage());
+			result.setStatusCode("300");
+		}
+
+		reslutJson=new ByteArrayInputStream(new Gson().toJson(result).getBytes("UTF-8"));  
+		return SUCCESS;
+		
+	}
+	
+	@Action(value="getAgentEmployee",results={@org.apache.struts2.convention.annotation.Result(type="stream",
+			params={
+					"inputName", "reslutJson"
+			})})
+	public String getAgentEmployee() throws UnsupportedEncodingException{
+		
+		try {
+			List<Dict> list=dictBIZ.getDict(" where type='AGENTEMPLOYEE' and key='"+key+"'");
+			Map<String, Object> map=new HashMap<>();
+			if (list.size()>0) {				
+				map.put("data", list.get(0));
+			}
+			
+			result.setParams(map);		
+		} catch (Exception e) {
+			result.setMessage(e.getMessage());
+			result.setStatusCode("300");
+		}
+
+		reslutJson=new ByteArrayInputStream(new Gson().toJson(result).getBytes("UTF-8"));  
+		return SUCCESS;
 		
 	}
 	

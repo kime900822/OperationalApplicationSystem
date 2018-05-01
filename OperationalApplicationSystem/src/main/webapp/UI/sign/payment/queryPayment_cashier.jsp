@@ -33,7 +33,7 @@ $(function(){
 
 function getCheckId(){
 	var ids= new Array();
-	var datas = $('#datagrid-payment-admin-filter').data('selectedTrs')
+	var datas = $('#datagrid-payment-cashier-filter').data('selectedTrs')
 	if(datas!=undefined){
 		$.each(datas,function(i,n){
 			ids.push(n.cells[3].innerText);						
@@ -47,7 +47,7 @@ function FinanceReject(){
 
   var ids=getCheckId();
   
-  if(ids==null||ids==undefined){
+  if(ids==null||ids==undefined||ids==''){
 	  BJUI.alertmsg('info', 'No row selected');	
 	  return false
   }
@@ -74,33 +74,107 @@ function FinanceReject(){
 
 function weeklyReport(){	
 	  var ids=getCheckId();
-	  
-	  if(ids==null||ids==undefined){
+	  if(ids==null||ids==undefined||ids==''){
 		  BJUI.alertmsg('info', 'No row selected');	
 		  return false
 	  }
 
-	  BJUI.ajax('ajaxdownload', {
+ 	  BJUI.ajax('ajaxdownload', {
 		    url:'weeklyReportPayment.action',
-		    data: {json:JSON.stringify(ids),message:val},
-		    loadingmask: true,
-		    successCallback:{
-		    	
-		    	
-		    }
+		    data: {json:JSON.stringify(ids)},
+		    loadingmask: true
 		})
 
-					
-	
 }
 
 
+function paidPayment(){	
+	  var ids=getCheckId();
+	  
+	  if(ids==null||ids==undefined||ids==''){
+		  BJUI.alertmsg('info', 'No row selected');	
+		  return false
+	  }
+	  
+	  BJUI.alertmsg('prompt','Ref Bank NO', {
+		  okCall:function(val){ 
+			  BJUI.ajax('doajax', {
+				    url:'paidPayment.action',
+				    data: {json:JSON.stringify(ids),refNoofBank:value},
+				    loadingmask: true,
+				    okCallback: function(json, options) {
+				    	if(json.status='200'){
+				    		BJUI.alertmsg('info', json.message);					    		
+				    	}else{
+				    		BJUI.alertmsg('error', json.message);		
+				    	}
+				    }
+				})
+					
+			  }
+			  })
+
+}
 
 
+function paidResetPayment(){
+	  var ids=getCheckId();
+	  
+	  if(ids==null||ids==undefined||ids==''){
+		  BJUI.alertmsg('info', 'No row selected');	
+		  return false
+	  }
+	  
+	  BJUI.alertmsg('confirm', 'Paid Reset?',{
+		  okCall:function(){ 
+					BJUI.ajax('doajax', {
+					    url: 'paidResetPayment.action',
+					    loadingmask: true,
+					    data: {json:JSON.stringify(ids)},
+					    okCallback: function(json, options) {
+					    	if(json.status='200'){
+					    		BJUI.alertmsg('info', json.message);					    		
+					    	}else{
+					    		BJUI.alertmsg('error', json.message);		
+					    	}
+					    }
+					})	
+					
+			  }
+			  })
+}
+
+
+function mailInformPayment(){
+	  var ids=getCheckId();
+	  
+	  if(ids==null||ids==undefined||ids==''){
+		  BJUI.alertmsg('info', 'No row selected');	
+		  return false
+	  }
+	  
+	  BJUI.alertmsg('confirm', 'Mail Inform?',{
+		  okCall:function(){ 
+					BJUI.ajax('doajax', {
+					    url: 'mailInformPayment.action',
+					    loadingmask: true,
+					    data: {json:JSON.stringify(ids)},
+					    okCallback: function(json, options) {
+					    	if(json.status='200'){
+					    		BJUI.alertmsg('info', json.message);					    		
+					    	}else{
+					    		BJUI.alertmsg('error', json.message);		
+					    	}
+					    }
+					})	
+					
+			  }
+			  })
+}
 
 </script>
 <div class="bjui-pageHeader" style="background-color:#fefefe; border-bottom:none;">
-<form data-toggle="ajaxsearch" data-options="{searchDatagrid:$.CurrentNavtab.find('#datagrid-payment-admin-filter')}" id="datagrid-payment-admin-query">
+<form data-toggle="ajaxsearch" data-options="{searchDatagrid:$.CurrentNavtab.find('#datagrid-payment-cashier-filter')}" id="datagrid-payment-cashier-query">
     <fieldset>
         <legend style="font-weight:normal;">Search：</legend>
         <div style="margin:0; padding:1px 5px 5px;">
@@ -137,7 +211,7 @@ function weeklyReport(){
         		</td>
         	</tr>    
         	<tr>
-        		<td colspan="8" height="10px"></td>
+        		<td colspan="8" height="5px"></td>
         	</tr>
         	<tr>
         		<td>
@@ -179,13 +253,26 @@ function weeklyReport(){
             	</select>
         		</td>
         		<td colspan="2" align="center">
-        		<div class="btn-group">
-                <button type="submit" class="btn-green" data-icon="search">Search</button>
-                <button type="reset" class="btn-orange" data-icon="times">Reset</button>
-            	</div>
+	        		<div class="btn-group">
+	                <button type="submit" class="btn-green" data-icon="search">Search</button>
+	                <button type="reset" class="btn-orange" data-icon="times">Reset</button>
+	            	</div>
         		</td>
 
         	</tr>    
+        	<tr>
+        		<td colspan="8" height="5px"></td>
+        	</tr>
+        	<tr>
+        	    <td width="150px">
+        		<span>Application Date：</span>
+        		</td>
+        		<td width="220px">
+            	<input type="text" name="paidDate_f"  data-nobtn="true"  id="q_payment_paidDate_f" value="" data-toggle="datepicker" size="9" data-rule="date">to:
+            	<input type="text" name="paidDate_t"  data-nobtn="true"  id="q_payment_paidDate_t" value="" data-toggle="datepicker" size="9" data-rule="date">
+        		</td>
+        		<td colspan="6"></td>
+        	</tr>
         </table>
             
                        
@@ -198,7 +285,7 @@ function weeklyReport(){
 </form>
 </div>
 <div class="bjui-pageContent" id="div-user">
-    <table class="table table-bordered" id="datagrid-payment-admin-filter" data-toggle="datagrid" data-options="{
+    <table class="table table-bordered" id="datagrid-payment-cashier-filter" data-toggle="datagrid" data-options="{
         height: '100%',
         gridTitle : 'Payment management',
         dataUrl: 'getPayment.action?queryType=cashier',
@@ -207,37 +294,37 @@ function weeklyReport(){
         toolbarItem: 'export',
         toolbarCustom:[
         	 {name:'Weekly Report',
-        	 icon:'printPDF',
-        	 class:'btn-green',
-        	 function:weeklyReport},
-        	 {name:'Weekly Report',
         	 icon:'save',
         	 class:'btn-green',
-        	 function:FinanceReject},
+        	 function:weeklyReport},
+        	 {name:'Paid',
+        	 icon:'save',
+        	 class:'btn-green',
+        	 function:paidPayment},
         	 {name:'Paid Reset',
         	 icon:'save',
         	 class:'btn-green',
-        	 function:FinanceReject},
+        	 function:paidResetPayment},
         	 {name:'Mail Inform',
         	 icon:'save',
         	 class:'btn-green',
-        	 function:FinanceReject},
+        	 function:mailInformPayment},
         	 {name:'Finance Reject',
         	 icon:'save',
         	 class:'btn-green',
         	 function:FinanceReject}],
         editMode: {navtab:{width:'830',height:800,title:'Edit Payment',mask:true,fresh:true}},
         delUrl:'deleteUser.action',
-        editUrl: 'sign/payment/paymentform.jsp?viewtype=cashier',
+        editUrl: 'sign/payment/paymentform_show.jsp?viewtype=cashier',
         paging: {pageSize:30, pageCurrent:1},
         linenumberAll: true,
         showCheckboxcol: true,
         contextMenuB: true,
         hScrollbar: true,
         filterThead:false,
-        exportOption: {type:'file', options:{url:'exportPaymentExcel.action?queryType=admin', loadingmask:true,queryForm:$.CurrentNavtab.find('#datagrid-payment-admin-query')}},
-        printPDFOption: {type:'file', options:{url:'exportPaymentExcel.action?queryType=admin', loadingmask:true,queryForm:$.CurrentNavtab.find('#datagrid-payment-admin-query')}},
-        printPDFOption2: {type:'file', options:{url:'exportPaymentExcel.action?queryType=admin', loadingmask:true,queryForm:$.CurrentNavtab.find('#datagrid-payment-admin-query')}}
+        exportOption: {type:'file', options:{url:'exportPaymentExcel.action?queryType=cashier', loadingmask:true,queryForm:$.CurrentNavtab.find('#datagrid-payment-cashier-query')}},
+        printPDFOption: {type:'file', options:{url:'exportPaymentExcel.action?queryType=cashier', loadingmask:true,queryForm:$.CurrentNavtab.find('#datagrid-payment-cashier-query')}},
+        printPDFOption2: {type:'file', options:{url:'exportPaymentExcel.action?queryType=cashier', loadingmask:true,queryForm:$.CurrentNavtab.find('#datagrid-payment-cashier-query')}}
     }">
         <thead>
             <tr>
@@ -250,6 +337,7 @@ function weeklyReport(){
 				<th data-options="{name:'deptManagerID',width:150,align:'center',finalWidth:'true'}">Manager Cimtas ID</th>
 				<th data-options="{name:'deptManager',width:150,align:'center',finalWidth:'true'}">Manager Name</th>
 				<th data-options="{name:'code',width:150,align:'center',finalWidth:'true'}">Sequential Code</th>
+				<th data-options="{name:'refNoofBank',width:200,align:'center',finalWidth:'true'}">Ref.No. of Bank</th>
 				<th data-options="{name:'urgent',width:60,align:'center' ,finalWidth:'true',type:'select', items:datagrid_urgent}">Urgent</th>
 				<th data-options="{name:'paymentSubject',width:200,align:'center',finalWidth:'true',type:'select', items:datagrid_paymentSubject}">Payment Subject</th>
 				<th data-options="{name:'currency_1',width:80,align:'right',finalWidth:'true'}">Currency</th>

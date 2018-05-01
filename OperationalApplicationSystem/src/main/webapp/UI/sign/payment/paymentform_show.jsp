@@ -95,7 +95,7 @@ function dataToFace(){
                 $.CurrentNavtab.find("#paymentDays_"+json.paymentTerm).html(json.paymentDays_1)  
 
             	
-            	if(json.amount_1!=''&&json.amount_1!=null&&json.amount_1!='0.00'){
+            	if(json.amount_1!=''&&json.amount_1!=null&&json.amount_1!='0.00'&&json.amount_1!=undefined){
             		$.CurrentNavtab.find("#amount_1").html(formatCurrency(json.amount_1)+"&nbsp&nbsp");
             		$.CurrentNavtab.find("#receivingOrApprovalDate_1").html(json.receivingOrApprovalDate_1);
             		$.CurrentNavtab.find("#PONo_1").html(json.PONo_1);
@@ -103,7 +103,7 @@ function dataToFace(){
             	}
     
             	
-            	if(json.amount_2!=''&&json.amount_2!=null&&json.amount_2!='0.00'){
+            	if(json.amount_2!=''&&json.amount_2!=null&&json.amount_2!='0.00'&&json.amount_2!=undefined){
             		$.CurrentNavtab.find("#amount_2").html(formatCurrency(json.amount_2)+"&nbsp&nbsp");
             		$.CurrentNavtab.find("#receivingOrApprovalDate_2").html(json.receivingOrApprovalDate_2);
             		$.CurrentNavtab.find("#PONo_2").html(json.PONo_2);
@@ -111,7 +111,7 @@ function dataToFace(){
             	}           		
 
             	
-            	if(json.amount_3!=''&&json.amount_3!=null&&json.amount_3!='0.00'){
+            	if(json.amount_3!=''&&json.amount_3!=null&&json.amount_3!='0.00'&&json.amount_3!=undefined){
             		$.CurrentNavtab.find("#amount_3").html(formatCurrency(json.amount_3)+"&nbsp&nbsp");
             		$.CurrentNavtab.find("#receivingOrApprovalDate_3").html(json.receivingOrApprovalDate_3);
             		$.CurrentNavtab.find("#PONo_3").html(json.PONo_3);
@@ -119,7 +119,7 @@ function dataToFace(){
             	}
             		
             	
-            	if(json.amount_4!=''&& json.amount_4!=null&&json.amount_4!='0.00'){
+            	if(json.amount_4!=''&& json.amount_4!=null&&json.amount_4!='0.00'&&json.amount_4!=undefined){
             		$.CurrentNavtab.find("#amount_4").html(formatCurrency(json.amount_4)+"&nbsp&nbsp");
             		$.CurrentNavtab.find("#receivingOrApprovalDate_4").html(json.receivingOrApprovalDate_4);
             		$.CurrentNavtab.find("#PONo_4").html(json.PONo_4);
@@ -127,7 +127,7 @@ function dataToFace(){
             	}
             		
             	
-            	if(json.amount_5!=''&& json.amount_5!=null&&json.amount_5!='0.00'){
+            	if(json.amount_5!=''&& json.amount_5!=null&&json.amount_5!='0.00'&&json.amount_5!=undefined){
             		$.CurrentNavtab.find("#amount_5").html(formatCurrency(json.amount_5)+"&nbsp&nbsp");
             		$.CurrentNavtab.find("#receivingOrApprovalDate_5").html(json.receivingOrApprovalDate_5);
             		$.CurrentNavtab.find("#PONo_5").html(json.PONo_5);
@@ -135,7 +135,7 @@ function dataToFace(){
             	}
             		
             	
-            	if(json.amount_6!=''&& json.amount_6!=null&&json.amount_6!='0.00'){
+            	if(json.amount_6!=''&& json.amount_6!=null&&json.amount_6!='0.00'&&json.amount_6!=undefined){
             		$.CurrentNavtab.find("#amount_6").html(formatCurrency(json.amount_6)+"&nbsp&nbsp");
             		$.CurrentNavtab.find("#receivingOrApprovalDate_6").html(json.receivingOrApprovalDate_6);
             		$.CurrentNavtab.find("#PONo_6").html(json.PONo_6);
@@ -156,8 +156,8 @@ function dataToFace(){
             	if(json.state=='5'){
             		$.CurrentNavtab.find("#invalid-img").show();
             	}
-
-            	$("#handingFee").html("&nbsp&nbsp"+json.handingFee);
+				if(json.handingFee!=''&& json.handingFee!=null&&json.handingFee!='0.00'&&json.handingFee!=undefined)
+            		$("#handingFee").html("&nbsp&nbsp"+json.handingFee);
             	
             	if(json.file_invoice!=undefined&&json.file_invoice!=""){
             		var file=json.file_invoice.split('|');
@@ -165,7 +165,7 @@ function dataToFace(){
             		$.each(file,function(i,n){
             			var filename=n.split('/')[1];
             			if(filename!=undefined&&filename!=''){         				
-            				$.CurrentNavtab.find('#upfile_invoice_list').append(fileToTr(filename,n,b));	   
+            				$.CurrentNavtab.find('#upfile_invoice_list').append(fileToTr(filename,n));	   
             			}
             		})
             	}
@@ -470,12 +470,12 @@ function checkReturn(){
 			
 			<table style="font-size:10px;">
 				<tr>
-					<td width="160px" ><label>Application Date(申请日期):</label></td>
-					<td width="140px" align="left"><label id="applicationDate"></label></td>
-					<td width="210px" ><label>Request Payment Date(要求付款日期):</label></td>
-					<td width="190px"  align="left"><label id="requestPaymentDate"></label></td>
-					<td width="230px" ><label>Contactural Payment Date(合同付款日期):</label></td>
-					<td width="170px" align="left"><label id="contacturalPaymentDate"></label></td>
+					<td width="180px" ><label>Application Date(申请日期):</label></td>
+					<td width="120px" align="left"><label id="applicationDate"></label></td>
+					<td width="230px" ><label>Request Payment Date(要求付款日期):</label></td>
+					<td width="170px"  align="left"><label id="requestPaymentDate"></label></td>
+					<td width="250px" ><label>Contactural Payment Date(合同付款日期):</label></td>
+					<td width="150px" align="left"><label id="contacturalPaymentDate"></label></td>
 					<td width="100px"></td>
 				</tr>
 				<tr height="30px">
@@ -637,7 +637,7 @@ function checkReturn(){
 			
 			<table>
 				<tr>
-					<td>
+					<td valign="top">
 						 <table class="table" id="upfile_invoice_list" >	
 							<tr>
 								<th width="400px" align="center">File Name</th>
@@ -645,7 +645,7 @@ function checkReturn(){
 							</tr>									
 						</table>
 					</td>
-					<td>
+					<td valign="top"> 
 						<table class="table" id="upfile_contract_list" >	
 							<tr>
 								<th width="400px" align="center">File Name</th>
@@ -653,7 +653,7 @@ function checkReturn(){
 							</tr>									
 						</table>
 					</td>
-					<td>
+					<td valign="top">
 						<table class="table" id="upfile_other_list" >	
 							<tr>
 								<th width="400px" align="center">File Name</th>

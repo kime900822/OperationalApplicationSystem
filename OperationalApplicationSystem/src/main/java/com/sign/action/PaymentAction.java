@@ -23,6 +23,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.kime.base.ActionBase;
 import com.kime.biz.DictBIZ;
 import com.kime.infoenum.Message;
@@ -31,10 +32,14 @@ import com.kime.model.HeadColumn;
 import com.kime.model.User;
 import com.kime.utils.CommonUtil;
 import com.kime.utils.ExcelUtil;
+import com.kime.utils.PDFUtil;
 import com.kime.utils.TypeChangeUtil;
 import com.opensymphony.xwork2.ActionContext;
 import com.sign.biz.PaymentBIZ;
+import com.sign.biz.PaymentWeekBIZ;
 import com.sign.model.Payment;
+import com.sign.model.PaymentPO;
+import com.sign.model.PaymentWeek;
 import com.sign.other.FileSave;
 import com.sign.other.PaymentState;
 
@@ -49,7 +54,7 @@ public class PaymentAction extends ActionBase {
 	private FileSave fileSave;
     @Autowired
     private DictBIZ dictBIZ;
-	
+
 	private File[] file;
 	private String[] fileFileName;
 	private String dfile;
@@ -175,7 +180,39 @@ public class PaymentAction extends ActionBase {
 	private String financeManager;
 	private String generalManager;
 	private String handingFee;
+	private String paidDate;
+	private String paidDate_f;
+	private String paidDate_t;
 	
+	
+	public String getPaidDate_f() {
+		return paidDate_f;
+	}
+	public void setPaidDate_f(String paidDate_f) {
+		this.paidDate_f = paidDate_f;
+	}
+	public String getPaidDate_t() {
+		return paidDate_t;
+	}
+	public void setPaidDate_t(String paidDate_t) {
+		this.paidDate_t = paidDate_t;
+	}
+
+
+	private String week;
+	
+	public String getWeek() {
+		return week;
+	}
+	public void setWeek(String week) {
+		this.week = week;
+	}
+	public String getPaidDate() {
+		return paidDate;
+	}
+	public void setPaidDate(String paidDate) {
+		this.paidDate = paidDate;
+	}
 	public String getHandingFee() {
 		return handingFee;
 	}
@@ -970,8 +1007,22 @@ public class PaymentAction extends ActionBase {
 			User user=(User)session.getAttribute("user");
 			Payment payment=paymentBIZ.getPayment(" where id='"+id+"'").get(0);
 			payment.setState(PaymentState.APPROVEPAYMENT);
-			payment.setDeptManager(user.getUid());
-			payment.setDeptManager(user.getName());
+			//如果是代理审批
+			if (!user.getUid().equals(payment.getDepartmentID())) {
+				List<Dict> ldict=dictBIZ.getDict(" where type='AGENTEMPLOYEE' and key='"+payment.getDepartmentID()+"'");
+				if (ldict.size()>0) {
+					payment.setDeptManager(ldict.get(0).getValueName()+"(On behalf of "+ldict.get(0).getKeyName()+", "+ldict.get(0).getKeyExplain()+" to "+ldict.get(0).getValueExplain()+")");
+				}else {
+					result.setMessage("Agent Error!");
+					result.setStatusCode("300");
+					reslutJson=new ByteArrayInputStream(new Gson().toJson(result).getBytes("UTF-8")); 	
+					return SUCCESS;
+				}
+				
+			}else {
+				payment.setDeptManager(user.getName());	
+			}
+			
 			
 			paymentBIZ.approvePayment(payment);
 			
@@ -1073,13 +1124,14 @@ public class PaymentAction extends ActionBase {
 			})})
 	public String financeRejectPayment() throws UnsupportedEncodingException{
 		try {
-			
+			User user=(User) session.getAttribute("user");
 			String[] ids=new Gson().fromJson(json, String[].class);
-			paymentBIZ.financeRejectPayment(ids, message);
+			paymentBIZ.financeRejectPayment(ids, message,user);
 			result.setMessage("Finance reject success");
+			logUtil.logInfo("付款申请单 Finance reject success");
 			result.setStatusCode("200");
 		} catch (Exception e) {
-			logUtil.logInfo("付款申请单拒绝异常:"+e.getMessage());
+			logUtil.logInfo("付款申请单 Finance reject 异常:"+e.getMessage());
 			result.setMessage(e.getMessage());
 			result.setStatusCode("300");
 		}
@@ -1089,31 +1141,101 @@ public class PaymentAction extends ActionBase {
 	}
 	
 	
-	@Action(value="weeklyReportPayment",results={@org.apache.struts2.convention.annotation.Result(type="stream",
+	@Action(value="paidPayment",results={@org.apache.struts2.convention.annotation.Result(type="stream",
 			params={
 					"inputName", "reslutJson"
 			})})
-	public String weeklyReportPayment() throws UnsupportedEncodingException{
+	public String paidPayment() throws UnsupportedEncodingException{
 		try {
-			List<HeadColumn> lColumns=new ArrayList<>();
-			lColumns.add(new HeadColumn("code", "80", "right", "Sequence No."));
-			lColumns.add(new HeadColumn("code", "80", "right", "Applicant"));
-			lColumns.add(new HeadColumn("code", "80", "right", "Business Unit"));
-			lColumns.add(new HeadColumn("code", "80", "right", "Total Amount"));
-			lColumns.add(new HeadColumn("code", "80", "right", "Usage Description"));
-			lColumns.add(new HeadColumn("code", "80", "right", "PO Amount"));
-			lColumns.add(new HeadColumn("code", "80", "right", "Supplier Code"));
-			lColumns.add(new HeadColumn("code", "80", "right", "Ename"));
-			
 			
 			String[] ids=new Gson().fromJson(json, String[].class);
-			StringBuffer sb = new StringBuffer();  
-		    for (int i = 0; i < ids.length; i++) {  
-		        sb.append("'").append(ids[i]).append("'").append(",");  
-		    }  
-		    List<Payment> lPayments=paymentBIZ.getPayment("where id in ("+sb.toString().substring(0, sb.length() - 1)+")");
-        	Class c = (Class) new Payment().getClass();  
-        	ByteArrayOutputStream os=ExcelUtil.exportExcel("Weekly Report", c, lPayments, "yyy-MM-dd");
+			paymentBIZ.paidPayment(ids, message);
+			result.setMessage("Paid success");
+			logUtil.logInfo("付款申请单  Paid success");
+			result.setStatusCode("200");
+		} catch (Exception e) {
+			logUtil.logInfo("付款申请单 Paid 异常:"+e.getMessage());
+			result.setMessage(e.getMessage());
+			result.setStatusCode("300");
+		}
+		
+		reslutJson=new ByteArrayInputStream(new Gson().toJson(result).getBytes("UTF-8")); 	
+		return SUCCESS;
+	}
+	
+	@Action(value = "mailInformPayment", results = {
+			@org.apache.struts2.convention.annotation.Result(type = "stream", params = { "inputName", "reslutJson" }) })
+	public String mailInformPayment() throws UnsupportedEncodingException {
+		try {
+
+			String[] ids = new Gson().fromJson(json, String[].class);
+			paymentBIZ.mailInformPayment(ids);
+			result.setMessage("Mail Inform success");
+			result.setStatusCode("200");
+		} catch (Exception e) {
+			logUtil.logInfo("付款申请单拒绝异常:" + e.getMessage());
+			result.setMessage(e.getMessage());
+			result.setStatusCode("300");
+		}
+
+	reslutJson=new ByteArrayInputStream(new Gson().toJson(result).getBytes("UTF-8")); 	
+	return SUCCESS;
+	}
+	
+	@Action(value = "paidResetPayment", results = {
+			@org.apache.struts2.convention.annotation.Result(type = "stream", params = { "inputName", "reslutJson" }) })
+	public String paidResetPayment() throws UnsupportedEncodingException {
+		try {
+
+			String[] ids = new Gson().fromJson(json, String[].class);
+			paymentBIZ.paidResetPayment(ids);
+			result.setMessage("Paid Reset success");
+			logUtil.logInfo("付款申请单 Paid Reset success");
+			result.setStatusCode("200");
+		} catch (Exception e) {
+			logUtil.logInfo("付款申请单 Paid Reset异常:" + e.getMessage());
+			result.setMessage(e.getMessage());
+			result.setStatusCode("300");
+		}
+
+	reslutJson=new ByteArrayInputStream(new Gson().toJson(result).getBytes("UTF-8")); 	
+	return SUCCESS;
+	}
+	
+	@Action(value = "getPaidWeek", results = {
+			@org.apache.struts2.convention.annotation.Result(type = "stream", params = { "inputName", "reslutJson" }) })
+	public String getPaidWeek() throws UnsupportedEncodingException {
+		List<PaymentWeek> list=paymentBIZ.getPaidWeek();
+		reslutJson=new ByteArrayInputStream(new Gson().toJson(list).getBytes("UTF-8"));  
+		return SUCCESS;
+	}
+	
+	
+	
+	@Action(value = "getPaymentWeek", results = {
+			@org.apache.struts2.convention.annotation.Result(type = "stream", params = { "inputName", "reslutJson" }) })
+	public String getPaymentWeek() throws UnsupportedEncodingException {
+		List<PaymentPO> lPaymentPOs=paymentBIZ.getPaymentPO(week);
+		reslutJson=new ByteArrayInputStream(new Gson().toJson(lPaymentPOs).getBytes("UTF-8"));  
+		return SUCCESS;
+	}
+	
+	
+	@Action(value="exportPaymentWeekExcel",results={@org.apache.struts2.convention.annotation.Result(type="stream",
+	params={
+			"inputName", "reslutJson",
+			"contentType","application/vnd.ms-excel",
+			"contentDisposition","attachment;filename=%{fileName}",
+			"bufferSize","1024"
+	})})
+	public String exportPaymentWeekExcel() throws UnsupportedEncodingException{
+		try {
+
+			List<HeadColumn> lHeadColumns=new Gson().fromJson(thead, new TypeToken<ArrayList<HeadColumn>>() {}.getType());        	
+			List<PaymentPO> lPaymentPOs=paymentBIZ.getPaymentPO(week);
+
+        	Class c = (Class) new PaymentWeek().getClass();  
+        	ByteArrayOutputStream os=PDFUtil.exportPDF("Paid Report", c, lPaymentPOs, "yyy-MM-dd",lHeadColumns);
         	byte[] fileContent = os.toByteArray();
         	ByteArrayInputStream is = new ByteArrayInputStream(fileContent);
         	   	
@@ -1122,7 +1244,71 @@ public class PaymentAction extends ActionBase {
         	response.setHeader("Set-Cookie", "fileDownload=true; path=/");
         	
     		SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");		 
-    		fileName = "Payment"+sf.format(new Date()).toString()+ ".xls";
+    		fileName = "Payment"+sf.format(new Date()).toString()+ ".pdf";
+    		fileName= new String(fileName.getBytes(), "ISO8859-1");
+    		//文件流
+            reslutJson = is;            
+            logUtil.logInfo("导出PaidReport！"+fileName);
+        }
+        catch(Exception e) {
+        	logUtil.logInfo("导出PaidReport！"+e.getMessage());
+			result.setMessage(e.getMessage());
+			result.setStatusCode("300");
+			reslutJson=new ByteArrayInputStream(new Gson().toJson(result).getBytes("UTF-8")); 	
+			return SUCCESS;
+        }
+
+        return SUCCESS;
+	}
+	
+	
+	@Action(value="weeklyReportPayment",results={@org.apache.struts2.convention.annotation.Result(type="stream",
+	params={
+			"inputName", "reslutJson",
+			"contentType","application/vnd.ms-excel",
+			"contentDisposition","attachment;filename=%{fileName}",
+			"bufferSize","1024"
+	})})
+	public String weeklyReportPayment() throws UnsupportedEncodingException{
+		try {
+			List<HeadColumn> lColumns=new ArrayList<>();
+			lColumns.add(new HeadColumn("code", "80", "right", "Sequence No."));
+			lColumns.add(new HeadColumn("applicant", "80", "right", "Applicant"));
+			lColumns.add(new HeadColumn("uID", "80", "right", "Business Unit"));
+			lColumns.add(new HeadColumn("amountInFigures", "80", "right", "Total Amount"));
+			lColumns.add(new HeadColumn("usageDescription", "80", "right", "Usage Description"));
+			lColumns.add(new HeadColumn("amount", "80", "right", "PO Amount"));
+			lColumns.add(new HeadColumn("supplierCode", "80", "right", "Supplier Code"));
+			lColumns.add(new HeadColumn("beneficiaryE", "80", "right", "Ename"));
+
+			String[] ids=new Gson().fromJson(json, String[].class);
+			StringBuffer sb = new StringBuffer();  
+		    for (int i = 0; i < ids.length; i++) {  
+		        sb.append("'").append(ids[i]).append("'").append(",");  
+		    }  
+		    
+		    if (paymentBIZ.getPayment(" where id in ("+sb.toString().substring(0, sb.length() - 1)+") and state!='4' ").size()>0) {
+				//result.setMessage("Not all Finance Approval");
+				//result.setStatusCode("300");
+				//reslutJson=new ByteArrayInputStream(new Gson().toJson(result).getBytes("UTF-8")); 	
+	        	HttpServletResponse response = (HttpServletResponse)
+	        			ActionContext.getContext().get(org.apache.struts2.StrutsStatics.HTTP_RESPONSE);
+	        	response.setHeader("Set-Cookie", "fileDownload=true; path=/");
+				return SUCCESS;
+			}
+		    
+		    List<PaymentPO> lPaymentPOs=paymentBIZ.getPaymentPO(sb.toString().substring(0, sb.length() - 1));
+        	Class c = (Class) new PaymentPO().getClass();  
+        	ByteArrayOutputStream os=PDFUtil.exportPDF("Weekly Report", c, lPaymentPOs, "yyy-MM-dd",lColumns);
+        	byte[] fileContent = os.toByteArray();
+        	ByteArrayInputStream is = new ByteArrayInputStream(fileContent);
+        	   	
+        	HttpServletResponse response = (HttpServletResponse)
+        			ActionContext.getContext().get(org.apache.struts2.StrutsStatics.HTTP_RESPONSE);
+        	response.setHeader("Set-Cookie", "fileDownload=true; path=/");
+        	
+    		SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");		 
+    		fileName = "Payment"+sf.format(new Date()).toString()+ ".pdf";
     		fileName= new String(fileName.getBytes(), "ISO8859-1");
     		//文件流
             reslutJson = is;            
@@ -1130,10 +1316,13 @@ public class PaymentAction extends ActionBase {
         }
         catch(Exception e) {
         	logUtil.logInfo("导出weeklyReport！"+e.getMessage());
-            e.printStackTrace();
+//			result.setMessage(e.getMessage());
+//			result.setStatusCode("300");
+//			reslutJson=new ByteArrayInputStream(new Gson().toJson(result).getBytes("UTF-8")); 	
+			return SUCCESS;
         }
 
-        return "success";
+        return SUCCESS;
 	}
 	
 	
@@ -1216,11 +1405,21 @@ public class PaymentAction extends ActionBase {
 		if (!"".equals(applicationDate_t)&&applicationDate_t!=null) {
 			where += " AND P.applicationDate <= '"+applicationDate_t+"'";
 		}
+		if (!"".equals(paidDate_f)&&paidDate_f!=null) {
+			where += " AND P.paidDate>='"+paidDate_f+"'";
+		}
+		if (!"".equals(paidDate_t)&&paidDate_t!=null) {
+			where += " AND P.paidDate <= '"+paidDate_t+"'";
+		}
 		if (!"".equals(code)&&code!=null) {
 			where += " AND P.code = '"+code+"'";
 		}
-		if (!"".equals(state)&&state!=null) {
+		if (!"".equals(state)&&state!=null) {			
 			where += " AND P.state = '"+state+"'";
+		}else {
+			if ("cashier".equals(queryType)) {
+				where+=" AND P.state in ('4','7') ";
+			}		
 		}
 		if (!"".equals(urgent)&&urgent!=null) {
 			where += " AND P.urgent = '"+urgent+"'";
@@ -1243,7 +1442,7 @@ public class PaymentAction extends ActionBase {
 			hql="  select  P from Payment P where P.documentAuditID='"+user.getUid()+"' "+where+" order By P.dateTemp desc";  			
 		}
 		if ("sign".equals(queryType)) {
-			hql="  select  P from Payment P where P.state='1' and P.deptManagerID='"+user.getUid()+"' order By P.dateTemp desc";
+			hql="  select  P from Payment P left join Dict D ON P.deptManagerID=D.key And D.type='AGENTEMPLOYEE' And "+CommonUtil.getDate()+" >=D.keyExplain And "+CommonUtil.getDate()+" <=D.valueExplain  where P.state='1' and (P.deptManagerID='"+user.getUid()+"' OR D.value='"+user.getUid()+"')order By P.dateTemp desc";
 		}
 		if ("user".equals(queryType)) {
 			hql=" select P from Payment P where P.UID='"+user.getUid()+"' "+where+" order By P.dateTemp desc";
@@ -1252,7 +1451,7 @@ public class PaymentAction extends ActionBase {
 			hql=" select P from Payment P where 1=1 "+where+" order By P.dateTemp desc";
 		}
 		if ("cashier".equals(queryType)) {
-			hql=" select P from Payment P where P.state='4' "+where+" order By P.dateTemp desc";
+			hql=" select P from Payment P where 1=1 "+where+" order By P.dateTemp desc";
 		}
 		List<Payment> list=paymentBIZ.getPaymentByHql(hql, Integer.parseInt(pageSize),Integer.parseInt(pageCurrent));
 		int total=paymentBIZ.getPaymentByHql(hql).size();
@@ -1288,8 +1487,26 @@ public class PaymentAction extends ActionBase {
     public String exportPaymentExcel() {
         try {
         	User user=(User)session.getAttribute("user");
-        	//List<HeadColumn> lHeadColumns=new Gson().fromJson(thead, new TypeToken<ArrayList<HeadColumn>>() {}.getType());
-        	//List<HeadColumn> lHeadColumns = new ArrayList<>();
+        	//List<HeadColumn> lHeadColumns=new Gson().fromJson(thead, new TypeToken<ArrayList<HeadColumn>>() {}.getType());        	
+        	List<HeadColumn> lHeadColumns = new ArrayList<>();
+        	lHeadColumns.add(new HeadColumn("code", "100", "center", "Sequential Code"));
+        	lHeadColumns.add(new HeadColumn("refNoofBank", "100", "center", "Ref.No. of Bank"));
+        	lHeadColumns.add(new HeadColumn("applicationDate", "100", "center", "Application Date"));
+        	lHeadColumns.add(new HeadColumn("state", "100", "center", "Approval Status"));
+        	lHeadColumns.add(new HeadColumn("uID", "100", "center", "Cimtas ID"));
+        	lHeadColumns.add(new HeadColumn("uName", "100", "center", "User Name"));
+        	lHeadColumns.add(new HeadColumn("departmentID", "100", "center", "Manager Cimtas ID"));
+        	lHeadColumns.add(new HeadColumn("departmentName", "100", "center", "Manager Name"));
+        	lHeadColumns.add(new HeadColumn("supplierCode", "100", "center", "Supplier Code"));
+        	lHeadColumns.add(new HeadColumn("beneficiary", "100", "center", "Supplier Name"));
+        	lHeadColumns.add(new HeadColumn("contacturalPaymentDate", "100", "center", "Contractural Payment Date"));
+        	lHeadColumns.add(new HeadColumn("paidDate", "100", "center", "Actual Paid Date"));
+        	lHeadColumns.add(new HeadColumn("urgent", "100", "center", "Urgent"));
+        	lHeadColumns.add(new HeadColumn("paymentSubject", "100", "center", "Payment Subject"));
+        	lHeadColumns.add(new HeadColumn("paymentTerm", "100", "center", "Payment By"));
+        	lHeadColumns.add(new HeadColumn("currency_1", "100", "center", "Currency"));
+        	lHeadColumns.add(new HeadColumn("amountInFigures", "100", "center", "Amount"));
+        	lHeadColumns.add(new HeadColumn("usageDescription", "100", "center", "Usage Description"));
         	
         	
         	
@@ -1305,8 +1522,12 @@ public class PaymentAction extends ActionBase {
     		if (!"".equals(code)&&code!=null) {
     			where += " AND P.code = '"+code+"'";
     		}
-    		if (!"".equals(state)&&state!=null) {
+    		if (!"".equals(state)&&state!=null) {			
     			where += " AND P.state = '"+state+"'";
+    		}else {
+    			if ("cashier".equals(queryType)) {
+    				where+=" AND P.state in ('4','7') ";
+    			}		
     		}
     		if (!"".equals(urgent)&&urgent!=null) {
     				where += " AND P.urgent = '"+urgent+"'";		
@@ -1336,6 +1557,9 @@ public class PaymentAction extends ActionBase {
     		if ("admin".equals(queryType)) {
     			hql=" select P from Payment P where 1=1 "+where+" order By P.dateTemp desc";
     		}
+    		if ("cashier".equals(queryType)) {
+    			hql=" select P from Payment P where 1=1 "+where+" order By P.dateTemp desc";
+    		}
     		List<Payment> lPayments=paymentBIZ.getPaymentByHql(hql);
     		for (Payment payment : lPayments) {
 				payment.setState(PaymentState.getState(payment.getState()));
@@ -1347,8 +1571,8 @@ public class PaymentAction extends ActionBase {
 				}
     			
 			}
-        	Class c = (Class) new Payment().getClass();  
-        	ByteArrayOutputStream os=ExcelUtil.exportExcel("Payment", c, lPayments, "yyy-MM-dd");
+    		Class c = (Class) new Payment().getClass();  
+        	ByteArrayOutputStream os=ExcelUtil.exportExcel("Payment", c, lPayments, "yyy-MM-dd",lHeadColumns);
         	byte[] fileContent = os.toByteArray();
         	ByteArrayInputStream is = new ByteArrayInputStream(fileContent);
         	   	
@@ -1368,7 +1592,7 @@ public class PaymentAction extends ActionBase {
             e.printStackTrace();
         }
 
-        return "success";
+        return SUCCESS;
     }
 	
 	

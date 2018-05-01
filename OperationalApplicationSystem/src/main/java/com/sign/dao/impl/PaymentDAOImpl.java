@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 
 import com.sign.dao.PaymentDAO;
 import com.sign.model.Payment;
+import com.sign.model.PaymentPO;
 
 @Repository
 public class PaymentDAOImpl extends HibernateDaoSupport implements PaymentDAO {
@@ -64,5 +65,12 @@ public class PaymentDAOImpl extends HibernateDaoSupport implements PaymentDAO {
 		Session session=this.getSessionFactory().openSession();
 		return session.createQuery(hql).setFirstResult((pageCurrent-1)*pageSize).setMaxResults(pageSize).list();
 	}
+
+	@Override
+	public List<PaymentPO> queryPaymentPOSql(String sql) {
+		Session session=this.getSessionFactory().openSession();
+		return session.createSQLQuery(sql).addEntity(PaymentPO.class).list();
+	}
+
 	
 }

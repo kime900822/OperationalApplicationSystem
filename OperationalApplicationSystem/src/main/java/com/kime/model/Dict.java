@@ -24,7 +24,11 @@ public class Dict {
 	@Column(name="`key`")
 	private String key;
 	@Column
+	private String keyName;
+	@Column
 	private String value;
+	@Column
+	private String valueName;
 	@Column
 	private String keyExplain;
 	@Column
@@ -73,6 +77,18 @@ public class Dict {
 	}
 	public void setValueExplain(String valueExplain) {
 		this.valueExplain = valueExplain;
+	}
+	public String getKeyName() {
+		return keyName;
+	}
+	public void setKeyName(String keyName) {
+		this.keyName = keyName;
+	}
+	public String getValueName() {
+		return valueName;
+	}
+	public void setValueName(String valueName) {
+		this.valueName = valueName;
 	}
 
 	

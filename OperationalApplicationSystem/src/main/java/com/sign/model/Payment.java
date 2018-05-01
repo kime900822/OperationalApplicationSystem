@@ -443,9 +443,19 @@ public class Payment {
 	private String handingFee;
 	@Column
 	private String financeRejectMessage;
+	@Column
+	private String paidDate;
 	
 	
 	
+	public String getPaidDate() {
+		return paidDate;
+	}
+
+	public void setPaidDate(String paidDate) {
+		this.paidDate = paidDate;
+	}
+
 	public String getFinanceRejectMessage() {
 		return financeRejectMessage;
 	}

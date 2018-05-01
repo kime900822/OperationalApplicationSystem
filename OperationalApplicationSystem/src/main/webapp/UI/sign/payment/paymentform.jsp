@@ -908,7 +908,7 @@ function checkPoNO(o){
 
 function checkSave(){
 	var err='';
-	if($.CurrentNavtab.find('input:radio:checked').val()==null||$.CurrentNavtab.find('input:radio:checked').val()==''){
+	if($.CurrentNavtab.find("[name='payType']input:radio:checked").val()==null||$.CurrentNavtab.find("[name='payType']input:radio:checked').val()==''")){
 		err+=" Payment Way can`t be  empty！<br>";		
 	}
 	if($.CurrentNavtab.find('#j_payment_paymentSubject').val()==null||$.CurrentNavtab.find('#j_payment_paymentSubject').val()==''){
@@ -928,6 +928,16 @@ function checkSave(){
 	}
 	if($.CurrentNavtab.find('#j_payment_supplierCode').val()==null||$.CurrentNavtab.find('#j_payment_supplierCode').val()==''){
 		err+=" Supplier Code can`t be  empty！<br>";				
+	}
+	if($.CurrentNavtab.find('#j_payment_paymentTerm').val()==null||$.CurrentNavtab.find('#j_payment_paymentTerm').val()==''){
+		err+=" Payment Method can`t be  empty！<br>";				
+	}
+	
+	if($.CurrentNavtab.find("#j_payment_overSea").val()=="Y")
+	{
+		if($.CurrentNavtab.find("[name='hanfingFee']input:radio:checked").val()==null||$.CurrentNavtab.find("[name='hanfingFee']input:radio:checked').val()==''")){
+			err+=" Hanfing Fee can`t be  empty！<br>";		
+		}
 	}
 	
 	var term=$.CurrentNavtab.find("#j_payment_paymentTerm").val();
@@ -1075,6 +1085,16 @@ function getOriginalPayment(){
 	
 }
 
+function isHandingFee(){
+	if($.CurrentNavtab.find("#j_payment_overSea").val()=="Y")
+	{
+		$.CurrentNavtab.find("#handingFeeTr").show();
+	}else{
+		$.CurrentNavtab.find("#handingFeeTr").hide();
+	}
+	
+}
+
 </script>
 <div class="bjui-pageContent">
     <div class="bs-example" style="width:1100px">
@@ -1193,9 +1213,9 @@ function getOriginalPayment(){
 						供应商代码/收款人  <label style="color:red;font-size:12px"><b>*</b></label><br>Supplier Code/Beneficaiary  <label style="color:red;font-size:12px"><b>*</b></label>
 					</td>
 					<td>
-						<input type="text" name="supplierCode" id="j_payment_supplierCode" value="" data-toggle="findgrid" size="19" data-options="{
+						<input type="text" name="supplierCode" id="j_payment_supplierCode" value="" data-toggle="findgrid" onblur="isHandingFee()" size="19" data-options="{
             group: '',
-            include: 'supplierCode,beneficiary:name,beneficiaryE:ename,beneficiaryAccountNO:accno,beneficiaryAccountBank:accbank',
+            include: 'supplierCode,beneficiary:name,beneficiaryE:ename,beneficiaryAccountNO:accno,beneficiaryAccountBank:accbank,oversea:oversea',
             dialogOptions: {title:'查找供应商代码/收款人'},
             empty:false,
             gridOptions: {
@@ -1206,12 +1226,14 @@ function getOriginalPayment(){
                     {name:'name',width:200,label:'Name'},
                     {name:'ename',width:200,label:'EName'},
                     {name:'accno',width:300,label:'AccNO'},
-                    {name:'accbank',width:300,label:'AccBank'}
+                    {name:'accbank',width:300,label:'AccBank'},
+                    {name:'oversea',width:100,label:'Oversea'}
                 ]
             }
         }" placeholder="点放大镜按钮查找" data-rule="required" >
 					</td>
 					<td colspan="2">
+					<input type="hidden" id="j_payment_overSea" name="oversea"> 
 					</td>
 				</tr>
 				<tr>
@@ -1276,7 +1298,7 @@ function getOriginalPayment(){
                     	</select>
 					</td>
 					<td>
-						结算方式<br>Payment Method
+						结算方式 <label style="color:red;font-size:12px"><b>*</b></label><br>Payment Method <label style="color:red;font-size:12px"><b>*</b></label>
 					</td>	
 					<td>
 						<select name="paymentTerm" data-toggle="selectpicker" id="j_payment_paymentTerm"  data-rule="required" data-width="190px" onchange="changePaymentTerm();" >
@@ -1641,7 +1663,7 @@ function getOriginalPayment(){
 						<textarea cols="80" rows="3" id="j_payment_usageDescription"  name="usageDescription" data-toggle="autoheight"></textarea>
 					</td>
 				</tr>
-				<tr>
+				<tr id="handingFeeTr" style="display: none">
 					<td>
 						手续费 <label style="color:red;font-size:12px"><b>*</b></label><br>Handing Fee  <label style="color:red;font-size:12px"><b>*</b></label>
 					</td>

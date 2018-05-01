@@ -3,6 +3,7 @@ package com.sign.dao;
 import java.util.List;
 
 import com.sign.model.Payment;
+import com.sign.model.PaymentPO;
 
 public interface PaymentDAO {
 	public void save(Payment payment);
@@ -18,5 +19,7 @@ public interface PaymentDAO {
 	public List<Payment> query(String where,Integer pageSize,Integer pageCurrent);
 
 	public List<Payment> queryHql(String hql, Integer pageSize, Integer pageCurrent);
+	
+	List<PaymentPO> queryPaymentPOSql(String sql);
 	
 }

@@ -3,7 +3,10 @@ package com.sign.biz;
 import java.io.ByteArrayInputStream;
 import java.util.List;
 
+import com.kime.model.User;
 import com.sign.model.Payment;
+import com.sign.model.PaymentPO;
+import com.sign.model.PaymentWeek;
 
 public interface PaymentBIZ {
 
@@ -43,5 +46,15 @@ public interface PaymentBIZ {
 	
 	public void deletePayment(Payment payment);
 	
-	public void financeRejectPayment(String[] ids,String message) throws Exception;
+	public void financeRejectPayment(String[] ids,String message,User user) throws Exception;
+	
+	public List<PaymentPO> getPaymentPO(String ids);
+
+	void paidPayment(String[] ids, String message) throws Exception;
+
+	void paidResetPayment(String[] ids) throws Exception;
+
+	void mailInformPayment(String[] ids) throws Exception;
+
+	List<PaymentWeek> getPaidWeek();
 }

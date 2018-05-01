@@ -37,17 +37,17 @@ public class PaymentState {
 	
 	
 	/**
-	 * 退单
+	 * 出纳退单
 	 */
 	public final static String FINANCEREJECTED="6";
 	
 	/**
-	 * 退单
+	 * 总经理审批
 	 */
 	public final static String GMAPPROVE="7";
 	
 	/**
-	 * 退单
+	 * 审批单完成
 	 */
 	public final static String PAYMENTCOMPLETED="8";
 	/**
