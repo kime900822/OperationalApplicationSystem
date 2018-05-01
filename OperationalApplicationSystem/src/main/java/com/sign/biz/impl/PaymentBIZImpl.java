@@ -318,9 +318,6 @@ public class PaymentBIZImpl extends BizBase implements PaymentBIZ {
 	@Override
 	@Transactional(readOnly=false,propagation=Propagation.REQUIRED,rollbackFor=Exception.class )
 	public List<PaymentPO> getPaymentPO(String ids) {
-		if (ids==null) {
-			return new ArrayList<>();
-		}
 		List<Payment> lPayments=paymentDAO.query(" where id in ("+ids+")");
 		for (Payment payment : lPayments) {
 			payment.setState(PaymentState.GMAPPROVE);

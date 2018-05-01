@@ -1215,6 +1215,12 @@ public class PaymentAction extends ActionBase {
 	@Action(value = "getPaymentWeek", results = {
 			@org.apache.struts2.convention.annotation.Result(type = "stream", params = { "inputName", "reslutJson" }) })
 	public String getPaymentWeek() throws UnsupportedEncodingException {
+		if (week==null||week.equals("")) {
+			result.setMessage("No Data");
+			result.setStatusCode("300");
+			reslutJson=new ByteArrayInputStream(new Gson().toJson(result).getBytes("UTF-8")); 				
+			return SUCCESS;
+		}
 		List<PaymentPO> lPaymentPOs=paymentBIZ.getPaymentPO(week);
 		reslutJson=new ByteArrayInputStream(new Gson().toJson(lPaymentPOs).getBytes("UTF-8"));  
 		return SUCCESS;
