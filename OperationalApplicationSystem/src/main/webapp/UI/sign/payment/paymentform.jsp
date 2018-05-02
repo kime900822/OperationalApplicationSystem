@@ -409,6 +409,51 @@ function fileToTr(name,path,b){
 }
 
 
+function checkSupplierCode(o){
+	 var str = $(o).val();
+   var ret =  /^\d{5,6}$/;
+   if($.CurrentNavtab.find(o).val()==""||$.CurrentNavtab.find(o).val()==null){
+   	$.CurrentNavtab.find("#j_payment_beneficiary").val('');
+    	$.CurrentNavtab.find("#j_payment_beneficiaryAccountNO").val('');
+    	$.CurrentNavtab.find("#j_payment_beneficiaryE").val('');
+    	$.CurrentNavtab.find("#j_payment_beneficiaryAccountBank").val('');
+   	return;
+   }
+   	
+   
+   if(!ret.test(str)){
+  	 $.CurrentNavtab.find(o).val("")
+  	 BJUI.alertmsg('error', 'Plese Enter Right Type'); 
+   }else{
+   	BJUI.ajax('doajax', {
+   	    url: 'getBeneficiaryByCode.action',
+   	    loadingmask: true,
+   	    data:{supplierCode:str},	   
+   	    okalert:false,
+   	    okCallback: function(json, options) {
+               if(json.statue=='300'){
+               	BJUI.alertmsg('error', " Code is not maintain!"); 
+               	$.CurrentNavtab.find(o).val("");
+               	$.CurrentNavtab.find("#j_payment_beneficiary").val('');
+                	$.CurrentNavtab.find("#j_payment_beneficiaryAccountNO").val('');
+                	$.CurrentNavtab.find("#j_payment_beneficiaryE").val('');
+                	$.CurrentNavtab.find("#j_payment_beneficiaryAccountBank").val('');
+                	$.CurrentNavtab.find("#j_payment_overSea").val('')
+               }else{
+               	$.CurrentNavtab.find("#j_payment_beneficiary").val(json.name);
+               	$.CurrentNavtab.find("#j_payment_beneficiaryAccountNO").val(json.accno);
+               	$.CurrentNavtab.find("#j_payment_beneficiaryE").val(json.ename);
+               	$.CurrentNavtab.find("#j_payment_beneficiaryAccountBank").val(json.accbank);
+               	$.CurrentNavtab.find("#j_payment_overSea").val(json.oversea);
+               }
+               isHandingFee()
+   	    }
+   	});	  	
+   }   
+
+};
+
+
 function showButton(state,print,uid,documentAuditid,deptManagerid){	
 	if('${param.viewtype}'=='admin'){
 		if((state=="0"||state=="1")&&print!='1'){
@@ -770,8 +815,9 @@ function faceToData(){
 	o.departmentID='${user.department.did}';
 	o.isPrint=$.CurrentNavtab.find("#j_payment_isPrint").val();
 	if(o.paymentTerm=='1'||o.paymentTerm=='2'||o.paymentTerm=='6'){
-		o.contacturalPaymentDate=o.requestPaymentDate;
-		$.CurrentNavtab.find("#j_payment_contacturalPaymentDate").val(o.requestPaymentDate);		
+/* 		o.contacturalPaymentDate=o.requestPaymentDate;
+		$.CurrentNavtab.find("#j_payment_contacturalPaymentDate").val(o.requestPaymentDate);	 */	
+		$.CurrentNavtab.find("#j_payment_contacturalPaymentDate").val('');
 	}else{	
 		var maxDate=new Date('1900','01','01');
 		for(var i=1;i<7;i++){		
@@ -947,9 +993,12 @@ function checkSave(){
 				err+=" the "+i+" PO Amount can`t be  empty！<br>";					
 			}
 			if(term=='3'||term=='4'||term=='5'){
-				if($.CurrentNavtab.find("#j_payment_receivingOrApprovalDate_"+i).val()==''){
+				if($.CurrentNavtab.find("#j_payment_receivingOrApprovalDate_"+i).val()==''||$.CurrentNavtab.find("#j_payment_receivingOrApprovalDate_"+i).val()==null){
 					err+=" the "+i+" PO Receiving or Approval date can`t be  empty！<br>";									
-				}				
+				}		
+				if($.CurrentNavtab.find("#j_payment_paymentDays_"+i).val()==''||$.CurrentNavtab.find("#j_payment_paymentDays_"+i).val()==null){
+					err+=" the "+i+" Payment Term can`t be  empty！<br>";									
+				}		
 			}
 		}
 		
@@ -1213,7 +1262,7 @@ function isHandingFee(){
 						供应商代码/收款人  <label style="color:red;font-size:12px"><b>*</b></label><br>Supplier Code/Beneficaiary  <label style="color:red;font-size:12px"><b>*</b></label>
 					</td>
 					<td>
-						<input type="text" name="supplierCode" id="j_payment_supplierCode" value="" data-toggle="findgrid" onblur="isHandingFee()" size="19" data-options="{
+						<input type="text" name="supplierCode" id="j_payment_supplierCode" value="" data-toggle="findgrid" onblur="isHandingFee()" onchange="checkSupplierCode(this);" size="19" data-options="{
             group: '',
             include: 'supplierCode,beneficiary:name,beneficiaryE:ename,beneficiaryAccountNO:accno,beneficiaryAccountBank:accbank,oversea:oversea',
             dialogOptions: {title:'查找供应商代码/收款人'},

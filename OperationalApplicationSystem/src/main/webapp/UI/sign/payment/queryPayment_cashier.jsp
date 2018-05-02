@@ -79,11 +79,25 @@ function weeklyReport(){
 		  return false
 	  }
 
- 	  BJUI.ajax('ajaxdownload', {
-		    url:'weeklyReportPayment.action',
+		BJUI.ajax('doajax', {
+		    url: 'checkWeeklyReportPayment.action',
+		    loadingmask: true,
 		    data: {json:JSON.stringify(ids)},
-		    loadingmask: true
+		    okCallback: function(json, options) {
+		    	if(json.status='200'){
+		    	 	  BJUI.ajax('ajaxdownload', {
+		    			    url:'weeklyReportPayment.action',
+		    			    data: {json:JSON.stringify(ids)},
+		    			    loadingmask: true
+		    			})				    		
+		    	}else{
+		    		BJUI.alertmsg('error', json.message);		
+		    	}
+		    }
 		})
+	  
+	  
+
 
 }
 
@@ -258,14 +272,13 @@ function mailInformPayment(){
 	                <button type="reset" class="btn-orange" data-icon="times">Reset</button>
 	            	</div>
         		</td>
-
         	</tr>    
         	<tr>
-        		<td colspan="8" height="5px"></td>
+        	<td colspan="8" height="5px"></td>
         	</tr>
         	<tr>
-        	    <td width="150px">
-        		<span>Application Date：</span>
+        		<td >
+        		<span>Paid Date：</span>
         		</td>
         		<td width="220px">
             	<input type="text" name="paidDate_f"  data-nobtn="true"  id="q_payment_paidDate_f" value="" data-toggle="datepicker" size="9" data-rule="date">to:

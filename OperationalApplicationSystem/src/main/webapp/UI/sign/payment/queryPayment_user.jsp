@@ -77,6 +77,20 @@ $(function(){
 	              <option value="8">Payment Completed</option>
             	</select>
         		</td>
+        		<td>
+        			<span>Payment Method</span>
+        		</td>
+        		<td>
+	   				<select name="paymentTerm" data-toggle="selectpicker" id="j_payment_paymentTerm"  data-rule="required" data-width="190px" onchange="changePaymentTerm();" >
+	                    <option value=""></option>
+	                    <option value="1">Advance 预付款</option>
+	                    <option value="2">Payment at sight 见票即付</option>
+	                    <option value="3">Upon receiving 收货后</option>
+	                    <option value="4">Upon Approval 验收后</option>
+	                    <option value="5">Upon invoice 见票后</option>
+	                    <option value="6">Other 其他</option>
+	               	</select>
+        		</td>
         	</tr>    
         	<tr>
         		<td colspan="6" height="10px"></td>
@@ -113,6 +127,7 @@ $(function(){
                 <button type="reset" class="btn-orange" data-icon="times">Reset</button>
             	</div>
         		</td>
+        		<td colspan="2"></td>
         	</tr>    
         </table>
             

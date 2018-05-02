@@ -1267,6 +1267,24 @@ public class PaymentAction extends ActionBase {
         return SUCCESS;
 	}
 	
+	@Action(value = "checkWeeklyReportPayment", results = {
+			@org.apache.struts2.convention.annotation.Result(type = "stream", params = { "inputName", "reslutJson" }) })
+	public String checkWeeklyReportPayment() throws UnsupportedEncodingException {
+		String[] ids=new Gson().fromJson(json, String[].class);
+		StringBuffer sb = new StringBuffer();  
+	    for (int i = 0; i < ids.length; i++) {  
+	        sb.append("'").append(ids[i]).append("'").append(",");  
+	    }  
+	    if (paymentBIZ.getPayment(" where id in ("+sb.toString().substring(0, sb.length() - 1)+") and state!='4' ").size()>0) {
+			result.setMessage("Not all Status is Finance Approval");
+			result.setStatusCode("300");
+	    }else {
+			result.setStatusCode("200");
+	    }
+	    reslutJson=new ByteArrayInputStream(new Gson().toJson(result).getBytes("UTF-8")); 	
+		return SUCCESS;
+	}
+	
 	
 	@Action(value="weeklyReportPayment",results={@org.apache.struts2.convention.annotation.Result(type="stream",
 	params={
@@ -1439,7 +1457,10 @@ public class PaymentAction extends ActionBase {
 		if (!"".equals(paymentSubject)&&paymentSubject!=null) {
 			where += " AND P.paymentSubject='"+paymentSubject+"'";
 		}
-			
+		if (!"".equals(paymentTerm)&&paymentTerm!=null) {
+			where += " AND P.paymentTerm='"+paymentTerm+"'";
+		}
+				
 			
 		if ("all".equals(queryType)) {
 			hql="  select P from Payment P WHERE P.deptManagerID='"+user.getUid()+"' "+where+" order By P.dateTemp desc";    		
@@ -1547,7 +1568,11 @@ public class PaymentAction extends ActionBase {
     		if (!"".equals(paymentSubject)&&paymentSubject!=null) {
     			where += " AND P.paymentSubject='"+paymentSubject+"'";
     		}
-    			
+    		if (!"".equals(paymentTerm)&&paymentTerm!=null) {
+    			where += " AND P.paymentTerm='"+paymentTerm+"'";
+    		}
+    				
+    		
     		if ("all".equals(queryType)) {
     			hql="  select P from Payment P WHERE P.deptManagerID='"+user.getUid()+"' "+where+" order By P.dateTemp desc";    		
     		}
