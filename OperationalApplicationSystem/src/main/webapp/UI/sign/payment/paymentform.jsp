@@ -908,7 +908,7 @@ function checkPoNO(o){
 
 function checkSave(){
 	var err='';
-	if($.CurrentNavtab.find("[name='payType']input:radio:checked").val()==null||$.CurrentNavtab.find("[name='payType']input:radio:checked').val()==''")){
+	if($.CurrentNavtab.find("input[name='payType']").val()==null||$.CurrentNavtab.find("input[name='payType']").val()==''){
 		err+=" Payment Way can`t be  empty！<br>";		
 	}
 	if($.CurrentNavtab.find('#j_payment_paymentSubject').val()==null||$.CurrentNavtab.find('#j_payment_paymentSubject').val()==''){
@@ -935,7 +935,7 @@ function checkSave(){
 	
 	if($.CurrentNavtab.find("#j_payment_overSea").val()=="Y")
 	{
-		if($.CurrentNavtab.find("[name='hanfingFee']input:radio:checked").val()==null||$.CurrentNavtab.find("[name='hanfingFee']input:radio:checked').val()==''")){
+		if($.CurrentNavtab.find("input[name='hanfingFee']").val()==null||$.CurrentNavtab.find("input[name='hanfingFee']").val()==''){
 			err+=" Hanfing Fee can`t be  empty！<br>";		
 		}
 	}

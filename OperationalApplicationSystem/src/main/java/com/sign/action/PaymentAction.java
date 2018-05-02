@@ -1008,8 +1008,8 @@ public class PaymentAction extends ActionBase {
 			Payment payment=paymentBIZ.getPayment(" where id='"+id+"'").get(0);
 			payment.setState(PaymentState.APPROVEPAYMENT);
 			//如果是代理审批
-			if (!user.getUid().equals(payment.getDepartmentID())) {
-				List<Dict> ldict=dictBIZ.getDict(" where type='AGENTEMPLOYEE' and key='"+payment.getDepartmentID()+"'");
+			if (!user.getUid().equals(payment.getDeptManagerID())) {
+				List<Dict> ldict=dictBIZ.getDict(" where type='AGENTEMPLOYEE' and key='"+payment.getDeptManagerID()+"'");
 				if (ldict.size()>0) {
 					payment.setDeptManager(ldict.get(0).getValueName()+"(On behalf of "+ldict.get(0).getKeyName()+", "+ldict.get(0).getKeyExplain()+" to "+ldict.get(0).getValueExplain()+")");
 				}else {
