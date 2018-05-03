@@ -5,7 +5,7 @@
 //department
 //操作列
 function datagrid_tree_operation() {
- var html = '<button type="button" class="btn-green" data-toggle="edit.datagrid.tr">View</button>'   
+ var html = '<button type="button" class="btn-green" onclick="viewPayment(this);" >View</button>'   
  return html
 }
 
@@ -41,6 +41,19 @@ function getCheckId(){
 	}
 	return ids;
 }
+
+function viewPayment(o){
+	var id=$(o).parent().parent().siblings().eq(2).children().html();
+	BJUI.navtab({
+	    id:'view_payment',
+	    url:'sign/payment/paymentform_show.jsp',
+	    title:'查看Payment',
+	    data:{id:$(o).parent().parent().siblings().eq(2).children().html()}
+	})
+	
+
+}
+
 
 
 function FinanceReject(){
@@ -304,20 +317,17 @@ function mailInformPayment(){
         dataUrl: 'getPayment.action?queryType=cashier',
         dataType: 'jsonp',
         showToolbar: true,
-        toolbarItem: 'export',
+        toolbarItem: 'export,|,edit,cancel,save',
+        saveName:'Paid',
         toolbarCustom:[
+             {name:'Paid Reset',
+        	 icon:'save',
+        	 class:'btn-green',
+        	 function:paidResetPayment},
         	 {name:'Weekly Report',
         	 icon:'save',
         	 class:'btn-green',
         	 function:weeklyReport},
-        	 {name:'Paid',
-        	 icon:'save',
-        	 class:'btn-green',
-        	 function:paidPayment},
-        	 {name:'Paid Reset',
-        	 icon:'save',
-        	 class:'btn-green',
-        	 function:paidResetPayment},
         	 {name:'Mail Inform',
         	 icon:'save',
         	 class:'btn-green',
@@ -326,9 +336,8 @@ function mailInformPayment(){
         	 icon:'save',
         	 class:'btn-green',
         	 function:FinanceReject}],
-        editMode: {navtab:{width:'830',height:800,title:'Edit Payment',mask:true,fresh:true}},
         delUrl:'deleteUser.action',
-        editUrl: 'sign/payment/paymentform_show.jsp?viewtype=cashier',
+        editUrl: 'paidPayment.action',
         paging: {pageSize:30, pageCurrent:1},
         linenumberAll: true,
         showCheckboxcol: true,
@@ -343,19 +352,19 @@ function mailInformPayment(){
             <tr>
             	<th data-options="{render:datagrid_tree_operation,align:'center'}">Operation</th>
             	<th data-options="{name:'id',width:150,align:'center',finalWidth:'true',hide:'true'}">id</th>
-            	<th data-options="{name:'applicationDate',width:150,align:'center',finalWidth:'true'}" >Application Date</th>
-				<th data-options="{name:'state',width:150,align:'center',finalWidth:'true',type:'select', items:datagrid_paymentState}">Approval Status</th>
-				<th data-options="{name:'UID',width:150,align:'center',finalWidth:'true'}">Cimtas ID</th>
-				<th data-options="{name:'UName',width:150,align:'center',finalWidth:'true'}">User Name</th>
-				<th data-options="{name:'deptManagerID',width:150,align:'center',finalWidth:'true'}">Manager Cimtas ID</th>
-				<th data-options="{name:'deptManager',width:150,align:'center',finalWidth:'true'}">Manager Name</th>
-				<th data-options="{name:'code',width:150,align:'center',finalWidth:'true'}">Sequential Code</th>
-				<th data-options="{name:'refNoofBank',width:200,align:'center',finalWidth:'true'}">Ref.No. of Bank</th>
-				<th data-options="{name:'urgent',width:60,align:'center' ,finalWidth:'true',type:'select', items:datagrid_urgent}">Urgent</th>
-				<th data-options="{name:'paymentSubject',width:200,align:'center',finalWidth:'true',type:'select', items:datagrid_paymentSubject}">Payment Subject</th>
-				<th data-options="{name:'currency_1',width:80,align:'right',finalWidth:'true'}">Currency</th>
-				<th data-options="{name:'amountInFigures',width:120,align:'right',finalWidth:'true'}">Amount</th>
-				<th data-options="{name:'usageDescription',width:400,align:'left',finalWidth:'true'}">Usage Description</th>            
+            					<th data-options="{name:'refNoofBank',width:200,align:'center',finalWidth:'true'}">Ref.No. of Bank</th>
+            	<th data-options="{name:'applicationDate',width:150,align:'center',finalWidth:'true',edit:false}" >Application Date</th>
+				<th data-options="{name:'state',width:150,align:'center',finalWidth:'true',type:'select', items:datagrid_paymentState,edit:false}">Approval Status</th>
+				<th data-options="{name:'UID',width:150,align:'center',finalWidth:'true',edit:false}">Cimtas ID</th>
+				<th data-options="{name:'UName',width:150,align:'center',finalWidth:'true',edit:false}">User Name</th>
+				<th data-options="{name:'deptManagerID',width:150,align:'center',finalWidth:'true',edit:false}">Manager Cimtas ID</th>
+				<th data-options="{name:'deptManager',width:150,align:'center',finalWidth:'true',edit:false}">Manager Name</th>
+				<th data-options="{name:'code',width:150,align:'center',finalWidth:'true',edit:false}">Sequential Code</th>
+				<th data-options="{name:'urgent',width:60,align:'center' ,finalWidth:'true',type:'select', items:datagrid_urgent,edit:false}">Urgent</th>
+				<th data-options="{name:'paymentSubject',width:200,align:'center',finalWidth:'true',type:'select', items:datagrid_paymentSubject,edit:false}">Payment Subject</th>
+				<th data-options="{name:'currency_1',width:80,align:'right',finalWidth:'true',edit:false}">Currency</th>
+				<th data-options="{name:'amountInFigures',width:120,align:'right',finalWidth:'true',edit:false}">Amount</th>
+				<th data-options="{name:'usageDescription',width:400,align:'left',finalWidth:'true',edit:false}">Usage Description</th>            
 			</tr>
         </thead>
     </table>

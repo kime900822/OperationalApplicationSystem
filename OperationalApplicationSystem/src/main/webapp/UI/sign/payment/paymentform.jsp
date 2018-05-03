@@ -346,6 +346,8 @@ function isChange(){
 	})
 	$.CurrentNavtab.find("#j_payment_advanceWriteoff").on('ifUnchecked',function(){
 		$.CurrentNavtab.find('[type=AdvanceWriteoffTr]').hide();
+        $.CurrentNavtab.find("#j_payment_paymentSubject").removeAttr('disabled');
+        $.CurrentNavtab.find("#j_payment_paymentTerm").removeAttr('disabled');
 	})
 	
 	
@@ -353,8 +355,17 @@ function isChange(){
 		for(var i=0;i<7;i++){			
 			$.CurrentNavtab.find("#j_payment_amount_"+i+"_t").attr('disabled','disabled');
 		}
+		$.CurrentNavtab.find("#j_payment_advanceWriteOffAmount_t").val($.CurrentNavtab.find("#j_payment_amountInFigures_t").val());
+		changeAmount();
 	})
 	$.CurrentNavtab.find("#j_payment_advanceWriteoffWay_party").on('ifChecked',function(){
+		for(var i=0;i<7;i++){			
+			$.CurrentNavtab.find("#j_payment_amount_"+i+"_t").removeAttr('disabled');
+		}
+		$.CurrentNavtab.find("#j_payment_amountInFigures").val('0');
+		$.CurrentNavtab.find("#j_payment_amountInFigures_t").val(formatCurrency('0'));
+	})
+	$.CurrentNavtab.find("#j_payment_advanceWriteoffWay_allPay").on('ifChecked',function(){
 		for(var i=0;i<7;i++){			
 			$.CurrentNavtab.find("#j_payment_amount_"+i+"_t").removeAttr('disabled');
 		}
@@ -667,6 +678,8 @@ function dataToFace(){
             			$.CurrentNavtab.find("#j_payment_advanceWriteoffWay_all").iCheck('check'); 
             		}else if(json.advanceWriteoffWay=='B'){
             			$.CurrentNavtab.find("#j_payment_advanceWriteoffWay_party").iCheck('check');     			
+            		}else if(json.advanceWriteoffWay=='C'){
+            			$.CurrentNavtab.find("#j_payment_advanceWriteoffWay_allPay").iCheck('check');     			
             		}
             		$.CurrentNavtab.find("#j_payment_originalCode").val(json.originalApplicationCode)
             		$.CurrentNavtab.find("#j_payment_advanceWriteOffCurrency").val(json.advanceWriteOffCurrency)
@@ -1061,6 +1074,8 @@ function getOriginalPayment(){
                 $.CurrentNavtab.find("#j_payment_paymentSubject").selectpicker().selectpicker('val',json.paymentSubject).selectpicker('refresh');
                 $.CurrentNavtab.find("#j_payment_paymentTerm").selectpicker().selectpicker('val',json.paymentTerm).selectpicker('refresh');
                 changePaymentTerm();
+                $.CurrentNavtab.find("#j_payment_paymentSubject").attr('disabled','disabled');
+                $.CurrentNavtab.find("#j_payment_paymentTerm").attr('disabled','disabled');
                 
                 $.CurrentNavtab.find("#j_payment_advanceWriteOffCurrency").val(json.currency_1);
                 
@@ -1213,6 +1228,7 @@ function isHandingFee(){
 						<input type="radio" name="advanceWriteoffWay" data-toggle="icheck" id="j_payment_advanceWriteoffWay_party" value="B" data-label="B. 部分核销 <br>Part Amount Write-off">
 					</td>
 					<td>
+						<input type="radio" name="advanceWriteoffWay" data-toggle="icheck" id="j_payment_advanceWriteoffWay_allPay" value="C" data-label="C. 全部核销+付款 <br>All Amount Write-off + Pay">
 					</td>
 				</tr>
 				<tr type="AdvanceWriteoffTr" style="display:none">

@@ -288,28 +288,26 @@ public class PaymentBIZImpl extends BizBase implements PaymentBIZ {
 	
 	@Override
 	@Transactional(readOnly=false,propagation=Propagation.REQUIRED,rollbackFor=Exception.class )
-	public void paidPayment(String[] ids, String message) throws Exception {
-		for (String id : ids) {
-			Payment payment=paymentDAO.query(" where id='"+id+"'").get(0);
+	public void paidPayment(List<Payment> list) throws Exception {
+		StringBuffer sb = new StringBuffer();  
+		for (Payment payment : list) {
 			if (!payment.getState().equals(PaymentState.GMAPPROVE)) {
 				throw new Exception(payment.getCode()+"单子的状态不为GM Approval,请重新选择");
 			}
 			if (!payment.getState().equals(PaymentState.PAYMENTCOMPLETED)) {
 				throw new Exception(payment.getCode()+"单子已经处理完毕,请重新选择");
 			}
-			payment.setRefNoofBank(message);
+			sb.append("'").append(payment.getId()).append("'").append(","); 
 			payment.setState(PaymentState.PAYMENTCOMPLETED);
 			payment.setPaidDate(CommonUtil.getDate());
 			paymentDAO.update(payment);
 		}
-		StringBuffer sb = new StringBuffer();  
-	    for (int i = 0; i < ids.length; i++) {  
-	        sb.append("'").append(ids[i]).append("'").append(",");  
-	    }  
+		
+
 		PaymentWeek paymentWeek=new PaymentWeek();
 		paymentWeek.setIds(sb.toString().substring(0, sb.length() - 1));
 		paymentWeek.setWeek(CommonUtil.getWeek());
-		paymentWeek.setBankNo(message);
+		
 		paymentWeekDAO.save(paymentWeek);
 		
 		

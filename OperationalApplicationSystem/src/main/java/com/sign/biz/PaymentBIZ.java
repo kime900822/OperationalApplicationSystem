@@ -50,11 +50,11 @@ public interface PaymentBIZ {
 	
 	public List<PaymentPO> getPaymentPO(String ids);
 
-	void paidPayment(String[] ids, String message) throws Exception;
-
 	void paidResetPayment(String[] ids) throws Exception;
 
 	void mailInformPayment(String[] ids) throws Exception;
 
 	List<PaymentWeek> getPaidWeek();
+
+	void paidPayment(List<Payment> list) throws Exception;
 }

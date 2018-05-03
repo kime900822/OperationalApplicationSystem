@@ -1147,9 +1147,8 @@ public class PaymentAction extends ActionBase {
 			})})
 	public String paidPayment() throws UnsupportedEncodingException{
 		try {
-			
-			String[] ids=new Gson().fromJson(json, String[].class);
-			paymentBIZ.paidPayment(ids, message);
+			List<Payment> lPayments=new Gson().fromJson(json, new TypeToken<ArrayList<Payment>>() {}.getType());
+			paymentBIZ.paidPayment(lPayments);
 			result.setMessage("Paid success");
 			logUtil.logInfo("付款申请单  Paid success");
 			result.setStatusCode("200");
@@ -1275,8 +1274,8 @@ public class PaymentAction extends ActionBase {
 	    for (int i = 0; i < ids.length; i++) {  
 	        sb.append("'").append(ids[i]).append("'").append(",");  
 	    }  
-	    if (paymentBIZ.getPayment(" where id in ("+sb.toString().substring(0, sb.length() - 1)+") and state!='4' ").size()>0) {
-			result.setMessage("Not all Status is Finance Approval");
+	    if (paymentBIZ.getPayment(" where id in ("+sb.toString().substring(0, sb.length() - 1)+") and state not in ('4','7') ").size()>0) {
+			result.setMessage("Not all Status is Finance Approval OR GM Approval");
 			result.setStatusCode("300");
 	    }else {
 			result.setStatusCode("200");
@@ -1298,7 +1297,7 @@ public class PaymentAction extends ActionBase {
 			List<HeadColumn> lColumns=new ArrayList<>();
 			lColumns.add(new HeadColumn("code", "80", "right", "Sequence No."));
 			lColumns.add(new HeadColumn("applicant", "80", "right", "Applicant"));
-			lColumns.add(new HeadColumn("uID", "80", "right", "Business Unit"));
+			lColumns.add(new HeadColumn("did", "80", "right", "Business Unit"));
 			lColumns.add(new HeadColumn("amountInFigures", "80", "right", "Total Amount"));
 			lColumns.add(new HeadColumn("usageDescription", "80", "right", "Usage Description"));
 			lColumns.add(new HeadColumn("amount", "80", "right", "PO Amount"));
@@ -1311,7 +1310,7 @@ public class PaymentAction extends ActionBase {
 		        sb.append("'").append(ids[i]).append("'").append(",");  
 		    }  
 		    
-		    if (paymentBIZ.getPayment(" where id in ("+sb.toString().substring(0, sb.length() - 1)+") and state!='4' ").size()>0) {
+		    if (paymentBIZ.getPayment(" where id in ("+sb.toString().substring(0, sb.length() - 1)+") and state not in('4','7') ").size()>0) {
 				//result.setMessage("Not all Finance Approval");
 				//result.setStatusCode("300");
 				//reslutJson=new ByteArrayInputStream(new Gson().toJson(result).getBytes("UTF-8")); 	
