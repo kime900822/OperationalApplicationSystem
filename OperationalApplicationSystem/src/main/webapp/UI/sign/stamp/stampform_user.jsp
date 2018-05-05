@@ -136,7 +136,11 @@ $(function() {
         		<td colspan="8" height="10px"></td>
         	</tr> 
         	<tr>
-        		<td colspan="4"></td>
+        	    <td><span> Chop Object:</span></td>
+        		<td>
+        			<input type="text" name="chopObject" value="" id="q_stamp_chopObject" size="15">
+        		</td>
+        		<td colspan="2"></td>
         		<td colspan="4" align="center">
         		<div class="btn-group">
                 <button type="submit" class="btn-green" data-icon="search">Search</button>
@@ -183,6 +187,7 @@ $(function() {
 				<th data-options="{name:'departmentOfFormFillerID',width:150,align:'center',finalWidth:'true'}">BU NO.</th>
 				<th data-options="{name:'applicantID',width:150,align:'center' ,finalWidth:'true'}">Cimtas ID</th>
 				<th data-options="{name:'applicant',width:200,align:'center',finalWidth:'true' }">User Name</th>
+				<th data-options="{name:'chopObject',width:200,align:'center',finalWidth:'true' }">Chop Object</th>
 				<th data-options="{name:'documentType',width:200,align:'center',finalWidth:'true',type:'select',itemattr:{value:'id',label:'value'},items:$.getJSON('getCheckType4Select.action')}">Document Type</th>
 				<th data-options="{name:'stampType',width:180,align:'left',finalWidth:'true'}">Stamp Type</th>
 				<th data-options="{name:'urgent',width:120,align:'center',finalWidth:'true',type:'select', items:datagrid_urgent}">Urgent</th>

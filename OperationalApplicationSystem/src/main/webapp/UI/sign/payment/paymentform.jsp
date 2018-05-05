@@ -362,13 +362,9 @@ function isChange(){
 		for(var i=0;i<7;i++){			
 			$.CurrentNavtab.find("#j_payment_amount_"+i+"_t").removeAttr('disabled');
 		}
-		$.CurrentNavtab.find("#j_payment_amountInFigures").val('0');
-		$.CurrentNavtab.find("#j_payment_amountInFigures_t").val(formatCurrency('0'));
-	})
-	$.CurrentNavtab.find("#j_payment_advanceWriteoffWay_allPay").on('ifChecked',function(){
-		for(var i=0;i<7;i++){			
-			$.CurrentNavtab.find("#j_payment_amount_"+i+"_t").removeAttr('disabled');
-		}
+		$.CurrentNavtab.find("#j_payment_advanceWriteOffAmount_t").val($.CurrentNavtab.find("#j_payment_amountInFigures_t").val());
+		changeAmount();
+
 	})
 
 	
@@ -678,8 +674,6 @@ function dataToFace(){
             			$.CurrentNavtab.find("#j_payment_advanceWriteoffWay_all").iCheck('check'); 
             		}else if(json.advanceWriteoffWay=='B'){
             			$.CurrentNavtab.find("#j_payment_advanceWriteoffWay_party").iCheck('check');     			
-            		}else if(json.advanceWriteoffWay=='C'){
-            			$.CurrentNavtab.find("#j_payment_advanceWriteoffWay_allPay").iCheck('check');     			
             		}
             		$.CurrentNavtab.find("#j_payment_originalCode").val(json.originalApplicationCode)
             		$.CurrentNavtab.find("#j_payment_advanceWriteOffCurrency").val(json.advanceWriteOffCurrency)
@@ -932,6 +926,15 @@ function changeAmount(){
 	$.CurrentNavtab.find("#j_payment_amountInFigures_t").val(formatCurrency(total));
 	$.CurrentNavtab.find("#j_payment_amountInWords").val(smalltoBIG(total));
 	
+	if($.CurrentNavtab.find("#j_payment_advanceWriteoffWay_party").is(':checked')){
+		$.CurrentNavtab.find("#j_payment_amountInFigures").val(0);
+		$.CurrentNavtab.find("#j_payment_amountInFigures_t").val(formatCurrency(0));
+		$.CurrentNavtab.find("#j_payment_amountInWords").val(smalltoBIG(0));
+	}else{
+		$.CurrentNavtab.find("#j_payment_amountInFigures").val(total);
+		$.CurrentNavtab.find("#j_payment_amountInFigures_t").val(formatCurrency(total));
+		$.CurrentNavtab.find("#j_payment_amountInWords").val(smalltoBIG(total));		
+	}
 	
 	
 }
@@ -1137,8 +1140,18 @@ function getOriginalPayment(){
             	if(json.amountInFigures!=''&&json.amountInFigures!=null){
             		$.CurrentNavtab.find("#j_payment_amountInFigures").val(json.amountInFigures);
             	}
-            	     
-            	changeAmount();
+            	
+    			$.CurrentNavtab.find("#j_payment_advanceWriteOffAmount_t").val($.CurrentNavtab.find("#j_payment_amountInFigures_t").val()); 
+            	if($.CurrentNavtab.find("#j_payment_advanceWriteoffWay_all").is(':checked')){
+           			for(var i=0;i<7;i++){			
+           				$.CurrentNavtab.find("#j_payment_amount_"+i+"_t").attr('disabled','disabled');
+           			}
+            	}else if($.CurrentNavtab.find("#j_payment_advanceWriteoffWay_party").is(':checked')){
+           			for(var i=0;i<7;i++){			
+           				$.CurrentNavtab.find("#j_payment_amount_"+i+"_t").removeAttr('disabled');
+           			}
+            	}
+        		changeAmount();
             }else{
             	 BJUI.alertmsg('error', json.message); 
             	 $.CurrentNavtab.find("#j_payment_originalCode").val('');
@@ -1228,7 +1241,6 @@ function isHandingFee(){
 						<input type="radio" name="advanceWriteoffWay" data-toggle="icheck" id="j_payment_advanceWriteoffWay_party" value="B" data-label="B. 部分核销 <br>Part Amount Write-off">
 					</td>
 					<td>
-						<input type="radio" name="advanceWriteoffWay" data-toggle="icheck" id="j_payment_advanceWriteoffWay_allPay" value="C" data-label="C. 全部核销+付款 <br>All Amount Write-off + Pay">
 					</td>
 				</tr>
 				<tr type="AdvanceWriteoffTr" style="display:none">
@@ -1244,7 +1256,7 @@ function isHandingFee(){
 						Advance Write-off Amount <label style="color:red;font-size:12px"><b>*</b></label>
 					</td>
 					<td>
-						<input type="text" name="advanceWriteOffAmount_t" value="" id="j_payment_advanceWriteOffAmount_t" data-rule="required" size="19" onchange="changeAmount()">
+						<input type="text" name="advanceWriteOffAmount_t" value="" id="j_payment_advanceWriteOffAmount_t" data-rule="required" size="19" readonly="" onchange="changeAmount()">
 						<input type="hidden" name="advanceWriteOffAmount" value="" id="j_payment_advanceWriteOffAmount" data-rule="required" size="19">
 						
 					</td>

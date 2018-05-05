@@ -80,6 +80,7 @@ public class StampAction extends ActionBase{
 		private String attacmentUpload;
 		private String dateTmp;
 		private String state;
+		private String usedFile;
 		
 		private File[] file;
 		private String[] fileFileName;
@@ -96,6 +97,12 @@ public class StampAction extends ActionBase{
 		private String approveState;
 		
 	
+		public String getUsedFile() {
+			return usedFile;
+		}
+		public void setUsedFile(String usedFile) {
+			this.usedFile = usedFile;
+		}
 		public String getApproveState() {
 			return approveState;
 		}
@@ -431,6 +438,89 @@ public class StampAction extends ActionBase{
 	    	return SUCCESS;
 	    }
 		
+		
+		@Action(value="deleteFileOfStamp4UsedFile",results={@org.apache.struts2.convention.annotation.Result(type="stream",
+				params={
+						"inputName", "reslutJson",
+						"contentType","application/octet-stream",
+						"contentDisposition","attachment;filename=%{fileName}",
+						"bufferSize","1024"
+				})})
+	    public String deleteFileOfStamp4UsedFile() throws FileNotFoundException, IOException{
+	        try {
+		    	if (dfile!=null) {   
+		    		String r=fileSave.fileDelete(dfile);	
+		    		if (r.equals("1")) {
+			    		if (id!=null&&!id.equals("")) {
+							Stamp t=stampBIZ.getStamp(" where id='"+id+"'").get(0);
+							t.setUsedFile(t.getUsedFile().replaceAll(dfile+"|", ""));
+							stampBIZ.update(t);
+						}
+		    			result.setMessage("Delete Success!");
+						result.setStatusCode("200");
+					}else{
+						result.setMessage(r);
+						result.setStatusCode("300");
+					}
+				}else{
+					result.setMessage("No File");
+					result.setStatusCode("300");
+			        
+				}
+			} catch (Exception e) {
+				result.setMessage(e.getMessage());
+				result.setStatusCode("300");
+		        reslutJson=new ByteArrayInputStream(new Gson().toJson(result).getBytes("UTF-8"));  
+			}
+	        reslutJson=new ByteArrayInputStream(new Gson().toJson(result).getBytes("UTF-8"));  
+	    	return SUCCESS;
+	    }
+		
+		@Action(value="savefile4UseFile",results={@org.apache.struts2.convention.annotation.Result(type="stream",
+				params={
+						"inputName", "reslutJson"
+				})})
+	    public String savefile4UseFile() throws FileNotFoundException, IOException{
+        	List<String> list=new ArrayList<>();
+			try {
+		    	if (file!=null) {
+		    		Stamp t=stampBIZ.getStamp(" where id='"+id+"'").get(0);
+		    		if (!t.getState().equals(StampState.INFORM)) {
+		    			result.setMessage("Not "+StampState.INFORM);
+						result.setStatusCode("300");
+						reslutJson=new ByteArrayInputStream(new Gson().toJson(result).getBytes("UTF-8"));  
+				    	return SUCCESS;
+					}
+		    		list=fileSave.fileSave(file, fileFileName);
+		            if (!list.get(0).equals("File Exists")&&!list.get(0).equals("Filepath Error")) {		            	
+		            	if (t.getUsedFile()==null||t.getUsedFile().equals("")) {
+							t.setUsedFile(list.get(0));
+						}else {
+							t.setUsedFile(t.getUsedFile()+"|"+ list.get(0));
+						}
+		            	stampBIZ.update(t);
+		            	result.setMessage("upload Success!");
+						result.setStatusCode("200");
+						Map<String, List<String>> params=new HashMap<>();
+						params.put("url", list);
+						result.setParams(params);
+					}else{			
+						result.setMessage(list.get(0));
+						result.setStatusCode("300");	
+					}
+				}else{
+					result.setMessage("No File upload");
+					result.setStatusCode("300");
+				}
+			} catch (Exception e) {
+				fileSave.fileDelete(list.get(0));
+				result.setMessage(e.getMessage());
+				result.setStatusCode("300");
+			}
+	        reslutJson=new ByteArrayInputStream(new Gson().toJson(result).getBytes("UTF-8"));  
+	    	return SUCCESS;
+	    }
+		
 		@Action(value="submitStamp",results={@org.apache.struts2.convention.annotation.Result(type="stream",
 				params={
 						"inputName", "reslutJson"
@@ -753,6 +843,9 @@ public class StampAction extends ActionBase{
 				}
 				if (!"".equals(applicantID)&&applicantID!=null) {
 					where += " AND P.applicantID like '%"+applicantID+"%' ";
+				}				
+				if (!"".equals(chopObject)&&chopObject!=null) {
+					where += " AND P.chopObject like '%"+chopObject+"%' ";
 				}
 				
 				if ("user".equals(queryType)) {
@@ -838,7 +931,9 @@ public class StampAction extends ActionBase{
 				if (!"".equals(applicantID)&&applicantID!=null) {
 					where += " AND P.applicantID like '%"+applicantID+"%' ";
 				}
-	    		
+				if (!"".equals(chopObject)&&chopObject!=null) {
+					where += " AND P.chopObject like '%"+chopObject+"%' ";
+				}
 				
 				if ("user".equals(queryType)) {
 					hql=" select P from Stamp P where P.formFillerID='"+user.getUid()+"' "+where+" order By P.dateTmp desc";

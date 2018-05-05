@@ -86,9 +86,17 @@ public class Stamp {
 	private List<ApproveHis> approveHis = new ArrayList<>();
 	@Transient
 	private List<StampApprove> stampApprove = new ArrayList<>();
+	@Column
+	private String usedFile;
 	
 	
 	
+	public String getUsedFile() {
+		return usedFile;
+	}
+	public void setUsedFile(String usedFile) {
+		this.usedFile = usedFile;
+	}
 	public String getNextApprover() {
 		return nextApprover;
 	}
