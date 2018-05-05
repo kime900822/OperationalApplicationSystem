@@ -153,7 +153,7 @@ function dataToFaceStamp(id){
 			    				}    						
 	    					}
 	    					if(json.state==json.stampApprove[json.stampApprove.length-1].name+' Approval'){	 
-	    						if(i==maxLevel){
+	    						if((i==maxLevel&&json.approveHis[json.approveHis.length-1].name=='Inform')||(i==maxLevel+1&&json.approveHis[json.approveHis.length-1].name!='Inform')){
 	    							if('${user.uid}'==item.uid){			    						
 				    					obj.append("<tr><td>"+item.name+"</td><td style='display:none'>"+item.level+"</td><td>"+item.uid+"</td><td>"+item.uname+"</td><td>"+item.did+"</td><td></td><td></td><td></td><td><button type='button' id='stamp-approve' class='btn btn-success' style='width:50px;' name='Approved' onclick='stampApprove(this)'   >√</button>&nbsp;&nbsp;<button type='button' id='stamp-reject'  style='width:50px;' class='btn btn-danger' name='Rejected' onclick='stampApprove(this)' >×</button></td></tr>");	    				
 			    					}else{
