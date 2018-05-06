@@ -2,19 +2,16 @@
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <script type="text/javascript">
-function datagrid_tree_operation() {
-	 var html = '<button type="button" class="btn-green" data-toggle="edit.datagrid.tr">View</button>'   
-	 return html
-	}
+
 </script>
 <div class="bjui-pageHeader" style="background-color:#fefefe; border-bottom:none;">
 	<table>${param.week}</table>
 </div>
 <div class="bjui-pageContent" id="div-user">
-    <table class="table table-bordered" id="datagrid-paymentWeek-payment-view-filter" data-toggle="datagrid" data-options="{
+    <table class="table table-bordered" id="datagrid-paymentWeek-payment-paid-view-filter" data-toggle="datagrid" data-options="{
         height: '100%',
-        postData:{ids:'${param.ids}'},
-        gridTitle : 'PaymentWeek management',
+        postData:{week:'${param.ids}'},
+        gridTitle : 'PaymentWeek Report',
         dataUrl: 'getPaymentWeek.action',
         dataType: 'local',
         paging: false,

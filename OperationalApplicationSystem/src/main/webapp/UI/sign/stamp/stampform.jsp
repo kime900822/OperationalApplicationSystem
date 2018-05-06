@@ -69,6 +69,7 @@ function dataToFaceStamp(id){
 	    		$.CurrentNavtab.find("#j_stamp_applicant").val(json.applicant);
 	    		$.CurrentNavtab.find("#j_stamp_departmentOfApplicant").val(json.departmentOfApplicant+"-"+json.departmentOfApplicantID);
 	    		$.CurrentNavtab.find("#j_stamp_contactNumber").val(json.contactNumber);
+
 	    		$.CurrentNavtab.find("#j_stamp_documentType").selectpicker().selectpicker('val',json.documentType).selectpicker('refresh');
 	    		setProjectResponsible();	
 	    		if(json.projectResponsible!=undefined&&json.projectResponsible!=""){
@@ -115,6 +116,8 @@ function dataToFaceStamp(id){
         		var isReject=false;
         		var maxLevel=-1;
         		if(json.approveHis!=undefined&&json.approveHis!=""){
+        			$.CurrentNavtab.find("#j_stamp_documentType").attr('disabled','disabled');
+        			$.CurrentNavtab.find("#j_stamp_projectResponsible").attr('disabled','disabled');
         			if(json.approveHis[json.approveHis.length-1].status=='Rejected'&&json.state!=json.stampApprove[json.stampApprove.length-1].name+' Rejected'){
         				isReject=true;        				
         			}
@@ -124,7 +127,7 @@ function dataToFaceStamp(id){
         			})
         						
         		}
-	    		
+        		
 	    		if(json.stampApprove!=undefined&&json.stampApprove!=""&&json.state.indexOf('Rejected')<0){	    
 	    			$.each(json.stampApprove,function(i,item){	 
 	    				//非inform reject

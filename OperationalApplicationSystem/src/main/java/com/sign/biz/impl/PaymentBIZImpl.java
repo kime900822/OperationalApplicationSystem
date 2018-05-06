@@ -248,21 +248,23 @@ public class PaymentBIZImpl extends BizBase implements PaymentBIZ {
 	public void paidResetPayment(String[] ids) throws Exception {
 		
 		
-		String bankNO="";
+		String tmpid="";
 		for (String id : ids) {
 			Payment payment=paymentDAO.query(" where id='"+id+"'").get(0);
 			if (!payment.getState().equals(PaymentState.PAYMENTCOMPLETED)) {
 				throw new Exception(payment.getCode()+"单子的状态不为Payment Completed,请重新选择");
 			}
-			bankNO=payment.getRefNoofBank();
+			tmpid=payment.getId();
 			payment.setRefNoofBank("");
 			payment.setPaidDate("");
 			payment.setState(PaymentState.GMAPPROVE);
 			paymentDAO.update(payment);
 		}
-		List<PaymentWeek> list=paymentWeekDAO.query(" where bankNo='"+bankNO+"'");
+		List<PaymentWeek> list=paymentWeekDAO.query(" where ids like '%"+tmpid+"%'");
 		if (list.size()>0) {
-			paymentWeekDAO.delete(list.get(0));
+			for (PaymentWeek paymentWeek : list) {
+				paymentWeekDAO.delete(paymentWeek);
+			}
 		}
 	}
 	
@@ -294,7 +296,7 @@ public class PaymentBIZImpl extends BizBase implements PaymentBIZ {
 			if (!payment.getState().equals(PaymentState.GMAPPROVE)) {
 				throw new Exception(payment.getCode()+"单子的状态不为GM Approval,请重新选择");
 			}
-			if (!payment.getState().equals(PaymentState.PAYMENTCOMPLETED)) {
+			if (payment.getState().equals(PaymentState.PAYMENTCOMPLETED)) {
 				throw new Exception(payment.getCode()+"单子已经处理完毕,请重新选择");
 			}
 			sb.append("'").append(payment.getId()).append("'").append(","); 
@@ -305,7 +307,7 @@ public class PaymentBIZImpl extends BizBase implements PaymentBIZ {
 		
 
 		PaymentWeek paymentWeek=new PaymentWeek();
-		paymentWeek.setIds(sb.toString().substring(0, sb.length() - 1));
+		paymentWeek.setIds(sb.toString().substring(0, sb.length() - 1).replace("'", "\\'"));
 		paymentWeek.setWeek(CommonUtil.getWeek());
 		
 		paymentWeekDAO.save(paymentWeek);

@@ -761,6 +761,11 @@ public class StampAction extends ActionBase{
 				stamp.setStampType(tmp.replace("|", "<br>"));
 				tmp=stamp.getUsageDescription();
 				stamp.setUsageDescription(tmp.replace("/r/n", "<br>"));
+				if (stamp.getUsedFile()==null||stamp.getUsedFile().equals("")) {
+					stamp.setUsedFile("N");
+				}else {
+					stamp.setUsedFile("Y");
+				}
 			}
 			
 			queryResult.setList(list);

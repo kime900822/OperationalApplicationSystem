@@ -5,14 +5,14 @@
 //department
 //操作列
 function datagrid_tree_operation() {
- var html = '<button type="button" class="btn-green" data-toggle="edit.datagrid.tr">View</button><button type="button" class="btn-green" onclick="editStamp(this);" >Edit</button>'   
+ var html = '<button type="button" class="btn-green" data-toggle="edit.datagrid.tr">View</button><button type="button" class="btn-green" onclick="editStamp(this);" >Doc.</button>'   
  return html
 }
 
 
 
 function datagrid_urgent() {
-    return [{'0':''},{'1':'Y'}]
+    return [{'Y':'Y'},{'N':'Y'}]
 }
 
 $(function(){
@@ -193,6 +193,7 @@ function editStamp(o){
         <thead>
             <tr>
             	<th data-options="{render:datagrid_tree_operation,align:'center'}">Operation</th>
+            	<th data-options="{name:'usedFile',width:150,align:'center',finalWidth:'true',type:'select', items:datagrid_urgent}">Chopped Doc. Uploaded</th>
             	<th data-options="{name:'id',width:150,align:'center',finalWidth:'true',hide:'true'}">id</th>
             	<th data-options="{name:'applicationCode',width:150,align:'center',finalWidth:'true'}" >Application Code</th>
             	<th data-options="{name:'applicationDate',width:150,align:'center',finalWidth:'true'}" >Application Date</th>
