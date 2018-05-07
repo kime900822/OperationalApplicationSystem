@@ -355,15 +355,15 @@ function isChange(){
 		for(var i=0;i<7;i++){			
 			$.CurrentNavtab.find("#j_payment_amount_"+i+"_t").attr('disabled','disabled');
 		}
-		$.CurrentNavtab.find("#j_payment_advanceWriteOffAmount_t").val($.CurrentNavtab.find("#j_payment_amountInFigures_t").val());
-		changeAmount();
+		//$.CurrentNavtab.find("#j_payment_advanceWriteOffAmount_t").val($.CurrentNavtab.find("#j_payment_amountInFigures_t").val());
+		//changeAmount();
 	})
 	$.CurrentNavtab.find("#j_payment_advanceWriteoffWay_party").on('ifChecked',function(){
 		for(var i=0;i<7;i++){			
 			$.CurrentNavtab.find("#j_payment_amount_"+i+"_t").removeAttr('disabled');
 		}
-		$.CurrentNavtab.find("#j_payment_advanceWriteOffAmount_t").val($.CurrentNavtab.find("#j_payment_amountInFigures_t").val());
-		changeAmount();
+		//$.CurrentNavtab.find("#j_payment_advanceWriteOffAmount_t").val($.CurrentNavtab.find("#j_payment_amountInFigures_t").val());
+		//changeAmount();
 
 	})
 
@@ -917,16 +917,27 @@ function changeAmount(){
 		$.CurrentNavtab.find("#row_06_title").html("PO&nbsp6");
 	}
 	
-	if($.CurrentNavtab.find("#j_payment_advanceWriteoff").is(':checked')&&amount7!="0.00"&&amount7!=""){
+/* 	if($.CurrentNavtab.find("#j_payment_advanceWriteoff").is(':checked')&&amount7!="0.00"&&amount7!=""){
 		$.CurrentNavtab.find("#j_payment_advanceWriteOffAmount").val(amount7)
 		total=total-amount7
 	}
 	
 	$.CurrentNavtab.find("#j_payment_amountInFigures").val(total);
 	$.CurrentNavtab.find("#j_payment_amountInFigures_t").val(formatCurrency(total));
-	$.CurrentNavtab.find("#j_payment_amountInWords").val(smalltoBIG(total));
+	$.CurrentNavtab.find("#j_payment_amountInWords").val(smalltoBIG(total)); */
 	
-	if($.CurrentNavtab.find("#j_payment_advanceWriteoffWay_party").is(':checked')){
+/* 	if($.CurrentNavtab.find("#j_payment_advanceWriteoffWay_party").is(':checked')){
+		$.CurrentNavtab.find("#j_payment_amountInFigures").val(0);
+		$.CurrentNavtab.find("#j_payment_amountInFigures_t").val(formatCurrency(0));
+		$.CurrentNavtab.find("#j_payment_amountInWords").val(smalltoBIG(0));
+	}else{
+		$.CurrentNavtab.find("#j_payment_amountInFigures").val(total);
+		$.CurrentNavtab.find("#j_payment_amountInFigures_t").val(formatCurrency(total));
+		$.CurrentNavtab.find("#j_payment_amountInWords").val(smalltoBIG(total));		
+	} */
+	if($.CurrentNavtab.find("#j_payment_advanceWriteoff").is(':checked')){
+		$.CurrentNavtab.find("#j_payment_advanceWriteOffAmount").val(total)
+		$.CurrentNavtab.find("#j_payment_advanceWriteOffAmount_t").val(formatCurrency(total))
 		$.CurrentNavtab.find("#j_payment_amountInFigures").val(0);
 		$.CurrentNavtab.find("#j_payment_amountInFigures_t").val(formatCurrency(0));
 		$.CurrentNavtab.find("#j_payment_amountInWords").val(smalltoBIG(0));

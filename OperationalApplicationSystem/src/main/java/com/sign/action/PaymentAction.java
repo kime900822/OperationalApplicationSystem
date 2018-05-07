@@ -1497,7 +1497,7 @@ public class PaymentAction extends ActionBase {
 		List<Payment> list=paymentBIZ.getPaymentByHql(hql, Integer.parseInt(pageSize),Integer.parseInt(pageCurrent));
 		int total=paymentBIZ.getPaymentByHql(hql).size();
 		for (Payment payment : list) {
-			payment.setAmountInFigures(TypeChangeUtil.formatMoney(payment.getAmountInFigures(),2,""));
+			payment.setAmountInFigures(TypeChangeUtil.formatMoney(payment.getAmountInFigures().replace(",", ""),2,""));
 		}
 		
 		queryResult.setList(list);
