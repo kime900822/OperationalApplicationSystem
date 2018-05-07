@@ -1205,8 +1205,23 @@ public class PaymentAction extends ActionBase {
 	@Action(value = "getPaidWeek", results = {
 			@org.apache.struts2.convention.annotation.Result(type = "stream", params = { "inputName", "reslutJson" }) })
 	public String getPaidWeek() throws UnsupportedEncodingException {
-		List<PaymentWeek> list=paymentBIZ.getPaidWeek();
-		reslutJson=new ByteArrayInputStream(new Gson().toJson(list).getBytes("UTF-8"));  
+		
+		
+		
+		int total=paymentBIZ.getPaidWeek("").size();
+		List<PaymentWeek> list=paymentBIZ.getPaidWeek("",Integer.valueOf(pageSize),Integer.valueOf(pageCurrent));
+		
+		queryResult.setList(list);
+		queryResult.setTotalRow(total);
+		queryResult.setFirstPage(Integer.parseInt(pageCurrent)==1?true:false);
+		queryResult.setPageNumber(Integer.parseInt(pageCurrent));
+		queryResult.setLastPage(total/Integer.parseInt(pageSize) +1==Integer.parseInt(pageCurrent)&&Integer.parseInt(pageCurrent)!=1?true:false);
+		queryResult.setTotalPage(total/Integer.parseInt(pageSize) +1);
+		queryResult.setPageSize(Integer.parseInt(pageSize));
+		String r=callback+"("+new Gson().toJson(queryResult)+")";
+		
+		reslutJson=new ByteArrayInputStream(r.getBytes("UTF-8")); 
+		
 		return SUCCESS;
 	}
 	

@@ -13,7 +13,7 @@
         postData:{week:'${param.ids}'},
         gridTitle : 'PaymentWeek Report',
         dataUrl: 'getPaymentWeek.action',
-        dataType: 'local',
+        local: 'local',
         paging: false,
         linenumberAll: true,
         contextMenuB: true,

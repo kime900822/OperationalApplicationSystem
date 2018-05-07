@@ -54,7 +54,9 @@ public interface PaymentBIZ {
 
 	void mailInformPayment(String[] ids) throws Exception;
 
-	List<PaymentWeek> getPaidWeek();
+	List<PaymentWeek> getPaidWeek(String where);
+	
+	List<PaymentWeek> getPaidWeek(String where, Integer pageSize, Integer pageCurrent);
 
 	void paidPayment(List<Payment> list) throws Exception;
 }

@@ -22,4 +22,6 @@ public interface PaymentDAO {
 	
 	List<PaymentPO> queryPaymentPOSql(String sql);
 	
+	List<PaymentPO> queryPaymentPO(String where);
+	
 }

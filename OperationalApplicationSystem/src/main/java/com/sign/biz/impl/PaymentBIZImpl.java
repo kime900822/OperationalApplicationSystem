@@ -325,16 +325,21 @@ public class PaymentBIZImpl extends BizBase implements PaymentBIZ {
 		}
 		
 		return paymentDAO.queryPaymentPOSql("select * From v_po where id in ("+ids+")");
-		
+		//return paymentDAO.queryPaymentPO(" where id in ("+ids+")");
 		
 		
 		
 	}
 
 	@Override
-	public List<PaymentWeek> getPaidWeek(){		
-		return paymentWeekDAO.query("");
+	public List<PaymentWeek> getPaidWeek(String where){		
+		return paymentWeekDAO.query(where);
 		
+	}
+
+	@Override
+	public List<PaymentWeek> getPaidWeek(String where, Integer pageSize, Integer pageCurrent) {
+		return paymentWeekDAO.query(where,pageSize,pageCurrent);
 	}
 	
 	
