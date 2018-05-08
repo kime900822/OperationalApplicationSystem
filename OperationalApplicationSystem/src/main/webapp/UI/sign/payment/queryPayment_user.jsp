@@ -78,11 +78,11 @@ $(function(){
             	</select>
         		</td>
         		<td>
-        			<span>Payment Method</span>
+        			<span>Payment Method:</span>
         		</td>
         		<td>
-	   				<select name="paymentTerm" data-toggle="selectpicker" id="j_payment_paymentTerm"  data-rule="required" data-width="190px" onchange="changePaymentTerm();" >
-	                    <option value=""></option>
+	   				<select name="paymentTerm" data-toggle="selectpicker" id="j_payment_paymentTerm"   data-width="190px" onchange="changePaymentTerm();" >
+	                    <option value="" >all</option>
 	                    <option value="1">Advance 预付款</option>
 	                    <option value="2">Payment at sight 见票即付</option>
 	                    <option value="3">Upon receiving 收货后</option>
@@ -101,7 +101,7 @@ $(function(){
         		</td>
         		<td>
             	<select name="paymentSubject" data-toggle="selectpicker" id="q_payment_paymentSubject"  data-width="200px">
-	              <option value=""></option>
+	              <option value="" >all</option>
 	              <option value="1">Fixed Asset 固定资产</option>
 	              <option value="2">Raw Material 原材料</option>
 	              <option value="3">Consumable 消耗品</option>

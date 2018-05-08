@@ -87,6 +87,9 @@ function getFile(path){
  * @type String 
  */  
 function formatCurrency(num) {  
+	if(num==null||num==undefined){
+		return '';
+	}
     num = num.toString().replace(/\$|\,/g,'');  
     if(isNaN(num))  
     num = "0";  
