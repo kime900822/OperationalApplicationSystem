@@ -834,7 +834,8 @@ function faceToData(){
 			var tmp=$.CurrentNavtab.find("#j_payment_receivingOrApprovalDate_"+i).val();
 			var days=$.CurrentNavtab.find("#j_payment_paymentDays_"+i).val()
 			if(tmp!=''||tmp!=undefined){
-				var tmpDate=new Date(new Date().setDate(stringToDate(tmp).getDate()+parseInt(days.replace('Days',''))));
+				//var tmpDate=new Date(new Date().setDate(stringToDate(tmp).getDate()+parseInt(days.replace('Days',''))));
+				var tmpDate=GetDateStr(stringToDate(tmp),parseInt(days.replace('Days','')));
 				if(maxDate<tmpDate){
 					maxDate=tmpDate;
 				}
