@@ -821,6 +821,9 @@ function faceToData(){
 	o.departmentName='${user.department.name}';
 	o.departmentID='${user.department.did}';
 	o.isPrint=$.CurrentNavtab.find("#j_payment_isPrint").val();
+	o.paymentSubject=$.CurrentNavtab.find("#j_payment_paymentSubject").val();
+	o.paymentTerm=$.CurrentNavtab.find("#j_payment_paymentTerm").val();
+
 	if(o.paymentTerm=='1'||o.paymentTerm=='2'||o.paymentTerm=='6'){
 /* 		o.contacturalPaymentDate=o.requestPaymentDate;
 		$.CurrentNavtab.find("#j_payment_contacturalPaymentDate").val(o.requestPaymentDate);	 */	
