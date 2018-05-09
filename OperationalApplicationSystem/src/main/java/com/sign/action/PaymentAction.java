@@ -1099,7 +1099,7 @@ public class PaymentAction extends ActionBase {
 	public String rejectPayment() throws UnsupportedEncodingException{
 		try {
 			Payment payment=paymentBIZ.getPayment(" where id='"+id+"'").get(0);
-			payment.setState(PaymentState.SAVEPAYMENT);
+			payment.setState(PaymentState.REJECTPAYMENT);
 			payment.setDeptManager("");
 			payment.setDocumentAudit("");
 			
