@@ -111,7 +111,7 @@ public class PaymentBIZImpl extends BizBase implements PaymentBIZ {
 	public void accPayment(Payment payment) {
 		paymentDAO.update(payment);
 		List<User> lUsers=userDAO.query(" where id='"+payment.getUID()+"'");
-		SendMail.SendMail(lUsers.get(0).getEmail(), PropertiesUtil.ReadProperties(Message.MAIL_PROPERTIES, "mailTitleOfAcc"), MessageFormat.format(PropertiesUtil.ReadProperties(Message.MAIL_PROPERTIES, "mailContentOfAcc"), payment.getCode(),TypeChangeUtil.formatMoney(payment.getAmountInFigures(), 2, payment.getCurrency_1()),payment.getDocumentAudit()));	
+		//SendMail.SendMail(lUsers.get(0).getEmail(), PropertiesUtil.ReadProperties(Message.MAIL_PROPERTIES, "mailTitleOfAcc"), MessageFormat.format(PropertiesUtil.ReadProperties(Message.MAIL_PROPERTIES, "mailContentOfAcc"), payment.getCode(),TypeChangeUtil.formatMoney(payment.getAmountInFigures(), 2, payment.getCurrency_1()),payment.getDocumentAudit()));	
 	}
 
 	@Override
