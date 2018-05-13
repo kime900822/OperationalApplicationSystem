@@ -88,19 +88,23 @@ public class PaymentDAOImpl extends HibernateDaoSupport implements PaymentDAO {
 	    for(Iterator iterator = list.iterator();iterator.hasNext();){  
 	        Object[] objects = (Object[]) iterator.next();  
 	        PaymentPO paymentPO=new PaymentPO();
-	        paymentPO.setId(objects[0].toString());
-	        paymentPO.setCode(objects[1].toString());
-	        paymentPO.setApplicant(objects[2].toString());
-	        paymentPO.setDid(objects[3].toString());
-	        paymentPO.setAmountInFigures(objects[4].toString());
-	        paymentPO.setUsageDescription(objects[5].toString());
-	        paymentPO.setSupplierCode(objects[6].toString());
-	        paymentPO.setBeneficiaryE(objects[7].toString());
-	        paymentPO.setPaymentDays(objects[8].toString());
-	        paymentPO.setReceivingOrApprovalDate(objects[9].toString());
-	        paymentPO.setPONo(objects[10].toString());
-	        paymentPO.setCurrency(objects[11].toString());
-	        paymentPO.setAmount(objects[12].toString());
+	        paymentPO.setId(objects[0]==null?"":objects[0].toString());
+	        paymentPO.setApplicationDate(objects[1]==null?"":objects[1].toString());
+	        paymentPO.setContacturalPaymentDate(objects[2]==null?"":objects[2].toString());
+	        paymentPO.setPaidDate(objects[3]==null?"":objects[3].toString());
+	        paymentPO.setRequestPaymentDate(objects[4]==null?"":objects[4].toString());
+	        paymentPO.setCode(objects[5]==null?"":objects[5].toString());
+	        paymentPO.setApplicant(objects[6]==null?"":objects[6].toString());
+	        paymentPO.setDid(objects[7]==null?"":objects[7].toString());
+	        paymentPO.setAmountInFigures(objects[8]==null?"":objects[8].toString());
+	        paymentPO.setUsageDescription(objects[9]==null?"":objects[9].toString());
+	        paymentPO.setSupplierCode(objects[10]==null?"":objects[10].toString());
+	        paymentPO.setBeneficiaryE(objects[11]==null?"":objects[11].toString());
+	        paymentPO.setPaymentDays(objects[12]==null?"":objects[12].toString());
+	        paymentPO.setReceivingOrApprovalDate(objects[13]==null?"":objects[13].toString());
+	        paymentPO.setPONo(objects[14]==null?"":objects[14].toString());
+	        paymentPO.setCurrency(objects[15]==null?"":objects[15].toString());
+	        paymentPO.setAmount(objects[16]==null?"":objects[16].toString());
 	        lPaymentPOs.add(paymentPO);
 	    }  
 	    return lPaymentPOs;

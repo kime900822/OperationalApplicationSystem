@@ -48,8 +48,10 @@ public interface PaymentBIZ {
 	
 	public void financeRejectPayment(String[] ids,String message,User user) throws Exception;
 	
-	public List<PaymentPO> getPaymentPO(String ids);
-
+	public List<PaymentPO> getWeeklyPayment(String ids);
+	
+	public List<PaymentPO> getPaymentPO(String sql);
+	
 	void paidResetPayment(String[] ids) throws Exception;
 
 	void mailInformPayment(String[] ids) throws Exception;

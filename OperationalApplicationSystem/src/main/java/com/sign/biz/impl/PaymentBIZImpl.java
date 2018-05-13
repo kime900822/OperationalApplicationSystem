@@ -317,7 +317,7 @@ public class PaymentBIZImpl extends BizBase implements PaymentBIZ {
 	
 	@Override
 	@Transactional(readOnly=false,propagation=Propagation.REQUIRED,rollbackFor=Exception.class )
-	public List<PaymentPO> getPaymentPO(String ids) {
+	public List<PaymentPO> getWeeklyPayment(String ids) {
 		List<Payment> lPayments=paymentDAO.query(" where id in ("+ids+")");
 		for (Payment payment : lPayments) {
 			payment.setState(PaymentState.GMAPPROVE);
@@ -340,6 +340,11 @@ public class PaymentBIZImpl extends BizBase implements PaymentBIZ {
 	@Override
 	public List<PaymentWeek> getPaidWeek(String where, Integer pageSize, Integer pageCurrent) {
 		return paymentWeekDAO.query(where,pageSize,pageCurrent);
+	}
+
+	@Override
+	public List<PaymentPO> getPaymentPO(String sql) {
+		return paymentDAO.queryPaymentPOSql(sql);
 	}
 	
 	

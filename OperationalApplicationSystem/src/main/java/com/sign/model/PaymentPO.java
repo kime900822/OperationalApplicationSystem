@@ -18,6 +18,14 @@ public class PaymentPO {
 	@GenericGenerator(name = "assigned", strategy = "assigned")
 	private String id;
 	@Column
+	private String applicationDate;
+	@Column
+	private String contacturalPaymentDate;
+	@Column
+	private String paidDate;
+	@Column
+	private String requestPaymentDate;
+	@Column
 	private String code;
 	@Column
 	private String applicant;
@@ -118,6 +126,30 @@ public class PaymentPO {
 	}
 	public void setAmount(String amount) {
 		this.amount = amount;
+	}
+	public String getApplicationDate() {
+		return applicationDate;
+	}
+	public void setApplicationDate(String applicationDate) {
+		this.applicationDate = applicationDate;
+	}
+	public String getContacturalPaymentDate() {
+		return contacturalPaymentDate;
+	}
+	public void setContacturalPaymentDate(String contacturalPaymentDate) {
+		this.contacturalPaymentDate = contacturalPaymentDate;
+	}
+	public String getPaidDate() {
+		return paidDate;
+	}
+	public void setPaidDate(String paidDate) {
+		this.paidDate = paidDate;
+	}
+	public String getRequestPaymentDate() {
+		return requestPaymentDate;
+	}
+	public void setRequestPaymentDate(String requestPaymentDate) {
+		this.requestPaymentDate = requestPaymentDate;
 	}
 	
 	
