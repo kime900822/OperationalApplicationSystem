@@ -205,7 +205,7 @@ function dataToFace(){
             	}
             	
             	$("#documentAudit").html("&nbsp&nbsp"+json.documentAudit);
-            	$("#deptManager").html("&nbsp&nbsp"+json.deptManager);
+            	$("#deptManager").html("&nbsp&nbsp"+json.deptManager+"/"+json.deptManagerDate);
             	$("#handingFee").html("&nbsp&nbsp"+json.handingFee);
             	if(json.state=='5'){
             		$("#invalid-img").show();

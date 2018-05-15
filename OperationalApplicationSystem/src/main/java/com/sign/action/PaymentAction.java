@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import javax.persistence.Column;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.ObjectUtils.Null;
@@ -164,6 +165,8 @@ public class PaymentAction extends ActionBase {
 	private String AdvanceWriteoffWay;
 	private String AdvanceWriteOffCurrency;
 	private String AdvanceWriteOffAmount;
+	private String deptManaferDate;
+	private String GMApproveDate;
 	
 	private String usageDescription;
 	private String amountInFigures;
@@ -184,10 +187,36 @@ public class PaymentAction extends ActionBase {
 	private String paidDate;
 	private String paidDate_f;
 	private String paidDate_t;
+	private String gmDate_f;
+	private String gmDate_t;
 	private String downloadType;
 	
 	
 	
+	public String getGmDate_f() {
+		return gmDate_f;
+	}
+	public void setGmDate_f(String gmDate_f) {
+		this.gmDate_f = gmDate_f;
+	}
+	public String getGmDate_t() {
+		return gmDate_t;
+	}
+	public void setGmDate_t(String gmDate_t) {
+		this.gmDate_t = gmDate_t;
+	}
+	public String getDeptManaferDate() {
+		return deptManaferDate;
+	}
+	public void setDeptManaferDate(String deptManaferDate) {
+		this.deptManaferDate = deptManaferDate;
+	}
+	public String getGMApproveDate() {
+		return GMApproveDate;
+	}
+	public void setGMApproveDate(String gMApproveDate) {
+		GMApproveDate = gMApproveDate;
+	}
 	public String getDownloadType() {
 		return downloadType;
 	}
@@ -1031,7 +1060,7 @@ public class PaymentAction extends ActionBase {
 			}else {
 				payment.setDeptManager(user.getName());	
 			}
-			
+			payment.setDeptManagerDate(CommonUtil.getDate());
 			
 			paymentBIZ.approvePayment(payment);
 			
@@ -1562,10 +1591,16 @@ public class PaymentAction extends ActionBase {
 			where += " AND P.applicationDate <= '"+applicationDate_t+"'";
 		}
 		if (!"".equals(paidDate_f)&&paidDate_f!=null) {
-			where += " AND P.paidDate>='"+paidDate_f+"'";
+			where += " AND P.GMApproveDate >='"+paidDate_f+"'";
 		}
 		if (!"".equals(paidDate_t)&&paidDate_t!=null) {
-			where += " AND P.paidDate <= '"+paidDate_t+"'";
+			where += " AND P.GMApproveDate <= '"+paidDate_t+"'";
+		}
+		if (!"".equals(gmDate_f)&&gmDate_f!=null) {
+			where += " AND P.paidDate>='"+gmDate_f+"'";
+		}
+		if (!"".equals(gmDate_t)&&gmDate_t!=null) {
+			where += " AND P.paidDate <= '"+gmDate_t+"'";
 		}
 		if (!"".equals(code)&&code!=null) {
 			where += " AND P.code = '"+code+"'";
@@ -1666,7 +1701,18 @@ public class PaymentAction extends ActionBase {
         	lHeadColumns.add(new HeadColumn("currency_1", "100", "center", "Currency"));
         	lHeadColumns.add(new HeadColumn("amountInFigures", "100", "center", "Amount"));
         	lHeadColumns.add(new HeadColumn("usageDescription", "100", "center", "Usage Description"));
-        	
+        	lHeadColumns.add(new HeadColumn("PONo_1", "100", "center", "PO 1"));
+        	lHeadColumns.add(new HeadColumn("amount_1", "100", "center", "Amount 1"));
+        	lHeadColumns.add(new HeadColumn("PONo_2", "100", "center", "PO 2"));
+        	lHeadColumns.add(new HeadColumn("amount_2", "100", "center", "Amount 2"));
+        	lHeadColumns.add(new HeadColumn("PONo_3", "100", "center", "PO 3"));
+        	lHeadColumns.add(new HeadColumn("amount_3", "100", "center", "Amount 3"));
+        	lHeadColumns.add(new HeadColumn("PONo_4", "100", "center", "PO 4"));
+        	lHeadColumns.add(new HeadColumn("amount_4", "100", "center", "Amount 4"));
+        	lHeadColumns.add(new HeadColumn("PONo_5", "100", "center", "PO 5"));
+        	lHeadColumns.add(new HeadColumn("amount_5", "100", "center", "Amount 5"));
+        	lHeadColumns.add(new HeadColumn("PONo_6", "100", "center", "PO 6"));
+        	lHeadColumns.add(new HeadColumn("amount_6", "100", "center", "Amount 6"));
         	
         	
     		String hql="";
@@ -1677,6 +1723,12 @@ public class PaymentAction extends ActionBase {
     		}
     		if (!"".equals(applicationDate_t)&&applicationDate_t!=null) {
     			where += " AND P.applicationDate <= '"+applicationDate_t+"'";
+    		}
+    		if (!"".equals(paidDate_f)&&paidDate_f!=null) {
+    			where += " AND P.GMApproveDate >='"+paidDate_f+"'";
+    		}
+    		if (!"".equals(paidDate_t)&&paidDate_t!=null) {
+    			where += " AND P.GMApproveDate <= '"+paidDate_t+"'";
     		}
     		if (!"".equals(code)&&code!=null) {
     			where += " AND P.code = '"+code+"'";

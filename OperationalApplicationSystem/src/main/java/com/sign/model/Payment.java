@@ -445,9 +445,32 @@ public class Payment {
 	private String financeRejectMessage;
 	@Column
 	private String paidDate;
+	@Column
+	private String deptManagerDate;
+	@Column
+	private String GMApproveDate;
 	
 	
 	
+
+
+
+	public String getDeptManagerDate() {
+		return deptManagerDate;
+	}
+
+	public void setDeptManagerDate(String deptManagerDate) {
+		this.deptManagerDate = deptManagerDate;
+	}
+
+	public String getGMApproveDate() {
+		return GMApproveDate;
+	}
+
+	public void setGMApproveDate(String gMApproveDate) {
+		GMApproveDate = gMApproveDate;
+	}
+
 	public String getPaidDate() {
 		return paidDate;
 	}

@@ -123,8 +123,27 @@ $(function(){
                 <button type="reset" class="btn-orange" data-icon="times">Reset</button>
             	</div>
         		</td>
-
-        	</tr>    
+        	</tr>   
+        	<tr>
+        	<td colspan="8" height="10px"></td>
+        	</tr>   
+        	<tr>
+        	    <td>
+        			<span>Payment Method:</span>
+        		</td>
+        		<td>
+	   				<select name="paymentTerm" data-toggle="selectpicker" id="j_payment_paymentTerm"   data-width="200px" onchange="changePaymentTerm();" >
+	                    <option value="" >all</option>
+	                    <option value="1">Advance 预付款</option>
+	                    <option value="2">Payment at sight 见票即付</option>
+	                    <option value="3">Upon receiving 收货后</option>
+	                    <option value="4">Upon Approval 验收后</option>
+	                    <option value="5">Upon invoice 见票后</option>
+	                    <option value="6">Other 其他</option>
+	               	</select>
+        		</td>
+        		<td colspan="6"></td>
+        	</tr> 
         </table>
             
                        

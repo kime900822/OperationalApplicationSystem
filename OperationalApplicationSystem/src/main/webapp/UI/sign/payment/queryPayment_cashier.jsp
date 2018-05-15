@@ -297,7 +297,14 @@ function mailInformPayment(){
             	<input type="text" name="paidDate_f"  data-nobtn="true"  id="q_payment_paidDate_f" value="" data-toggle="datepicker" size="9" data-rule="date">to:
             	<input type="text" name="paidDate_t"  data-nobtn="true"  id="q_payment_paidDate_t" value="" data-toggle="datepicker" size="9" data-rule="date">
         		</td>
-        		<td colspan="6"></td>
+        		<td >
+        		<span>GM Approval Date：</span>
+        		</td>
+        		<td width="220px">
+            	<input type="text" name="gmDate_f"  data-nobtn="true"  id="q_payment_paidDate_f" value="" data-toggle="datepicker" size="9" data-rule="date">to:
+            	<input type="text" name="gmDate_t"  data-nobtn="true"  id="q_payment_paidDate_t" value="" data-toggle="datepicker" size="9" data-rule="date">
+        		</td>
+        		<td colspan="4"></td>
         	</tr>
         </table>
             
@@ -352,7 +359,7 @@ function mailInformPayment(){
             <tr>
             	<th data-options="{render:datagrid_tree_operation,align:'center'}">Operation</th>
             	<th data-options="{name:'id',width:150,align:'center',finalWidth:'true',hide:'true'}">id</th>
-            					<th data-options="{name:'refNoofBank',width:200,align:'center',finalWidth:'true'}">Ref.No. of Bank</th>
+            	<th data-options="{name:'refNoofBank',width:200,align:'center',finalWidth:'true'}">Ref.No. of Bank</th>
             	<th data-options="{name:'applicationDate',width:150,align:'center',finalWidth:'true',edit:false}" >Application Date</th>
 				<th data-options="{name:'state',width:150,align:'center',finalWidth:'true',type:'select', items:datagrid_paymentState,edit:false}">Approval Status</th>
 				<th data-options="{name:'UID',width:150,align:'center',finalWidth:'true',edit:false}">Cimtas ID</th>

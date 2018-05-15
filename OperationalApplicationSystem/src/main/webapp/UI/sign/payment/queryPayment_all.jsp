@@ -107,13 +107,9 @@ function datagrid_paymentState() {
                 <button type="reset" class="btn-orange" data-icon="times">Reset</button>
             	</div>
         		</td>
-
-        	</tr>    
+        	</tr> 
+ 
         </table>
-            
-                       
-			
-            
             
         </div>
 
