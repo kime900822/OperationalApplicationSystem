@@ -258,17 +258,20 @@ public class PaymentBIZImpl extends BizBase implements PaymentBIZ {
 			payment.setPaidDate("");
 			payment.setState(PaymentState.GMAPPROVE);
 			paymentDAO.update(payment);
-			String tmp=lPaymentWeeks.get(0).getIds();
-			if (lPaymentWeeks.get(0).getIds().equals("\\'"+id+"\\'")) {
-				lPaymentWeeks.get(0).setIds(tmp.replace("\\'"+id+"\\'","" ));
-			}else {
-				if (lPaymentWeeks.get(0).getIds().startsWith("\\'"+id+"\\'")) {
-					lPaymentWeeks.get(0).setIds(tmp.replace("\\'"+id+"\\',","" ));
+			if (lPaymentWeeks.size()>0) {
+				String tmp=lPaymentWeeks.get(0).getIds();
+				if (lPaymentWeeks.get(0).getIds().equals("\\'"+id+"\\'")) {
+					lPaymentWeeks.get(0).setIds(tmp.replace("\\'"+id+"\\'","" ));
 				}else {
-					lPaymentWeeks.get(0).setIds(tmp.replace(",\\'"+id+"\\'","" ));
+					if (lPaymentWeeks.get(0).getIds().startsWith("\\'"+id+"\\'")) {
+						lPaymentWeeks.get(0).setIds(tmp.replace("\\'"+id+"\\',","" ));
+					}else {
+						lPaymentWeeks.get(0).setIds(tmp.replace(",\\'"+id+"\\'","" ));
+					}
+					
 				}
-				
 			}
+
 			
 			
 		}
