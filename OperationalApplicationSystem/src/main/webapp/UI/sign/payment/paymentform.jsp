@@ -710,6 +710,17 @@ function dataToFace(){
             		$.CurrentNavtab.find("#j_payment_advanceWriteOffAmount_t").val(json.advanceWriteOffAmount)          		
             	}
             	
+            	if(json.handingFee=='汇款人 Our'){
+            		$.CurrentNavtab.find("#handingFeeTr").show();
+            		$.CurrentNavtab.find("#j_payment_hanfingFee_our").iCheck('check');
+            	}else if(json.handingFee=='收款人 Ben'){
+            		$.CurrentNavtab.find("#handingFeeTr").show();
+            		$.CurrentNavtab.find("#j_payment_hanfingFee_ben").iCheck('check');
+            	}else if(json.handingFee=='共同 Sha'){
+            		$.CurrentNavtab.find("#handingFeeTr").show();
+            		$.CurrentNavtab.find("#j_payment_hanfingFee_sha").iCheck('check');
+            	}
+            	
             	
             	if(json.urgent=='1'){
             		$.CurrentNavtab.find("#j_payment_urgent").iCheck('check'); 
