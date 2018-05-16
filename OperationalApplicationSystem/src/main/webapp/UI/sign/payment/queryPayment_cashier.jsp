@@ -36,7 +36,7 @@ function getCheckId(){
 	var datas = $('#datagrid-payment-cashier-filter').data('selectedTrs')
 	if(datas!=undefined){
 		$.each(datas,function(i,n){
-			ids.push(n.cells[3].innerText);						
+			ids.push(n.cells[3].innerText.replace('\n',''));						
 		})		
 	}
 	return ids;
@@ -266,7 +266,7 @@ function mailInformPayment(){
         		<span>Status</span>
         		</td>
         		<td>
-            	<select name="state" data-toggle="selectpicker" id="q_payment_state"  data-width="80px">
+            	<select name="state" data-toggle="selectpicker" id="q_payment_state"  data-width="150px">
 	              <option value="" >all</option>
 	              <option value="0">Submit Required</option>
 	              <option value="1">Manager Approval</option>

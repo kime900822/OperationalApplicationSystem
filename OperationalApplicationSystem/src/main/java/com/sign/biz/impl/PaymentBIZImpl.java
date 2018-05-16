@@ -248,24 +248,32 @@ public class PaymentBIZImpl extends BizBase implements PaymentBIZ {
 	public void paidResetPayment(String[] ids) throws Exception {
 		
 		
-		String tmpid="";
+		List<PaymentWeek> lPaymentWeeks=paymentWeekDAO.query(" where ids like '%"+ids[0]+"%'");
 		for (String id : ids) {
 			Payment payment=paymentDAO.query(" where id='"+id+"'").get(0);
 			if (!payment.getState().equals(PaymentState.PAYMENTCOMPLETED)) {
 				throw new Exception(payment.getCode()+"单子的状态不为Payment Completed,请重新选择");
 			}
-			tmpid=payment.getId();
 			payment.setRefNoofBank("");
 			payment.setPaidDate("");
 			payment.setState(PaymentState.GMAPPROVE);
 			paymentDAO.update(payment);
-		}
-		List<PaymentWeek> list=paymentWeekDAO.query(" where ids like '%"+tmpid+"%'");
-		if (list.size()>0) {
-			for (PaymentWeek paymentWeek : list) {
-				paymentWeekDAO.delete(paymentWeek);
+			String tmp=lPaymentWeeks.get(0).getIds();
+			if (lPaymentWeeks.get(0).getIds().equals("\\'"+id+"\\'")) {
+				lPaymentWeeks.get(0).setIds(tmp.replace("\\'"+id+"\\'","" ));
+			}else {
+				if (lPaymentWeeks.get(0).getIds().startsWith("\\'"+id+"\\'")) {
+					lPaymentWeeks.get(0).setIds(tmp.replace("\\'"+id+"\\',","" ));
+				}else {
+					lPaymentWeeks.get(0).setIds(tmp.replace(",\\'"+id+"\\'","" ));
+				}
+				
 			}
+			
+			
 		}
+		paymentWeekDAO.update(lPaymentWeeks.get(0));
+
 	}
 	
 	@Override
@@ -276,7 +284,7 @@ public class PaymentBIZImpl extends BizBase implements PaymentBIZ {
 	        sb.append("'").append(ids[i]).append("'").append(",");  
 	    }  
 	    
-	    List<Payment> list=paymentDAO.query(" where id in ("+sb.toString().substring(0, sb.length() - 1)+" ");
+	    List<Payment> list=paymentDAO.query(" where id in ("+sb.toString().substring(0, sb.length() - 1)+") ");
 		for (Payment payment : list) {
 			List<User> lUsers=userDAO.query(" where uid='"+payment.getUID()+"'");
 			if (lUsers.size()>0) {		
@@ -304,14 +312,16 @@ public class PaymentBIZImpl extends BizBase implements PaymentBIZ {
 			payment.setPaidDate(CommonUtil.getDate());
 			paymentDAO.update(payment);
 		}
-		
-
-		PaymentWeek paymentWeek=new PaymentWeek();
-		paymentWeek.setIds(sb.toString().substring(0, sb.length() - 1).replace("'", "\\'"));
-		paymentWeek.setWeek(CommonUtil.getWeek());
-		
-		paymentWeekDAO.save(paymentWeek);
-		
+		List<PaymentWeek> lPaymentWeeks=paymentWeekDAO.query(" where week='"+CommonUtil.getWeek()+"' ");
+		if (lPaymentWeeks.size()>0) {
+			lPaymentWeeks.get(0).setIds(lPaymentWeeks.get(0).getIds()+","+sb.toString().substring(0, sb.length() - 1).replace("'", "\\'"));
+			paymentWeekDAO.update(lPaymentWeeks.get(0));
+		}else {
+			PaymentWeek paymentWeek=new PaymentWeek();
+			paymentWeek.setIds(sb.toString().substring(0, sb.length() - 1).replace("'", "\\'"));
+			paymentWeek.setWeek(CommonUtil.getWeek());
+			paymentWeekDAO.save(paymentWeek);
+		}
 		
 	}
 	
