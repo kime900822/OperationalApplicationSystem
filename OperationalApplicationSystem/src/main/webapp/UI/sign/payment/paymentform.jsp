@@ -418,7 +418,7 @@ function fileToTr(name,path,b){
 
 function checkSupplierCode(o){
 	 var str = $(o).val();
-   var ret =  /^\d{5,6}$/;
+   var ret =  /^\d{4,6}$/;
    if($.CurrentNavtab.find(o).val()==""||$.CurrentNavtab.find(o).val()==null){
    	$.CurrentNavtab.find("#j_payment_beneficiary").val('');
     	$.CurrentNavtab.find("#j_payment_beneficiaryAccountNO").val('');
@@ -1015,7 +1015,7 @@ function checkPoNO(o){
 
 function checkSave(){
 	var err='';
-	if($.CurrentNavtab.find("input[name='payType']").val()==null||$.CurrentNavtab.find("input[name='payType']").val()==''){
+	if(!$.CurrentNavtab.find("input[name='payType']").is(':checked')){
 		err+=" Payment Way can`t be  empty！<br>";		
 	}
 	if($.CurrentNavtab.find('#j_payment_paymentSubject').val()==null||$.CurrentNavtab.find('#j_payment_paymentSubject').val()==''){
@@ -1042,7 +1042,7 @@ function checkSave(){
 	
 	if($.CurrentNavtab.find("#j_payment_overSea").val()=="Y")
 	{
-		if($.CurrentNavtab.find("input[name='hanfingFee']").val()==null||$.CurrentNavtab.find("input[name='hanfingFee']").val()==''){
+		if(!$.CurrentNavtab.find("input[name='handingFee']").is(':checked')){
 			err+=" Hanfing Fee can`t be  empty！<br>";		
 		}
 	}
@@ -1790,13 +1790,13 @@ function isHandingFee(){
 						手续费 <label style="color:red;font-size:12px"><b>*</b></label><br>Handing Fee  <label style="color:red;font-size:12px"><b>*</b></label>
 					</td>
 					<td>
-						<input type="radio" name="hanfingFee" data-toggle="icheck" id="j_payment_hanfingFee_our" value="汇款人 Our"  data-label="汇款人 <br>Cash">
+						<input type="radio" name="handingFee" data-toggle="icheck" id="j_payment_hanfingFee_our" value="汇款人 Our"  data-label="汇款人 <br>Cash">
 					</td>
 					<td>
-						<input type="radio" name="hanfingFee" data-toggle="icheck" id="j_payment_hanfingFee_ben" value="收款人 Ben"  data-label="收款人 <br>Ben">
+						<input type="radio" name="handingFee" data-toggle="icheck" id="j_payment_hanfingFee_ben" value="收款人 Ben"  data-label="收款人 <br>Ben">
 					</td>	
 					<td>
-						<input type="radio" name="hanfingFee" data-toggle="icheck" id="j_payment_hanfingFee_sha" value="共同 Sha"  data-label="共同  <br>Sha">
+						<input type="radio" name="handingFee" data-toggle="icheck" id="j_payment_hanfingFee_sha" value="共同 Sha"  data-label="共同  <br>Sha">
 					</td>	
 				</tr>
 				<tr>
