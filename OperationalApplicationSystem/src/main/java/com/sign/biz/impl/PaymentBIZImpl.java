@@ -321,7 +321,7 @@ public class PaymentBIZImpl extends BizBase implements PaymentBIZ {
 		List<Payment> lPayments=paymentDAO.query(" where id in ("+ids+")");
 		for (Payment payment : lPayments) {
 			payment.setState(PaymentState.GMAPPROVE);
-			payment.setGMApproveDate(CommonUtil.getDate());
+			payment.setGMApproveDate(CommonUtil.getDateTemp());
 			paymentDAO.update(payment);
 		}
 		

@@ -362,6 +362,7 @@ function mailInformPayment(){
             	<th data-options="{name:'refNoofBank',width:200,align:'center',finalWidth:'true'}">Ref.No. of Bank</th>
             	<th data-options="{name:'applicationDate',width:150,align:'center',finalWidth:'true',edit:false}" >Application Date</th>
 				<th data-options="{name:'state',width:150,align:'center',finalWidth:'true',type:'select', items:datagrid_paymentState,edit:false}">Approval Status</th>
+				<th data-options="{name:'GMApproveDate',width:150,align:'center',finalWidth:'true',edit:false}">GM Approval Date</th>
 				<th data-options="{name:'UID',width:150,align:'center',finalWidth:'true',edit:false}">Cimtas ID</th>
 				<th data-options="{name:'UName',width:150,align:'center',finalWidth:'true',edit:false}">User Name</th>
 				<th data-options="{name:'deptManagerID',width:150,align:'center',finalWidth:'true',edit:false}">Manager Cimtas ID</th>

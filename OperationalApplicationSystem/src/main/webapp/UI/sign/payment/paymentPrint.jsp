@@ -205,7 +205,12 @@ function dataToFace(){
             	}
             	
             	$("#documentAudit").html("&nbsp&nbsp"+json.documentAudit);
-            	$("#deptManager").html("&nbsp&nbsp"+json.deptManager+"/"+json.deptManagerDate);
+            	if(json.deptManagerDate!=''&&json.deptManagerDate!=null&&json.deptManagerDate!=undefined){
+            		$("#deptManager").html("&nbsp&nbsp"+json.deptManager+"/"+json.deptManagerDate);            		
+            	}
+            	else{
+            		$("#deptManager").html("&nbsp&nbsp"+json.deptManager);
+            	}
             	$("#handingFee").html("&nbsp&nbsp"+json.handingFee);
             	if(json.state=='5'){
             		$("#invalid-img").show();

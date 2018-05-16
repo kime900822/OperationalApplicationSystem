@@ -1060,7 +1060,7 @@ public class PaymentAction extends ActionBase {
 			}else {
 				payment.setDeptManager(user.getName());	
 			}
-			payment.setDeptManagerDate(CommonUtil.getDate());
+			payment.setDeptManagerDate(CommonUtil.getDateTemp());
 			
 			paymentBIZ.approvePayment(payment);
 			
@@ -1591,16 +1591,16 @@ public class PaymentAction extends ActionBase {
 			where += " AND P.applicationDate <= '"+applicationDate_t+"'";
 		}
 		if (!"".equals(paidDate_f)&&paidDate_f!=null) {
-			where += " AND P.GMApproveDate >='"+paidDate_f+"'";
+			where += " AND P.paidDate >='"+paidDate_f+"' ";
 		}
 		if (!"".equals(paidDate_t)&&paidDate_t!=null) {
-			where += " AND P.GMApproveDate <= '"+paidDate_t+"'";
+			where += " AND P.paidDate <= '"+paidDate_t+"' ";
 		}
 		if (!"".equals(gmDate_f)&&gmDate_f!=null) {
-			where += " AND P.paidDate>='"+gmDate_f+"'";
+			where += " AND substr(P.GMApproveDate,0,10)>='"+gmDate_f+"'";
 		}
 		if (!"".equals(gmDate_t)&&gmDate_t!=null) {
-			where += " AND P.paidDate <= '"+gmDate_t+"'";
+			where += " AND substr(P.GMApproveDate,0,10) <= '"+gmDate_t+"'";
 		}
 		if (!"".equals(code)&&code!=null) {
 			where += " AND P.code = '"+code+"'";
@@ -1724,11 +1724,17 @@ public class PaymentAction extends ActionBase {
     		if (!"".equals(applicationDate_t)&&applicationDate_t!=null) {
     			where += " AND P.applicationDate <= '"+applicationDate_t+"'";
     		}
+    		if (!"".equals(gmDate_f)&&gmDate_f!=null) {
+    			where += " AND substr(P.GMApproveDate,0,10)>='"+gmDate_f+"'";
+    		}
+    		if (!"".equals(gmDate_t)&&gmDate_t!=null) {
+    			where += " AND substr(P.GMApproveDate,0,10) <= '"+gmDate_t+"'";
+    		}
     		if (!"".equals(paidDate_f)&&paidDate_f!=null) {
-    			where += " AND P.GMApproveDate >='"+paidDate_f+"'";
+    			where += " AND P.paidDate >='"+paidDate_f+"'";
     		}
     		if (!"".equals(paidDate_t)&&paidDate_t!=null) {
-    			where += " AND P.GMApproveDate <= '"+paidDate_t+"'";
+    			where += " AND P.paidDate <= '"+paidDate_t+"'";
     		}
     		if (!"".equals(code)&&code!=null) {
     			where += " AND P.code = '"+code+"'";

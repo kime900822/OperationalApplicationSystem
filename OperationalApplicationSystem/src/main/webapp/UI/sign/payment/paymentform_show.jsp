@@ -152,7 +152,14 @@ function dataToFace(){
             	}
             	
             	$.CurrentNavtab.find("#documentAudit").html("&nbsp&nbsp"+json.documentAudit);
-            	$.CurrentNavtab.find("#deptManager").html("&nbsp&nbsp"+json.deptManager);
+            	
+            	if(json.deptManagerDate!=''&&json.deptManagerDate!=null&&json.deptManagerDate!=undefined){
+            		$("#deptManager").html("&nbsp&nbsp"+json.deptManager+"/"+json.deptManagerDate);            		
+            	}
+            	else{
+            		$("#deptManager").html("&nbsp&nbsp"+json.deptManager);
+            	}
+            	
             	if(json.state=='5'){
             		$.CurrentNavtab.find("#invalid-img").show();
             	}
