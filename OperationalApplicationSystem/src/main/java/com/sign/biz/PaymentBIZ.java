@@ -52,6 +52,8 @@ public interface PaymentBIZ {
 	
 	public List<PaymentPO> getPaymentPO(String sql);
 	
+	public List<PaymentPO> getPaymentPO(String sql,Integer pageSize, Integer pageCurrent);
+	
 	void paidResetPayment(String[] ids) throws Exception;
 
 	void mailInformPayment(String[] ids) throws Exception;

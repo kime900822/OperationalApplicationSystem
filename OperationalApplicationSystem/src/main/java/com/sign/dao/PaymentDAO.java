@@ -22,6 +22,8 @@ public interface PaymentDAO {
 	
 	List<PaymentPO> queryPaymentPOSql(String sql);
 	
+	List<PaymentPO> queryPaymentPOSql(String sql , Integer pageSize, Integer pageCurrent);
+	
 	List<PaymentPO> queryPaymentPO(String where);
 	
 }

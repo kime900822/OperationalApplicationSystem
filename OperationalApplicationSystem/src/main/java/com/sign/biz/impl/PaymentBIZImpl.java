@@ -360,6 +360,11 @@ public class PaymentBIZImpl extends BizBase implements PaymentBIZ {
 	public List<PaymentPO> getPaymentPO(String sql) {
 		return paymentDAO.queryPaymentPOSql(sql);
 	}
+
+	@Override
+	public List<PaymentPO> getPaymentPO(String sql, Integer pageSize, Integer pageCurrent) {
+		return paymentDAO.queryPaymentPOSql(sql, pageSize, pageCurrent);
+	}
 	
 	
 }

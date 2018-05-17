@@ -1399,7 +1399,90 @@ public class PaymentAction extends ActionBase {
 
         return SUCCESS;
 	}
-	
+	@Action(value="getPaymentPD",results={@org.apache.struts2.convention.annotation.Result(type="stream",
+			params={
+					"inputName", "reslutJson"
+			})})
+	public String getPaymentPD() throws UnsupportedEncodingException {
+		
+		String where="";
+		
+		if (!"".equals(applicationDate_f)&&applicationDate_f!=null) {
+			where += " AND P.applicationDate>='"+applicationDate_f+"'";
+		}
+		if (!"".equals(applicationDate_t)&&applicationDate_t!=null) {
+			where += " AND P.applicationDate <= '"+applicationDate_t+"'";
+		}
+		if (!"".equals(paidDate_f)&&paidDate_f!=null) {
+			where += " AND P.paidDate>='"+paidDate_f+"'";
+		}
+		if (!"".equals(paidDate_t)&&paidDate_t!=null) {
+			where += " AND P.paidDate <= '"+paidDate_t+"'";
+		}
+		if (!"".equals(code)&&code!=null) {
+			where += " AND P.code = '"+code+"'";
+		}
+		if (!"".equals(state)&&state!=null) {			
+			where += " AND P.state = '"+state+"'";
+		}else {
+			if ("cashier".equals(queryType)) {
+				where+=" AND P.state in ('4','7') ";
+			}		
+		}
+		if (!"".equals(urgent)&&urgent!=null) {
+			where += " AND P.urgent = '"+urgent+"'";
+		}
+		if (!"".equals(UID)&&UID!=null) {
+			where += " AND P.UID='"+UID+"'";
+		}
+		if (!"".equals(departmentID)&&departmentID!=null) {
+			where += " AND P.departmentID='"+departmentID+"'";
+		}
+		if (!"".equals(paymentSubject)&&paymentSubject!=null) {
+			where += " AND P.paymentSubject='"+paymentSubject+"'";
+		}
+		if (!"".equals(paymentTerm)&&paymentTerm!=null) {
+			where += " AND P.paymentTerm='"+paymentTerm+"'";
+		}
+
+		String sqlId="  select P.id from t_Payment P WHERE 1=1 "+where+" ";    		
+		
+//		List<Payment> lPayments=paymentBIZ.getPaymentByHql(hql);	
+//		StringBuilder sb=new StringBuilder();
+//		for (Payment payment : lPayments) {
+//			 sb.append("'").append(payment.getId()).append("'").append(",");  
+//		}
+		String sql=" select * from v_po where id in("+sqlId+") ";
+		
+		if (downloadType!=null&&!downloadType.equals("")) {
+			if (downloadType.equals("1")) {
+				sql+=" order by PONo ";
+			}else {
+				sql+=" order by supplierCode ";
+			}
+		}
+
+		
+		int total=paymentBIZ.getPaymentPO(sql).size();
+		List<PaymentPO> list=paymentBIZ.getPaymentPO(sql, Integer.parseInt(pageSize), Integer.parseInt(pageCurrent));
+		
+		queryResult.setList(list);
+		queryResult.setTotalRow(total);
+		queryResult.setFirstPage(Integer.parseInt(pageCurrent)==1?true:false);
+		queryResult.setPageNumber(Integer.parseInt(pageCurrent));
+		queryResult.setLastPage(total/Integer.parseInt(pageSize) +1==Integer.parseInt(pageCurrent)&&Integer.parseInt(pageCurrent)!=1?true:false);
+		queryResult.setTotalPage(total/Integer.parseInt(pageSize) +1);
+		queryResult.setPageSize(Integer.parseInt(pageSize));
+		String r=callback+"("+new Gson().toJson(queryResult)+")";
+		
+		reslutJson=new ByteArrayInputStream(r.getBytes("UTF-8")); 
+		
+		return SUCCESS;
+		
+		
+		
+		
+	}
 	
 	
 	
@@ -1412,21 +1495,21 @@ public class PaymentAction extends ActionBase {
 	})})
 	public String downloadOfPD() throws UnsupportedEncodingException{
 		try {
-			List<HeadColumn> lColumns=new ArrayList<>();
-			lColumns.add(new HeadColumn("PONo", "80", "right", "PO"));
-			lColumns.add(new HeadColumn("amountInFigures", "80", "right", "Total Amounts"));
-			lColumns.add(new HeadColumn("amount", "80", "right", "Amounts"));
-			lColumns.add(new HeadColumn("currency", "80", "right", "Currency"));
-			lColumns.add(new HeadColumn("code", "80", "right", "Sequence"));
-			lColumns.add(new HeadColumn("applicant", "80", "right", "Applicant"));
-			lColumns.add(new HeadColumn("supplierCode", "80", "right", "Supplier Code"));
-			lColumns.add(new HeadColumn("beneficiaryE", "150", "right", "Company Name-English"));
-			lColumns.add(new HeadColumn("applicationDate", "80", "right", "Application Date"));
-			lColumns.add(new HeadColumn("requestPaymentDate", "80", "right", "Required Payment Date"));
-			lColumns.add(new HeadColumn("contacturalPaymentDate", "80", "right", "Contractual Payment Date"));
-			lColumns.add(new HeadColumn("paidDate", "80", "right", "Actual Paid Date"));
+//			List<HeadColumn> lColumns=new ArrayList<>();
+//			lColumns.add(new HeadColumn("PONo", "80", "right", "PO"));
+//			lColumns.add(new HeadColumn("amountInFigures", "80", "right", "Total Amounts"));
+//			lColumns.add(new HeadColumn("amount", "80", "right", "Amounts"));
+//			lColumns.add(new HeadColumn("currency", "80", "right", "Currency"));
+//			lColumns.add(new HeadColumn("code", "80", "right", "Sequence"));
+//			lColumns.add(new HeadColumn("applicant", "80", "right", "Applicant"));
+//			lColumns.add(new HeadColumn("supplierCode", "80", "right", "Supplier Code"));
+//			lColumns.add(new HeadColumn("beneficiaryE", "150", "right", "Company Name-English"));
+//			lColumns.add(new HeadColumn("applicationDate", "80", "right", "Application Date"));
+//			lColumns.add(new HeadColumn("requestPaymentDate", "80", "right", "Required Payment Date"));
+//			lColumns.add(new HeadColumn("contacturalPaymentDate", "80", "right", "Contractual Payment Date"));
+//			lColumns.add(new HeadColumn("paidDate", "80", "right", "Actual Paid Date"));
 
-		
+			List<HeadColumn> lColumns=new Gson().fromJson(thead, new TypeToken<ArrayList<HeadColumn>>() {}.getType());
 
 			
 			String where="";
@@ -1469,18 +1552,22 @@ public class PaymentAction extends ActionBase {
 				where += " AND P.paymentTerm='"+paymentTerm+"'";
 			}
 
-			String hql="  select P from Payment P WHERE 1=1 "+where+" order By P.dateTemp desc";    		
+			String sqlId="  select P.id from t_Payment P WHERE 1=1 "+where+" ";    		 		
 			
-			List<Payment> lPayments=paymentBIZ.getPaymentByHql(hql);	
-			StringBuilder sb=new StringBuilder();
-			for (Payment payment : lPayments) {
-				 sb.append("'").append(payment.getId()).append("'").append(",");  
-			}
-			String sql=" select * from v_po where id in("+sb.toString().substring(0, sb.length() - 1)+") ";
-			if (downloadType.equals("1")) {
-				sql+=" order by PONo ";
-			}else {
-				sql+=" order by supplierCode ";
+//			List<Payment> lPayments=paymentBIZ.getPaymentByHql(hql);	
+//			StringBuilder sb=new StringBuilder();
+//			for (Payment payment : lPayments) {
+//				 sb.append("'").append(payment.getId()).append("'").append(",");  
+//			}
+			
+			
+			String sql=" select * from v_po where id in("+sqlId+") ";
+			if (downloadType!=null&&!downloadType.equals("")) {
+				if (downloadType.equals("1")) {
+					sql+=" order by PONo ";
+				}else {
+					sql+=" order by supplierCode ";
+				}
 			}
 			
 			List<PaymentPO> lPaymentPOs=paymentBIZ.getPaymentPO(sql);

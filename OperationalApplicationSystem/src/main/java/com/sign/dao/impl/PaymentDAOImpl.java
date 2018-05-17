@@ -75,6 +75,14 @@ public class PaymentDAOImpl extends HibernateDaoSupport implements PaymentDAO {
 		return dataTopaymentPo(list);
 	}
 
+	
+	@Override
+	public List<PaymentPO> queryPaymentPOSql(String sql, Integer pageSize, Integer pageCurrent) {
+		Session session=this.getSessionFactory().openSession();	
+        List list = session.createSQLQuery(sql).setFirstResult((pageCurrent-1)*pageSize).setMaxResults(pageSize).list();  
+		return dataTopaymentPo(list);
+	}
+
 	@Override
 	public List<PaymentPO> queryPaymentPO(String where) {
 		Session session=this.getSessionFactory().openSession();
