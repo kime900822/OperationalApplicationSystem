@@ -30,8 +30,6 @@ function datagrid_tree_operation() {
         <thead>
             <tr>            	
                 <th data-options="{render:datagrid_tree_operation,align:'center'}">Operation</th>
-            	<th data-options="{name:'id',width:150,align:'center',finalWidth:'true',hide:'true'}">id</th>
-            	<th data-options="{name:'ids',width:150,align:'center',finalWidth:'true',hide:'true'}">ids</th>
             	<th data-options="{name:'week',width:150,align:'center',finalWidth:'true'}">Week</th>            	  
 			</tr>
         </thead>

@@ -10,6 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -1246,9 +1247,17 @@ public class PaymentAction extends ActionBase {
 		
 		
 		int total=paymentBIZ.getPaidWeek("").size();
-		List<PaymentWeek> list=paymentBIZ.getPaidWeek("",Integer.valueOf(pageSize),Integer.valueOf(pageCurrent));
+		List<String> list=paymentBIZ.getPaidWeek("",Integer.valueOf(pageSize),Integer.valueOf(pageCurrent));
+		List<PaymentWeek> lPaymentWeeks=new ArrayList<>();
 		
-		queryResult.setList(list);
+		for (String tmp : list) {
+			PaymentWeek paymentWeek=new PaymentWeek();
+			paymentWeek.setWeek(tmp);
+			lPaymentWeeks.add(paymentWeek);
+		}
+		
+		
+		queryResult.setList(lPaymentWeeks);
 		queryResult.setTotalRow(total);
 		queryResult.setFirstPage(Integer.parseInt(pageCurrent)==1?true:false);
 		queryResult.setPageNumber(Integer.parseInt(pageCurrent));
@@ -1272,7 +1281,7 @@ public class PaymentAction extends ActionBase {
 			return SUCCESS;
 		}
 
-		List<PaymentPO> lPaymentPOs=paymentBIZ.getPaymentPO(" select * from v_po where id in("+week+")");
+		List<PaymentPO> lPaymentPOs=paymentBIZ.getPaymentPO(" select * from v_po where id in( select pid from t_payment_week where week='"+week+"')");
 		reslutJson=new ByteArrayInputStream(new Gson().toJson(lPaymentPOs).getBytes("UTF-8"));  
 		return SUCCESS;
 	}
@@ -1371,8 +1380,9 @@ public class PaymentAction extends ActionBase {
 	        	response.setHeader("Set-Cookie", "fileDownload=true; path=/");
 				return SUCCESS;
 			}
+
 		    
-		    List<PaymentPO> lPaymentPOs=paymentBIZ.getWeeklyPayment(sb.toString().substring(0, sb.length() - 1));
+		    List<PaymentPO> lPaymentPOs=paymentBIZ.getWeeklyPayment(ids);
         	Class c = (Class) new PaymentPO().getClass();  
         	ByteArrayOutputStream os=PDFUtil.exportPDF("Weekly Report", c, lPaymentPOs, "yyy-MM-dd",lColumns);
         	byte[] fileContent = os.toByteArray();

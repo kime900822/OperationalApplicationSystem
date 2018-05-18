@@ -22,19 +22,8 @@ public class PaymentWeek {
 	private String week;
 	
 	@Column
-	private String ids;
+	private String pid;
 
-	@Column
-	private String bankNo;
-
-	
-	public String getBankNo() {
-		return bankNo;
-	}
-
-	public void setBankNo(String bankNo) {
-		this.bankNo = bankNo;
-	}
 
 	public String getId() {
 		return id;
@@ -52,13 +41,15 @@ public class PaymentWeek {
 		this.week = week;
 	}
 
-	public String getIds() {
-		return ids;
+	public String getPid() {
+		return pid;
 	}
 
-	public void setIds(String ids) {
-		this.ids = ids;
+	public void setPid(String pid) {
+		this.pid = pid;
 	}
+
+
 	
 	
 

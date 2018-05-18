@@ -17,5 +17,9 @@ public interface PaymentWeekDAO {
 	public List<PaymentWeek> query(String where);
 
 	public List<PaymentWeek> query(String where,Integer pageSize,Integer pageCurrent);
+
+	List queryWeek(String where);
+
+	List queryWeek(String where, Integer pageSize, Integer pageCurrent);
 	
 }

@@ -48,7 +48,7 @@ public interface PaymentBIZ {
 	
 	public void financeRejectPayment(String[] ids,String message,User user) throws Exception;
 	
-	public List<PaymentPO> getWeeklyPayment(String ids);
+	public List<PaymentPO> getWeeklyPayment(String[] ids);
 	
 	public List<PaymentPO> getPaymentPO(String sql);
 	
@@ -58,9 +58,9 @@ public interface PaymentBIZ {
 
 	void mailInformPayment(String[] ids) throws Exception;
 
-	List<PaymentWeek> getPaidWeek(String where);
+	List getPaidWeek(String where);
 	
-	List<PaymentWeek> getPaidWeek(String where, Integer pageSize, Integer pageCurrent);
+	List getPaidWeek(String where, Integer pageSize, Integer pageCurrent);
 
 	void paidPayment(List<Payment> list) throws Exception;
 }

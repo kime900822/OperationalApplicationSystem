@@ -10,7 +10,7 @@
 <div class="bjui-pageContent" id="div-user">
     <table class="table table-bordered" id="datagrid-paymentWeek-payment-paid-view-filter" data-toggle="datagrid" data-options="{
         height: '100%',
-        postData:{week:'${param.ids}'},
+        postData:{week:'${param.week}'},
         gridTitle : 'PaymentWeek Report',
         dataUrl: 'getPaymentWeek.action',
         local: 'local',
