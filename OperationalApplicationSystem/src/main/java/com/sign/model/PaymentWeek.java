@@ -13,25 +13,15 @@ import org.springframework.stereotype.Component;
 @Entity @Table(name = "t_payment_week")
 public class PaymentWeek {
 	
-	@Id
-	@GeneratedValue(generator="uuid")
-	@GenericGenerator(name = "uuid", strategy = "uuid")
-	private String id;
 	
 	@Column
 	private String week;
 	
-	@Column
+	@Id
+	@GeneratedValue(generator="assigned")
+	@GenericGenerator(name = "assigned", strategy = "assigned")
 	private String pid;
 
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
 
 	public String getWeek() {
 		return week;

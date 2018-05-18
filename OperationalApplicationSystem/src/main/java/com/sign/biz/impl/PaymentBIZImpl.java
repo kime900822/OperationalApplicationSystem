@@ -326,16 +326,7 @@ public class PaymentBIZImpl extends BizBase implements PaymentBIZ {
 			paymentWeekDAO.save(paymentWeek);
 			
 		}
-//		List<PaymentWeek> lPaymentWeeks=paymentWeekDAO.query(" where week='"+CommonUtil.getWeek()+"' ");
-//		if (lPaymentWeeks.size()>0) {
-//			lPaymentWeeks.get(0).setIds(lPaymentWeeks.get(0).getIds()+","+sb.toString().substring(0, sb.length() - 1).replace("'", "\\'"));
-//			paymentWeekDAO.update(lPaymentWeeks.get(0));
-//		}else {
-//			PaymentWeek paymentWeek=new PaymentWeek();
-//			paymentWeek.setIds(sb.toString().substring(0, sb.length() - 1).replace("'", "\\'"));
-//			paymentWeek.setWeek(CommonUtil.getWeek());
-//			paymentWeekDAO.save(paymentWeek);
-//		}
+
 		
 	}
 	
