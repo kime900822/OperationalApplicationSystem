@@ -1287,6 +1287,11 @@ public class PaymentAction extends ActionBase {
 	}
 	
 	
+	
+	
+	
+	
+	
 	@Action(value="exportPaymentWeekExcel",results={@org.apache.struts2.convention.annotation.Result(type="stream",
 	params={
 			"inputName", "reslutJson",
@@ -1297,11 +1302,23 @@ public class PaymentAction extends ActionBase {
 	public String exportPaymentWeekExcel() throws UnsupportedEncodingException{
 		try {
 
-			List<HeadColumn> lHeadColumns=new Gson().fromJson(thead, new TypeToken<ArrayList<HeadColumn>>() {}.getType());        	
-			List<PaymentPO> lPaymentPOs=paymentBIZ.getPaymentPO(" select * from v_po where id in("+week+")");
+			List<HeadColumn> lHeadColumns=new ArrayList<>();
+			lHeadColumns.add(new HeadColumn("paidDate", "80", "right", "Actual paid Date"));
+			lHeadColumns.add(new HeadColumn("amount", "80", "right", "PO Amount"));
+			lHeadColumns.add(new HeadColumn("beneficiaryE", "80", "right", "Ename"));
+			lHeadColumns.add(new HeadColumn("usageDescription", "80", "right", "Usage Description"));
+			lHeadColumns.add(new HeadColumn("applicant", "80", "right", "Applicant"));
+			lHeadColumns.add(new HeadColumn("PONo", "80", "right", "PO"));
+			lHeadColumns.add(new HeadColumn("supplierCode", "80", "right", "Supplier Code"));
+			lHeadColumns.add(new HeadColumn("code", "80", "right", "Sequence"));
+			lHeadColumns.add(new HeadColumn("currency", "80", "right", "Currency"));
+			
+			
+			//List<HeadColumn> lHeadColumns=new Gson().fromJson(thead, new TypeToken<ArrayList<HeadColumn>>() {}.getType());        	
+			List<PaymentPO> lPaymentPOs=paymentBIZ.getPaymentPO(" select * from v_po where id in( select pid from t_payment_week where week='"+week+"')");
 
-        	Class c = (Class) new PaymentWeek().getClass();  
-        	ByteArrayOutputStream os=PDFUtil.exportPDF("Paid Report", c, lPaymentPOs, "yyy-MM-dd",lHeadColumns);
+        	Class c = (Class) new PaymentPO().getClass();  
+        	ByteArrayOutputStream os=ExcelUtil.exportExcel("Paid Report", c, lPaymentPOs, "yyy-MM-dd",lHeadColumns);
         	byte[] fileContent = os.toByteArray();
         	ByteArrayInputStream is = new ByteArrayInputStream(fileContent);
         	   	
@@ -1310,7 +1327,7 @@ public class PaymentAction extends ActionBase {
         	response.setHeader("Set-Cookie", "fileDownload=true; path=/");
         	
     		SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");		 
-    		fileName = "Payment"+sf.format(new Date()).toString()+ ".pdf";
+    		fileName = "Payment_"+week+ ".xls";
     		fileName= new String(fileName.getBytes(), "ISO8859-1");
     		//文件流
             reslutJson = is;            
@@ -1357,13 +1374,13 @@ public class PaymentAction extends ActionBase {
 		try {
 			List<HeadColumn> lColumns=new ArrayList<>();
 			lColumns.add(new HeadColumn("code", "80", "right", "Sequence No."));
-			lColumns.add(new HeadColumn("applicant", "80", "right", "Applicant"));
+			lColumns.add(new HeadColumn("applicant", "150", "right", "Applicant"));
 			lColumns.add(new HeadColumn("did", "80", "right", "Business Unit"));
 			lColumns.add(new HeadColumn("amountInFigures", "80", "right", "Total Amount"));
-			lColumns.add(new HeadColumn("usageDescription", "80", "right", "Usage Description"));
+			lColumns.add(new HeadColumn("usageDescription", "400", "right", "Usage Description"));
 			lColumns.add(new HeadColumn("amount", "80", "right", "PO Amount"));
 			lColumns.add(new HeadColumn("supplierCode", "80", "right", "Supplier Code"));
-			lColumns.add(new HeadColumn("beneficiaryE", "80", "right", "Ename"));
+			lColumns.add(new HeadColumn("beneficiaryE", "30", "right", "Ename"));
 
 			String[] ids=new Gson().fromJson(json, String[].class);
 			StringBuffer sb = new StringBuffer();  
@@ -1384,7 +1401,7 @@ public class PaymentAction extends ActionBase {
 		    
 		    List<PaymentPO> lPaymentPOs=paymentBIZ.getWeeklyPayment(ids);
         	Class c = (Class) new PaymentPO().getClass();  
-        	ByteArrayOutputStream os=PDFUtil.exportPDF("Weekly Report", c, lPaymentPOs, "yyy-MM-dd",lColumns);
+        	ByteArrayOutputStream os=ExcelUtil.exportExcel("Weekly Report", c, lPaymentPOs, "yyy-MM-dd",lColumns);
         	byte[] fileContent = os.toByteArray();
         	ByteArrayInputStream is = new ByteArrayInputStream(fileContent);
         	   	
@@ -1393,7 +1410,7 @@ public class PaymentAction extends ActionBase {
         	response.setHeader("Set-Cookie", "fileDownload=true; path=/");
         	
     		SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");		 
-    		fileName = "Payment"+sf.format(new Date()).toString()+ ".pdf";
+    		fileName = "Payment"+sf.format(new Date()).toString()+ ".xls";
     		fileName= new String(fileName.getBytes(), "ISO8859-1");
     		//文件流
             reslutJson = is;            

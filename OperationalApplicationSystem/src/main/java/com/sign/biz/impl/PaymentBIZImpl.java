@@ -352,6 +352,7 @@ public class PaymentBIZImpl extends BizBase implements PaymentBIZ {
 	       lPaymentPOs.add(paymentPO);
 	       List<PaymentPO> list=getPaymentPO(" select * From v_po where id ='"+ids[i]+"' ");
 	       for (int j = 0; j < list.size(); j++) {
+	    	   list.get(j).setUsageDescription(list.get(j).getPONo()+" "+list.get(j).getUsageDescription());
 	    	   list.get(j).setCode("");
 	    	   list.get(j).setApplicant("");
 	    	   list.get(j).setDid("");

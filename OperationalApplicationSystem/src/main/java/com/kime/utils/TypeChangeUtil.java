@@ -30,6 +30,10 @@ public class TypeChangeUtil {
 		if (s == null || s.length() < 1) {
 			return "";
 		}
+		if (s.indexOf(",")>0) {
+			return s;
+		}
+		
 		NumberFormat formater = null;
 		double num = Double.parseDouble(s);
 		

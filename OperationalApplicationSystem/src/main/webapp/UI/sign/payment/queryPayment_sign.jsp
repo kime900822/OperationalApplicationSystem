@@ -109,7 +109,7 @@ function deleteAgentEmployee(){
     <table class="table table-bordered" id="datagrid-user-filter" data-toggle="datagrid" data-options="{
         height: '100%',
         gridTitle : 'Payment management',
-        dataUrl: 'getPayment.action?viewtype=sign',
+        dataUrl: 'getPayment.action?queryType=sign',
         dataType: 'jsonp',
         editMode: {navtab:{width:'830',height:800,title:'Edit Payment',mask:true,fresh:true}},
         delUrl:'deleteUser.action',

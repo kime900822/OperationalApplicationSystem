@@ -903,6 +903,14 @@ function changeAmount(){
 	var amount6=$.CurrentNavtab.find("#j_payment_amount_6_t").val().replace(/\,/g, "").replace(" ", "");
 	var amount7=$.CurrentNavtab.find("#j_payment_advanceWriteOffAmount_t").val().replace(/\,/g, "").replace(" ", "");
 	
+	$.CurrentNavtab.find("#j_payment_amount_1").val(amount1);
+	$.CurrentNavtab.find("#j_payment_amount_2").val(amount2);
+	$.CurrentNavtab.find("#j_payment_amount_3").val(amount3);
+	$.CurrentNavtab.find("#j_payment_amount_4").val(amount4);
+	$.CurrentNavtab.find("#j_payment_amount_5").val(amount5);
+	$.CurrentNavtab.find("#j_payment_amount_6").val(amount6);
+	$.CurrentNavtab.find("#j_payment_advanceWriteOffAmount").val(amount7);	
+	
 	var c1=$.CurrentNavtab.find("#j_payment_amount_1_t").val(formatCurrency(amount1)).val()
 	var c2=$.CurrentNavtab.find("#j_payment_amount_2_t").val(formatCurrency(amount2)).val()
 	var c3=$.CurrentNavtab.find("#j_payment_amount_3_t").val(formatCurrency(amount3)).val()
