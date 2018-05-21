@@ -666,7 +666,11 @@ function showButton(state,print,uid,documentAuditid,deptManagerid){
 		$.CurrentNavtab.find('#payment-reject').hide();
 		$.CurrentNavtab.find('#payment-assign').hide();
 		$.CurrentNavtab.find('#payment-acc').hide();
-		$.CurrentNavtab.find('#payment-print').hide();
+		if(print=='1'){
+			$.CurrentNavtab.find('#payment-delete').hide();
+		}else{
+			$.CurrentNavtab.find('#payment-delete').show();
+		}
 		$.CurrentNavtab.find('#payment-invalid-tr').hide();
 		$.CurrentNavtab.find('#payment-return-tr').hide();	
 		$.CurrentNavtab.find('#payment-delete').hide();

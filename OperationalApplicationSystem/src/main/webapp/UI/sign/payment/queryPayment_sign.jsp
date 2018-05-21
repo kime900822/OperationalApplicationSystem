@@ -113,7 +113,7 @@ function deleteAgentEmployee(){
         dataType: 'jsonp',
         editMode: {navtab:{width:'830',height:800,title:'Edit Payment',mask:true,fresh:true}},
         delUrl:'deleteUser.action',
-        editUrl: 'sign/payment/paymentform_show.jsp',
+        editUrl: 'sign/payment/paymentform_show.jsp?viewtype=sign',
         paging: {pageSize:30, pageCurrent:1},
         linenumberAll: true,
         contextMenuB: true,

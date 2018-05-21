@@ -212,7 +212,24 @@ function fileToTr(name,path){
 
 
 function showButton(state,print,uid,documentAuditid,deptManagerid){	
-	if(state=="4"){//财务处理完成  非财务人员查看。可打印
+	if('${param.viewtype}'=='admin'){
+		if((state=="0"||state=="1")&&print!='1'){
+			$.CurrentNavtab.find('#payment-delete').show();
+			$.CurrentNavtab.find('#payment-print').hide();
+		}else{
+			$.CurrentNavtab.find('#payment-delete').hide();
+			$.CurrentNavtab.find('#payment-print').show();
+		}
+		$.CurrentNavtab.find('#upfile_other').hide();
+		$.CurrentNavtab.find('#upfile_contract').hide();
+		$.CurrentNavtab.find('#upfile_invoice').hide();
+		$.CurrentNavtab.find('#payment-approve').hide();
+		$.CurrentNavtab.find('#payment-reject').hide();
+		$.CurrentNavtab.find('#payment-assign').hide();
+		$.CurrentNavtab.find('#payment-acc').hide();
+		$.CurrentNavtab.find('#payment-invalid-tr').hide();
+		$.CurrentNavtab.find('#payment-return-tr').hide();	
+	}else if(state=="4"){//财务处理完成  非财务人员查看。可打印
 		$.CurrentNavtab.find('#payment-approve').hide();
 		$.CurrentNavtab.find('#payment-reject').hide();
 		$.CurrentNavtab.find('#payment-assign').hide();
@@ -240,7 +257,7 @@ function showButton(state,print,uid,documentAuditid,deptManagerid){
 		$.CurrentNavtab.find('#payment-invalid-tr').show();
 		$.CurrentNavtab.find('#payment-return-tr').show();	
 		$.CurrentNavtab.find('#j_payment_documentAudit').val('${user.name}')
- 	}else if(state=="2"&&documentAuditid!='${user.uid}'){//审批通过 普通员工打印
+ 	}else if(state=="2"&&(deptManagerid=='${user.uid}'||'{param.viewtype}'=='sign')){//审批通过 普通员工打印
 		$.CurrentNavtab.find('#payment-approve').hide();
 		$.CurrentNavtab.find('#payment-reject').hide();
 		$.CurrentNavtab.find('#payment-assign').hide();
@@ -265,11 +282,15 @@ function showButton(state,print,uid,documentAuditid,deptManagerid){
 		$.CurrentNavtab.find('#payment-invalid-tr').hide();
 		$.CurrentNavtab.find('#payment-return-tr').hide();	
 	}else{
+		if(print=='1'){
+			$.CurrentNavtab.find('#payment-delete').hide();
+		}else{
+			$.CurrentNavtab.find('#payment-delete').show();
+		}
 		$.CurrentNavtab.find('#payment-approve').hide();
 		$.CurrentNavtab.find('#payment-reject').hide();
 		$.CurrentNavtab.find('#payment-assign').hide();
 		$.CurrentNavtab.find('#payment-acc').hide();
-		$.CurrentNavtab.find('#payment-print').hide();
 		$.CurrentNavtab.find('#payment-invalid-tr').hide();
 		$.CurrentNavtab.find('#payment-return-tr').hide();	
 
