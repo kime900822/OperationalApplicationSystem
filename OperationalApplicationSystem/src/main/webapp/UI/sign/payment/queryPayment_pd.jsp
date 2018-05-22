@@ -49,46 +49,10 @@ function datagrid_paymentState() {
         		<input type="text" name="UID" value="" id="q_payment_UID" size="15">
         		</td>
         		<td width="80px">
-        		<span>Urgent：</span>
+        		<span>Status:</span>
         		</td>
-        		<td width="80px">
-            		<select name="urgent" data-toggle="selectpicker" id="q_payment_urgent"  data-width="80px">
-		              <option value=""></option>
-		              <option value="1">Y</option>
-		              <option value="0">N</option>
-	            	</select>
-        		</td>
-        	</tr>    
-        	<tr>
-        		<td colspan="8" height="10px"></td>
-        	</tr>
-        	<tr>
-        		<td>
-        		<span>Payment Subject：</span>
-        		</td>
-        		<td>
-            	<select name="paymentSubject" data-toggle="selectpicker" id="q_payment_paymentSubject"  data-width="200px">
-	              <option value=""></option>
-	              <option value="1">Fixed Asset 固定资产</option>
-	              <option value="2">Raw Material 原材料</option>
-	              <option value="3">Consumable 消耗品</option>
-	              <option value="4">Subcontractor 外包</option>
-	              <option value="5">Service 服务</option>
-	              <option value="6">Petty Cash备用金</option>
-	              <option value="7">Other 其他</option>
-            	</select>
-        		</td>
-        		<td>
-        		<span>BU NO：</span>
-        		</td>
-        		<td>
-            	<input type="text" name="departmentID" class="form-control" size="15" data-rule="number" >
-        		</td>
-        		<td>
-        		<span>Status</span>
-        		</td>
-        		<td>
-            	<select name="state" data-toggle="selectpicker" id="q_payment_state"  data-width="80px">
+        		<td width="150px">
+            	<select name="state" data-toggle="selectpicker" id="q_payment_state"  data-width="150px">
 	              <option value="" >all</option>
 	              <option value="0">Submit Required</option>
 	              <option value="1">Manager Approval</option>
@@ -101,6 +65,30 @@ function datagrid_paymentState() {
 	              <option value="8">Payment Completed</option>
             	</select>
         		</td>
+        	</tr>    
+        	<tr>
+        		<td colspan="8" height="10px"></td>
+        	</tr>
+        	<tr>
+        		<td>
+        		<span>Payment Date：</span>
+        		</td>
+        		<td>
+	           		<input type="text" name="paymentDate_f"  data-nobtn="true"  id="q_payment_paymentDate_f" value="" data-toggle="datepicker" size="9" data-rule="date">to:
+	            	<input type="text" name="paymentDate_t"  data-nobtn="true"  id="q_payment_paymentDate_t" value="" data-toggle="datepicker" size="9" data-rule="date">
+        		</td>
+        		<td>
+        		<span>BU NO：</span>
+        		</td>
+        		<td>
+            		<input type="text" name="departmentID" class="form-control" size="15"  >
+        		</td>
+        		<td>
+        		<span>PO Number：</span>
+        		</td>
+        		<td>
+            		<input type="text" name="poNo" value="" id="q_payment_poNo" size="15">
+        		</td>
         		<td colspan="2" align="center">
         		<div class="btn-group">
                 <button type="submit" class="btn-green" data-icon="search">Search</button>
@@ -111,15 +99,35 @@ function datagrid_paymentState() {
         	<tr>	<td colspan="8" height="10px"></td></tr>
         	<tr>
         		<td>
+        			<span>Payment Method：</span>
+        		</td>
+        		<td>
+        			 <select name="paymentTerm" data-toggle="selectpicker" id="j_payment_paymentTerm"   data-width="200px" onchange="changePaymentTerm();" >
+	                    <option value="" >all</option>
+	                    <option value="1">Advance 预付款</option>
+	                    <option value="2">Payment at sight 见票即付</option>
+	                    <option value="3">Upon receiving 收货后</option>
+	                    <option value="4">Upon Approval 验收后</option>
+	                    <option value="5">Upon invoice 见票后</option>
+	                    <option value="6">Other 其他</option>
+	               	</select>
+        		</td>
+        		<td>
+        			<span>Supplier Code：</span>
+        		</td>
+        		<td>
+        			 <input type="text" name="supplierCode" class="form-control" size="15"  >
+        		</td>
+        		<td>
         			<span>SORT：</span>
         		</td>
         		<td>
-        		   <select name="downloadType" data-toggle="selectpicker" id="q_payment_download_type"  data-width="200px">
+        		   <select name="downloadType" data-toggle="selectpicker" id="q_payment_download_type"  data-width="150px">
 		              <option value="1" selected>PO</option>
 		              <option value="2">Supplier Code</option>
 	            	</select>
         		</td>
-        		<td colspan="6"></td>
+        		<td colspan="2"></td>
         	</tr> 
  
         </table>

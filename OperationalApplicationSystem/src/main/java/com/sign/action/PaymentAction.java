@@ -188,12 +188,33 @@ public class PaymentAction extends ActionBase {
 	private String paidDate;
 	private String paidDate_f;
 	private String paidDate_t;
+	private String paymentDate_f;
+	private String paymentDate_t;
 	private String gmDate_f;
 	private String gmDate_t;
 	private String downloadType;
+	private String poNo;
 	
 	
 	
+	public String getPoNo() {
+		return poNo;
+	}
+	public void setPoNo(String poNo) {
+		this.poNo = poNo;
+	}
+	public String getPaymentDate_f() {
+		return paymentDate_f;
+	}
+	public void setPaymentDate_f(String paymentDate_f) {
+		this.paymentDate_f = paymentDate_f;
+	}
+	public String getPaymentDate_t() {
+		return paymentDate_t;
+	}
+	public void setPaymentDate_t(String paymentDate_t) {
+		this.paymentDate_t = paymentDate_t;
+	}
 	public String getGmDate_f() {
 		return gmDate_f;
 	}
@@ -1446,6 +1467,12 @@ public class PaymentAction extends ActionBase {
 		if (!"".equals(paidDate_t)&&paidDate_t!=null) {
 			where += " AND P.paidDate <= '"+paidDate_t+"'";
 		}
+		if (!"".equals(paymentDate_f)&&paymentDate_f!=null) {
+			where += " AND P.requestPaymentDate>='"+paymentDate_f+"'";
+		}
+		if (!"".equals(paymentDate_t)&&paymentDate_t!=null) {
+			where += " AND P.requestPaymentDate <= '"+paymentDate_t+"'";
+		}
 		if (!"".equals(code)&&code!=null) {
 			where += " AND P.code = '"+code+"'";
 		}
@@ -1471,15 +1498,20 @@ public class PaymentAction extends ActionBase {
 		if (!"".equals(paymentTerm)&&paymentTerm!=null) {
 			where += " AND P.paymentTerm='"+paymentTerm+"'";
 		}
+		if (!"".equals(supplierCode)&&supplierCode!=null) {
+			where += " AND P.supplierCode like '%"+supplierCode+"%' ";
+		}
 
 		String sqlId="  select P.id from t_Payment P WHERE 1=1 "+where+" ";    		
 		
-//		List<Payment> lPayments=paymentBIZ.getPaymentByHql(hql);	
-//		StringBuilder sb=new StringBuilder();
-//		for (Payment payment : lPayments) {
-//			 sb.append("'").append(payment.getId()).append("'").append(",");  
-//		}
-		String sql=" select * from v_po where id in("+sqlId+") ";
+		String sqlw="";
+		
+		if (!"".equals(poNo)&&poNo!=null) {
+			sqlw += " AND PONo like '%"+poNo+"%' ";
+		}
+		
+		
+		String sql=" select * from v_po where id in("+sqlId+") "+sqlw;
 		
 		if (downloadType!=null&&!downloadType.equals("")) {
 			if (downloadType.equals("1")) {
