@@ -1585,6 +1585,12 @@ public class PaymentAction extends ActionBase {
 			if (!"".equals(paidDate_t)&&paidDate_t!=null) {
 				where += " AND P.paidDate <= '"+paidDate_t+"'";
 			}
+			if (!"".equals(paymentDate_f)&&paymentDate_f!=null) {
+				where += " AND P.requestPaymentDate>='"+paymentDate_f+"'";
+			}
+			if (!"".equals(paymentDate_t)&&paymentDate_t!=null) {
+				where += " AND P.requestPaymentDate <= '"+paymentDate_t+"'";
+			}
 			if (!"".equals(code)&&code!=null) {
 				where += " AND P.code = '"+code+"'";
 			}
@@ -1610,6 +1616,10 @@ public class PaymentAction extends ActionBase {
 			if (!"".equals(paymentTerm)&&paymentTerm!=null) {
 				where += " AND P.paymentTerm='"+paymentTerm+"'";
 			}
+			if (!"".equals(supplierCode)&&supplierCode!=null) {
+				where += " AND P.supplierCode like '%"+supplierCode+"%' ";
+			}
+
 
 			String sqlId="  select P.id from t_Payment P WHERE 1=1 "+where+" ";    		 		
 			
@@ -1619,8 +1629,13 @@ public class PaymentAction extends ActionBase {
 //				 sb.append("'").append(payment.getId()).append("'").append(",");  
 //			}
 			
+			String sqlw="";
 			
-			String sql=" select * from v_po where id in("+sqlId+") ";
+			if (!"".equals(poNo)&&poNo!=null) {
+				sqlw += " AND PONo like '%"+poNo+"%' ";
+			}
+			
+			String sql=" select * from v_po where id in("+sqlId+") "+sqlw;
 			if (downloadType!=null&&!downloadType.equals("")) {
 				if (downloadType.equals("1")) {
 					sql+=" order by PONo ";
