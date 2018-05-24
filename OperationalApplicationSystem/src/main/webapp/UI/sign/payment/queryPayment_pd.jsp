@@ -67,15 +67,15 @@ function datagrid_paymentState() {
         		</td>
         	</tr>    
         	<tr>
-        		<td colspan="8" height="10px"></td>
+        		<td colspan="8" height="5px"></td>
         	</tr>
         	<tr>
         		<td>
-        		<span>Payment Date：</span>
+        		<span>Paid Date：</span>
         		</td>
         		<td>
-	           		<input type="text" name="paymentDate_f"  data-nobtn="true"  id="q_payment_paymentDate_f" value="" data-toggle="datepicker" size="9" data-rule="date">to:
-	            	<input type="text" name="paymentDate_t"  data-nobtn="true"  id="q_payment_paymentDate_t" value="" data-toggle="datepicker" size="9" data-rule="date">
+	           		<input type="text" name="paidDate_f"  data-nobtn="true"  id="q_payment_paidDate_f" value="" data-toggle="datepicker" size="9" data-rule="date">to:
+	            	<input type="text" name="paidDate_t"  data-nobtn="true"  id="q_payment_paidDate_t" value="" data-toggle="datepicker" size="9" data-rule="date">
         		</td>
         		<td>
         		<span>BU NO：</span>
@@ -96,7 +96,7 @@ function datagrid_paymentState() {
             	</div>
         		</td>
         	</tr>
-        	<tr>	<td colspan="8" height="10px"></td></tr>
+        	<tr>	<td colspan="8" height="5px"></td></tr>
         	<tr>
         		<td>
         			<span>Payment Method：</span>

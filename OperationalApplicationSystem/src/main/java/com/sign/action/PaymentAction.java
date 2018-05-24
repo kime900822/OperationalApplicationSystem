@@ -188,8 +188,6 @@ public class PaymentAction extends ActionBase {
 	private String paidDate;
 	private String paidDate_f;
 	private String paidDate_t;
-	private String paymentDate_f;
-	private String paymentDate_t;
 	private String gmDate_f;
 	private String gmDate_t;
 	private String downloadType;
@@ -202,18 +200,6 @@ public class PaymentAction extends ActionBase {
 	}
 	public void setPoNo(String poNo) {
 		this.poNo = poNo;
-	}
-	public String getPaymentDate_f() {
-		return paymentDate_f;
-	}
-	public void setPaymentDate_f(String paymentDate_f) {
-		this.paymentDate_f = paymentDate_f;
-	}
-	public String getPaymentDate_t() {
-		return paymentDate_t;
-	}
-	public void setPaymentDate_t(String paymentDate_t) {
-		this.paymentDate_t = paymentDate_t;
 	}
 	public String getGmDate_f() {
 		return gmDate_f;
@@ -1467,12 +1453,6 @@ public class PaymentAction extends ActionBase {
 		if (!"".equals(paidDate_t)&&paidDate_t!=null) {
 			where += " AND P.paidDate <= '"+paidDate_t+"'";
 		}
-		if (!"".equals(paymentDate_f)&&paymentDate_f!=null) {
-			where += " AND P.requestPaymentDate>='"+paymentDate_f+"'";
-		}
-		if (!"".equals(paymentDate_t)&&paymentDate_t!=null) {
-			where += " AND P.requestPaymentDate <= '"+paymentDate_t+"'";
-		}
 		if (!"".equals(code)&&code!=null) {
 			where += " AND P.code = '"+code+"'";
 		}
@@ -1584,12 +1564,6 @@ public class PaymentAction extends ActionBase {
 			}
 			if (!"".equals(paidDate_t)&&paidDate_t!=null) {
 				where += " AND P.paidDate <= '"+paidDate_t+"'";
-			}
-			if (!"".equals(paymentDate_f)&&paymentDate_f!=null) {
-				where += " AND P.requestPaymentDate>='"+paymentDate_f+"'";
-			}
-			if (!"".equals(paymentDate_t)&&paymentDate_t!=null) {
-				where += " AND P.requestPaymentDate <= '"+paymentDate_t+"'";
 			}
 			if (!"".equals(code)&&code!=null) {
 				where += " AND P.code = '"+code+"'";
