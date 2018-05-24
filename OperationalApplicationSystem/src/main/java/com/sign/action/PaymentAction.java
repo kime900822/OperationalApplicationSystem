@@ -1493,12 +1493,15 @@ public class PaymentAction extends ActionBase {
 		
 		String sql=" select * from v_po where id in("+sqlId+") "+sqlw;
 		
-		if (downloadType!=null&&!downloadType.equals("")) {
-			if (downloadType.equals("1")) {
-				sql+=" order by PONo ";
-			}else {
-				sql+=" order by supplierCode ";
-			}
+//		if (downloadType!=null&&!downloadType.equals("")) {
+//			if (downloadType.equals("1")) {
+//				sql+=" order by PONo ";
+//			}else {
+//				sql+=" order by supplierCode ";
+//			}
+//		}
+		if (orders!=null&&!orders.equals("")) {
+			sql+=" order by "+orders;
 		}
 
 		
@@ -1610,12 +1613,15 @@ public class PaymentAction extends ActionBase {
 			}
 			
 			String sql=" select * from v_po where id in("+sqlId+") "+sqlw;
-			if (downloadType!=null&&!downloadType.equals("")) {
-				if (downloadType.equals("1")) {
-					sql+=" order by PONo ";
-				}else {
-					sql+=" order by supplierCode ";
-				}
+//			if (downloadType!=null&&!downloadType.equals("")) {
+//				if (downloadType.equals("1")) {
+//					sql+=" order by PONo ";
+//				}else {
+//					sql+=" order by supplierCode ";
+//				}
+//			}
+			if (orders!=null&&!orders.equals("")) {
+				sql+=" order by "+orders;
 			}
 			
 			List<PaymentPO> lPaymentPOs=paymentBIZ.getPaymentPO(sql);

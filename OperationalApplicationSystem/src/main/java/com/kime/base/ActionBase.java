@@ -39,7 +39,16 @@ public class ActionBase extends ActionSupport{
 	protected String first;
 	
 	protected String thead;
+	protected String orders;
 	
+	
+	
+	public String getOrders() {
+		return orders;
+	}
+	public void setOrders(String orders) {
+		this.orders = orders;
+	}
 	public String getThead() {
 		return thead;
 	}

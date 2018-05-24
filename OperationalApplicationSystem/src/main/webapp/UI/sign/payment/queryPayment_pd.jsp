@@ -118,7 +118,7 @@ function datagrid_paymentState() {
         		<td>
         			 <input type="text" name="supplierCode" class="form-control" size="15"  >
         		</td>
-        		<td>
+<!--         		<td>
         			<span>SORT：</span>
         		</td>
         		<td>
@@ -126,8 +126,8 @@ function datagrid_paymentState() {
 		              <option value="1" selected>PO</option>
 		              <option value="2">Supplier Code</option>
 	            	</select>
-        		</td>
-        		<td colspan="2"></td>
+        		</td> -->
+        		<td colspan="4"></td>
         	</tr> 
  
         </table>
