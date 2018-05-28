@@ -1387,7 +1387,7 @@ public class PaymentAction extends ActionBase {
 			lColumns.add(new HeadColumn("usageDescription", "400", "right", "Usage Description"));
 			lColumns.add(new HeadColumn("amount", "80", "right", "PO Amount"));
 			lColumns.add(new HeadColumn("supplierCode", "80", "right", "Supplier Code"));
-			lColumns.add(new HeadColumn("beneficiaryE", "30", "right", "Ename"));
+			lColumns.add(new HeadColumn("beneficiaryE", "300", "right", "Ename"));
 
 			String[] ids=new Gson().fromJson(json, String[].class);
 			StringBuffer sb = new StringBuffer();  

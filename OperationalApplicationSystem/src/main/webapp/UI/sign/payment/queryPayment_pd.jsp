@@ -159,13 +159,14 @@ function datagrid_paymentState() {
             	<th data-options="{name:'amount',width:100,align:'center',finalWidth:'true'}">Amounts</th>
             	<th data-options="{name:'currency',width:100,align:'center',finalWidth:'true'}">Currency</th>
             	<th data-options="{name:'code',width:100,align:'center',finalWidth:'true'}">Sequence</th>
-            	<th data-options="{name:'applicant',width:100,align:'center',finalWidth:'true'}">Applicant</th>
+				<th data-options="{name:'state',width:150,align:'center',finalWidth:'true',type:'select', items:datagrid_paymentState}">Approval Status</th>
+            	<th data-options="{name:'applicant',width:200,align:'center',finalWidth:'true'}">Applicant</th>
             	<th data-options="{name:'supplierCode',width:100,align:'center',finalWidth:'true'}">Supplier Code</th>
-            	<th data-options="{name:'beneficiaryE',width:100,align:'center',finalWidth:'true'}">Company Name-English</th>
-            	<th data-options="{name:'applicationDate',width:100,align:'center',finalWidth:'true'}">Application Date</th>
-            	<th data-options="{name:'requestPaymentDate',width:100,align:'center',finalWidth:'true'}">Required Payment Date</th>
-            	<th data-options="{name:'contacturalPaymentDate',width:100,align:'center',finalWidth:'true'}">Contractual Payment Date</th>
-            	<th data-options="{name:'paidDate',width:100,align:'center',finalWidth:'true'}">Actual Paid Date</th>
+            	<th data-options="{name:'beneficiaryE',width:300,align:'center',finalWidth:'true'}">Company Name-English</th>
+            	<th data-options="{name:'applicationDate',width:150,align:'center',finalWidth:'true'}">Application Date</th>
+            	<th data-options="{name:'requestPaymentDate',width:200,align:'center',finalWidth:'true'}">Required Payment Date</th>
+            	<th data-options="{name:'contacturalPaymentDate',width:200,align:'center',finalWidth:'true'}">Contractual Payment Date</th>
+            	<th data-options="{name:'paidDate',width:150,align:'center',finalWidth:'true'}">Actual Paid Date</th>
         
 			</tr>
         </thead>

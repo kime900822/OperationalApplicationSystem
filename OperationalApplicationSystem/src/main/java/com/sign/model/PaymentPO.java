@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Entity @Table(name = "v_po")
-public class PaymentPO {
+public class PaymentPO implements Comparable<PaymentPO> {
 	@Id
 	@GeneratedValue(generator="assigned")
 	@GenericGenerator(name = "assigned", strategy = "assigned")
@@ -27,6 +27,8 @@ public class PaymentPO {
 	private String requestPaymentDate;
 	@Column
 	private String code;
+	@Column
+	private String state;
 	@Column
 	private String applicant;
 	@Column
@@ -49,6 +51,14 @@ public class PaymentPO {
 	private String currency;
 	@Column
 	private String amount;
+	
+	
+	public String getState() {
+		return state;
+	}
+	public void setState(String state) {
+		this.state = state;
+	}
 	public String getId() {
 		return id;
 	}
@@ -150,6 +160,22 @@ public class PaymentPO {
 	}
 	public void setRequestPaymentDate(String requestPaymentDate) {
 		this.requestPaymentDate = requestPaymentDate;
+	}
+	
+	@Override
+	public int compareTo(PaymentPO o) {
+		int code1=0;
+		int code2=0;
+		
+		if (this.getCode()!=null && !this.getCode().equals("")) {
+			code1=Integer.parseInt(this.getCode());
+		}
+		if (o.getCode()!=null && !o.getCode().equals("")) {
+			code2=Integer.parseInt(o.getCode());
+		}
+		
+		int i=code1-code2;
+		return i;
 	}
 	
 	

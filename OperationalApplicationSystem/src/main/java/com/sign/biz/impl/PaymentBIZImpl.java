@@ -4,6 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
@@ -33,6 +34,8 @@ import com.sign.model.Payment;
 import com.sign.model.PaymentPO;
 import com.sign.model.PaymentWeek;
 import com.sign.other.PaymentState;
+
+import javafx.print.Collation;
 
 @Service
 @Transactional(readOnly=true)
@@ -335,38 +338,43 @@ public class PaymentBIZImpl extends BizBase implements PaymentBIZ {
 	public List<PaymentPO> getWeeklyPayment(String[] ids) {
 		
 	    List<PaymentPO> lPaymentPOs=new ArrayList<>();
+		StringBuffer sb = new StringBuffer();  
 	    for (int i = 0; i < ids.length; i++) {  
-	       Payment payment=getPayment(" where id='"+ids[i]+"' ").get(0);
-	       payment.setState(PaymentState.GMAPPROVE);
-		   payment.setGMApproveDate(CommonUtil.getDateTemp());
-		   paymentDAO.update(payment);
-	       PaymentPO paymentPO=new PaymentPO();
-	       paymentPO.setCode(payment.getCode());
-	       paymentPO.setApplicant(payment.getUID()+"-"+payment.getUName());
-	       paymentPO.setDid(payment.getDepartmentID());
-	       paymentPO.setAmountInFigures(payment.getAmountInFigures());
-	       paymentPO.setUsageDescription(payment.getUsageDescription());
-	       paymentPO.setAmount("");
-	       paymentPO.setSupplierCode(payment.getSupplierCode());
-	       paymentPO.setBeneficiaryE(payment.getBeneficiaryE());
-	       lPaymentPOs.add(paymentPO);
-	       List<PaymentPO> list=getPaymentPO(" select * From v_po where id ='"+ids[i]+"' ");
-	       for (int j = 0; j < list.size(); j++) {
-	    	   list.get(j).setUsageDescription(list.get(j).getPONo()+" "+list.get(j).getUsageDescription());
-	    	   list.get(j).setCode("");
-	    	   list.get(j).setApplicant("");
-	    	   list.get(j).setDid("");
-	    	   list.get(j).setAmountInFigures("");
-	       }
-	       lPaymentPOs.addAll(list);
-	       
+	        sb.append("'").append(ids[i]).append("'").append(",");  
 	    }  
-		
+	    
+	    List<Payment> lPayments=paymentDAO.query(" where id in ("+sb.toString().substring(0, sb.length() - 1)+") order by Code ");
+	    
+	    
+	    for (Payment payment : lPayments) {
+		       payment.setState(PaymentState.GMAPPROVE);
+			   payment.setGMApproveDate(CommonUtil.getDateTemp());
+			   paymentDAO.update(payment);
+		       PaymentPO paymentPO=new PaymentPO();
+		       paymentPO.setCode(payment.getCode());
+		       paymentPO.setApplicant(payment.getUID()+"-"+payment.getUName());
+		       paymentPO.setDid(payment.getDepartmentID());
+		       paymentPO.setAmountInFigures(payment.getAmountInFigures());
+		       paymentPO.setUsageDescription(payment.getUsageDescription());
+		       paymentPO.setAmount("");
+		       paymentPO.setSupplierCode(payment.getSupplierCode());
+		       paymentPO.setBeneficiaryE(payment.getBeneficiaryE());
+		       lPaymentPOs.add(paymentPO);
+		       List<PaymentPO> list=getPaymentPO(" select * From v_po where id ='"+payment.getId()+"' ");
+		       
+		       for (int j = 0; j < list.size(); j++) {
+		    	   list.get(j).setUsageDescription(list.get(j).getPONo()+" "+list.get(j).getUsageDescription());
+		    	   list.get(j).setCode("");
+		    	   list.get(j).setApplicant("");
+		    	   list.get(j).setDid("");
+		    	   list.get(j).setAmountInFigures("");
+		       }
+		       lPaymentPOs.addAll(list);
+		}
+
 		
 		return lPaymentPOs;
-		//return paymentDAO.queryPaymentPOSql("select * From v_po where id in ("+ids+")");
-		//return paymentDAO.queryPaymentPO(" where id in ("+ids+")");
-		
+
 		
 		
 	}
