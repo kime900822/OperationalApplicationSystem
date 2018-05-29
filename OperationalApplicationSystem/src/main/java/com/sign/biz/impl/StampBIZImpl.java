@@ -266,7 +266,7 @@ public class StampBIZImpl extends BizBase implements StampBIZ {
 				stampDAO.save(approve);
 			}
 			
-			if (stamp.getApproveHis()!=null&&stamp.getApproveHis().get(stamp.getApproveHis().size()-1).getLevel().equals(lStampApprove.get(lStampApprove.size()-1).getLevel())) {
+			if (stamp.getApproveHis()!=null&&stamp.getApproveHis().size()>0&&stamp.getApproveHis().get(stamp.getApproveHis().size()-1).getLevel().equals(lStampApprove.get(lStampApprove.size()-1).getLevel())) {
 				stamp.setState(stamp.getStampApprove().get(stamp.getStampApprove().size()-1).getName()+" Approval");
 			}else {
 				stamp.setState(stamp.getStampApprove().get(0).getName()+" Approval");

@@ -610,7 +610,9 @@ public class StampAction extends ActionBase{
 				
 				
 				if (!stamp.getId().equals("")&&stamp.getId()!=null) {
-
+					if (stamp.getState()==null||stamp.getState().equals("")) {
+						stamp.setState(StampState.SAVE);
+					}
 					
 					stamp.setDateTmp(CommonUtil.getDateTemp());
 					stampBIZ.update(stamp);				
