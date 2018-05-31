@@ -270,6 +270,8 @@ public class StampBIZImpl extends BizBase implements StampBIZ {
 				stamp.setState(stamp.getStampApprove().get(stamp.getStampApprove().size()-1).getName()+" Approval");
 			}else {
 				stamp.setState(stamp.getStampApprove().get(0).getName()+" Approval");
+				User user=userBIZ.getUser(" where uid='"+stamp.getStampApprove().get(0).getUid()+"'").get(0);
+				SendMail.SendMail(user.getEmail(), PropertiesUtil.ReadProperties(Message.MAIL_PROPERTIES, "mailTitleOfStampApprove"), MessageFormat.format(PropertiesUtil.ReadProperties(Message.MAIL_PROPERTIES, "mailContentOfStampApprove"),stamp.getApplicationCode(),stamp.getApplicant(),stamp.getUrgentReason()));
 			}
 			
 		}
