@@ -146,11 +146,14 @@ public class StampBIZImpl extends BizBase implements StampBIZ {
 					if (approveState.equals("Rejected")) {
 						stamp.setNextApprover("");
 						stamp.setState(approveHis.getName()+" Rejected");
+						User user=userBIZ.getUser(" where uid='"+stamp.getApplicantID()+"'").get(0);
+						SendMail.SendMail(user.getEmail(), PropertiesUtil.ReadProperties(Message.MAIL_PROPERTIES, "mailTitleOfStampApprove"), MessageFormat.format(PropertiesUtil.ReadProperties(Message.MAIL_PROPERTIES, "mailContentOfFinanceReject"),stamp.getApplicationCode(),approve.getUname(),comment,PropertiesUtil.ReadProperties(Message.SYSTEM_PROPERTIES, "website")));
+
 					}else{				
 						stamp.setNextApprover(stamp.getStampApprove().get(Integer.parseInt(approve.getLevel())+1).getUid());
 						stamp.setState(stamp.getStampApprove().get(Integer.parseInt(approve.getLevel())+1).getName()+" Approval");
 						User user=userBIZ.getUser(" where uid='"+stamp.getApplicantID()+"'").get(0);
-						SendMail.SendMail(user.getEmail(), PropertiesUtil.ReadProperties(Message.MAIL_PROPERTIES, "mailTitleOfStampApprove"), MessageFormat.format(PropertiesUtil.ReadProperties(Message.MAIL_PROPERTIES, "mailContentOfStampApprove"),stamp.getApplicationCode(),stamp.getApplicant(),stamp.getUrgentReason()));
+						SendMail.SendMail(user.getEmail(), PropertiesUtil.ReadProperties(Message.MAIL_PROPERTIES, "mailTitleOfStampApprove"), MessageFormat.format(PropertiesUtil.ReadProperties(Message.MAIL_PROPERTIES, "mailContentOfStampApprove"),stamp.getApplicationCode(),stamp.getApplicant(),stamp.getUsageDescription(),PropertiesUtil.ReadProperties(Message.SYSTEM_PROPERTIES, "website")));
 	
 					}
 //					if (stamp.getStampApprove().size()-2==Integer.parseInt(approve.getLevel())) {
@@ -271,7 +274,7 @@ public class StampBIZImpl extends BizBase implements StampBIZ {
 			}else {
 				stamp.setState(stamp.getStampApprove().get(0).getName()+" Approval");
 				User user=userBIZ.getUser(" where uid='"+stamp.getStampApprove().get(0).getUid()+"'").get(0);
-				SendMail.SendMail(user.getEmail(), PropertiesUtil.ReadProperties(Message.MAIL_PROPERTIES, "mailTitleOfStampApprove"), MessageFormat.format(PropertiesUtil.ReadProperties(Message.MAIL_PROPERTIES, "mailContentOfStampApprove"),stamp.getApplicationCode(),stamp.getApplicant(),stamp.getUrgentReason()));
+				SendMail.SendMail(user.getEmail(), PropertiesUtil.ReadProperties(Message.MAIL_PROPERTIES, "mailTitleOfStampApprove"), MessageFormat.format(PropertiesUtil.ReadProperties(Message.MAIL_PROPERTIES, "mailContentOfStampApprove"),stamp.getApplicationCode(),stamp.getApplicant(),stamp.getUsageDescription(),PropertiesUtil.ReadProperties(Message.SYSTEM_PROPERTIES, "website")));
 			}
 			
 		}
