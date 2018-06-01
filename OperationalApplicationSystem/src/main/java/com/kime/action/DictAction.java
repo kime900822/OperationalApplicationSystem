@@ -573,9 +573,6 @@ public class DictAction extends ActionBase{
 		
 		List<Dict> list=new Gson().fromJson(json, new TypeToken<ArrayList<Dict>>() {}.getType());
 		Dict dict=list.get(0);
-		if (dict.getId() == null||"".equals(dict.getId()) ) {
-			dict.setId(UUID.randomUUID().toString().replaceAll("-", ""));
-		}
 		dict.setType("APPROVEUSERCOLLECTION");
 
 		try {
