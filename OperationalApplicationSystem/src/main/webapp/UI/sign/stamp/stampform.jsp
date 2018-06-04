@@ -457,6 +457,11 @@ function checkSaveStamp(o){
 			err+= "Project Responsible can`t be  empty！<br>"; 
 		}
 	}
+	if($.CurrentNavtab.find("#j_stamp_urgent").is(':checked')){
+		if($.CurrentNavtab.find('#j_stamp_urgentReason').val()==null||$.CurrentNavtab.find('#j_stamp_urgentReason').val()==''){
+			err+= "Urgent Reason can`t be  empty！<br>"; 
+		}
+	}
 
 	return err;
 }
