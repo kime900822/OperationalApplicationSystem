@@ -37,6 +37,8 @@ public class LoginInterceptor extends MethodFilterInterceptor  {
 					if (!uid.equals("")&&!password.equals("")) {
 						return invocation.invoke(); 
 					}
+				}if (actionname.equals("forgetPassword")) {
+					return invocation.invoke(); 
 				}else{
 					return Action.ERROR; 
 				}
