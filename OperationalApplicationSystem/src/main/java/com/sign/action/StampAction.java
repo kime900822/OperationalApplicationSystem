@@ -548,7 +548,9 @@ public class StampAction extends ActionBase{
 					stamp.setDateTmp(CommonUtil.getDateTemp());
 					stamp.setState(StampState.SAVE);
 					stampBIZ.saveStamp(stamp);
-					
+					stamp.setState(StampState.SUBMIT);
+					stampBIZ.update(stamp);		
+					logUtil.logInfo("提交用章申请单:"+stamp.getApplicationCode());	
 				}else{
 					stamp=stampBIZ.getStampById(id);					
 					stamp.setDateTmp(CommonUtil.getDateTemp());
@@ -561,7 +563,6 @@ public class StampAction extends ActionBase{
 					}else {
 						stamp.setState(StampState.SUBMIT);
 					}
-					
 					
 					stampBIZ.update(stamp);		
 					result.setMessage(Message.SAVE_MESSAGE_SUCCESS);
