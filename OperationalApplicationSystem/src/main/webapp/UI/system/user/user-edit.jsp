@@ -78,7 +78,7 @@
                     <input type="text" name="password"  id="j_user_edit_password" data-rule="Password:required;length(6~)" value="${param.password}">
                 </div>
                 <label class="row-label">QuitDate</label>
-                <div class="row-input required">
+                <div class="row-input">
                     <input type="text" name="quitDate"  id="j_user_edit_quitDate"   data-toggle="datepicker" placeholder="点击选择日期" data-nobtn="true"  value="${param.quitDate}">
                 </div>
             </div>
