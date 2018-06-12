@@ -31,7 +31,7 @@ public class UserDAOImpl extends HibernateDaoSupport implements UserDAO {
 	public User login(String uid, String passWord) {
 		Date d1=new Date();
 		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
-		List user=this.getHibernateTemplate().find("FROM User where uid=? and password=? and (quitDate is null or quitDate>?)", new String[]{uid,passWord,sdf.format(d1)});
+		List user=this.getHibernateTemplate().find("FROM User where uid=? and password=? and (quitDate ='' or quitDate>?)", new String[]{uid,passWord,sdf.format(d1)});
 		if (user.size()>0) {
 			return (User)user.get(0);
 		}
