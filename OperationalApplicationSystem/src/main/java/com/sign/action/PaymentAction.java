@@ -1439,6 +1439,7 @@ public class PaymentAction extends ActionBase {
 			})})
 	public String getPaymentPD() throws UnsupportedEncodingException {
 		
+		User user=(User)session.getAttribute("user");
 		String where="";
 		
 		if (!"".equals(applicationDate_f)&&applicationDate_f!=null) {
@@ -1482,7 +1483,7 @@ public class PaymentAction extends ActionBase {
 			where += " AND P.supplierCode like '%"+supplierCode+"%' ";
 		}
 
-		String sqlId="  select P.id from t_Payment P WHERE 1=1 "+where+" ";    		
+		String sqlId="  select P.id from t_Payment P WHERE P.UID='"+user.getUid()+"' "+where+" ";    		
 		
 		String sqlw="";
 		

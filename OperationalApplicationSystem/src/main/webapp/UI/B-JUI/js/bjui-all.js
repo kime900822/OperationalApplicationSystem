@@ -8532,7 +8532,7 @@
                 return data_index
             },
             // ajax load data by url
-            loadData: function(data, refreshFlag) {
+            loadData: function(data, refreshFlag,autoLoad) {
                 var tools = this, url = options.dataUrl, dataType = options.dataType || 'json', model = that.columnModel
                 
                 that.$boxM && that.$boxM.show().trigger('bjui.ajaxStart')
@@ -8565,55 +8565,61 @@
                     delete data.pageCurrent
                 }
                 
-                BJUI.ajax('doajax', {
-                    url       : url,
-                    data      : data,
-                    type      : options.loadType,
-                    cache     : options.cache || false,
-                    dataType  : dataType,
-                    okCallback: function(response) {
-                        if (dataType === 'json' || dataType === 'jsonp') {
-                            tools.createTrsByData(response, refreshFlag)
-                        } else if (dataType === 'text') {
-                            if ($.type(response) !== 'array')
-                                response = []
-                            
-                            tools.createTrsByData(response, refreshFlag)
-                        } else if (dataType === 'xml') {
-                            var xmlData = [], obj
-                            
-                            $(response).find('row').each(function() {
-                                obj = {}
+                if(autoLoad!=undefined&&!autoLoad){
+                    tools.createTrsByData([], refreshFlag)
+                }else{
+                	BJUI.ajax('doajax', {
+                        url       : url,
+                        data      : data,
+                        type      : options.loadType,
+                        cache     : options.cache || false,
+                        dataType  : dataType,
+                        okCallback: function(response) {
+                            if (dataType === 'json' || dataType === 'jsonp') {
+                                tools.createTrsByData(response, refreshFlag)
+                            } else if (dataType === 'text') {
+                                if ($.type(response) !== 'array')
+                                    response = []
                                 
-                                $(this).find('cell').each(function(i) {
-                                    var $cell = $(this), label = $cell.text(), name = $cell.attr('name')
+                                tools.createTrsByData(response, refreshFlag)
+                            } else if (dataType === 'xml') {
+                                var xmlData = [], obj
+                                
+                                $(response).find('row').each(function() {
+                                    obj = {}
                                     
-                                    obj[name] = label
+                                    $(this).find('cell').each(function(i) {
+                                        var $cell = $(this), label = $cell.text(), name = $cell.attr('name')
+                                        
+                                        obj[name] = label
+                                    })
+                                    
+                                    xmlData.push(obj)
                                 })
                                 
-                                xmlData.push(obj)
-                            })
+                                if (xmlData.length) tools.createTrsByData(xmlData, refreshFlag)
+                            } else {
+                                BJUI.debug('BJUI.Datagrid: The options \'dataType\' is incorrect!')
+                            } 
+                        },
+                        errCallback: function(json) {
+                            if (json && json[BJUI.keys.statusCode]) {
+                                BJUI.alertmsg('error', json[BJUI.keys.message] || BJUI.getRegional('datagrid.errorData'))
+                            } else {
+                                BJUI.alertmsg('warn', BJUI.getRegional('datagrid.errorData'))
+                            }
                             
-                            if (xmlData.length) tools.createTrsByData(xmlData, refreshFlag)
-                        } else {
-                            BJUI.debug('BJUI.Datagrid: The options \'dataType\' is incorrect!')
-                        } 
-                    },
-                    errCallback: function(json) {
-                        if (json && json[BJUI.keys.statusCode]) {
-                            BJUI.alertmsg('error', json[BJUI.keys.message] || BJUI.getRegional('datagrid.errorData'))
-                        } else {
-                            BJUI.alertmsg('warn', BJUI.getRegional('datagrid.errorData'))
+                            tools.createTrsByData([], refreshFlag)
+                        },
+                        failCallback: function(msg) {
+                            BJUI.alertmsg('warn', BJUI.getRegional('datagrid.failData'))
+                            
+                            tools.createTrsByData([], refreshFlag)
                         }
-                        
-                        tools.createTrsByData([], refreshFlag)
-                    },
-                    failCallback: function(msg) {
-                        BJUI.alertmsg('warn', BJUI.getRegional('datagrid.failData'))
-                        
-                        tools.createTrsByData([], refreshFlag)
-                    }
-                })
+                    })
+                	
+                }
+                
             },
             // append columns
             appendColumns: function() {
@@ -9886,6 +9892,7 @@
     
     Datagrid.prototype.createTbody = function() {
         var that = this, options = that.options, data = options.data, model = that.columnModel, cols = []
+        var autoLoad = options.autoLoad==undefined?true:options.autoLoad
         
         if (data) {
             if (typeof data === 'string') {
@@ -9911,8 +9918,8 @@
             }
             
             that.$element.data('filterDatas', data)
+            that.tools.loadData(data,false,autoLoad)
             
-            that.tools.loadData(data)
         }
     }
     

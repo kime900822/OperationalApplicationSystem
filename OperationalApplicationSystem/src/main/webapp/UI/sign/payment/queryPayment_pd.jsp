@@ -141,6 +141,7 @@ function datagrid_paymentState() {
     <table class="table table-bordered" id="datagrid-payment-pd-filter" data-toggle="datagrid" data-options="{
         height: '100%',
         gridTitle : 'Payment PD Report',
+        autoLoad : false,
         dataUrl: 'getPaymentPD.action',
         dataType: 'jsonp',
         showToolbar: true,
