@@ -553,9 +553,7 @@ public class UserAction extends ActionBase {
 		user.setDate(sdf.format(d1));
 		user.setUid(uid);
 		user.setEmail(email);
-		if (quitDate!=null&&!quitDate.equals("")) {
-			user.setQuitDate(quitDate);
-		}
+		user.setQuitDate(quitDate);
 		boolean b=true;
 		String rString="";
 		try {			
