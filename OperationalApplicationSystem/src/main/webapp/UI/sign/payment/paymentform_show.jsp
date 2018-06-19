@@ -452,7 +452,7 @@ function approvePayment(){
 function checkInvalid(){
 	var err='';
 	if($.CurrentNavtab.find('#payment-invalidDescription').val()==null||$.CurrentNavtab.find('#payment-invalidDescription').val()==''){
-		err+=" ReturnDescription can`t be  empty！\r\n";				
+		err+=" InvalidDescription can`t be  empty！\r\n";				
 	}
 	return err;
 }
@@ -462,7 +462,7 @@ function checkInvalid(){
 function checkReturn(){
 	var err='';
 	if($.CurrentNavtab.find('#payment-returnDescription').val()==null||$.CurrentNavtab.find('#payment-returnDescription').val()==''){
-		err+=" Ref. No. of Bank can`t be  empty！\r\n";				
+		err+=" ReturnDescription can`t be  empty！\r\n";				
 	}
 	return err;
 }
