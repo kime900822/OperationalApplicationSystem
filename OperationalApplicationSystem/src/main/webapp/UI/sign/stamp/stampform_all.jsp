@@ -10,11 +10,6 @@ function datagrid_tree_operation() {
 }
 
 
-
-function datagrid_urgent() {
-    return [{'Y':'Y'},{'N':'Y'}]
-}
-
 $(function(){
 	$.CurrentNavtab.find("#q_stamp_urgent").on('ifChecked',function(){
 		$.CurrentNavtab.find("#q_stamp_urgent").val("1");
@@ -54,6 +49,35 @@ function editStamp(o){
 	
 
 }
+
+function getCheckId(){
+	var ids= new Array();
+	var datas = $('#datagrid-stamp-all-filter').data('selectedTrs')
+	if(datas!=undefined){
+		$.each(datas,function(i,n){
+			ids.push(n.cells[4].innerText.replace('\n',''));						
+		})		
+	}
+	return ids;
+}
+
+
+
+function exportCheckedStampPDF(){	
+	  var ids=getCheckId();
+	  if(ids==null||ids==undefined||ids==''){
+		  BJUI.alertmsg('info', 'No row selected');	
+		  return false
+	  }
+
+ 	  BJUI.ajax('ajaxdownload', {
+		    url:'exportCheckedStampPDF.action',
+		    data: {json:JSON.stringify(ids)},
+		    loadingmask: true
+		})				    		
+
+}
+
 
 
 </script>
@@ -177,6 +201,11 @@ function editStamp(o){
         dataUrl: 'getStamp.action?queryType=all',
         dataType: 'jsonp',
         showToolbar: true,
+        toolbarCustom:[
+             {name:'Print PDF',
+        	 icon:'printPDF',
+        	 class:'btn-green',
+        	 function:exportCheckedStampPDF}],
         toolbarItem: 'export,printPDF',
         editMode: {navtab:{width:'830',height:800,title:'Edit Seal',mask:true,fresh:true}},
         delUrl:'deleteUser.action',
@@ -185,14 +214,14 @@ function editStamp(o){
         linenumberAll: true,
         contextMenuB: true,
         hScrollbar: true,
+        showCheckboxcol: true,
         filterThead:false,
-        exportOption: {type:'file', options:{url:'exportStampExcel.action?queryType=all', loadingmask:true,queryForm:$.CurrentNavtab.find('#datagrid-stamp-all-query')}},
-        printPDFOption: {type:'file', options:{url:'exportStampPDF.action?queryType=all', loadingmask:true,queryForm:$.CurrentNavtab.find('#datagrid-stamp-all-query')}}
+        exportOption: {type:'file', options:{url:'exportStampExcel.action?queryType=all', loadingmask:true,queryForm:$.CurrentNavtab.find('#datagrid-stamp-all-query')}}
     }">
         <thead>
             <tr>
             	<th data-options="{render:datagrid_tree_operation,align:'center'}">Operation</th>
-            	<th data-options="{name:'usedFile',width:150,align:'center',finalWidth:'true',type:'select', items:datagrid_urgent}">Chopped Doc. Uploaded</th>
+            	<th data-options="{name:'usedFile',width:150,align:'center',finalWidth:'true'}">Chopped Doc. Uploaded</th>
             	<th data-options="{name:'id',width:150,align:'center',finalWidth:'true',hide:'true'}">id</th>
             	<th data-options="{name:'applicationCode',width:150,align:'center',finalWidth:'true'}" >Application Code</th>
             	<th data-options="{name:'applicationDate',width:150,align:'center',finalWidth:'true'}" >Application Date</th>

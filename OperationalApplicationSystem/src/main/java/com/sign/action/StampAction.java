@@ -95,8 +95,7 @@ public class StampAction extends ActionBase{
 		private String comment;
 		private String level;
 		private String approveState;
-		
-	
+
 		public String getUsedFile() {
 			return usedFile;
 		}
@@ -764,11 +763,8 @@ public class StampAction extends ActionBase{
 				stamp.setStampType(tmp.replace("|", "<br>"));
 				tmp=stamp.getUsageDescription();
 				stamp.setUsageDescription(tmp.replace("/r/n", "<br>"));
-				if (stamp.getUsedFile()==null||stamp.getUsedFile().equals("")) {
-					stamp.setUsedFile("N");
-				}else {
-					stamp.setUsedFile("Y");
-				}
+				int count=CommonUtil.pattern(stamp.getUsedFile(), "\\|");
+				stamp.setUsedFile(String.valueOf(count));
 			}
 			
 			queryResult.setList(list);
@@ -988,4 +984,71 @@ public class StampAction extends ActionBase{
 	    }
 
 		
+		@Action(value="exportCheckedStampPDF",results={@org.apache.struts2.convention.annotation.Result(type="stream",
+				params={
+						"inputName", "reslutJson",
+						"contentType","application/vnd.ms-excel",
+						"contentDisposition","attachment;filename=%{fileName}",
+						"bufferSize","1024"
+				})})
+	    public String exportCheckedStampPDF() {
+	        try {
+
+	        	List<HeadColumn> lHeadColumns=new ArrayList<>();
+	        	lHeadColumns.add(new HeadColumn("usedFile", "80", "right", "Chopped Doc. Uploaded"));
+	        	lHeadColumns.add(new HeadColumn("applicationCode", "80", "right", "Application Code"));
+	        	lHeadColumns.add(new HeadColumn("applicationDate", "80", "right", "Application Date"));
+	        	lHeadColumns.add(new HeadColumn("state", "80", "right", "Approval Status"));
+	        	lHeadColumns.add(new HeadColumn("departmentOfFormFillerID", "80", "right", "BU NO."));
+	        	lHeadColumns.add(new HeadColumn("applicantID", "80", "right", "Cimtas ID"));
+	        	lHeadColumns.add(new HeadColumn("applicant", "80", "right", "User Name."));
+	        	lHeadColumns.add(new HeadColumn("chopObject", "200", "right", "Chop Object"));
+	        	lHeadColumns.add(new HeadColumn("documentType", "80", "right", "Document Type"));
+	        	lHeadColumns.add(new HeadColumn("stampType", "80", "right", "Stamp Type"));
+	        	lHeadColumns.add(new HeadColumn("urgent", "60", "right", "Urgent"));
+	        	lHeadColumns.add(new HeadColumn("usageDescription", "100", "right", "Usage Description"));
+	        	
+				
+	    		String[] ids=new Gson().fromJson(json, String[].class);
+	    		StringBuffer sb = new StringBuffer();  
+	    	    for (int i = 0; i < ids.length; i++) {  
+	    	        sb.append("'").append(ids[i]).append("'").append(",");  
+	    	    }  
+	    	   
+	    	    String hql="select P from Stamp P where id in ("+ sb.toString().substring(0, sb.length() - 1)+") ";
+	    		List<Stamp> lStamps=stampBIZ.getStampByHql(hql);
+				
+	    		
+				for (Stamp stamp : lStamps) {
+					stamp.setUrgent(stamp.getUrgent()==null?"N":"Y");
+					Dict documenttype=dictBIZ.getDict(" where id='"+stamp.getDocumentType()+"'").get(0);
+					stamp.setDocumentType(documenttype.getValue());		
+					int count=CommonUtil.pattern(stamp.getUsedFile(), "\\|");
+					stamp.setUsedFile(String.valueOf(count));
+				}
+	    		
+	        	Class c = (Class) new Stamp().getClass();  
+	        	ByteArrayOutputStream os=PDFUtil.exportPDF("Seal", c, lStamps, "yyy-MM-dd",lHeadColumns);
+	        	byte[] fileContent = os.toByteArray();
+	        	ByteArrayInputStream is = new ByteArrayInputStream(fileContent);
+	        	
+	        	HttpServletResponse response = (HttpServletResponse)
+	        			ActionContext.getContext().get(org.apache.struts2.StrutsStatics.HTTP_RESPONSE);
+	        	response.setHeader("Set-Cookie", "fileDownload=true; path=/");
+	        	
+	    		SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");		 
+	    		fileName = "Seal"+sf.format(new Date()).toString()+ ".pdf";
+	    		fileName= new String(fileName.getBytes(), "ISO8859-1");
+	    		//文件流
+	            reslutJson = is;            
+	            logUtil.logInfo("导出Stamp！"+fileName);
+	        }
+	        catch(Exception e) {
+	        	logUtil.logInfo("导出Stamp！"+e.getMessage());
+	            e.printStackTrace();
+	        }
+	        
+
+	        return "success";
+	    }
 }
