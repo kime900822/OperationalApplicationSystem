@@ -13,6 +13,26 @@ $(function(){
 
 
 function addPaymentVisitEmployee(){
+	var html="";
+	var EmployeeNoTXT = "<input type='text' name='supplierCode' id='j_payment_supplierCode' value='' data-toggle='findgrid' onchange='checkSupplierCode(this);' size='19'   " 
+		EmployeeNoTXT+="	data-options='{                                                                                                                                 "
+		EmployeeNoTXT+="        group: '',                                                                                                                                  "
+		EmployeeNoTXT+="        include: 'supplierCode,beneficiary:name,beneficiaryE:ename,beneficiaryAccountNO:accno,beneficiaryAccountBank:accbank,oversea:oversea',      "
+		EmployeeNoTXT+="        dialogOptions: {title:'查找供应商代码/收款人'},                                                                                             "
+		EmployeeNoTXT+="        empty:false,                                                                                                                                "
+		EmployeeNoTXT+="        gridOptions: {                                                                                                                              "
+		EmployeeNoTXT+="            local: 'local',                                                                                                                         "
+		EmployeeNoTXT+="            dataUrl: 'getBeneficiaryForSearch.action',                                                                                              "
+		EmployeeNoTXT+="            columns: [                                                                                                                              "
+		EmployeeNoTXT+="                {name:'supplierCode', label:'SupplierCode', width:100},                                                                             "
+		EmployeeNoTXT+="                {name:'name',width:200,label:'Name'},                                                                                               "
+		EmployeeNoTXT+="                {name:'ename',width:200,label:'EName'},                                                                                             "
+		EmployeeNoTXT+="                {name:'accno',width:300,label:'AccNO'},                                                                                             "
+		EmployeeNoTXT+="                {name:'accbank',width:300,label:'AccBank'},                                                                                         "
+		EmployeeNoTXT+="                {name:'oversea',width:100,label:'Oversea'}                                                                                          "
+		EmployeeNoTXT+="            ]                                                                                                                                       "
+		EmployeeNoTXT+="        }                                                                                                                                           "
+		EmployeeNoTXT+="    }' placeholder='点放大镜按钮查找' data-rule='required' >';                                                                                            "
 	
 	
 	
@@ -86,7 +106,6 @@ function addPaymentVisitEmployee(){
 						<button type="button" id="payment-visit-add" class="btn-default" data-icon="plus" onclick="addPaymentVisitEmployee()" >Add(增加)</button>
 					    <table id="j_table_payment_visit">
 				            <tr>
-				           		<th width="40px">操作</th>
 				            	<th width="130px">Visit Employee No.*<br>出差人员</th>
 				                <th width="150px">Visit Employee BU No.<br>出差人员部门代码</th>
 				                <th width="150px">Visit Employee Name<br>出差人员姓名</th>
