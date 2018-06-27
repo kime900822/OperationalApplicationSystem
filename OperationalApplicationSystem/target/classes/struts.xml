@@ -27,7 +27,7 @@
 	<!-- 设置上传文件的临时文件夹,默认使用javax.servlet.context.tempdir -->
     <constant name="struts.multipart.saveDir " value="/upload" />
 	<!-- 进行扫描的根包，该包会被扫描成action -->
-	<constant name="struts.convention.action.packages" value="com.kime.action" />
+	<!-- <constant name="struts.convention.action.packages" value="com.kime.action" /> -->
 	
 	<constant name="struts.multipart.maxSize" value="52428800" />
  

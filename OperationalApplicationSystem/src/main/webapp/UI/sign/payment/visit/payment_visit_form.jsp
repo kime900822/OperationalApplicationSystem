@@ -103,29 +103,50 @@ function addPaymentVisitEmployee(){
 				</tr>
 				<tr>
 					<td colspan="5">
-						<button type="button" id="payment-visit-add" class="btn-default" data-icon="plus" onclick="addPaymentVisitEmployee()" >Add(增加)</button>
-					    <table id="j_table_payment_visit">
-				            <tr>
-				            	<th width="130px">Visit Employee No.*<br>出差人员</th>
-				                <th width="150px">Visit Employee BU No.<br>出差人员部门代码</th>
-				                <th width="150px">Visit Employee Name<br>出差人员姓名</th>
-				                <th width="120px">Advance Amount<br>预付款金额</th>
-				                <th width="150px">A.是否HR预定酒店<br>Hotel Booking by HR</th>
-				           		<th width="200px">酒店名称<br>Hotel Name</th>
-				           		<th width="120px">B.是否HR派车<br>Car Arrange by HR</th>
-				           		<th width="120px">派车时间<br>Car Arrange Period</th>
-				           		<th width="150px">C.是否HR定机票<br>Air Ticket Booking by HR</th>
-				           		<th width="100px">具体航班号<br>Flight No.</th>
-				           		<th width="150px">D.是否HR办理签证<br>Visar Arrange by HR</th>
-				            </tr>
-				    	</table>
+						   <table class="table table-bordered" id="datagrid-edit-filter" data-toggle="datagrid" data-options="{
+						        height: '100%',
+						        gridTitle : '出差人员',
+						        showToolbar: true,
+						        dataType: 'jsonp',
+						        toolbarItem: 'add,edit,del',
+						        dataUrl: 'getPyamentVisitEmployee.action?visitID=${param.id}',
+						        delUrl:'json/ajaxDone.json',
+						        editUrl: 'sign/payment/visit/payment_visit_edit.jsp',
+						        editMode: {dialog:{width:'800',height:430,title:'Edit Employee',mask:true}},
+						        paging: {pageSize:5, pageCurrent:1},
+						        showCheckboxcol: true,
+						        linenumberAll: true,
+						        filterThead: false,
+						        contextMenuB: true,
+						        hScrollbar: true,
+						        columnShowhide:false,
+						        columnFilter:false,
+						        columnMenu:false,
+						        fieldSortable:false
+						    }">
+						        <thead>
+						            <tr>
+						            	<th data-options="{name:'employeeNo',width:150,align:'center',finalWidth:'true'}" >Visit Employee No.*<br>出差人员</th>
+						            	<th data-options="{name:'employeeBUNo',width:150,align:'center',finalWidth:'true'}" >Visit Employee BU No.<br>出差人员部门代码</th>
+										<th data-options="{name:'employeeName',width:150,align:'center',finalWidth:'true'}">Visit Employee Name<br>出差人员姓名</th>
+										<th data-options="{name:'advanceAmount',width:120,align:'center',finalWidth:'true'}">Advance Amount<br>预付款金额</th>
+										<th data-options="{name:'hotelBookingByHR',width:150,align:'center',finalWidth:'true'}">A.是否HR预定酒店<br>Hotel Booking by HR</th>
+										<th data-options="{name:'hotelName',width:200,align:'center',finalWidth:'true'}">酒店名称<br>Hotel Name</th>
+										<th data-options="{name:'carArrangeByHR',width:120,align:'center',finalWidth:'true'}">B.是否HR派车<br>Car Arrange by HR</th>
+										<th data-options="{name:'carArrangePeriod',width:150,align:'center',finalWidth:'true'}">派车时间<br>Car Arrange Period</th>
+										<th data-options="{name:'airTickerBookingByHR',width:150,align:'center',finalWidth:'true'}">C.是否HR定机票<br>Air Ticket Booking by HR</th>
+										<th data-options="{name:'flightNO',width:100,align:'center',finalWidth:'true'}">具体航班号<br>Flight No.</th>
+										<th data-options="{name:'visarArrangeByHR',width:150,align:'center',finalWidth:'true'}">D.是否HR办理签证<br>Visar Arrange by HR</th>
+						            </tr>
+						        </thead>
+						    </table>
 					</td>
 				</tr>
 				<tr>
 					<td colspan="5" align="center">
-	            		<button type="button" id="stamp-save" class="btn-default" data-icon="save" onClick="saveStamp()" >Save</button>&nbsp;&nbsp;&nbsp;&nbsp;
-	            		<button type="button" id="stamp-submit" class="btn-default" data-icon="arrow-up" onClick="submitStamp()">Submit</button>&nbsp;&nbsp;&nbsp;&nbsp;
-	            		<button type="button" id="stamp-delete" class="btn-default" data-icon="close" onClick="deleteStamp()" style="display:none">Delete</button>
+	            		<button type="button" id="stamp-save" class="btn-default" data-icon="save" onClick="savePaymentVisit()" >Save</button>&nbsp;&nbsp;&nbsp;&nbsp;
+	            		<button type="button" id="stamp-submit" class="btn-default" data-icon="arrow-up" onClick="submitPaymentVisit()">Submit</button>&nbsp;&nbsp;&nbsp;&nbsp;
+	            		<button type="button" id="stamp-delete" class="btn-default" data-icon="close" onClick="deletePaymentVisit()" style="display:none">Delete</button>
             		</td>				
 				</tr>	
 				<tr>

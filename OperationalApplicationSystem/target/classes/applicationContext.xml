@@ -72,13 +72,14 @@
 			<prop key="hibernate.use_sql_comments">true</prop>
 		</props>
 	</property>
-    <property name="packagesToScan">
+	<property name ="packagesToScan"  value ="com.**.model" />
+<!--     <property name="packagesToScan">
        <list>
             <value>com/kime/model</value>
             <value>com/analysis/model</value>
             <value>com/sign</value>
         </list>
-    </property>
+    </property> -->
 </bean>
 
 
