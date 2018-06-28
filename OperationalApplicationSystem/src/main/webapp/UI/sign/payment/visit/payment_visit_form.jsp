@@ -12,39 +12,13 @@ $(function(){
 
 
 
-function addPaymentVisitEmployee(){
-	var html="";
-	var EmployeeNoTXT = "<input type='text' name='supplierCode' id='j_payment_supplierCode' value='' data-toggle='findgrid' onchange='checkSupplierCode(this);' size='19'   " 
-		EmployeeNoTXT+="	data-options='{                                                                                                                                 "
-		EmployeeNoTXT+="        group: '',                                                                                                                                  "
-		EmployeeNoTXT+="        include: 'supplierCode,beneficiary:name,beneficiaryE:ename,beneficiaryAccountNO:accno,beneficiaryAccountBank:accbank,oversea:oversea',      "
-		EmployeeNoTXT+="        dialogOptions: {title:'查找供应商代码/收款人'},                                                                                             "
-		EmployeeNoTXT+="        empty:false,                                                                                                                                "
-		EmployeeNoTXT+="        gridOptions: {                                                                                                                              "
-		EmployeeNoTXT+="            local: 'local',                                                                                                                         "
-		EmployeeNoTXT+="            dataUrl: 'getBeneficiaryForSearch.action',                                                                                              "
-		EmployeeNoTXT+="            columns: [                                                                                                                              "
-		EmployeeNoTXT+="                {name:'supplierCode', label:'SupplierCode', width:100},                                                                             "
-		EmployeeNoTXT+="                {name:'name',width:200,label:'Name'},                                                                                               "
-		EmployeeNoTXT+="                {name:'ename',width:200,label:'EName'},                                                                                             "
-		EmployeeNoTXT+="                {name:'accno',width:300,label:'AccNO'},                                                                                             "
-		EmployeeNoTXT+="                {name:'accbank',width:300,label:'AccBank'},                                                                                         "
-		EmployeeNoTXT+="                {name:'oversea',width:100,label:'Oversea'}                                                                                          "
-		EmployeeNoTXT+="            ]                                                                                                                                       "
-		EmployeeNoTXT+="        }                                                                                                                                           "
-		EmployeeNoTXT+="    }' placeholder='点放大镜按钮查找' data-rule='required' >';                                                                                            "
-	
-	
-	
-}
-
 </script>
 
 
 
 
 <div class="bjui-pageContent">
-    <div class="bs-example" style="width:1600px">
+    <div class="bs-example" style="width:1700px">
         <form id="j_stamp_visit_form" data-toggle="ajaxform">
 			<input type="hidden" name="id" id="j_stamp_visit_id" value="${param.id}">
 			<input type="hidden" name="state" id="j_stamp_visit_state" value="">
@@ -53,36 +27,56 @@ function addPaymentVisitEmployee(){
             </div>
 			<table class="table" style="font-size:12px;">
 				<tr>
-					<td width="200px">Reference No.<br>单号:</td>
+					<td width="200px">Reference No.<br>单号</td>
 					<td width="200px"><input type="text" size="19" name="applicationCode" data-nobtn="true" id="j_stamp_visit_applicationCode" value="" placeholder="保存或者送审后生成"  readonly=""></td>					
 					<td width="200px"></td>
 					<td width="200px"></td>	
-					<td width="800px"></td>				
+					<td width="900px"></td>				
 				</tr>
 				<tr>
-					<td >Application Date<br>申请日期:</td>
+					<td >Application Date<br>申请日期</td>
 					<td ><input type="text" size="19" name="applicationDate" id="j_stamp_visit_applicationDate"  data-toggle="datepicker" placeholder="点击选择日期" data-nobtn="true" ></td>
 					<td ></td>
 					<td ></td>
 					<td></td>				
 				</tr>
 				<tr>
-					<td >Visit Date<br>出差日期:</td>
-					<td colspan="4"><input type="text" size="19" name="lendDate" data-toggle="datepicker" placeholder="点击选择日期" data-nobtn="true" id="j_stamp_lendDate" value=""  />
+					<td >Visit Purpose <label style="color:red;font-size:12px"><b>*</b></label><br>
+					出差目的  <label style="color:red;font-size:12px"><b>*</b></label></td>
+					<td ><input type="text" size="19" name="visitPurpose" id="j_stamp_visit_visitPurpose"  data-toggle="datepicker" placeholder="点击选择日期" data-nobtn="true" >
+					</td>
+					<td ></td>
+					<td ></td>
+					<td></td>				
+				</tr>
+				<tr>
+					<td >Project No  <label style="color:red;font-size:12px"><b>*</b></label><br>
+					项目号  <label style="color:red;font-size:12px"><b>*</b></label></td>
+					<td ><input type="text" size="19" name="projectNo" id="j_stamp_visit_projectNo"></td>
+					<td ></td>
+					<td ></td>
+					<td></td>				
+				</tr>
+				<tr>
+					<td >Visit Date  <label style="color:red;font-size:12px"><b>*</b></label><br>
+					出差期间  <label style="color:red;font-size:12px"><b>*</b></label></td>
+					<td colspan="4"><input type="text" size="19" name="visitDateFrom" id="j_stamp_visit_visitDateFrom"  data-toggle="datepicker" placeholder="点击选择日期" data-nobtn="true" id="j_stamp_lendDate" value=""  />
 					TO:&nbsp;&nbsp;&nbsp;&nbsp;
-					<input type="text" size="19" name="lendDate" data-toggle="datepicker" placeholder="点击选择日期" data-nobtn="true" id="j_stamp_lendDate" value=""  />				
+					<input type="text" size="19" name="visitDateTo" id="j_stamp_visit_visitDateTo"  data-toggle="datepicker" placeholder="点击选择日期" data-nobtn="true" id="j_stamp_lendDate" value=""  />				
 					</td>	
 				</tr>
 				<tr>
-					<td >Total Leave Work Hours<br>总共出差工作天数时数:</td>
-					<td colspan="4"><input type="text" size="19" name="applicationDate" id="j_stamp_visit_applicationDate" >&nbsp;Hours</td>		
+					<td >Total Leave Work Hours  <label style="color:red;font-size:12px"><b>*</b></label><br>
+					总共出差工作天数时数  <label style="color:red;font-size:12px"><b>*</b></label></td>
+					<td colspan="4"><input type="text" size="19" name="totalLevelWorkHours" id="j_stamp_visit_totalLevelWorkHours" >&nbsp;Hours</td>		
 				</tr>
 				<tr>
-					<td >Domestic/Oversea<br>国内国外</td>
+					<td >Domestic/Oversea  <label style="color:red;font-size:12px"><b>*</b></label><br>
+					国内国外  <label style="color:red;font-size:12px"><b>*</b></label></td>
 					<td colspan="4">
-					<input type="checkbox" name="stampType" data-toggle="icheck" id="j_stamp_companyChop" value="Company Chop" data-label="Domestic 国内">
+					<input type="checkbox" name="businessTrip" data-toggle="icheck" id="j_stamp_visit_domestic" value="Domestic 国内" data-label="Domestic 国内">
 					&nbsp;&nbsp;&nbsp;&nbsp;
-					<input type="checkbox" name="stampType" data-toggle="icheck" id="j_stamp_companyChop" value="Company Chop" data-label="Oversea 国外">
+					<input type="checkbox" name="businessTrip" data-toggle="icheck" id="j_stamp_visit_oversea" value="Oversea 国外" data-label="Oversea 国外">
 					</td>					
 				</tr>
 				<tr>
@@ -90,7 +84,7 @@ function addPaymentVisitEmployee(){
 						Visit Detail Place<label style="color:red;font-size:12px"><b>*:</b></label>:<br>出差具体目的地 <label style="color:red;font-size:12px"><b>*</b></label>:
 					</td>
 					<td colspan="4">
-						<textarea cols="50" rows="3" id="j_stamp_chopObject"  name="chopObject" data-toggle="autoheight"></textarea>
+						<textarea cols="50" rows="3" id="j_stamp_visitDetailPlace"  name="visitDetailPlace" data-toggle="autoheight"></textarea>
 					</td>
 				</tr>
 				<tr>
@@ -98,11 +92,11 @@ function addPaymentVisitEmployee(){
 						Visit Detail Purpose<label style="color:red;font-size:12px"><b>*:</b></label>:<br>出差具体事由<label style="color:red;font-size:12px"><b>*</b></label>:
 					</td>
 					<td colspan="4">
-						<textarea cols="50" rows="3" id="j_stamp_chopObject"  name="chopObject" data-toggle="autoheight"></textarea>
+						<textarea cols="50" rows="3" id="j_stamp_visitDetailPurpose"  name="visitDetailPurpose" data-toggle="autoheight"></textarea>
 					</td>
 				</tr>
-				<tr>
-					<td colspan="5">
+				<tr height="400px">
+					<td colspan="5" >
 						   <table class="table table-bordered" id="datagrid-edit-filter" data-toggle="datagrid" data-options="{
 						        height: '100%',
 						        gridTitle : '出差人员',

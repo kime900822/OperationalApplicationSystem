@@ -28,6 +28,8 @@ public class PaymentVisit {
 	@GenericGenerator(name = "uuid", strategy = "uuid")
 	String id;
 	@Column
+	String ApplicantDate;
+	@Column
 	String referenceNO;
 	@Column
 	String projectNO;
@@ -66,6 +68,14 @@ public class PaymentVisit {
 		     inverseJoinColumns = @JoinColumn(name="tradeId")
 		  )
 	List<ApproveHis> approveHis;
+	
+	
+	public String getApplicantDate() {
+		return ApplicantDate;
+	}
+	public void setApplicantDate(String applicantDate) {
+		ApplicantDate = applicantDate;
+	}
 	public String getId() {
 		return id;
 	}
