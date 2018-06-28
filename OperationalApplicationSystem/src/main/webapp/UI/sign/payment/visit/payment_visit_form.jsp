@@ -11,6 +11,50 @@ $(function(){
 })
 
 
+function paymentVisitCheckSave(){
+	
+	
+}
+
+function paymentVisitFaceToDate(){
+	var o=$.CurrentNavtab.find("#j_payment_visit_form").serializeJson();
+	o.employees=$("#datagrid-payment-visit").data('allData');
+	o.uId='${user.uid}';
+	o.uName='${user.name}';
+	
+}
+
+function paymentVisitDateToFace(){
+	
+	
+}
+
+function paymentVisitSave(){
+	
+	
+}
+
+function paymentVisitSubmit(){
+	
+	
+}
+
+function paymentVisitDelete(){
+	
+	
+}
+
+function paymentVisitApprove(){
+	
+	
+}
+
+function paymentVisitReject(){
+	
+	
+}
+
+
 
 </script>
 
@@ -19,7 +63,7 @@ $(function(){
 
 <div class="bjui-pageContent">
     <div class="bs-example" style="width:1700px">
-        <form id="j_stamp_visit_form" data-toggle="ajaxform">
+        <form id="j_payment_visit_form" data-toggle="ajaxform">
 			<input type="hidden" name="id" id="j_stamp_visit_id" value="${param.id}">
 			<input type="hidden" name="state" id="j_stamp_visit_state" value="">
             <div class="bjui-row-0" align="center">
@@ -97,7 +141,7 @@ $(function(){
 				</tr>
 				<tr height="400px">
 					<td colspan="5" >
-						   <table class="table table-bordered" id="datagrid-edit-filter" data-toggle="datagrid" data-options="{
+						   <table class="table table-bordered" id="datagrid-payment-visit" data-toggle="datagrid" data-options="{
 						        height: '100%',
 						        gridTitle : '出差人员',
 						        showToolbar: true,

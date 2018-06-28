@@ -2,6 +2,24 @@
     pageEncoding="UTF-8"%>
  <script type="text/javascript">
 
+ $(function(){
+	 
+	 $.CurrentDialog.find('#j_payment_visit_employee_hotelBookingByHR').selectpicker().selectpicker('val','${param.hotelBookingByHR}').selectpicker('refresh');
+	 $.CurrentDialog.find('#j_payment_visit_employee_carArrangeByHR').selectpicker().selectpicker('val','${param.carArrangeByHR}').selectpicker('refresh');
+	 $.CurrentDialog.find('#j_payment_visit_employee_airTickerBookingByHR').selectpicker().selectpicker('val','${param.airTickerBookingByHR}').selectpicker('refresh');
+	 $.CurrentDialog.find('#j_payment_visit_employee_visarArrangeByHR').selectpicker().selectpicker('val','${param.visarArrangeByHR}').selectpicker('refresh');
+	 if('${param.hotelBookingByHR}'=='是'){
+		 $.CurrentDialog.find("#j_payment_visit_employee_hotelName").removeAttr("disabled");
+	 }
+	 if('${param.carArrangeByHR}'=='是'){
+		 $.CurrentDialog.find("#j_payment_visit_employee_carArrangePeriod").removeAttr("disabled");
+	 }
+	 if('${param.airTickerBookingByHR}'=='是'){
+		 $.CurrentDialog.find("#j_payment_visit_employee_flightNO").removeAttr("disabled");
+	 }
+	 
+ })
+ 
  
  
 function paymentVisitEmployeeSelected(obj,id){
@@ -54,7 +72,7 @@ function paymentVisitEmployeeSelected(obj,id){
                 </div>
                 <label class="row-label">A.是否HR预定酒店<br>Hotel Booking by HR</label>
                 <div class="row-input required">
-                    <select name="hotelBookingByHR" onchange="paymentVisitEmployeeSelected(this,'j_payment_visit_employee_hotelName')" data-toggle="selectpicker" value="${param.hotelBookingByHR}"  data-rule="required" data-width="100%"  >
+                    <select name="hotelBookingByHR" id="j_payment_visit_employee_hotelBookingByHR" onchange="paymentVisitEmployeeSelected(this,'j_payment_visit_employee_hotelName')" data-toggle="selectpicker"  data-rule="required" data-width="100%"  >
                          <option value="" selected></option>
                          <option value="是" >是</option>
                          <option value="否" >否</option>
@@ -66,7 +84,7 @@ function paymentVisitEmployeeSelected(obj,id){
                 </div>
                 <label class="row-label">B.是否HR派车<br>Car Arrange by HR</label>
                 <div class="row-input required">
-                    <select name="carArrangeByHR" onchange="paymentVisitEmployeeSelected(this,'j_payment_visit_employee_carArrangePeriod')" data-toggle="selectpicker" value="${param.carArrangeByHR}"  data-rule="required" data-width="100%"  >
+                    <select name="carArrangeByHR" id="j_payment_visit_employee_carArrangeByHR" onchange="paymentVisitEmployeeSelected(this,'j_payment_visit_employee_carArrangePeriod')" data-toggle="selectpicker" data-rule="required" data-width="100%"  >
                          <option value="" selected></option>
                          <option value="是" >是</option>
                          <option value="否" >否</option>
@@ -78,7 +96,7 @@ function paymentVisitEmployeeSelected(obj,id){
                 </div>
                 <label class="row-label">C.是否HR定机票<br>Air Ticket Booking by HR</label>
                 <div class="row-input required">
-                    <select name="airTickerBookingByHR" onchange="paymentVisitEmployeeSelected(this,'j_payment_visit_employee_flightNO')"  data-toggle="selectpicker" value="${param.airTickerBookingByHR}"  data-rule="required" data-width="100%"  >
+                    <select name="airTickerBookingByHR" id="j_payment_visit_employee_airTickerBookingByHR" onchange="paymentVisitEmployeeSelected(this,'j_payment_visit_employee_flightNO')"  data-toggle="selectpicker"  data-rule="required" data-width="100%"  >
                          <option value="" selected></option>
                          <option value="是" >是</option>
                          <option value="否" >否</option>
@@ -90,7 +108,7 @@ function paymentVisitEmployeeSelected(obj,id){
                 </div>
                 <label class="row-label">D.是否HR办理签证<br>Visar Arrange by HR</label>
                 <div class="row-input required">
-                    <select name="visarArrangeByHR" data-toggle="selectpicker" value="${param.visarArrangeByHR}"  data-rule="required" data-width="100%"  >
+                    <select name="visarArrangeByHR" id="j_payment_visit_employee_visarArrangeByHR" data-toggle="selectpicker"  data-rule="required" data-width="100%"  >
                          <option value="" selected></option>
                          <option value="是" >是</option>
                          <option value="否" >否</option>

@@ -28,7 +28,9 @@ public class PaymentVisit {
 	@GenericGenerator(name = "uuid", strategy = "uuid")
 	String id;
 	@Column
-	String ApplicantDate;
+	String applicantDate;
+	@Column
+	String visitPurpose;
 	@Column
 	String referenceNO;
 	@Column
@@ -47,6 +49,10 @@ public class PaymentVisit {
 	String visitDetailPurpose;
 	@Column
 	String dateTmp;
+	@Column
+	String uId;
+	@Column
+	String uName;
 	@OneToMany
 	@JoinTable(
 		     name="employees",
@@ -70,11 +76,29 @@ public class PaymentVisit {
 	List<ApproveHis> approveHis;
 	
 	
+	public String getuId() {
+		return uId;
+	}
+	public void setuId(String uId) {
+		this.uId = uId;
+	}
+	public String getuName() {
+		return uName;
+	}
+	public void setuName(String uName) {
+		this.uName = uName;
+	}
 	public String getApplicantDate() {
-		return ApplicantDate;
+		return applicantDate;
 	}
 	public void setApplicantDate(String applicantDate) {
-		ApplicantDate = applicantDate;
+		this.applicantDate = applicantDate;
+	}
+	public String getVisitPurpose() {
+		return visitPurpose;
+	}
+	public void setVisitPurpose(String visitPurpose) {
+		this.visitPurpose = visitPurpose;
 	}
 	public String getId() {
 		return id;
