@@ -5,15 +5,22 @@ import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ParentPackage;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
 import com.google.gson.Gson;
 import com.kime.base.ActionBase;
+import com.kime.model.User;
+import com.kime.utils.CommonUtil;
+import com.kime.utils.TypeChangeUtil;
+import com.sign.biz.PaymentVisitEmployeeBIZ;
+import com.sign.model.Payment;
 import com.sign.model.paymentVisit.PaymentVisitEmployee;
 
 @Controller
@@ -21,6 +28,9 @@ import com.sign.model.paymentVisit.PaymentVisitEmployee;
 @ParentPackage("Struts 2")
 public class PaymentVisitEmployeeAction extends ActionBase {
 
+	@Autowired
+	PaymentVisitEmployeeBIZ paymentVisitEmployeeBIZ;
+	
 	String id;
 	String visitId;
 	String employeeNo;
@@ -147,6 +157,18 @@ public class PaymentVisitEmployeeAction extends ActionBase {
 		return SUCCESS;
 		
 		
+	}
+	
+	@Action(value="getPaymentVisitEmployee",results={@org.apache.struts2.convention.annotation.Result(type="stream",
+			params={
+					"inputName", "reslutJson"
+			})})
+	public String getPaymentVisitEmployee() throws UnsupportedEncodingException{
+	
+		List<PaymentVisitEmployee> list=paymentVisitEmployeeBIZ.query(" where visitId='"+visitId+"' ");
+		reslutJson=new ByteArrayInputStream(new Gson().toJson(list).getBytes("UTF-8"));  
+		
+		return SUCCESS;
 	}
 	
 	

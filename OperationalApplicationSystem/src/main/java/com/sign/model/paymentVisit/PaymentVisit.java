@@ -30,9 +30,11 @@ public class PaymentVisit {
 	@Column
 	String applicantDate;
 	@Column
+	String state;
+	@Column
 	String visitPurpose;
 	@Column
-	String referenceNO;
+	String referenceNo;
 	@Column
 	String projectNO;
 	@Column
@@ -40,7 +42,7 @@ public class PaymentVisit {
 	@Column
 	String visitDateTo;
 	@Column
-	BigDecimal totalLevelWorkHours;
+	Integer totalLevelWorkHours;
 	@Column
 	String businessTrip;
 	@Column
@@ -76,6 +78,12 @@ public class PaymentVisit {
 	List<ApproveHis> approveHis;
 	
 	
+	public String getState() {
+		return state;
+	}
+	public void setState(String state) {
+		this.state = state;
+	}
 	public String getuId() {
 		return uId;
 	}
@@ -106,11 +114,11 @@ public class PaymentVisit {
 	public void setId(String id) {
 		this.id = id;
 	}
-	public String getReferenceNO() {
-		return referenceNO;
+	public String getReferenceNo() {
+		return referenceNo;
 	}
-	public void setReferenceNO(String referenceNO) {
-		this.referenceNO = referenceNO;
+	public void setReferenceNo(String referenceNo) {
+		this.referenceNo = referenceNo;
 	}
 	public String getProjectNO() {
 		return projectNO;
@@ -130,10 +138,10 @@ public class PaymentVisit {
 	public void setVisitDateTo(String visitDateTo) {
 		this.visitDateTo = visitDateTo;
 	}
-	public BigDecimal getTotalLevelWorkHours() {
+	public Integer getTotalLevelWorkHours() {
 		return totalLevelWorkHours;
 	}
-	public void setTotalLevelWorkHours(BigDecimal totalLevelWorkHours) {
+	public void setTotalLevelWorkHours(Integer totalLevelWorkHours) {
 		this.totalLevelWorkHours = totalLevelWorkHours;
 	}
 	public String getBusinessTrip() {

@@ -12,7 +12,9 @@ $(function(){
 
 
 function paymentVisitCheckSave(){
+	var err="";
 	
+	return err;
 	
 }
 
@@ -22,6 +24,7 @@ function paymentVisitFaceToDate(){
 	o.uId='${user.uid}';
 	o.uName='${user.name}';
 	
+	return o;
 }
 
 function paymentVisitDateToFace(){
@@ -30,6 +33,31 @@ function paymentVisitDateToFace(){
 }
 
 function paymentVisitSave(){
+	var o=paymentVisitFaceToDate();	
+	var err=paymentVisitCheckSave(o);
+	if(err!=''){
+		BJUI.alertmsg('warn', err); 
+		return false;
+	}
+	
+
+		
+	BJUI.ajax('doajax', {
+	    url: 'savePaymentVisit.action',
+	    loadingmask: true,
+	    data:{json:JSON.stringify(o)},	    
+	    okCallback: function(json, options) {
+            if(json.status='200'){
+            	 BJUI.alertmsg('info', json.message); 
+            	 $.CurrentNavtab.find("#j_stamp_visit_id").val(json.params.id);
+            	 $.CurrentNavtab.find("#j_stamp_applicationCode").val(json.params.applicationCode);
+
+            }else{
+            	 BJUI.alertmsg('error', json.message); 
+            }
+	    }
+	});		
+	
 	
 	
 }
@@ -54,6 +82,10 @@ function paymentVisitReject(){
 	
 }
 
+function visitPurposeChange(){
+	$.CurrentNavtab.find("#j_stamp_visit_projectNo").val($.CurrentNavtab.find("#j_stamp_visit_visitPurpose").val());
+}
+
 
 
 </script>
@@ -65,14 +97,13 @@ function paymentVisitReject(){
     <div class="bs-example" style="width:1700px">
         <form id="j_payment_visit_form" data-toggle="ajaxform">
 			<input type="hidden" name="id" id="j_stamp_visit_id" value="${param.id}">
-			<input type="hidden" name="state" id="j_stamp_visit_state" value="">
             <div class="bjui-row-0" align="center">
             <h2 class="row-label">出差单申请</h2><br> 
             </div>
 			<table class="table" style="font-size:12px;">
 				<tr>
 					<td width="200px">Reference No.<br>单号</td>
-					<td width="200px"><input type="text" size="19" name="applicationCode" data-nobtn="true" id="j_stamp_visit_applicationCode" value="" placeholder="保存或者送审后生成"  readonly=""></td>					
+					<td width="200px"><input type="text" size="19" name="referenceNo" data-nobtn="true" id="j_stamp_visit_referenceNo" value="" placeholder="保存或者送审后生成"  readonly=""></td>					
 					<td width="200px"></td>
 					<td width="200px"></td>	
 					<td width="900px"></td>				
@@ -87,7 +118,17 @@ function paymentVisitReject(){
 				<tr>
 					<td >Visit Purpose <label style="color:red;font-size:12px"><b>*</b></label><br>
 					出差目的  <label style="color:red;font-size:12px"><b>*</b></label></td>
-					<td ><input type="text" size="19" name="visitPurpose" id="j_stamp_visit_visitPurpose"  data-toggle="datepicker" placeholder="点击选择日期" data-nobtn="true" >
+					<td >
+						<select name="visitPurpose" data-toggle="selectpicker" onchange="visitPurposeChange();" id=j_stamp_visit_visitPurpose data-width="500px" >
+                        	<option value="" selected></option>
+                        	<option value="" >Supplier Visit (供应商拜访)</option>
+                        	<option value="" >Customer Visit (客户拜访)</option>
+                        	<option value="8200-1" >New Customer Development (新客户开发)</option>
+                        	<option value="8200-1" >Local Goverment Visit (当地政府相关拜访)</option>
+                        	<option value="8302-1" >Training (培训)</option>
+                        	<option value="61721-999" >QRF Related (QRF 相关）</option>
+                        	<option value="8400-1" >New Factory Investment (新厂房投资)</option>
+                        </select>
 					</td>
 					<td ></td>
 					<td ></td>
@@ -104,9 +145,9 @@ function paymentVisitReject(){
 				<tr>
 					<td >Visit Date  <label style="color:red;font-size:12px"><b>*</b></label><br>
 					出差期间  <label style="color:red;font-size:12px"><b>*</b></label></td>
-					<td colspan="4"><input type="text" size="19" name="visitDateFrom" id="j_stamp_visit_visitDateFrom"  data-toggle="datepicker" placeholder="点击选择日期" data-nobtn="true" id="j_stamp_lendDate" value=""  />
+					<td colspan="4"><input type="text" size="19" name="visitDateFrom" id="j_stamp_visit_visitDateFrom"  data-toggle="datepicker" placeholder="点击选择日期" data-nobtn="true" id="j_stamp_lendDate" value="" data-pattern="yyyy-MM-dd HH:mm:ss" />
 					TO:&nbsp;&nbsp;&nbsp;&nbsp;
-					<input type="text" size="19" name="visitDateTo" id="j_stamp_visit_visitDateTo"  data-toggle="datepicker" placeholder="点击选择日期" data-nobtn="true" id="j_stamp_lendDate" value=""  />				
+					<input type="text" size="19" name="visitDateTo" id="j_stamp_visit_visitDateTo"  data-toggle="datepicker" placeholder="点击选择日期" data-nobtn="true" id="j_stamp_lendDate" value="" data-pattern="yyyy-MM-dd HH:mm:ss" />				
 					</td>	
 				</tr>
 				<tr>
@@ -118,9 +159,9 @@ function paymentVisitReject(){
 					<td >Domestic/Oversea  <label style="color:red;font-size:12px"><b>*</b></label><br>
 					国内国外  <label style="color:red;font-size:12px"><b>*</b></label></td>
 					<td colspan="4">
-					<input type="checkbox" name="businessTrip" data-toggle="icheck" id="j_stamp_visit_domestic" value="Domestic 国内" data-label="Domestic 国内">
+					<input type="radio" name="businessTrip" data-toggle="icheck" id="j_stamp_visit_domestic" value="Domestic 国内" data-label="Domestic 国内">
 					&nbsp;&nbsp;&nbsp;&nbsp;
-					<input type="checkbox" name="businessTrip" data-toggle="icheck" id="j_stamp_visit_oversea" value="Oversea 国外" data-label="Oversea 国外">
+					<input type="radio" name="businessTrip" data-toggle="icheck" id="j_stamp_visit_oversea" value="Oversea 国外" data-label="Oversea 国外">
 					</td>					
 				</tr>
 				<tr>
@@ -145,13 +186,13 @@ function paymentVisitReject(){
 						        height: '100%',
 						        gridTitle : '出差人员',
 						        showToolbar: true,
-						        dataType: 'jsonp',
+						        local: 'local',
 						        toolbarItem: 'add,edit,del',
-						        dataUrl: 'getPyamentVisitEmployee.action?visitID=${param.id}',
+						        dataUrl: 'getPaymentVisitEmployee.action?visitID=${param.id}',
 						        delUrl:'json/ajaxDone.json',
 						        editUrl: 'sign/payment/visit/payment_visit_edit.jsp',
 						        editMode: {dialog:{width:'800',height:430,title:'Edit Employee',mask:true}},
-						        paging: {pageSize:5, pageCurrent:1},
+						        paging: false,
 						        showCheckboxcol: true,
 						        linenumberAll: true,
 						        filterThead: false,
@@ -182,10 +223,10 @@ function paymentVisitReject(){
 				</tr>
 				<tr>
 					<td colspan="5" align="center">
-	            		<button type="button" id="stamp-save" class="btn-default" data-icon="save" onClick="savePaymentVisit()" >Save</button>&nbsp;&nbsp;&nbsp;&nbsp;
-	            		<button type="button" id="stamp-submit" class="btn-default" data-icon="arrow-up" onClick="submitPaymentVisit()">Submit</button>&nbsp;&nbsp;&nbsp;&nbsp;
-	            		<button type="button" id="stamp-delete" class="btn-default" data-icon="close" onClick="deletePaymentVisit()" style="display:none">Delete</button>
-            		</td>				
+	            		<button type="button" id="stamp-save" class="btn-default" data-icon="save" onClick="paymentVisitSave()" >Save</button>&nbsp;&nbsp;&nbsp;&nbsp;
+	            		<button type="button" id="stamp-submit" class="btn-default" data-icon="arrow-up" onClick="paymentVisitSubmit()">Submit</button>&nbsp;&nbsp;&nbsp;&nbsp;
+	            		<button type="button" id="stamp-delete" class="btn-default" data-icon="close" onClick="paymentVisitDelete()" style="display:none">Delete</button>
+            		</td>		
 				</tr>	
 				<tr>
 				<td colspan="5" >
@@ -194,7 +235,7 @@ function paymentVisitReject(){
 				</td>
 				</tr>		
 				<tr>
-					<td colspan="4">
+					<td colspan="5">
 						<table class="table" width="100%" id="stamp_approve_his" >
 							<tr name='head'>
 								<th width="80px">
@@ -227,7 +268,6 @@ function paymentVisitReject(){
 							</tr>					
 						</table>	
 					</td>
-					<td></td>
 				</tr>
 			</table>		
 

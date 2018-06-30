@@ -1,10 +1,10 @@
-package com.sign.dao;
+package com.sign.biz;
 
 import java.util.List;
 
 import com.sign.model.paymentVisit.PaymentVisit;
 
-public interface PaymentVisitDAO {
+public interface PaymentVisitBIZ {
 
 	public void save(PaymentVisit paymentVisit);
 	
@@ -13,6 +13,9 @@ public interface PaymentVisitDAO {
 	public void update(PaymentVisit paymentVisit);
 	
 	public List<PaymentVisit> query(String where);
-
+	
 	public List<PaymentVisit> query(String where,Integer pageSize,Integer pageCurrent);
+	
+	public String getMaxCode();
+	
 }
