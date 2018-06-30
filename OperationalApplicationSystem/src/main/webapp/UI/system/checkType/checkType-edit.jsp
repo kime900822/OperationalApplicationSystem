@@ -66,6 +66,7 @@
                 	<select name="key" data-toggle="selectpicker" id="j_checkTyp_edit_checkType" data-rule="required" data-width="100%"  >
                          <option value="" selected></option>
                          <option value="STAMP" selected>STAMP</option>
+                         <option value="PAYMENT_VISIT" selected>Payment Visit</option>
                     </select>
                 </div>
  				<label class="row-label">Name</label>

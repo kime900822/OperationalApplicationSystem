@@ -3,6 +3,7 @@ package com.sign.biz.impl;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Properties;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,11 +11,21 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.kime.base.BizBase;
+import com.kime.biz.ApproveBIZ;
+import com.kime.dao.ApproveDAO;
 import com.kime.dao.CommonDAO;
+import com.kime.dao.DictDAO;
+import com.kime.infoenum.Message;
+import com.kime.model.Approve;
+import com.kime.model.Dict;
 import com.kime.utils.CommonUtil;
+import com.kime.utils.PropertiesUtil;
 import com.sign.biz.PaymentVisitBIZ;
 import com.sign.dao.PaymentVisitDAO;
+import com.sign.dao.PaymentVisitEmployeeDAO;
 import com.sign.model.paymentVisit.PaymentVisit;
+import com.sign.model.paymentVisit.PaymentVisitEmployee;
+import com.sign.other.PaymentVisitHelp;
 
 @Service
 @Transactional(readOnly=true)
@@ -24,22 +35,53 @@ public class PaymentVisitBIZImpl extends BizBase implements PaymentVisitBIZ {
 	PaymentVisitDAO paymentVisitDAO;
 	@Autowired
 	CommonDAO commonDAO;
+	@Autowired
+	PaymentVisitEmployeeDAO PaymentVisitEmployeeDAO;
+	@Autowired
+	DictDAO dictDAO;
+	@Autowired
+	ApproveBIZ approveBIZ;
 	
 	@Override
 	@Transactional(readOnly=false,propagation=Propagation.REQUIRED,rollbackFor=Exception.class )
 	public void save(PaymentVisit paymentVisit) {
+		
+		List<PaymentVisitEmployee> lEmployees=PaymentVisitEmployeeDAO.query(" where VisitID='"+paymentVisit.getId()+"'");
+		
+		for (PaymentVisitEmployee employee : lEmployees) {
+			PaymentVisitEmployeeDAO.delete(employee);
+		}
+		
+		for (PaymentVisitEmployee employee : paymentVisit.getEmployees()) {
+			employee.setVisitId(paymentVisit.getId());
+			PaymentVisitEmployeeDAO.save(employee);
+		}
+			
+		
 		paymentVisitDAO.save(paymentVisit);
 	}
 
 	@Override
 	@Transactional(readOnly=false,propagation=Propagation.REQUIRED,rollbackFor=Exception.class )
 	public void delete(PaymentVisit paymentVisit) {
+
 		paymentVisitDAO.delete(paymentVisit);
 	}
 
 	@Override
 	@Transactional(readOnly=false,propagation=Propagation.REQUIRED,rollbackFor=Exception.class )
-	public void update(PaymentVisit paymentVisit) {
+	public void update(PaymentVisit paymentVisit) throws Exception {
+		if (paymentVisit.getState().equals(PaymentVisitHelp.SUBMIT)) {
+			String paymentVisitApprove=PropertiesUtil.ReadProperties(Message.SYSTEM_PROPERTIES, "PaymentVisitApprove");
+			List<Dict> list=dictDAO.query(" where type='CHECKTYPE' and key='"+paymentVisitApprove+"'");
+			if (list.size()==0) {
+				throw new Exception("未找到名称为:"+paymentVisitApprove+"的签核类型");
+			}		
+			List<Approve> lApproves = approveBIZ.getApproveAndChild(list.get(0).getValueExplain());		
+		}
+
+		
+		
 		paymentVisitDAO.update(paymentVisit);
 	}
 

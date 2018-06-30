@@ -11,12 +11,15 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.stereotype.Component;
 
 import com.kime.model.ApproveHis;
-import com.sign.model.approveApplication;
+import com.sign.model.ApproveApplication;
 
 @Component
 @Entity @Table(name = "t_payment_visit")
@@ -24,8 +27,8 @@ public class PaymentVisit {
 
 	
 	@Id
-	@GeneratedValue(generator="uuid")
-	@GenericGenerator(name = "uuid", strategy = "uuid")
+	@GeneratedValue(generator="assigned")
+	@GenericGenerator(name = "assigned", strategy = "assigned")
 	String id;
 	@Column
 	String applicantDate;
@@ -36,7 +39,7 @@ public class PaymentVisit {
 	@Column
 	String referenceNo;
 	@Column
-	String projectNO;
+	String projectNo;
 	@Column
 	String visitDateFrom;
 	@Column
@@ -55,26 +58,13 @@ public class PaymentVisit {
 	String uId;
 	@Column
 	String uName;
-	@OneToMany
-	@JoinTable(
-		     name="employees",
-		     joinColumns = @JoinColumn(name="id"),
-		     inverseJoinColumns = @JoinColumn(name="visitId")
-		  )
+	@Column
+	String nextApprove;
+	@Transient
 	List<PaymentVisitEmployee> employees;
-	@OneToMany
-	@JoinTable(
-		     name="approveApplications",
-		     joinColumns = @JoinColumn(name="id"),
-		     inverseJoinColumns = @JoinColumn(name="tradeId")
-		  )
-	List<approveApplication> approveApplications;
-	@OneToMany
-	@JoinTable(
-		     name="approveHis",
-		     joinColumns = @JoinColumn(name="id"),
-		     inverseJoinColumns = @JoinColumn(name="tradeId")
-		  )
+	@Transient
+	List<ApproveApplication> approveApplications;
+	@Transient
 	List<ApproveHis> approveHis;
 	
 	
@@ -120,11 +110,11 @@ public class PaymentVisit {
 	public void setReferenceNo(String referenceNo) {
 		this.referenceNo = referenceNo;
 	}
-	public String getProjectNO() {
-		return projectNO;
+	public String getProjectNo() {
+		return projectNo;
 	}
-	public void setProjectNO(String projectNO) {
-		this.projectNO = projectNO;
+	public void setProjectNo(String projectNo) {
+		this.projectNo = projectNo;
 	}
 	public String getVisitDateFrom() {
 		return visitDateFrom;
@@ -174,10 +164,10 @@ public class PaymentVisit {
 	public void setEmployees(List<PaymentVisitEmployee> employees) {
 		this.employees = employees;
 	}
-	public List<approveApplication> getApproveApplications() {
+	public List<ApproveApplication> getApproveApplications() {
 		return approveApplications;
 	}
-	public void setApproveApplications(List<approveApplication> approveApplications) {
+	public void setApproveApplications(List<ApproveApplication> approveApplications) {
 		this.approveApplications = approveApplications;
 	}
 	public List<ApproveHis> getApproveHis() {

@@ -3,11 +3,16 @@ package com.sign.action;
 import java.io.ByteArrayInputStream;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
+
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.ParentPackage;
+import org.aspectj.weaver.ast.Var;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -18,9 +23,11 @@ import com.kime.infoenum.Message;
 import com.kime.model.ApproveHis;
 import com.kime.utils.CommonUtil;
 import com.sign.biz.PaymentVisitBIZ;
-import com.sign.model.approveApplication;
+import com.sign.model.ApproveApplication;
 import com.sign.model.paymentVisit.PaymentVisit;
 import com.sign.model.paymentVisit.PaymentVisitEmployee;
+
+import antlr.collections.impl.LList;
 
 @Controller
 @Scope("prototype")
@@ -35,7 +42,7 @@ public class PaymentVisitAction extends ActionBase{
 	String applicantDate;
 	String visitPurpose;
 	String referenceNo;
-	String projectNO;
+	String projectNo;
 	String visitDateFrom;
 	String visitDateTo;
 	Integer totalLevelWorkHours;
@@ -46,9 +53,17 @@ public class PaymentVisitAction extends ActionBase{
 	String uId;
 	String uName;
 	List<PaymentVisitEmployee> employees;
-	List<approveApplication> approveApplications;
+	List<ApproveApplication> approveApplications;
 	List<ApproveHis> approveHis;
+	String nextApprove;
 	
+	
+	public String getNextApprove() {
+		return nextApprove;
+	}
+	public void setNextApprove(String nextApprove) {
+		this.nextApprove = nextApprove;
+	}
 	public String getState() {
 		return state;
 	}
@@ -85,11 +100,11 @@ public class PaymentVisitAction extends ActionBase{
 	public void setReferenceNo(String referenceNo) {
 		this.referenceNo = referenceNo;
 	}
-	public String getProjectNO() {
-		return projectNO;
+	public String getProjectNo() {
+		return projectNo;
 	}
-	public void setProjectNO(String projectNO) {
-		this.projectNO = projectNO;
+	public void setProjectNo(String projectNo) {
+		this.projectNo = projectNo;
 	}
 	public String getVisitDateFrom() {
 		return visitDateFrom;
@@ -151,10 +166,10 @@ public class PaymentVisitAction extends ActionBase{
 	public void setEmployees(List<PaymentVisitEmployee> employees) {
 		this.employees = employees;
 	}
-	public List<approveApplication> getApproveApplications() {
+	public List<ApproveApplication> getApproveApplications() {
 		return approveApplications;
 	}
-	public void setApproveApplications(List<approveApplication> approveApplications) {
+	public void setApproveApplications(List<ApproveApplication> approveApplications) {
 		this.approveApplications = approveApplications;
 	}
 	public List<ApproveHis> getApproveHis() {
@@ -165,6 +180,35 @@ public class PaymentVisitAction extends ActionBase{
 	}
 	
 	
+	
+	@Action(value="deletePaymentVisit",results={@org.apache.struts2.convention.annotation.Result(type="stream",
+			params={
+					"inputName", "reslutJson"
+			})})
+	public String deletePaymentVisit() throws UnsupportedEncodingException{
+		
+		try {
+			List<PaymentVisit> list=paymentVisitBIZ.query(" where id='"+id+"'");
+			if (list.size()>0) {
+				paymentVisitBIZ.delete(list.get(0));
+				result.setMessage("Delete Success");
+				result.setStatusCode("200");	
+			}else {
+				result.setMessage("This Reference No is not exist!");
+				result.setStatusCode("300");	
+			}
+			
+			
+		} catch (Exception e) {
+			result.setMessage(e.getMessage());
+			result.setStatusCode("300");
+		}
+		
+		reslutJson=new ByteArrayInputStream(new Gson().toJson(result).getBytes("UTF-8")); 	
+		return SUCCESS;
+		
+	}
+	
 	@Action(value="savePaymentVisit",results={@org.apache.struts2.convention.annotation.Result(type="stream",
 			params={
 					"inputName", "reslutJson"
@@ -172,7 +216,8 @@ public class PaymentVisitAction extends ActionBase{
 	public String savePaymentVisit() throws UnsupportedEncodingException{
 		try {
 			PaymentVisit paymentVisit=new Gson().fromJson(json, PaymentVisit.class);		
-		
+			List<String> lStrings=new ArrayList<String>();
+			
 			if (paymentVisit.getuId()==null||paymentVisit.getuId().equals("")) {
 				result.setMessage("User can`t be NULL,Plese reflash page!");
 				result.setStatusCode("300");
@@ -180,34 +225,45 @@ public class PaymentVisitAction extends ActionBase{
 				return SUCCESS;
 			}
 			
-
 			
-			if (!paymentVisit.getId().equals("")&&paymentVisit.getId()!=null) {
-
-				
-				paymentVisit.setDateTmp(CommonUtil.getDateTemp());
-				paymentVisitBIZ.update(paymentVisit);				
-				result.setMessage(Message.SAVE_MESSAGE_SUCCESS);
-				result.setStatusCode("200");
-				logUtil.logInfo("更新出差申请单:"+paymentVisit.getId());			
-			}else{
-
-				
-				String code=paymentVisitBIZ.getMaxCode();
-				paymentVisit.setReferenceNo(code);
-				paymentVisit.setDateTmp(CommonUtil.getDateTemp());
-				paymentVisit.setState("0");
-				paymentVisitBIZ.save(paymentVisit);
-				result.setMessage(Message.SAVE_MESSAGE_SUCCESS);
-				result.setStatusCode("200");
-				Map<String, String> map=new HashMap<>();
-				map.put("id", paymentVisit.getId());
-				map.put("referenceNO", paymentVisit.getReferenceNo());
-				result.setParams(map);
-				logUtil.logInfo("新增出差申请单:"+paymentVisit.getReferenceNo());
-
+			for (PaymentVisitEmployee employee : paymentVisit.getEmployees()) {
+				lStrings.add(employee.getEmployeeNo());
 			}
+			boolean isRepeat = lStrings.size() != new HashSet<String>(lStrings).size();
+			
+			
+			if (isRepeat) {
+				result.setMessage("Employee repeat!");
+				result.setStatusCode("300");
+			}
+			else {
+				if (!paymentVisit.getId().equals("")&&paymentVisit.getId()!=null) {
 
+					
+					paymentVisit.setDateTmp(CommonUtil.getDateTemp());
+					paymentVisitBIZ.update(paymentVisit);				
+					result.setMessage(Message.SAVE_MESSAGE_SUCCESS);
+					result.setStatusCode("200");
+					logUtil.logInfo("更新出差申请单:"+paymentVisit.getId());			
+				}else{
+
+					
+					String code=paymentVisitBIZ.getMaxCode();
+					paymentVisit.setReferenceNo(code);
+					paymentVisit.setId(UUID.randomUUID().toString().replaceAll("-", ""));
+					paymentVisit.setDateTmp(CommonUtil.getDateTemp());
+					paymentVisit.setState("0");
+					paymentVisitBIZ.save(paymentVisit);
+					result.setMessage(Message.SAVE_MESSAGE_SUCCESS);
+					result.setStatusCode("200");
+					Map<String, String> map=new HashMap<>();
+					map.put("id", paymentVisit.getId());
+					map.put("referenceNO", paymentVisit.getReferenceNo());
+					result.setParams(map);
+					logUtil.logInfo("新增出差申请单:"+paymentVisit.getReferenceNo());
+
+				}
+			}
 			
 		} catch (Exception e) {
 			logUtil.logInfo("新增出差申请单异常:"+e.getMessage());

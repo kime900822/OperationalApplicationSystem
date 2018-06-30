@@ -3,6 +3,10 @@
  <script type="text/javascript">
 
  $(function(){
+	 if('${param.advanceAmount}'!=null&&'${param.advanceAmount}'!=''&&'${param.advanceAmount}'!=undefined){
+		 $.CurrentDialog.find('#j_payment_visit_employee_advanceAmount').val('${param.advanceAmount}');
+	 }
+	 
 	 
 	 $.CurrentDialog.find('#j_payment_visit_employee_hotelBookingByHR').selectpicker().selectpicker('val','${param.hotelBookingByHR}').selectpicker('refresh');
 	 $.CurrentDialog.find('#j_payment_visit_employee_carArrangeByHR').selectpicker().selectpicker('val','${param.carArrangeByHR}').selectpicker('refresh');
@@ -68,7 +72,7 @@ function paymentVisitEmployeeSelected(obj,id){
                 </div>
                 <label class="row-label">Advance Amount<br>预付款金额</label>
                 <div class="row-input required">
-                    <input type="text" name="advanceAmount"  data-rule="required" value="${param.advanceAmount}">
+                    <input type="text" name="advanceAmount" id="j_payment_visit_employee_advanceAmount" data-rule="required" value="0">
                 </div>
                 <label class="row-label">A.是否HR预定酒店<br>Hotel Booking by HR</label>
                 <div class="row-input required">

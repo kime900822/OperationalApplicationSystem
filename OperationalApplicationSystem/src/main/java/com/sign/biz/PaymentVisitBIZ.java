@@ -10,7 +10,7 @@ public interface PaymentVisitBIZ {
 	
 	public void delete(PaymentVisit paymentVisit);
 	
-	public void update(PaymentVisit paymentVisit);
+	public void update(PaymentVisit paymentVisit) throws Exception;
 	
 	public List<PaymentVisit> query(String where);
 	

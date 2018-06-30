@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Entity @Table(name = "t_approve_application")
-public class approveApplication {
+public class ApproveApplication {
 
 	@Id
 	@GeneratedValue(generator="uuid")

@@ -7,13 +7,34 @@ $(function(){
 	var chopDate=new Date(new Date().setDate(new Date().getDate()+5)).formatDate('yyyy-MM-dd');
 	$.CurrentNavtab.find('#j_stamp_visit_applicationDate').val(today);
 
+
 	
 })
 
 
-function paymentVisitCheckSave(){
+function paymentVisitCheckSave(o){
 	var err="";
-	
+	if(o.visitPurpose==null||o.visitPurpose==''){
+		err+=' Visit Purpose can`t be empty!<br>'
+	}
+	if(o.projectNo==null||o.projectNo==''){
+		err+=' Project No can`t be empty!<br>'
+	}
+	if(o.visitDateFrom==null||o.visitDateFrom==''||o.visitDateTo==null||o.visitDateTo==''){
+		err+=' Visit Date can`t be empty!<br>'
+	}
+	if(o.totalLevelWorkHours==null||o.totalLevelWorkHours==''){
+		err+=' Total Leave Work Hours can`t be empty!<br>'
+	}
+	if(o.businessTrip==null||o.businessTrip==''){
+		err+=' Domestic/Oversea can`t be empty!<br>'
+	}
+	if(o.visitDetailPlace==null||o.visitDetailPlace==''){
+		err+=' Visit Detail Place can`t be empty!<br>'
+	}
+	if(o.visitDetailPurpose==null||o.visitDetailPurpose==''){
+		err+=' Visit Detail Purpose can`t be empty!<br>'
+	}
 	return err;
 	
 }
@@ -68,7 +89,23 @@ function paymentVisitSubmit(){
 }
 
 function paymentVisitDelete(){
-	
+	BJUI.alertmsg('confirm', 'Delete?', {
+		   okCall: function() {
+				BJUI.ajax('doajax', {
+				    url: 'deletePaymentVisit.action',
+				    loadingmask: true,
+				    data:{id:$.CurrentNavtab.find("#j_stamp_visit_id").val()},	    
+				    okCallback: function(json, options) {
+			            if(json.status='200'){
+			            	 BJUI.navtab('closeCurrentTab'); 
+			            }else{
+			            	 BJUI.alertmsg('error', json.message); 
+			            }
+				    }
+				});	
+			  			   
+		   }
+	})
 	
 }
 
@@ -83,10 +120,41 @@ function paymentVisitReject(){
 }
 
 function visitPurposeChange(){
-	$.CurrentNavtab.find("#j_stamp_visit_projectNo").val($.CurrentNavtab.find("#j_stamp_visit_visitPurpose").val());
+	var val=$.CurrentNavtab.find("#j_stamp_visit_visitPurpose").val();
+	if(val=='3'){
+		$.CurrentNavtab.find("#j_stamp_visit_projectNo").val('8200-1');
+	}else if (val=='4'){
+		$.CurrentNavtab.find("#j_stamp_visit_projectNo").val('8200-1');
+	}else if (val=='5'){
+		$.CurrentNavtab.find("#j_stamp_visit_projectNo").val('8302-1');
+	}else if (val=='6'){
+		$.CurrentNavtab.find("#j_stamp_visit_projectNo").val('61721-999');
+	}else if (val=='7'){
+		$.CurrentNavtab.find("#j_stamp_visit_projectNo").val('8400-1');
+	}else{
+		$.CurrentNavtab.find("#j_stamp_visit_projectNo").val('');
+	}
+	
+}
+
+function paymentVisitShowButton(state){
+	
+	
+	
 }
 
 
+function checkTotalLevelWorkHours(){
+	
+	var o = $.CurrentNavtab.find("#j_stamp_visit_totalLevelWorkHours");
+	var ret =  /^[0-9]*[1-9][0-9]*$/;
+	if(!ret.test(o.val())){
+	  	 o.val("");
+	  	 BJUI.alertmsg('error', 'Plese Enter Right Type'); 
+	   }
+	
+	
+}
 
 </script>
 
@@ -109,8 +177,8 @@ function visitPurposeChange(){
 					<td width="900px"></td>				
 				</tr>
 				<tr>
-					<td >Application Date<br>申请日期</td>
-					<td ><input type="text" size="19" name="applicationDate" id="j_stamp_visit_applicationDate"  data-toggle="datepicker" placeholder="点击选择日期" data-nobtn="true" ></td>
+					<td >Applicant Date<br>申请日期</td>
+					<td ><input type="text" size="19" name="applicantDate" id="j_stamp_visit_applicantDate"  data-toggle="datepicker" placeholder="点击选择日期" data-nobtn="true" ></td>
 					<td ></td>
 					<td ></td>
 					<td></td>				
@@ -121,13 +189,13 @@ function visitPurposeChange(){
 					<td >
 						<select name="visitPurpose" data-toggle="selectpicker" onchange="visitPurposeChange();" id=j_stamp_visit_visitPurpose data-width="500px" >
                         	<option value="" selected></option>
-                        	<option value="" >Supplier Visit (供应商拜访)</option>
-                        	<option value="" >Customer Visit (客户拜访)</option>
-                        	<option value="8200-1" >New Customer Development (新客户开发)</option>
-                        	<option value="8200-1" >Local Goverment Visit (当地政府相关拜访)</option>
-                        	<option value="8302-1" >Training (培训)</option>
-                        	<option value="61721-999" >QRF Related (QRF 相关）</option>
-                        	<option value="8400-1" >New Factory Investment (新厂房投资)</option>
+                        	<option value="1" >Supplier Visit (供应商拜访)</option>
+                        	<option value="2" >Customer Visit (客户拜访)</option>
+                        	<option value="3" >New Customer Development (新客户开发)</option>
+                        	<option value="4" >Local Goverment Visit (当地政府相关拜访)</option>
+                        	<option value="5" >Training (培训)</option>
+                        	<option value="6" >QRF Related (QRF 相关）</option>
+                        	<option value="7" >New Factory Investment (新厂房投资)</option>
                         </select>
 					</td>
 					<td ></td>
@@ -153,7 +221,7 @@ function visitPurposeChange(){
 				<tr>
 					<td >Total Leave Work Hours  <label style="color:red;font-size:12px"><b>*</b></label><br>
 					总共出差工作天数时数  <label style="color:red;font-size:12px"><b>*</b></label></td>
-					<td colspan="4"><input type="text" size="19" name="totalLevelWorkHours" id="j_stamp_visit_totalLevelWorkHours" >&nbsp;Hours</td>		
+					<td colspan="4"><input type="text" size="19" name="totalLevelWorkHours" id="j_stamp_visit_totalLevelWorkHours" onblur="checkTotalLevelWorkHours()" >&nbsp;Hours</td>		
 				</tr>
 				<tr>
 					<td >Domestic/Oversea  <label style="color:red;font-size:12px"><b>*</b></label><br>
