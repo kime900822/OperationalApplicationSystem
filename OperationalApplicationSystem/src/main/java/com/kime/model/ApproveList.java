@@ -1,4 +1,4 @@
-package com.sign.model;
+package com.kime.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,8 +10,8 @@ import org.hibernate.annotations.GenericGenerator;
 import org.springframework.stereotype.Component;
 
 @Component
-@Entity @Table(name = "t_approve_application")
-public class ApproveApplication {
+@Entity @Table(name = "t_approve_list")
+public class ApproveList {
 
 	@Id
 	@GeneratedValue(generator="uuid")
@@ -81,5 +81,4 @@ public class ApproveApplication {
 	public void setLevel(String level) {
 		this.level = level;
 	}
-	
 }

@@ -75,7 +75,7 @@ public class PaymentVisitBIZImpl extends BizBase implements PaymentVisitBIZ {
 			String paymentVisitApprove=PropertiesUtil.ReadProperties(Message.SYSTEM_PROPERTIES, "PaymentVisitApprove");
 			List<Dict> list=dictDAO.query(" where type='CHECKTYPE' and key='"+paymentVisitApprove+"'");
 			if (list.size()==0) {
-				throw new Exception("未找到名称为:"+paymentVisitApprove+"的签核类型");
+				throw new Exception("未找到类型为:"+paymentVisitApprove+"的签核类型");
 			}		
 			List<Approve> lApproves = approveBIZ.getApproveAndChild(list.get(0).getValueExplain());		
 		}

@@ -2,7 +2,6 @@ package com.sign.action;
 
 import java.io.ByteArrayInputStream;
 import java.io.UnsupportedEncodingException;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -12,7 +11,6 @@ import java.util.UUID;
 
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.ParentPackage;
-import org.aspectj.weaver.ast.Var;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -21,13 +19,11 @@ import com.google.gson.Gson;
 import com.kime.base.ActionBase;
 import com.kime.infoenum.Message;
 import com.kime.model.ApproveHis;
+import com.kime.model.ApproveList;
 import com.kime.utils.CommonUtil;
 import com.sign.biz.PaymentVisitBIZ;
-import com.sign.model.ApproveApplication;
 import com.sign.model.paymentVisit.PaymentVisit;
 import com.sign.model.paymentVisit.PaymentVisitEmployee;
-
-import antlr.collections.impl.LList;
 
 @Controller
 @Scope("prototype")
@@ -53,7 +49,7 @@ public class PaymentVisitAction extends ActionBase{
 	String uId;
 	String uName;
 	List<PaymentVisitEmployee> employees;
-	List<ApproveApplication> approveApplications;
+	List<ApproveList> approveList;
 	List<ApproveHis> approveHis;
 	String nextApprove;
 	
@@ -166,11 +162,11 @@ public class PaymentVisitAction extends ActionBase{
 	public void setEmployees(List<PaymentVisitEmployee> employees) {
 		this.employees = employees;
 	}
-	public List<ApproveApplication> getApproveApplications() {
-		return approveApplications;
+	public List<ApproveList> getApproveList() {
+		return approveList;
 	}
-	public void setApproveApplications(List<ApproveApplication> approveApplications) {
-		this.approveApplications = approveApplications;
+	public void setApproveList(List<ApproveList> approveList) {
+		this.approveList = approveList;
 	}
 	public List<ApproveHis> getApproveHis() {
 		return approveHis;

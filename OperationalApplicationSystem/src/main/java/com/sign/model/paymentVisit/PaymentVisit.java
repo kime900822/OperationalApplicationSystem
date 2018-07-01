@@ -1,25 +1,19 @@
 package com.sign.model.paymentVisit;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.stereotype.Component;
 
 import com.kime.model.ApproveHis;
-import com.sign.model.ApproveApplication;
+import com.kime.model.ApproveList;
 
 @Component
 @Entity @Table(name = "t_payment_visit")
@@ -63,7 +57,7 @@ public class PaymentVisit {
 	@Transient
 	List<PaymentVisitEmployee> employees;
 	@Transient
-	List<ApproveApplication> approveApplications;
+	List<ApproveList> approveApplications;
 	@Transient
 	List<ApproveHis> approveHis;
 	
@@ -164,10 +158,16 @@ public class PaymentVisit {
 	public void setEmployees(List<PaymentVisitEmployee> employees) {
 		this.employees = employees;
 	}
-	public List<ApproveApplication> getApproveApplications() {
+	public String getNextApprove() {
+		return nextApprove;
+	}
+	public void setNextApprove(String nextApprove) {
+		this.nextApprove = nextApprove;
+	}
+	public List<ApproveList> getApproveApplications() {
 		return approveApplications;
 	}
-	public void setApproveApplications(List<ApproveApplication> approveApplications) {
+	public void setApproveApplications(List<ApproveList> approveApplications) {
 		this.approveApplications = approveApplications;
 	}
 	public List<ApproveHis> getApproveHis() {
