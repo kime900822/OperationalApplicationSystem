@@ -57,7 +57,7 @@ public class PaymentVisit {
 	@Transient
 	List<PaymentVisitEmployee> employees;
 	@Transient
-	List<ApproveList> approveApplications;
+	List<ApproveList> approveList;
 	@Transient
 	List<ApproveHis> approveHis;
 	
@@ -164,11 +164,11 @@ public class PaymentVisit {
 	public void setNextApprove(String nextApprove) {
 		this.nextApprove = nextApprove;
 	}
-	public List<ApproveList> getApproveApplications() {
-		return approveApplications;
+	public List<ApproveList> getApproveList() {
+		return approveList;
 	}
-	public void setApproveApplications(List<ApproveList> approveApplications) {
-		this.approveApplications = approveApplications;
+	public void setApproveList(List<ApproveList> approveList) {
+		this.approveList = approveList;
 	}
 	public List<ApproveHis> getApproveHis() {
 		return approveHis;

@@ -1,6 +1,7 @@
 package com.sign.biz.impl;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
@@ -13,11 +14,17 @@ import org.springframework.transaction.annotation.Transactional;
 import com.kime.base.BizBase;
 import com.kime.biz.ApproveBIZ;
 import com.kime.dao.ApproveDAO;
+import com.kime.dao.ApproveListDAO;
 import com.kime.dao.CommonDAO;
+import com.kime.dao.DepartmentDAO;
 import com.kime.dao.DictDAO;
+import com.kime.dao.UserDAO;
 import com.kime.infoenum.Message;
 import com.kime.model.Approve;
+import com.kime.model.ApproveList;
+import com.kime.model.Department;
 import com.kime.model.Dict;
+import com.kime.model.User;
 import com.kime.utils.CommonUtil;
 import com.kime.utils.PropertiesUtil;
 import com.sign.biz.PaymentVisitBIZ;
@@ -41,6 +48,12 @@ public class PaymentVisitBIZImpl extends BizBase implements PaymentVisitBIZ {
 	DictDAO dictDAO;
 	@Autowired
 	ApproveBIZ approveBIZ;
+	@Autowired
+	ApproveListDAO approveListDAO;
+	@Autowired
+	DepartmentDAO departmentDAO;
+	@Autowired
+	UserDAO userDAO;
 	
 	@Override
 	@Transactional(readOnly=false,propagation=Propagation.REQUIRED,rollbackFor=Exception.class )
@@ -72,12 +85,51 @@ public class PaymentVisitBIZImpl extends BizBase implements PaymentVisitBIZ {
 	@Transactional(readOnly=false,propagation=Propagation.REQUIRED,rollbackFor=Exception.class )
 	public void update(PaymentVisit paymentVisit) throws Exception {
 		if (paymentVisit.getState().equals(PaymentVisitHelp.SUBMIT)) {
+			List<ApproveList> lApproveLists=new ArrayList<>();
 			String paymentVisitApprove=PropertiesUtil.ReadProperties(Message.SYSTEM_PROPERTIES, "PaymentVisitApprove");
 			List<Dict> list=dictDAO.query(" where type='CHECKTYPE' and key='"+paymentVisitApprove+"'");
 			if (list.size()==0) {
-				throw new Exception("未找到类型为:"+paymentVisitApprove+"的签核类型");
+				throw new Exception("未找到类型为:"+paymentVisitApprove+"的签核");
 			}		
-			List<Approve> lApproves = approveBIZ.getApproveAndChild(list.get(0).getValueExplain());		
+			List<Approve> lApproves = approveBIZ.getApproveAndChild(list.get(0).getValueExplain());	
+			
+			if (lApproves.get(0).getUid().equals("Dept. Head")) {
+				
+				User user=(User) userDAO.query(" where uid='"+paymentVisit.getuId()+"'").get(0);
+				List<User> lUsers =userDAO.query(" where uid='" + user.getDepartment().getDid() + "'");
+				if (lUsers.size() > 0) {
+					lApproves.get(0).setUid(lUsers.get(0).getUid());
+					lApproves.get(0).setUname(lUsers.get(0).getName());
+					lApproves.get(0).setDid(lUsers.get(0).getDid());
+					lApproves.get(0).setDname(lUsers.get(0).getDepartment().getName());
+					paymentVisit.setNextApprove(lUsers.get(0).getUid());
+				} else {
+					throw new Exception(" Department Manager is null");
+				}
+
+
+			}
+			
+			for (Approve approve : lApproves) {
+				ApproveList tmp=new ApproveList();
+				tmp.setUid(approve.getUid());
+				tmp.setDid(approve.getDid());
+				tmp.setTradeId(paymentVisit.getId());
+				tmp.setName(approve.getName());
+				tmp.setUname(approve.getUname());
+				tmp.setDname(approve.getDname());
+				tmp.setLevel(approve.getLevel());
+				approveListDAO.save(tmp);
+				lApproveLists.add(tmp);
+			}
+			
+			
+			for (ApproveList approveList : paymentVisit.getApproveList()) {
+				approveListDAO.delete(approveList);
+			}
+			
+			
+			
 		}
 
 		
