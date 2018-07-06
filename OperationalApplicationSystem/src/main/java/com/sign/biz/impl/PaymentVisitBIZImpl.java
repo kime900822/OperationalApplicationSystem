@@ -13,7 +13,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.kime.base.BizBase;
 import com.kime.biz.ApproveBIZ;
+import com.kime.biz.ApproveHisBIZ;
 import com.kime.dao.ApproveDAO;
+import com.kime.dao.ApproveHisDAO;
 import com.kime.dao.ApproveListDAO;
 import com.kime.dao.CommonDAO;
 import com.kime.dao.DepartmentDAO;
@@ -21,6 +23,7 @@ import com.kime.dao.DictDAO;
 import com.kime.dao.UserDAO;
 import com.kime.infoenum.Message;
 import com.kime.model.Approve;
+import com.kime.model.ApproveHis;
 import com.kime.model.ApproveList;
 import com.kime.model.Department;
 import com.kime.model.Dict;
@@ -30,6 +33,7 @@ import com.kime.utils.PropertiesUtil;
 import com.sign.biz.PaymentVisitBIZ;
 import com.sign.dao.PaymentVisitDAO;
 import com.sign.dao.PaymentVisitEmployeeDAO;
+import com.sign.model.Stamp;
 import com.sign.model.paymentVisit.PaymentVisit;
 import com.sign.model.paymentVisit.PaymentVisitEmployee;
 import com.sign.other.PaymentVisitHelp;
@@ -54,6 +58,8 @@ public class PaymentVisitBIZImpl extends BizBase implements PaymentVisitBIZ {
 	DepartmentDAO departmentDAO;
 	@Autowired
 	UserDAO userDAO;
+	@Autowired
+	ApproveHisBIZ approveHisBIZ;
 	
 	@Override
 	@Transactional(readOnly=false,propagation=Propagation.REQUIRED,rollbackFor=Exception.class )
@@ -147,6 +153,7 @@ public class PaymentVisitBIZImpl extends BizBase implements PaymentVisitBIZ {
 		return paymentVisitDAO.query(where, pageSize, pageCurrent);
 	}
 
+	
 	@Override
 	public String getMaxCode() {
 		Date d = new Date();
@@ -164,5 +171,21 @@ public class PaymentVisitBIZImpl extends BizBase implements PaymentVisitBIZ {
 		return "S" + sdf.format(d) + "01";
 	}
 
+	@Override
+	public ApproveHis StampApprove(String level, String comment, String approveState, String tradeId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public PaymentVisit queryById(String id) {
+		PaymentVisit paymentVisit = paymentVisitDAO.query(" where id='" + id + "' ").get(0);
+		paymentVisit.setApproveHis(approveHisBIZ.getApproveHisByTradeId(paymentVisit.getId()));
+		paymentVisit.setApproveList(approveListDAO.query("where tradeId='"+id+"' order by level "));
+		return paymentVisit;
+		
+	}
+
+	
 	
 }

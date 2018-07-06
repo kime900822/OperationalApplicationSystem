@@ -2,6 +2,7 @@ package com.sign.biz;
 
 import java.util.List;
 
+import com.kime.model.ApproveHis;
 import com.sign.model.paymentVisit.PaymentVisit;
 
 public interface PaymentVisitBIZ {
@@ -17,5 +18,10 @@ public interface PaymentVisitBIZ {
 	public List<PaymentVisit> query(String where,Integer pageSize,Integer pageCurrent);
 	
 	public String getMaxCode();
+	
+	ApproveHis StampApprove(String level, String comment, String approveState, String tradeId);
+	
+	public PaymentVisit queryById(String id);
+
 	
 }

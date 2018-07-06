@@ -48,7 +48,31 @@ function paymentVisitFaceToDate(){
 	return o;
 }
 
-function paymentVisitDateToFace(){
+function paymentVisitDateToFace(id){
+	
+	BJUI.ajax('doajax', {
+	    url: 'getPaymentVisitByID.action',
+	    loadingmask: true,
+	    data:{id:id},	    
+	    okCallback: function(json, options) {
+	    	if(json.status='200'){
+	    		$.CurrentNavtab.find("#j_stamp_applicationDate").val(json.applicationDate);
+	    		$.CurrentNavtab.find("#j_stamp_applicationCode").val(json.applicationCode);
+	    		$.CurrentNavtab.find("#j_stamp_formFiller").val(json.formFiller+"-"+json.formFillerID);
+	    		$.CurrentNavtab.find("#j_stamp_departmentOfFormFiller").val(json.departmentOfFormFiller+"-"+json.departmentOfFormFillerID);
+	    		$.CurrentNavtab.find("#j_stamp_applicantID").val(json.applicantID);
+	    		$.CurrentNavtab.find("#j_stamp_applicant").val(json.applicant);
+	    		$.CurrentNavtab.find("#j_stamp_departmentOfApplicant").val(json.departmentOfApplicant+"-"+json.departmentOfApplicantID);
+	    		$.CurrentNavtab.find("#j_stamp_contactNumber").val(json.contactNumber);
+
+	    	
+	    	}
+	    }
+	})
+	
+	
+	
+	
 	
 	
 }

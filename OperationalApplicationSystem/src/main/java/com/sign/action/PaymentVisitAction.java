@@ -22,6 +22,7 @@ import com.kime.model.ApproveHis;
 import com.kime.model.ApproveList;
 import com.kime.utils.CommonUtil;
 import com.sign.biz.PaymentVisitBIZ;
+import com.sign.model.Stamp;
 import com.sign.model.paymentVisit.PaymentVisit;
 import com.sign.model.paymentVisit.PaymentVisitEmployee;
 
@@ -203,6 +204,27 @@ public class PaymentVisitAction extends ActionBase{
 		reslutJson=new ByteArrayInputStream(new Gson().toJson(result).getBytes("UTF-8")); 	
 		return SUCCESS;
 		
+	}
+	
+	@Action(value="getPaymentVisitByID",results={@org.apache.struts2.convention.annotation.Result(type="stream",
+			params={
+					"inputName", "reslutJson"
+			})})
+	public String getPaymentVisitByID() throws UnsupportedEncodingException{
+
+		PaymentVisit paymentVisit=new PaymentVisit();
+		try {
+			paymentVisit=paymentVisitBIZ.queryById(id);
+			reslutJson=new ByteArrayInputStream(new Gson().toJson(paymentVisit).getBytes("UTF-8")); 	
+			logUtil.logInfo("查询出差申请单:"+paymentVisit.getReferenceNo());
+		} catch (Exception e) {
+			logUtil.logInfo("查询出差申请单异常:"+e.getMessage());
+			result.setMessage(e.getMessage());
+			result.setStatusCode("300");
+			reslutJson=new ByteArrayInputStream(new Gson().toJson(result).getBytes("UTF-8")); 	
+		}
+		
+		return SUCCESS;
 	}
 	
 	@Action(value="savePaymentVisit",results={@org.apache.struts2.convention.annotation.Result(type="stream",
