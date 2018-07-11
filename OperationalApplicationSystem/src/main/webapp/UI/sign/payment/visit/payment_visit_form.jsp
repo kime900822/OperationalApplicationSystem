@@ -56,15 +56,29 @@ function paymentVisitDateToFace(id){
 	    data:{id:id},	    
 	    okCallback: function(json, options) {
 	    	if(json.status='200'){
-	    		$.CurrentNavtab.find("#j_stamp_applicationDate").val(json.applicationDate);
-	    		$.CurrentNavtab.find("#j_stamp_applicationCode").val(json.applicationCode);
-	    		$.CurrentNavtab.find("#j_stamp_formFiller").val(json.formFiller+"-"+json.formFillerID);
-	    		$.CurrentNavtab.find("#j_stamp_departmentOfFormFiller").val(json.departmentOfFormFiller+"-"+json.departmentOfFormFillerID);
-	    		$.CurrentNavtab.find("#j_stamp_applicantID").val(json.applicantID);
-	    		$.CurrentNavtab.find("#j_stamp_applicant").val(json.applicant);
-	    		$.CurrentNavtab.find("#j_stamp_departmentOfApplicant").val(json.departmentOfApplicant+"-"+json.departmentOfApplicantID);
-	    		$.CurrentNavtab.find("#j_stamp_contactNumber").val(json.contactNumber);
-
+	    		$.CurrentNavtab.find("#j_stamp_visit_referenceNo").val(json.referenceNo);
+	    		$.CurrentNavtab.find("#j_stamp_visit_visitDateFrom").val(json.visitDateFrom);
+	    		$.CurrentNavtab.find("#j_stamp_visit_visitDateTo").val(json.visitDateTo);
+	    		$.CurrentNavtab.find("#j_stamp_visit_totalLevelWorkHours").val(json.totalLevelWorkHours);
+	    		$.CurrentNavtab.find("#j_stamp_visit_applicantDate").val(json.applicantDate);
+	    		$.CurrentNavtab.find("#j_stamp_visit_visitPurpose").selectpicker().selectpicker('val',json.visitPurpose).selectpicker('refresh');
+	    		$.CurrentNavtab.find("#j_stamp_visit_projectNo").val(json.projectNo);
+	    		if(json.businessTrip=='Domestic 国内')
+	    		{
+	    			$.CurrentNavtab.find("#j_stamp_visit_domestic").iCheck('check'); 
+	    		}else if(json.businessTrip=='Oversea 国外'){
+	    			$.CurrentNavtab.find("#j_stamp_visit_oversea").iCheck('check'); 
+	    		}
+	    		
+	    		$.CurrentNavtab.find("#j_stamp_visitDetailPlace").val(json.visitDetailPlace);
+	    		$.CurrentNavtab.find("#j_stamp_visitDetailPurpose").val(json.visitDetailPurpose);
+	    		
+	    		var obj=$.CurrentNavtab.find('#paymentVisit_approve_his');  
+	    		obj.children().children().eq(0).siblings().remove();
+	    		
+	    		
+	    		
+	    		
 	    	
 	    	}
 	    }
@@ -328,7 +342,7 @@ function checkTotalLevelWorkHours(){
 				</tr>		
 				<tr>
 					<td colspan="5">
-						<table class="table" width="100%" id="stamp_approve_his" >
+						<table class="table" width="100%" id="paymentVisit_approve_his" >
 							<tr name='head'>
 								<th width="80px">
 								
