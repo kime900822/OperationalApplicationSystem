@@ -23,10 +23,13 @@ import com.kime.model.ApproveHis;
 import com.kime.model.ApproveList;
 import com.kime.model.Dict;
 import com.kime.model.User;
+import com.kime.utils.CommonUtil;
 import com.kime.utils.PropertiesUtil;
 import com.sign.biz.PaymentVisitBIZ;
 import com.sign.dao.PaymentVisitDAO;
 import com.sign.dao.PaymentVisitEmployeeDAO;
+import com.sign.model.Stamp;
+import com.sign.model.StampApprove;
 import com.sign.model.paymentVisit.PaymentVisit;
 import com.sign.model.paymentVisit.PaymentVisitEmployee;
 import com.sign.other.PaymentVisitHelp;
@@ -84,55 +87,64 @@ public class PaymentVisitBIZImpl extends BizBase implements PaymentVisitBIZ {
 	@Transactional(readOnly=false,propagation=Propagation.REQUIRED,rollbackFor=Exception.class )
 	public void update(PaymentVisit paymentVisit) throws Exception {
 		if (paymentVisit.getState().equals(PaymentVisitHelp.SUBMIT)) {
-			List<ApproveList> lApproveLists=new ArrayList<>();
-			String paymentVisitApprove=PropertiesUtil.ReadProperties(Message.SYSTEM_PROPERTIES, "PaymentVisitApprove");
-			List<Dict> list=dictDAO.query(" where type='CHECKTYPE' and key='"+paymentVisitApprove+"'");
-			if (list.size()==0) {
-				throw new Exception("未找到类型为:"+paymentVisitApprove+"的签核");
-			}		
-			List<Approve> lApproves = approveBIZ.getApproveAndChild(list.get(0).getValueExplain());	
 			
-			if (lApproves.get(0).getUid().equals("Dept. Head")) {
+			if (paymentVisit.getNextApprove()==null||paymentVisit.getNextApprove().equals("")) {
+				List<ApproveList> lApproveLists=new ArrayList<>();
+				String paymentVisitApprove=PropertiesUtil.ReadProperties(Message.SYSTEM_PROPERTIES, "PaymentVisitApprove");
+				List<Dict> list=dictDAO.query(" where type='CHECKTYPE' and key='"+paymentVisitApprove+"'");
+				if (list.size()==0) {
+					throw new Exception("未找到类型为:"+paymentVisitApprove+"的签核");
+				}		
+				List<Approve> lApproves = approveBIZ.getApproveAndChild(list.get(0).getValueExplain());	
 				
-				User user=(User) userDAO.query(" where uid='"+paymentVisit.getuId()+"'").get(0);
-				List<User> lUsers =userDAO.query(" where uid='" + user.getDepartment().getDid() + "'");
-				if (lUsers.size() > 0) {
-					lApproves.get(0).setUid(lUsers.get(0).getUid());
-					lApproves.get(0).setUname(lUsers.get(0).getName());
-					lApproves.get(0).setDid(lUsers.get(0).getDid());
-					lApproves.get(0).setDname(lUsers.get(0).getDepartment().getName());
-					paymentVisit.setNextApprove(lUsers.get(0).getUid());
-				} else {
-					throw new Exception(" Department Manager is null");
+				if (lApproves.size()==0) {
+					throw new Exception(paymentVisitApprove+"未绑定签核流程");
 				}
+				
+				if (lApproves.get(0).getUid().equals("Dept. Head")) {
+					
+					User user=(User) userDAO.query(" where uid='"+paymentVisit.getuId()+"'").get(0);
+					List<User> lUsers =userDAO.query(" where uid='" + user.getDepartment().getUid() + "'");
+					if (lUsers.size() > 0) {
+						lApproves.get(0).setUid(lUsers.get(0).getUid());
+						lApproves.get(0).setUname(lUsers.get(0).getName());
+						lApproves.get(0).setDid(lUsers.get(0).getDid());
+						lApproves.get(0).setDname(lUsers.get(0).getDepartment().getName());
+						paymentVisit.setNextApprove(lUsers.get(0).getUid());
+					} else {
+						throw new Exception(" Department Manager is null");
+					}
 
 
-			}
-			
-			for (Approve approve : lApproves) {
-				ApproveList tmp=new ApproveList();
-				tmp.setUid(approve.getUid());
-				tmp.setDid(approve.getDid());
-				tmp.setTradeId(paymentVisit.getId());
-				tmp.setName(approve.getName());
-				tmp.setUname(approve.getUname());
-				tmp.setDname(approve.getDname());
-				tmp.setLevel(approve.getLevel());
-				approveListDAO.save(tmp);
-				lApproveLists.add(tmp);
-			}
-			
-			
-			for (ApproveList approveList : paymentVisit.getApproveList()) {
-				approveListDAO.delete(approveList);
+				}
+				
+				for (Approve approve : lApproves) {
+					ApproveList tmp=new ApproveList();
+					tmp.setUid(approve.getUid());
+					tmp.setDid(approve.getDid());
+					tmp.setTradeId(paymentVisit.getId());
+					tmp.setName(approve.getName());
+					tmp.setUname(approve.getUname());
+					tmp.setDname(approve.getDname());
+					tmp.setLevel(approve.getLevel());
+					approveListDAO.save(tmp);
+					lApproveLists.add(tmp);
+				}
+				
+				
+				for (ApproveList approveList : paymentVisit.getApproveList()) {
+					approveListDAO.delete(approveList);
+				}
+				
+			}else if (paymentVisit.getState().contains("Rejected")) {
+				paymentVisit.setState(paymentVisit.getApproveHis().get(paymentVisit.getApproveHis().size()-1).getName()+" Approval");
+				approveHisBIZ.delete(paymentVisit.getApproveHis().get(paymentVisit.getApproveHis().size()-1));
 			}
 			
 			
 			
 		}
 
-		
-		
 		paymentVisitDAO.update(paymentVisit);
 	}
 
@@ -165,9 +177,48 @@ public class PaymentVisitBIZImpl extends BizBase implements PaymentVisitBIZ {
 	}
 
 	@Override
-	public ApproveHis StampApprove(String level, String comment, String approveState, String tradeId) {
-		// TODO Auto-generated method stub
-		return null;
+	@Transactional(readOnly=false,propagation=Propagation.REQUIRED,rollbackFor=Exception.class )
+	public ApproveHis approve(String level, String comment, String approveState, String tradeId) {
+
+		ApproveHis approveHis=new ApproveHis();
+		try {
+				PaymentVisit paymentVisit=queryById(tradeId);
+				ApproveList approve=paymentVisit.getApproveList().get(Integer.parseInt(level));
+				approveHis.setDate(CommonUtil.getDateTemp());
+				approveHis.setLevel(approve.getLevel());
+				approveHis.setuName(approve.getUname());
+				approveHis.setuId(approve.getUid());
+				approveHis.setName(approve.getName());
+				approveHis.setStatus(approveState);
+				approveHis.setType("PAYMENT VISIT");
+				approveHis.setTradeId(tradeId);
+				approveHis.setComment(comment);
+				approveHis.setdId(approve.getDid());
+				approveHis.setdName(approve.getDname());
+				approveHisBIZ.save(approveHis);
+				
+				if (approveState.equals("Rejected")) {
+					paymentVisit.setState(paymentVisit.getApproveList().get(Integer.parseInt(level)).getName()+" Rejected");
+				}else {
+					if (Integer.parseInt(level)+2<=paymentVisit.getApproveList().size()) {
+						paymentVisit.setState(paymentVisit.getApproveList().get(Integer.parseInt(level)).getName()+" Approval");
+						paymentVisit.setNextApprove(paymentVisit.getApproveList().get(Integer.parseInt(level)).getUid());
+					}else {
+						paymentVisit.setState(PaymentVisitHelp.COMPLETED);
+						paymentVisit.setNextApprove("");
+					}
+					
+				}
+				
+				paymentVisitDAO.update(paymentVisit);
+				
+		}catch (Exception e) {
+			logUtil.logError(e.getMessage());
+		}
+		
+		return approveHis;
+		
+		
 	}
 
 	@Override

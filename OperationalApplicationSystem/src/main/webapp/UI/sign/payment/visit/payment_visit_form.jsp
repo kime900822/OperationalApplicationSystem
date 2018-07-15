@@ -4,10 +4,11 @@
 <script type="text/javascript">
 $(function(){
 	var today = new Date().formatDate('yyyy-MM-dd');
-	var chopDate=new Date(new Date().setDate(new Date().getDate()+5)).formatDate('yyyy-MM-dd');
-	$.CurrentNavtab.find('#j_stamp_visit_applicationDate').val(today);
+	$.CurrentNavtab.find('#j_payment_visit_applicantDate').val(today);
 
-
+	if('${param.id}'!=null&&'${param.id}'!=''){
+		paymentVisitDateToFace('${param.id}');
+	}
 	
 })
 
@@ -56,29 +57,50 @@ function paymentVisitDateToFace(id){
 	    data:{id:id},	    
 	    okCallback: function(json, options) {
 	    	if(json.status='200'){
-	    		$.CurrentNavtab.find("#j_stamp_visit_referenceNo").val(json.referenceNo);
-	    		$.CurrentNavtab.find("#j_stamp_visit_visitDateFrom").val(json.visitDateFrom);
-	    		$.CurrentNavtab.find("#j_stamp_visit_visitDateTo").val(json.visitDateTo);
-	    		$.CurrentNavtab.find("#j_stamp_visit_totalLevelWorkHours").val(json.totalLevelWorkHours);
-	    		$.CurrentNavtab.find("#j_stamp_visit_applicantDate").val(json.applicantDate);
-	    		$.CurrentNavtab.find("#j_stamp_visit_visitPurpose").selectpicker().selectpicker('val',json.visitPurpose).selectpicker('refresh');
-	    		$.CurrentNavtab.find("#j_stamp_visit_projectNo").val(json.projectNo);
+	    		$.CurrentNavtab.find("#j_payment_visit_referenceNo").val(json.referenceNo);
+	    		$.CurrentNavtab.find("#j_payment_visit_visitDateFrom").val(json.visitDateFrom);
+	    		$.CurrentNavtab.find("#j_payment_visit_visitDateTo").val(json.visitDateTo);
+	    		$.CurrentNavtab.find("#j_payment_visit_totalLevelWorkHours").val(json.totalLevelWorkHours);
+	    		$.CurrentNavtab.find("#j_payment_visit_applicantDate").val(json.applicantDate);
+	    		$.CurrentNavtab.find("#j_payment_visit_visitPurpose").selectpicker().selectpicker('val',json.visitPurpose).selectpicker('refresh');
+	    		$.CurrentNavtab.find("#j_payment_visit_projectNo").val(json.projectNo);
 	    		if(json.businessTrip=='Domestic 国内')
 	    		{
-	    			$.CurrentNavtab.find("#j_stamp_visit_domestic").iCheck('check'); 
+	    			$.CurrentNavtab.find("#j_payment_visit_domestic").iCheck('check'); 
 	    		}else if(json.businessTrip=='Oversea 国外'){
-	    			$.CurrentNavtab.find("#j_stamp_visit_oversea").iCheck('check'); 
+	    			$.CurrentNavtab.find("#j_payment_visit_oversea").iCheck('check'); 
 	    		}
 	    		
-	    		$.CurrentNavtab.find("#j_stamp_visitDetailPlace").val(json.visitDetailPlace);
-	    		$.CurrentNavtab.find("#j_stamp_visitDetailPurpose").val(json.visitDetailPurpose);
+	    		$.CurrentNavtab.find("#j_payment_visitDetailPlace").val(json.visitDetailPlace);
+	    		$.CurrentNavtab.find("#j_payment_visitDetailPurpose").val(json.visitDetailPurpose);
 	    		
 	    		var obj=$.CurrentNavtab.find('#paymentVisit_approve_his');  
 	    		obj.children().children().eq(0).siblings().remove();
 	    		
+        		var maxLevel=-1;
+        		if(json.approveHis!=undefined&&json.approveHis!=""){
+        			$.each(json.approveHis,function(i,item){	  		
+	    				obj.append("<tr><td>"+item.name+"</td><td style='display:none'></td><td>"+item.uId+"</td><td>"+item.uName+"</td><td>"+item.dId+"</td><td>"+item.comment+"</td><td>"+item.status+"</td><td>"+item.date+"</td><td></td></tr>");	    				
+	    				maxLevel=parseInt(item.level);
+        			})
+        						
+        		}
+        		
+	    		if(json.approveList!=undefined&&json.approveList!=''&&json.state.indexOf('Rejected')<0){	    
+	    			
+	    			$.each(json.approveList,function(i,item){	
+	    				if(i>maxLevel){
+    						if(i==maxLevel+1&&'${user.uid}'==item.uid&&json.state!='0'&&json.state!='-1'&&json.state!='-2'&&json.state!='9'){
+			    				obj.append("<tr><td>"+item.name+"</td><td style='display:none'>"+item.level+"</td><td>"+item.uid+"</td><td>"+item.uname+"</td><td>"+item.did+"</td><td></td><td></td><td></td><td><button type='button' id='payment-visit-approve' class='btn btn-success' style='width:50px;' name='Approved' onclick='paymentVisitApprove(this)'   >√</button>&nbsp;&nbsp;<button type='button' id='payment-reject'  style='width:50px;' class='btn btn-danger' name='Rejected' onclick='paymentVisitApprove(this)' >×</button></td></tr>");	    				
+	    					}else{
+			    				obj.append("<tr><td>"+item.name+"</td><td style='display:none'>"+item.level+"</td><td>"+item.uid+"</td><td>"+item.uname+"</td><td>"+item.did+"</td><td></td><td></td><td></td><td></td></tr>");	    				
+	    					}
+	    				}
+	    				
+	    			})	    			
+	    		}
 	    		
-	    		
-	    		
+	    		paymentVisitShowButton(json.state)
 	    	
 	    	}
 	    }
@@ -108,8 +130,8 @@ function paymentVisitSave(){
 	    okCallback: function(json, options) {
             if(json.status='200'){
             	 BJUI.alertmsg('info', json.message); 
-            	 $.CurrentNavtab.find("#j_stamp_visit_id").val(json.params.id);
-            	 $.CurrentNavtab.find("#j_stamp_applicationCode").val(json.params.applicationCode);
+            	 $.CurrentNavtab.find("#j_payment_visit_id").val(json.params.id);
+            	 $.CurrentNavtab.find("#j_payment_applicationCode").val(json.params.applicationCode);
 
             }else{
             	 BJUI.alertmsg('error', json.message); 
@@ -123,6 +145,26 @@ function paymentVisitSave(){
 
 function paymentVisitSubmit(){
 	
+	var o=paymentVisitFaceToDate();	
+	var err=paymentVisitCheckSave(o);
+	if(err!=''){
+		BJUI.alertmsg('warn', err); 
+		return false;
+	}
+	
+	BJUI.ajax('doajax', {
+	    url: 'submitPaymentVisit.action',
+	    loadingmask: true,
+	    data:{id:$.CurrentNavtab.find("#j_payment_visit_id").val()},	    
+	    okCallback: function(json, options) {
+            if(json.status='200'){
+            	BJUI.alertmsg('info', json.message); 
+            	paymentVisitDateToFace(json.params.id)          		 
+            }else{
+            	 BJUI.alertmsg('error', json.message); 
+            }
+	    }
+	})	
 	
 }
 
@@ -132,7 +174,7 @@ function paymentVisitDelete(){
 				BJUI.ajax('doajax', {
 				    url: 'deletePaymentVisit.action',
 				    loadingmask: true,
-				    data:{id:$.CurrentNavtab.find("#j_stamp_visit_id").val()},	    
+				    data:{id:$.CurrentNavtab.find("#j_payment_visit_id").val()},	    
 				    okCallback: function(json, options) {
 			            if(json.status='200'){
 			            	 BJUI.navtab('closeCurrentTab'); 
@@ -147,44 +189,83 @@ function paymentVisitDelete(){
 	
 }
 
-function paymentVisitApprove(){
-	
-	
+function paymentVisitApprove(o){
+
+	bootbox.prompt({
+		size:"small",
+		title:"Comment?", 
+		callback:function (result) {
+		approveState=$(o).attr('name')
+		level = $(o).parent().siblings().eq(1).html();
+		
+		BJUI.ajax('doajax', {
+	    url: 'approvePaymentVisit.action',
+	    loadingmask: true,
+	    data:{approveState:approveState,comment:result,tradeId:$.CurrentNavtab.find("#j_payment_visit_id").val(),level:level},	    
+	    okCallback: function(json, options) {
+	           if(json.status='200'){
+	           	 BJUI.alertmsg('info', json.message); 
+	           	 $(o).parent().siblings().eq(5).html(json.params.data.comment);
+	           	 $(o).parent().siblings().eq(6).html(json.params.data.status);
+	           	 $(o).parent().siblings().eq(7).html(json.params.data.date);
+	           	 $(o).hide().siblings().hide();
+	           }else{
+	           	 BJUI.alertmsg('error', json.message); 
+	           }
+	    }
+	 	})
+ 	
+		}})
 }
 
-function paymentVisitReject(){
-	
-	
-}
 
 function visitPurposeChange(){
-	var val=$.CurrentNavtab.find("#j_stamp_visit_visitPurpose").val();
+	var val=$.CurrentNavtab.find("#j_payment_visit_visitPurpose").val();
 	if(val=='3'){
-		$.CurrentNavtab.find("#j_stamp_visit_projectNo").val('8200-1');
+		$.CurrentNavtab.find("#j_payment_visit_projectNo").val('8200-1');
 	}else if (val=='4'){
-		$.CurrentNavtab.find("#j_stamp_visit_projectNo").val('8200-1');
+		$.CurrentNavtab.find("#j_payment_visit_projectNo").val('8200-1');
 	}else if (val=='5'){
-		$.CurrentNavtab.find("#j_stamp_visit_projectNo").val('8302-1');
+		$.CurrentNavtab.find("#j_payment_visit_projectNo").val('8302-1');
 	}else if (val=='6'){
-		$.CurrentNavtab.find("#j_stamp_visit_projectNo").val('61721-999');
+		$.CurrentNavtab.find("#j_payment_visit_projectNo").val('61721-999');
 	}else if (val=='7'){
-		$.CurrentNavtab.find("#j_stamp_visit_projectNo").val('8400-1');
+		$.CurrentNavtab.find("#j_payment_visit_projectNo").val('8400-1');
 	}else{
-		$.CurrentNavtab.find("#j_stamp_visit_projectNo").val('');
+		$.CurrentNavtab.find("#j_payment_visit_projectNo").val('');
 	}
 	
 }
 
 function paymentVisitShowButton(state){
-	
-	
-	
+	var viewType='${param.viewtype}';
+	if(viewType == null){
+		if(state==''){
+			 $.CurrentNavtab.find('#payment-visit-delete').hide();
+			 $.CurrentNavtab.find('#payment-visit-submit').hide();
+		}else if(state=='SAVE'||state.indexOf('Rejected')>0){
+			 $.CurrentNavtab.find('#payment-visit-delete').show();
+			 $.CurrentNavtab.find('#payment-visit-submit').show();
+			 $("input[id*='j_payment_visit']").removeAttr('disabled');
+			 $("select[id*='j_payment_visit']").removeAttr('disabled');
+			 $("textarea[id*='j_payment_visit']").removeAttr('disabled');
+			 $.CurrentNavtab.find('#j_payment_visit_form').find(".btn-group").show();
+		}
+	}else{
+		 $.CurrentNavtab.find('#payment-visit-delete').hide();
+		 $.CurrentNavtab.find('#payment-visit-submit').hide();
+		 $.CurrentNavtab.find('#payment-visit-save').hide();
+		 $.CurrentNavtab.find('#j_payment_visit_form').find(".btn-group[role='group']").hide();
+		 $("input[id*='j_payment_visit']").attr('disabled','disabled');
+		 $("select[id*='j_payment_visit']").attr('disabled','disabled');
+		 $("textarea[id*='j_payment_visit']").attr('disabled','disabled');
+	}
 }
 
 
 function checkTotalLevelWorkHours(){
 	
-	var o = $.CurrentNavtab.find("#j_stamp_visit_totalLevelWorkHours");
+	var o = $.CurrentNavtab.find("#j_payment_visit_totalLevelWorkHours");
 	var ret =  /^[0-9]*[1-9][0-9]*$/;
 	if(!ret.test(o.val())){
 	  	 o.val("");
@@ -202,21 +283,21 @@ function checkTotalLevelWorkHours(){
 <div class="bjui-pageContent">
     <div class="bs-example" style="width:1700px">
         <form id="j_payment_visit_form" data-toggle="ajaxform">
-			<input type="hidden" name="id" id="j_stamp_visit_id" value="${param.id}">
+			<input type="hidden" name="id" id="j_payment_visit_id" value="${param.id}">
             <div class="bjui-row-0" align="center">
             <h2 class="row-label">出差单申请</h2><br> 
             </div>
 			<table class="table" style="font-size:12px;">
 				<tr>
 					<td width="200px">Reference No.<br>单号</td>
-					<td width="200px"><input type="text" size="19" name="referenceNo" data-nobtn="true" id="j_stamp_visit_referenceNo" value="" placeholder="保存或者送审后生成"  readonly=""></td>					
+					<td width="200px"><input type="text" size="19" name="referenceNo" data-nobtn="true" id="j_payment_visit_referenceNo" value="" placeholder="保存或者送审后生成"  readonly=""></td>					
 					<td width="200px"></td>
 					<td width="200px"></td>	
 					<td width="900px"></td>				
 				</tr>
 				<tr>
 					<td >Applicant Date<br>申请日期</td>
-					<td ><input type="text" size="19" name="applicantDate" id="j_stamp_visit_applicantDate"  data-toggle="datepicker" placeholder="点击选择日期" data-nobtn="true" ></td>
+					<td ><input type="text" size="19" name="applicantDate" id="j_payment_visit_applicantDate"  data-toggle="datepicker" placeholder="点击选择日期" data-nobtn="true" ></td>
 					<td ></td>
 					<td ></td>
 					<td></td>				
@@ -225,7 +306,7 @@ function checkTotalLevelWorkHours(){
 					<td >Visit Purpose <label style="color:red;font-size:12px"><b>*</b></label><br>
 					出差目的  <label style="color:red;font-size:12px"><b>*</b></label></td>
 					<td >
-						<select name="visitPurpose" data-toggle="selectpicker" onchange="visitPurposeChange();" id=j_stamp_visit_visitPurpose data-width="500px" >
+						<select name="visitPurpose" data-toggle="selectpicker" onchange="visitPurposeChange();" id=j_payment_visit_visitPurpose data-width="500px" >
                         	<option value="" selected></option>
                         	<option value="1" >Supplier Visit (供应商拜访)</option>
                         	<option value="2" >Customer Visit (客户拜访)</option>
@@ -243,7 +324,7 @@ function checkTotalLevelWorkHours(){
 				<tr>
 					<td >Project No  <label style="color:red;font-size:12px"><b>*</b></label><br>
 					项目号  <label style="color:red;font-size:12px"><b>*</b></label></td>
-					<td ><input type="text" size="19" name="projectNo" id="j_stamp_visit_projectNo"></td>
+					<td ><input type="text" size="19" name="projectNo" id="j_payment_visit_projectNo"></td>
 					<td ></td>
 					<td ></td>
 					<td></td>				
@@ -251,23 +332,23 @@ function checkTotalLevelWorkHours(){
 				<tr>
 					<td >Visit Date  <label style="color:red;font-size:12px"><b>*</b></label><br>
 					出差期间  <label style="color:red;font-size:12px"><b>*</b></label></td>
-					<td colspan="4"><input type="text" size="19" name="visitDateFrom" id="j_stamp_visit_visitDateFrom"  data-toggle="datepicker" placeholder="点击选择日期" data-nobtn="true" id="j_stamp_lendDate" value="" data-pattern="yyyy-MM-dd HH:mm:ss" />
+					<td colspan="4"><input type="text" size="19" name="visitDateFrom" id="j_payment_visit_visitDateFrom"  data-toggle="datepicker" placeholder="点击选择日期" data-nobtn="true" id="j_payment_lendDate" value="" data-pattern="yyyy-MM-dd HH:mm:ss" />
 					TO:&nbsp;&nbsp;&nbsp;&nbsp;
-					<input type="text" size="19" name="visitDateTo" id="j_stamp_visit_visitDateTo"  data-toggle="datepicker" placeholder="点击选择日期" data-nobtn="true" id="j_stamp_lendDate" value="" data-pattern="yyyy-MM-dd HH:mm:ss" />				
+					<input type="text" size="19" name="visitDateTo" id="j_payment_visit_visitDateTo"  data-toggle="datepicker" placeholder="点击选择日期" data-nobtn="true" id="j_payment_lendDate" value="" data-pattern="yyyy-MM-dd HH:mm:ss" />				
 					</td>	
 				</tr>
 				<tr>
 					<td >Total Leave Work Hours  <label style="color:red;font-size:12px"><b>*</b></label><br>
 					总共出差工作天数时数  <label style="color:red;font-size:12px"><b>*</b></label></td>
-					<td colspan="4"><input type="text" size="19" name="totalLevelWorkHours" id="j_stamp_visit_totalLevelWorkHours" onblur="checkTotalLevelWorkHours()" >&nbsp;Hours</td>		
+					<td colspan="4"><input type="text" size="19" name="totalLevelWorkHours" id="j_payment_visit_totalLevelWorkHours" onblur="checkTotalLevelWorkHours()" >&nbsp;Hours</td>		
 				</tr>
 				<tr>
 					<td >Domestic/Oversea  <label style="color:red;font-size:12px"><b>*</b></label><br>
 					国内国外  <label style="color:red;font-size:12px"><b>*</b></label></td>
 					<td colspan="4">
-					<input type="radio" name="businessTrip" data-toggle="icheck" id="j_stamp_visit_domestic" value="Domestic 国内" data-label="Domestic 国内">
+					<input type="radio" name="businessTrip" data-toggle="icheck" id="j_payment_visit_domestic" value="Domestic 国内" data-label="Domestic 国内">
 					&nbsp;&nbsp;&nbsp;&nbsp;
-					<input type="radio" name="businessTrip" data-toggle="icheck" id="j_stamp_visit_oversea" value="Oversea 国外" data-label="Oversea 国外">
+					<input type="radio" name="businessTrip" data-toggle="icheck" id="j_payment_visit_oversea" value="Oversea 国外" data-label="Oversea 国外">
 					</td>					
 				</tr>
 				<tr>
@@ -275,7 +356,7 @@ function checkTotalLevelWorkHours(){
 						Visit Detail Place<label style="color:red;font-size:12px"><b>*:</b></label>:<br>出差具体目的地 <label style="color:red;font-size:12px"><b>*</b></label>:
 					</td>
 					<td colspan="4">
-						<textarea cols="50" rows="3" id="j_stamp_visitDetailPlace"  name="visitDetailPlace" data-toggle="autoheight"></textarea>
+						<textarea cols="50" rows="3" id="j_payment_visitDetailPlace"  name="visitDetailPlace" data-toggle="autoheight"></textarea>
 					</td>
 				</tr>
 				<tr>
@@ -283,7 +364,7 @@ function checkTotalLevelWorkHours(){
 						Visit Detail Purpose<label style="color:red;font-size:12px"><b>*:</b></label>:<br>出差具体事由<label style="color:red;font-size:12px"><b>*</b></label>:
 					</td>
 					<td colspan="4">
-						<textarea cols="50" rows="3" id="j_stamp_visitDetailPurpose"  name="visitDetailPurpose" data-toggle="autoheight"></textarea>
+						<textarea cols="50" rows="3" id="j_payment_visitDetailPurpose"  name="visitDetailPurpose" data-toggle="autoheight"></textarea>
 					</td>
 				</tr>
 				<tr height="400px">
@@ -294,7 +375,7 @@ function checkTotalLevelWorkHours(){
 						        showToolbar: true,
 						        local: 'local',
 						        toolbarItem: 'add,edit,del',
-						        dataUrl: 'getPaymentVisitEmployee.action?visitID=${param.id}',
+						        dataUrl: 'getPaymentVisitEmployee.action?visitId=${param.id}',
 						        delUrl:'json/ajaxDone.json',
 						        editUrl: 'sign/payment/visit/payment_visit_edit.jsp',
 						        editMode: {dialog:{width:'800',height:430,title:'Edit Employee',mask:true}},
@@ -302,7 +383,6 @@ function checkTotalLevelWorkHours(){
 						        showCheckboxcol: true,
 						        linenumberAll: true,
 						        filterThead: false,
-						        contextMenuB: true,
 						        hScrollbar: true,
 						        columnShowhide:false,
 						        columnFilter:false,
@@ -329,9 +409,9 @@ function checkTotalLevelWorkHours(){
 				</tr>
 				<tr>
 					<td colspan="5" align="center">
-	            		<button type="button" id="stamp-save" class="btn-default" data-icon="save" onClick="paymentVisitSave()" >Save</button>&nbsp;&nbsp;&nbsp;&nbsp;
-	            		<button type="button" id="stamp-submit" class="btn-default" data-icon="arrow-up" onClick="paymentVisitSubmit()">Submit</button>&nbsp;&nbsp;&nbsp;&nbsp;
-	            		<button type="button" id="stamp-delete" class="btn-default" data-icon="close" onClick="paymentVisitDelete()" style="display:none">Delete</button>
+	            		<button type="button" id="payment-visit-save" class="btn-default" data-icon="save" onClick="paymentVisitSave()" >Save</button>&nbsp;&nbsp;&nbsp;&nbsp;
+	            		<button type="button" id="payment-visit-submit" class="btn-default" data-icon="arrow-up" onClick="paymentVisitSubmit()">Submit</button>&nbsp;&nbsp;&nbsp;&nbsp;
+	            		<button type="button" id="payment-visit-delete" class="btn-default" data-icon="close" onClick="paymentVisitDelete()" >Delete</button>
             		</td>		
 				</tr>	
 				<tr>

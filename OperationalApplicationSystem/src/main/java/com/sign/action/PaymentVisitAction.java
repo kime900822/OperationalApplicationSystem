@@ -20,11 +20,15 @@ import com.kime.base.ActionBase;
 import com.kime.infoenum.Message;
 import com.kime.model.ApproveHis;
 import com.kime.model.ApproveList;
+import com.kime.model.User;
 import com.kime.utils.CommonUtil;
 import com.sign.biz.PaymentVisitBIZ;
+import com.sign.model.Payment;
 import com.sign.model.Stamp;
 import com.sign.model.paymentVisit.PaymentVisit;
 import com.sign.model.paymentVisit.PaymentVisitEmployee;
+import com.sign.other.PaymentState;
+import com.sign.other.PaymentVisitHelp;
 
 @Controller
 @Scope("prototype")
@@ -54,7 +58,36 @@ public class PaymentVisitAction extends ActionBase{
 	List<ApproveHis> approveHis;
 	String nextApprove;
 	
+	private String tradeId;
+	private String comment;
+	private String level;
+	private String approveState;
 	
+	
+	public String getTradeId() {
+		return tradeId;
+	}
+	public void setTradeId(String tradeId) {
+		this.tradeId = tradeId;
+	}
+	public String getComment() {
+		return comment;
+	}
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
+	public String getLevel() {
+		return level;
+	}
+	public void setLevel(String level) {
+		this.level = level;
+	}
+	public String getApproveState() {
+		return approveState;
+	}
+	public void setApproveState(String approveState) {
+		this.approveState = approveState;
+	}
 	public String getNextApprove() {
 		return nextApprove;
 	}
@@ -294,4 +327,80 @@ public class PaymentVisitAction extends ActionBase{
 	}
 	
 	
+	@Action(value="submitPaymentVisit",results={@org.apache.struts2.convention.annotation.Result(type="stream",
+			params={
+					"inputName", "reslutJson"
+			})})
+	public String submitPaymentVisit() throws UnsupportedEncodingException{
+		try {
+			PaymentVisit paymentVisit=paymentVisitBIZ.queryById(id);
+			paymentVisit.setState(PaymentVisitHelp.SUBMIT);
+			paymentVisitBIZ.update(paymentVisit);
+			
+			result.setMessage(Message.SAVE_MESSAGE_SUCCESS);
+			result.setStatusCode("200");
+			logUtil.logInfo("提交付款申请单:"+paymentVisit.getReferenceNo());
+		} catch (Exception e) {
+			logUtil.logInfo("提交付款申请单异常:"+e.getMessage());
+			result.setMessage(e.getMessage());
+			result.setStatusCode("300");
+		}
+		
+		reslutJson=new ByteArrayInputStream(new Gson().toJson(result).getBytes("UTF-8")); 	
+		return SUCCESS;
+	}
+	
+	
+	
+	
+	@Action(value="getPaymentVisit",results={@org.apache.struts2.convention.annotation.Result(type="stream",
+			params={
+					"inputName", "reslutJson"
+			})})
+	public String getPaymentVisit() throws UnsupportedEncodingException{
+	
+		User user=(User)session.getAttribute("user");
+		String hql="";
+		String where="";
+
+		List<PaymentVisit> list=paymentVisitBIZ.query("",Integer.parseInt(pageSize),Integer.parseInt(pageCurrent));
+		int total=paymentVisitBIZ.query(hql).size();
+		
+			
+		queryResult.setList(list);
+		queryResult.setTotalRow(total);
+		queryResult.setFirstPage(Integer.parseInt(pageCurrent)==1?true:false);
+		queryResult.setPageNumber(Integer.parseInt(pageCurrent));
+		queryResult.setLastPage(total/Integer.parseInt(pageSize) +1==Integer.parseInt(pageCurrent)&&Integer.parseInt(pageCurrent)!=1?true:false);
+		queryResult.setTotalPage(total/Integer.parseInt(pageSize) +1);
+		queryResult.setPageSize(Integer.parseInt(pageSize));
+		String r=callback+"("+new Gson().toJson(queryResult)+")";
+		
+		reslutJson=new ByteArrayInputStream(r.getBytes("UTF-8")); 
+		return SUCCESS;
+	}
+	
+	
+	
+	@Action(value="approvePaymentVisit",results={@org.apache.struts2.convention.annotation.Result(type="stream",
+			params={
+					"inputName", "reslutJson"
+			})})
+	public String approvePaymentVisit() throws UnsupportedEncodingException{	
+		ApproveHis approveHis=new ApproveHis();
+		try {
+			approveHis=paymentVisitBIZ.approve(level, comment, approveState, tradeId);
+			result.setStatusCode("200");
+			result.setMessage("Success");
+		} catch (Exception e) {
+			result.setStatusCode("300");
+			result.setMessage(e.getMessage());
+		}
+		Map<String, Object> params=new HashMap<>();
+		params.put("data", approveHis);		
+		result.setParams(params);
+		
+		reslutJson=new ByteArrayInputStream(new Gson().toJson(result).getBytes("UTF-8"));  	
+		return SUCCESS;
+	}
 }

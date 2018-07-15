@@ -418,7 +418,7 @@ function fileToTr(name,path,b){
 
 function checkSupplierCode(o){
 	 var str = $(o).val();
-   var ret =  /^\d{4,6}$/;
+   //var ret =  /^\d{4,6}$/;
    if($.CurrentNavtab.find(o).val()==""||$.CurrentNavtab.find(o).val()==null){
    	$.CurrentNavtab.find("#j_payment_beneficiary").val('');
     	$.CurrentNavtab.find("#j_payment_beneficiaryAccountNO").val('');
@@ -427,8 +427,32 @@ function checkSupplierCode(o){
    	return;
    }
    	
+   BJUI.ajax('doajax', {
+  	    url: 'getBeneficiaryByCode.action',
+  	    loadingmask: true,
+  	    data:{supplierCode:str},	   
+  	    okalert:false,
+  	    okCallback: function(json, options) {
+              if(json.statue=='300'){
+              	BJUI.alertmsg('error', " Code is not maintain!"); 
+              	$.CurrentNavtab.find(o).val("");
+              	$.CurrentNavtab.find("#j_payment_beneficiary").val('');
+               	$.CurrentNavtab.find("#j_payment_beneficiaryAccountNO").val('');
+               	$.CurrentNavtab.find("#j_payment_beneficiaryE").val('');
+               	$.CurrentNavtab.find("#j_payment_beneficiaryAccountBank").val('');
+               	$.CurrentNavtab.find("#j_payment_overSea").val('')
+              }else{
+              	$.CurrentNavtab.find("#j_payment_beneficiary").val(json.name);
+              	$.CurrentNavtab.find("#j_payment_beneficiaryAccountNO").val(json.accno);
+              	$.CurrentNavtab.find("#j_payment_beneficiaryE").val(json.ename);
+              	$.CurrentNavtab.find("#j_payment_beneficiaryAccountBank").val(json.accbank);
+              	$.CurrentNavtab.find("#j_payment_overSea").val(json.oversea);
+              }
+              isHandingFee()
+  	    }
+  	});	  
    
-   if(!ret.test(str)){
+   /* if(!ret.test(str)){
   	 $.CurrentNavtab.find(o).val("")
   	 BJUI.alertmsg('error', 'Plese Enter Right Type'); 
    }else{
@@ -456,7 +480,7 @@ function checkSupplierCode(o){
                isHandingFee()
    	    }
    	});	  	
-   }   
+   }    */
 
 };
 
@@ -1813,7 +1837,7 @@ function isHandingFee(){
 						手续费 <label style="color:red;font-size:12px"><b>*</b></label><br>Handing Fee  <label style="color:red;font-size:12px"><b>*</b></label>
 					</td>
 					<td>
-						<input type="radio" name="handingFee" data-toggle="icheck" id="j_payment_hanfingFee_our" value="汇款人 Our"  data-label="汇款人 <br>Cash">
+						<input type="radio" name="handingFee" data-toggle="icheck" id="j_payment_hanfingFee_our" value="汇款人 Our"  data-label="汇款人 <br>Ours">
 					</td>
 					<td>
 						<input type="radio" name="handingFee" data-toggle="icheck" id="j_payment_hanfingFee_ben" value="收款人 Ben"  data-label="收款人 <br>Ben">

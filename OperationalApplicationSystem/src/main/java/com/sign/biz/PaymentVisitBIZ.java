@@ -19,7 +19,7 @@ public interface PaymentVisitBIZ {
 	
 	public String getMaxCode();
 	
-	ApproveHis StampApprove(String level, String comment, String approveState, String tradeId);
+	ApproveHis approve(String level, String comment, String approveState, String tradeId);
 	
 	public PaymentVisit queryById(String id);
 

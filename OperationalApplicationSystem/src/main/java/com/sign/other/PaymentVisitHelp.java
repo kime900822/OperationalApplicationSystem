@@ -3,15 +3,15 @@ package com.sign.other;
 public class PaymentVisitHelp {
 	
 	
-	public final static String SAVE="0";
+	public final static String SAVE="SAVE";
 	
-	public final static String SUBMIT="1";
+	public final static String SUBMIT="SUBMIT";
 	
-	public final static String REJECT="-1";
+	public final static String REJECT="REJECT";
 	
-	public final static String INVALID="-2";
+	public final static String INVALID="INVALID";
 	
-	public final static String COMPLETED="9";
+	public final static String COMPLETED="COMPLETED";
 	
 
 	public static String getVisitPurpose(String type) {
