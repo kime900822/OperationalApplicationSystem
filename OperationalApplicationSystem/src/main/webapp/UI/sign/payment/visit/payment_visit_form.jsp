@@ -10,6 +10,8 @@ $(function(){
 		paymentVisitDateToFace('${param.id}');
 	}
 	
+	paymentVisitShowButton('');
+	
 })
 
 
@@ -239,13 +241,17 @@ function visitPurposeChange(){
 
 function paymentVisitShowButton(state){
 	var viewType='${param.viewtype}';
-	if(viewType == null){
+	if(viewType == ''){
 		if(state==''){
 			 $.CurrentNavtab.find('#payment-visit-delete').hide();
 			 $.CurrentNavtab.find('#payment-visit-submit').hide();
+			 $.CurrentNavtab.find('#payment-visit-print-business').hide();
+			 $.CurrentNavtab.find('#payment-visit-print-travel').hide();
 		}else if(state=='SAVE'||state.indexOf('Rejected')>0){
 			 $.CurrentNavtab.find('#payment-visit-delete').show();
 			 $.CurrentNavtab.find('#payment-visit-submit').show();
+			 $.CurrentNavtab.find('#payment-visit-print-business').hide();
+			 $.CurrentNavtab.find('#payment-visit-print-travel').hide();
 			 $("input[id*='j_payment_visit']").removeAttr('disabled');
 			 $("select[id*='j_payment_visit']").removeAttr('disabled');
 			 $("textarea[id*='j_payment_visit']").removeAttr('disabled');
@@ -259,6 +265,11 @@ function paymentVisitShowButton(state){
 		 $("input[id*='j_payment_visit']").attr('disabled','disabled');
 		 $("select[id*='j_payment_visit']").attr('disabled','disabled');
 		 $("textarea[id*='j_payment_visit']").attr('disabled','disabled');
+	}
+	
+	if(state=='COMPLETED'){
+		 $.CurrentNavtab.find('#payment-visit-print-business').show();
+		 $.CurrentNavtab.find('#payment-visit-print-travel').show();
 	}
 }
 
@@ -274,6 +285,21 @@ function checkTotalLevelWorkHours(){
 	
 	
 }
+
+
+function paymentVisitPrintBusiness(){
+	BJUI.ajax('ajaxdownload', {
+		 url: 'paymentVisitPrintBusiness.action',
+		 loadingmask: true,
+		 data:{id:$.CurrentNavtab.find("#j_payment_visit_id").val(),printUrl:'/templet/LeaveRequisition.pdf'}
+	})
+	
+}
+
+function paymentVisitPrintTravel(){
+
+}
+
 
 </script>
 
@@ -412,6 +438,8 @@ function checkTotalLevelWorkHours(){
 	            		<button type="button" id="payment-visit-save" class="btn-default" data-icon="save" onClick="paymentVisitSave()" >Save</button>&nbsp;&nbsp;&nbsp;&nbsp;
 	            		<button type="button" id="payment-visit-submit" class="btn-default" data-icon="arrow-up" onClick="paymentVisitSubmit()">Submit</button>&nbsp;&nbsp;&nbsp;&nbsp;
 	            		<button type="button" id="payment-visit-delete" class="btn-default" data-icon="close" onClick="paymentVisitDelete()" >Delete</button>
+	            		<button type="button" id="payment-visit-print-business" class="btn-default" data-icon="print" style="height:50px" onClick="paymentVisitPrintBusiness()" >Print Out  business leave paper<br>打印请假单</button>
+	            		<button type="button" id="payment-visit-print-travel" class="btn-default" data-icon="print" style="height:50px" onClick="paymentVisitPrintTravel()" >Print Out Pre-Travel Expense <br>打印出差预申请单</button>            			
             		</td>		
 				</tr>	
 				<tr>

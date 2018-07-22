@@ -162,8 +162,8 @@ public class PaymentVisitBIZImpl extends BizBase implements PaymentVisitBIZ {
 	@Override
 	public String getMaxCode() {
 		Date d = new Date();
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMM");
-		String hql = "SELECT MAX(P.referenceNo) FROM PaymentVisit P where SUBSTR(P.referenceNo,2,6)='" + sdf.format(d)
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+		String hql = "SELECT MAX(P.referenceNo) FROM PaymentVisit P where SUBSTR(P.referenceNo,2,8)='" + sdf.format(d)
 				+ "'";
 		List list = commonDAO.queryByHql(hql);
 		if (list.size() > 0) {
@@ -173,7 +173,7 @@ public class PaymentVisitBIZImpl extends BizBase implements PaymentVisitBIZ {
 				return "T" + String.valueOf(Long.valueOf(mcode.replace("T", "")) + 1);
 			}
 		}
-		return "S" + sdf.format(d) + "01";
+		return "T" + sdf.format(d) + "01";
 	}
 
 	@Override
@@ -226,6 +226,7 @@ public class PaymentVisitBIZImpl extends BizBase implements PaymentVisitBIZ {
 		PaymentVisit paymentVisit = paymentVisitDAO.query(" where id='" + id + "' ").get(0);
 		paymentVisit.setApproveHis(approveHisBIZ.getApproveHisByTradeId(paymentVisit.getId()));
 		paymentVisit.setApproveList(approveListDAO.query("where tradeId='"+id+"' order by level "));
+		paymentVisit.setEmployees(PaymentVisitEmployeeDAO.query(" where visitId='"+id+"' order by id "));
 		return paymentVisit;
 		
 	}

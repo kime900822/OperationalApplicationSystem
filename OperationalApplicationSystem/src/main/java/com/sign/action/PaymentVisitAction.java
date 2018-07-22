@@ -1,14 +1,21 @@
 package com.sign.action;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.UnsupportedEncodingException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.ParentPackage;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +29,8 @@ import com.kime.model.ApproveHis;
 import com.kime.model.ApproveList;
 import com.kime.model.User;
 import com.kime.utils.CommonUtil;
+import com.kime.utils.PDFUtil;
+import com.opensymphony.xwork2.ActionContext;
 import com.sign.biz.PaymentVisitBIZ;
 import com.sign.model.Payment;
 import com.sign.model.Stamp;
@@ -363,7 +372,7 @@ public class PaymentVisitAction extends ActionBase{
 		String hql="";
 		String where="";
 
-		List<PaymentVisit> list=paymentVisitBIZ.query("",Integer.parseInt(pageSize),Integer.parseInt(pageCurrent));
+		List<PaymentVisit> list=paymentVisitBIZ.query(" ORDER BY referenceNo DESC",Integer.parseInt(pageSize),Integer.parseInt(pageCurrent));
 		int total=paymentVisitBIZ.query(hql).size();
 		
 			
@@ -402,5 +411,79 @@ public class PaymentVisitAction extends ActionBase{
 		
 		reslutJson=new ByteArrayInputStream(new Gson().toJson(result).getBytes("UTF-8"));  	
 		return SUCCESS;
+	}
+	
+	
+	@Action(value="paymentVisitPrintBusiness",results={@org.apache.struts2.convention.annotation.Result(type="stream",
+			params={
+					"inputName", "reslutJson",
+					"contentType","application/vnd.ms-excel",
+					"contentDisposition","attachment;filename=%{fileName}",
+					"bufferSize","1024"
+			})})
+    public String paymentVisitPrintBusiness() throws Exception {
+		try {
+			
+		PaymentVisit paymentVisit=paymentVisitBIZ.queryById(id);
+		Map<String, String> map=new HashMap<>();
+		
+		
+		
+		String managerCheck="";
+		String uNames="";
+		String uIds="";
+		for (ApproveHis approveHis : paymentVisit.getApproveHis()) {
+			if (approveHis.getLevel().equals("0")&&approveHis.getStatus().equals("Approved")) {
+				managerCheck=approveHis.getuName()+" "+approveHis.getDate();
+			}
+		}
+		
+		for (PaymentVisitEmployee paymentVisitEmployee : paymentVisit.getEmployees()) {
+			uNames+=paymentVisitEmployee.getEmployeeName()+",";
+			uIds+=paymentVisitEmployee.getEmployeeNo()+",";
+		}
+		
+		if (uNames.length()>0) {
+			uNames=uNames.substring(0, uNames.length()-1);
+			uIds=uIds.substring(0, uIds.length()-1);
+		}
+		
+		
+		map.put("uName", uNames);
+		map.put("uId", uIds);
+		map.put("visitDateFrom", paymentVisit.getVisitDateFrom());
+		map.put("applicantDate", paymentVisit.getApplicantDate());
+		map.put("visitDateTo", paymentVisit.getVisitDateTo());
+		map.put("hours", String.valueOf(paymentVisit.getTotalLevelWorkHours()));
+		map.put("visitDetailPlace", paymentVisit.getVisitDetailPlace());
+		map.put("managerCheck", managerCheck);
+		
+		ActionContext ac = ActionContext.getContext();   
+		ServletContext sc = (ServletContext) ac.get(ServletActionContext.SERVLET_CONTEXT);   
+		String path = sc.getRealPath("/");  
+		
+		ByteArrayOutputStream os=PDFUtil.printPDF(map, path+printUrl);
+		
+		byte[] fileContent = os.toByteArray();
+    	ByteArrayInputStream is = new ByteArrayInputStream(fileContent);
+    	
+    	HttpServletResponse response = (HttpServletResponse)
+    			ActionContext.getContext().get(org.apache.struts2.StrutsStatics.HTTP_RESPONSE);
+    	response.setHeader("Set-Cookie", "fileDownload=true; path=/");
+    	
+		SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");		 
+		fileName = "F-HR&ADM-01 Leave Requisition 请假单"+sf.format(new Date()).toString()+ ".pdf";
+		fileName= new String(fileName.getBytes(), "ISO8859-1");
+		
+		reslutJson = is;            
+        logUtil.logInfo("打印请假单："+paymentVisit.getReferenceNo());
+		}
+	    catch(Exception e) {
+	    	logUtil.logInfo("打印请假单异常："+e.getMessage());
+	        e.printStackTrace();
+	    }
+		
+		
+		 return "success";
 	}
 }

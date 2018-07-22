@@ -40,9 +40,17 @@ public class ActionBase extends ActionSupport{
 	
 	protected String thead;
 	protected String orders;
+	protected String printUrl;
 	
 	
 	
+	
+	public String getPrintUrl() {
+		return printUrl;
+	}
+	public void setPrintUrl(String printUrl) {
+		this.printUrl = printUrl;
+	}
 	public String getOrders() {
 		return orders;
 	}

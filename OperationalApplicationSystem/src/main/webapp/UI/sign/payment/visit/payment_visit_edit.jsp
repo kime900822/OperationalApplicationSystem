@@ -12,13 +12,13 @@
 	 $.CurrentDialog.find('#j_payment_visit_employee_carArrangeByHR').selectpicker().selectpicker('val','${param.carArrangeByHR}').selectpicker('refresh');
 	 $.CurrentDialog.find('#j_payment_visit_employee_airTickerBookingByHR').selectpicker().selectpicker('val','${param.airTickerBookingByHR}').selectpicker('refresh');
 	 $.CurrentDialog.find('#j_payment_visit_employee_visarArrangeByHR').selectpicker().selectpicker('val','${param.visarArrangeByHR}').selectpicker('refresh');
-	 if('${param.hotelBookingByHR}'=='是'){
+	 if('${param.hotelBookingByHR}'=='YES'){
 		 $.CurrentDialog.find("#j_payment_visit_employee_hotelName").removeAttr("disabled");
 	 }
-	 if('${param.carArrangeByHR}'=='是'){
+	 if('${param.carArrangeByHR}'=='YES'){
 		 $.CurrentDialog.find("#j_payment_visit_employee_carArrangePeriod").removeAttr("disabled");
 	 }
-	 if('${param.airTickerBookingByHR}'=='是'){
+	 if('${param.airTickerBookingByHR}'=='YES'){
 		 $.CurrentDialog.find("#j_payment_visit_employee_flightNO").removeAttr("disabled");
 	 }
 	 
@@ -28,7 +28,7 @@
  
 function paymentVisitEmployeeSelected(obj,id){
 	var val=$.CurrentDialog.find(obj).val();
-	if(val=='是'){		
+	if(val=='YES'){		
 		$.CurrentDialog.find("#"+id).removeAttr("disabled");
 	}else{
 		$.CurrentDialog.find("#"+id).attr("disabled","");
@@ -78,8 +78,8 @@ function paymentVisitEmployeeSelected(obj,id){
                 <div class="row-input required">
                     <select name="hotelBookingByHR" id="j_payment_visit_employee_hotelBookingByHR" onchange="paymentVisitEmployeeSelected(this,'j_payment_visit_employee_hotelName')" data-toggle="selectpicker"  data-rule="required" data-width="100%"  >
                          <option value="" selected></option>
-                         <option value="是" >是</option>
-                         <option value="否" >否</option>
+                         <option value="YES" >YES</option>
+                         <option value="NO" >NO</option>
                     </select>
                 </div>
                 <label class="row-label">酒店名称<br>Hotel Name</label>
@@ -90,8 +90,8 @@ function paymentVisitEmployeeSelected(obj,id){
                 <div class="row-input required">
                     <select name="carArrangeByHR" id="j_payment_visit_employee_carArrangeByHR" onchange="paymentVisitEmployeeSelected(this,'j_payment_visit_employee_carArrangePeriod')" data-toggle="selectpicker" data-rule="required" data-width="100%"  >
                          <option value="" selected></option>
-                         <option value="是" >是</option>
-                         <option value="否" >否</option>
+                         <option value="YES" >YES</option>
+                         <option value="NO" >NO</option>
                     </select>
                 </div>
                 <label class="row-label">派车时间<br>Car Arrange Period</label>
@@ -102,8 +102,8 @@ function paymentVisitEmployeeSelected(obj,id){
                 <div class="row-input required">
                     <select name="airTickerBookingByHR" id="j_payment_visit_employee_airTickerBookingByHR" onchange="paymentVisitEmployeeSelected(this,'j_payment_visit_employee_flightNO')"  data-toggle="selectpicker"  data-rule="required" data-width="100%"  >
                          <option value="" selected></option>
-                         <option value="是" >是</option>
-                         <option value="否" >否</option>
+                         <option value="YES" >YES</option>
+                         <option value="NO" >NO</option>
                     </select>
                 </div>
                 <label class="row-label">具体航班号<br>Flight No.</label>
@@ -114,8 +114,8 @@ function paymentVisitEmployeeSelected(obj,id){
                 <div class="row-input required">
                     <select name="visarArrangeByHR" id="j_payment_visit_employee_visarArrangeByHR" data-toggle="selectpicker"  data-rule="required" data-width="100%"  >
                          <option value="" selected></option>
-                         <option value="是" >是</option>
-                         <option value="否" >否</option>
+                         <option value="YES" >YES</option>
+                         <option value="NO" >NO</option>
                     </select>
                 </div>
             </div>
