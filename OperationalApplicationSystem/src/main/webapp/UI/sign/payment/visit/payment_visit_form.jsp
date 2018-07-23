@@ -12,7 +12,16 @@ $(function(){
 	
 	paymentVisitShowButton('');
 	
+	
+	
+	//单元格点击编辑
+	
+	
+	
+	
 })
+
+
 
 
 function paymentVisitCheckSave(o){
@@ -485,7 +494,527 @@ function paymentVisitPrintTravel(){
 				</tr>
 			</table>		
 
-
         </form>
+    </div>
+    <div>
+    	<table border="1" cellspacing="0" width="2000px">
+    			<tr>
+    				<th colspan="28" align="center">
+						<h5>Business Trip Expense Application Form<br>差旅费申请单</h5>    				
+    				</th>
+    			</tr>
+				<tr height="40xp">
+					<th rowspan="3" width="100px" align="center">Date<br>费用发生日期</th>
+					<th rowspan="3" width="100px" align="center">Start from where<br>出发地点</th>
+					<th rowspan="3" width="100px" align="center">End to where<br>到达地点</th>
+					<th rowspan="3" width="100px" align="center">Description<br>摘要</th>
+					<th colspan="24" align="center">Expense Description 费用分类</th>
+				</tr>
+				<tr>
+					<th rowspan="2" align="center">Currency Used<br>消费币种</th>
+					<th colspan="11" align="center">Transportation 交通费</th>
+					<th colspan="4" align="center">Hotel 住宿</th>
+					<th colspan="4" align="center">Meal 误餐费</th>
+					<th rowspan="2" align="center" width="80px">Other<br>其他</th>
+					<th rowspan="2" align="center" width="80px">Original Currency Total<br>原币汇总金额</th>
+					<th rowspan="2" align="center" width="80px">RMB exchange rate<br>人民币折算汇率</th>
+					<th rowspan="2" align="center" width="80px">RMB Total<br>人民币金额</th>
+				</tr>
+				<tr height="40xp">
+					<th align="center" width="80px">Metro<br>地铁</th>
+					<th align="center" width="80px">Taxi / Didi Chuxing car<br>出租车/滴滴打车</th>
+					<th align="center" width="80px">Train<br>火车</th>
+					<th align="center" width="80px">Bus<br>汽车</th>
+					<th align="center" width="80px">Rental Car<br>租车</th>
+					<th align="center" width="80px">Road Toll<br>过路费</th>
+					<th align="center" width="80px">Road Toll<br>过路费不含税金额</th>
+					<th align="center" width="80px">Road Toll Tax<br>过路费税金</th>
+					<th align="center" width="80px">Self-Driving<br>自驾车</th>
+					<th align="center" width="80px">Air Ticket<br>机票</th>
+					<th align="center" width="80px">Transportation Total<br>交通费合计</th>
+					<th align="center" width="80px">Hotel Without VAT<br>不含税金额</th>
+					<th align="center" width="80px">Hotel Tax Rate<br>税率</th>
+					<th align="center" width="80px">Hotel VAT<br>税金</th>
+					<th align="center" width="80px">Hotel Total<br>住宿合计</th>
+					<th align="center" width="80px">Breakfast<br>早餐</th>
+					<th align="center" width="80px">Lunch<br>午餐</th>
+					<th align="center" width="80px">Dinner<br>晚餐</th>
+					<th align="center" width="80px">Meal Total<br>餐费合计</th>
+				</tr>
+				<tr height="20xp">
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td>
+						<select data-toggle="selectpicker" name="usedCurrency" data-width="75px" >
+							<option value=""></option>
+							<option value="RMB">RMB</option>
+							<option value="USD">USD</option>
+							<option value="TRY">TRY</option>
+							<option value="GBP">GBP</option>
+							<option value="EUR">EUR</option>
+							<option value="JPY">JPY</option>
+						</select>
+					</td>
+					<td>
+						<input type="text" name="metro" width="100%"/>
+					</td>
+					<td>
+						<input type="text" name="taxi" width="100%"/>
+					</td>
+					<td>
+						<input type="text" name="train" width="100%"/>
+					</td>
+					<td>
+						<input type="text" name="bus" width="100%"/>
+					</td>
+					<td>
+						<input type="text" name="rentalCar" width="100%"/>
+					</td>
+					<td>
+						<input type="text" name="roadTail" width="100%"/>
+					</td>
+					<td bgcolor="#ADADAD"></td>
+					<td bgcolor="#ADADAD"></td>
+					<td>
+						<input type="text" name="selfDriver" width="100%"/>
+					</td>
+					<td>
+						<input type="text" name="airTicket" width="100%"/>
+					</td>
+					<td bgcolor="#ADADAD"></td>
+					<td bgcolor="#ADADAD"></td>
+					<td>
+						<select name="hotelTaxRate" data-toggle="selectpicker" data-width="80px">
+							<option value=""></option>
+							<option value="V0">V0</option>
+							<option value="V6">V6</option>
+						</select>
+					</td>
+					<td bgcolor="#ADADAD"></td>
+					<td>
+						<input type="text" name="hotel" width="100%"/>
+					</td>
+					<td>
+						<input type="text" name="breakfast" width="100%"/>
+					</td>
+					<td>
+						<input type="text" name="lunch" width="100%"/>
+					</td>
+					<td>
+						<input type="text" name="dinner" width="100%"/>
+					</td>
+					<td bgcolor="#ADADAD"></td>
+					<td>
+						<input type="text" name="other" width="100%"/>
+					</td>
+					<td bgcolor="#ADADAD"></td>
+					<td>
+						<input type="text" name="RMBExchangeRate" width="100%"/>
+					</td>
+					<td bgcolor="#ADADAD"></td>
+				</tr>
+				<tr height="20xp">
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td>
+						<select data-toggle="selectpicker" name="usedCurrency" data-width="75px" >
+							<option value=""></option>
+							<option value="RMB">RMB</option>
+							<option value="USD">USD</option>
+							<option value="TRY">TRY</option>
+							<option value="GBP">GBP</option>
+							<option value="EUR">EUR</option>
+							<option value="JPY">JPY</option>
+						</select>
+					</td>
+					<td>
+						<input type="text" name="metro" width="100%"/>
+					</td>
+					<td>
+						<input type="text" name="taxi" width="100%"/>
+					</td>
+					<td>
+						<input type="text" name="train" width="100%"/>
+					</td>
+					<td>
+						<input type="text" name="bus" width="100%"/>
+					</td>
+					<td>
+						<input type="text" name="rentalCar" width="100%"/>
+					</td>
+					<td>
+						<input type="text" name="roadTail" width="100%"/>
+					</td>
+					<td bgcolor="#ADADAD"></td>
+					<td bgcolor="#ADADAD"></td>
+					<td>
+						<input type="text" name="selfDriver" width="100%"/>
+					</td>
+					<td>
+						<input type="text" name="airTicket" width="100%"/>
+					</td>
+					<td bgcolor="#ADADAD"></td>
+					<td bgcolor="#ADADAD"></td>
+					<td>
+						<select name="hotelTaxRate" data-toggle="selectpicker" data-width="80px">
+							<option value=""></option>
+							<option value="V0">V0</option>
+							<option value="V6">V6</option>
+						</select>
+					</td>
+					<td bgcolor="#ADADAD"></td>
+					<td>
+						<input type="text" name="hotel" width="100%"/>
+					</td>
+					<td>
+						<input type="text" name="breakfast" width="100%"/>
+					</td>
+					<td>
+						<input type="text" name="lunch" width="100%"/>
+					</td>
+					<td>
+						<input type="text" name="dinner" width="100%"/>
+					</td>
+					<td bgcolor="#ADADAD"></td>
+					<td>
+						<input type="text" name="other" width="100%"/>
+					</td>
+					<td bgcolor="#ADADAD"></td>
+					<td>
+						<input type="text" name="RMBExchangeRate" width="100%"/>
+					</td>
+					<td bgcolor="#ADADAD"></td>
+				</tr>
+				<tr height="20xp">
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td>
+						<select data-toggle="selectpicker" name="usedCurrency" data-width="75px" >
+							<option value=""></option>
+							<option value="RMB">RMB</option>
+							<option value="USD">USD</option>
+							<option value="TRY">TRY</option>
+							<option value="GBP">GBP</option>
+							<option value="EUR">EUR</option>
+							<option value="JPY">JPY</option>
+						</select>
+					</td>
+					<td>
+						<input type="text" name="metro" width="100%"/>
+					</td>
+					<td>
+						<input type="text" name="taxi" width="100%"/>
+					</td>
+					<td>
+						<input type="text" name="train" width="100%"/>
+					</td>
+					<td>
+						<input type="text" name="bus" width="100%"/>
+					</td>
+					<td>
+						<input type="text" name="rentalCar" width="100%"/>
+					</td>
+					<td>
+						<input type="text" name="roadTail" width="100%"/>
+					</td>
+					<td bgcolor="#ADADAD"></td>
+					<td bgcolor="#ADADAD"></td>
+					<td>
+						<input type="text" name="selfDriver" width="100%"/>
+					</td>
+					<td>
+						<input type="text" name="airTicket" width="100%"/>
+					</td>
+					<td bgcolor="#ADADAD"></td>
+					<td bgcolor="#ADADAD"></td>
+					<td>
+						<select name="hotelTaxRate" data-toggle="selectpicker" data-width="80px">
+							<option value=""></option>
+							<option value="V0">V0</option>
+							<option value="V6">V6</option>
+						</select>
+					</td>
+					<td bgcolor="#ADADAD"></td>
+					<td>
+						<input type="text" name="hotel" width="100%"/>
+					</td>
+					<td>
+						<input type="text" name="breakfast" width="100%"/>
+					</td>
+					<td>
+						<input type="text" name="lunch" width="100%"/>
+					</td>
+					<td>
+						<input type="text" name="dinner" width="100%"/>
+					</td>
+					<td bgcolor="#ADADAD"></td>
+					<td>
+						<input type="text" name="other" width="100%"/>
+					</td>
+					<td bgcolor="#ADADAD"></td>
+					<td>
+						<input type="text" name="RMBExchangeRate" width="100%"/>
+					</td>
+					<td bgcolor="#ADADAD"></td>
+				</tr>
+				<tr height="20xp">
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td>
+						<select data-toggle="selectpicker" name="usedCurrency" data-width="75px" >
+							<option value=""></option>
+							<option value="RMB">RMB</option>
+							<option value="USD">USD</option>
+							<option value="TRY">TRY</option>
+							<option value="GBP">GBP</option>
+							<option value="EUR">EUR</option>
+							<option value="JPY">JPY</option>
+						</select>
+					</td>
+					<td>
+						<input type="text" name="metro" width="100%"/>
+					</td>
+					<td>
+						<input type="text" name="taxi" width="100%"/>
+					</td>
+					<td>
+						<input type="text" name="train" width="100%"/>
+					</td>
+					<td>
+						<input type="text" name="bus" width="100%"/>
+					</td>
+					<td>
+						<input type="text" name="rentalCar" width="100%"/>
+					</td>
+					<td>
+						<input type="text" name="roadTail" width="100%"/>
+					</td>
+					<td bgcolor="#ADADAD"></td>
+					<td bgcolor="#ADADAD"></td>
+					<td>
+						<input type="text" name="selfDriver" width="100%"/>
+					</td>
+					<td>
+						<input type="text" name="airTicket" width="100%"/>
+					</td>
+					<td bgcolor="#ADADAD"></td>
+					<td bgcolor="#ADADAD"></td>
+					<td>
+						<select name="hotelTaxRate" data-toggle="selectpicker" data-width="80px">
+							<option value=""></option>
+							<option value="V0">V0</option>
+							<option value="V6">V6</option>
+						</select>
+					</td>
+					<td bgcolor="#ADADAD"></td>
+					<td>
+						<input type="text" name="hotel" width="100%"/>
+					</td>
+					<td>
+						<input type="text" name="breakfast" width="100%"/>
+					</td>
+					<td>
+						<input type="text" name="lunch" width="100%"/>
+					</td>
+					<td>
+						<input type="text" name="dinner" width="100%"/>
+					</td>
+					<td bgcolor="#ADADAD"></td>
+					<td>
+						<input type="text" name="other" width="100%"/>
+					</td>
+					<td bgcolor="#ADADAD"></td>
+					<td>
+						<input type="text" name="RMBExchangeRate" width="100%"/>
+					</td>
+					<td bgcolor="#ADADAD"></td>
+				</tr>
+				<tr height="20xp">
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td>
+						<select data-toggle="selectpicker" name="usedCurrency" data-width="75px" >
+							<option value=""></option>
+							<option value="RMB">RMB</option>
+							<option value="USD">USD</option>
+							<option value="TRY">TRY</option>
+							<option value="GBP">GBP</option>
+							<option value="EUR">EUR</option>
+							<option value="JPY">JPY</option>
+						</select>
+					</td>
+					<td>
+						<input type="text" name="metro" width="100%"/>
+					</td>
+					<td>
+						<input type="text" name="taxi" width="100%"/>
+					</td>
+					<td>
+						<input type="text" name="train" width="100%"/>
+					</td>
+					<td>
+						<input type="text" name="bus" width="100%"/>
+					</td>
+					<td>
+						<input type="text" name="rentalCar" width="100%"/>
+					</td>
+					<td>
+						<input type="text" name="roadTail" width="100%"/>
+					</td>
+					<td bgcolor="#ADADAD"></td>
+					<td bgcolor="#ADADAD"></td>
+					<td>
+						<input type="text" name="selfDriver" width="100%"/>
+					</td>
+					<td>
+						<input type="text" name="airTicket" width="100%"/>
+					</td>
+					<td bgcolor="#ADADAD"></td>
+					<td bgcolor="#ADADAD"></td>
+					<td>
+						<select name="hotelTaxRate" data-toggle="selectpicker" data-width="80px">
+							<option value=""></option>
+							<option value="V0">V0</option>
+							<option value="V6">V6</option>
+						</select>
+					</td>
+					<td bgcolor="#ADADAD"></td>
+					<td>
+						<input type="text" name="hotel" width="100%"/>
+					</td>
+					<td>
+						<input type="text" name="breakfast" width="100%"/>
+					</td>
+					<td>
+						<input type="text" name="lunch" width="100%"/>
+					</td>
+					<td>
+						<input type="text" name="dinner" width="100%"/>
+					</td>
+					<td bgcolor="#ADADAD"></td>
+					<td>
+						<input type="text" name="other" width="100%"/>
+					</td>
+					<td bgcolor="#ADADAD"></td>
+					<td>
+						<input type="text" name="RMBExchangeRate" width="100%"/>
+					</td>
+					<td bgcolor="#ADADAD"></td>
+				</tr>
+				<tr height="20xp">
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td>
+						<select data-toggle="selectpicker" name="usedCurrency" data-width="75px" >
+							<option value=""></option>
+							<option value="RMB">RMB</option>
+							<option value="USD">USD</option>
+							<option value="TRY">TRY</option>
+							<option value="GBP">GBP</option>
+							<option value="EUR">EUR</option>
+							<option value="JPY">JPY</option>
+						</select>
+					</td>
+					<td>
+						<input type="text" name="metro" width="100%"/>
+					</td>
+					<td>
+						<input type="text" name="taxi" width="100%"/>
+					</td>
+					<td>
+						<input type="text" name="train" width="100%"/>
+					</td>
+					<td>
+						<input type="text" name="bus" width="100%"/>
+					</td>
+					<td>
+						<input type="text" name="rentalCar" width="100%"/>
+					</td>
+					<td>
+						<input type="text" name="roadTail" width="100%"/>
+					</td>
+					<td bgcolor="#ADADAD"></td>
+					<td bgcolor="#ADADAD"></td>
+					<td>
+						<input type="text" name="selfDriver" width="100%"/>
+					</td>
+					<td>
+						<input type="text" name="airTicket" width="100%"/>
+					</td>
+					<td bgcolor="#ADADAD"></td>
+					<td bgcolor="#ADADAD"></td>
+					<td>
+						<select name="hotelTaxRate" data-toggle="selectpicker" data-width="80px">
+							<option value=""></option>
+							<option value="V0">V0</option>
+							<option value="V6">V6</option>
+						</select>
+					</td>
+					<td bgcolor="#ADADAD"></td>
+					<td>
+						<input type="text" name="hotel" width="100%"/>
+					</td>
+					<td>
+						<input type="text" name="breakfast" width="100%"/>
+					</td>
+					<td>
+						<input type="text" name="lunch" width="100%"/>
+					</td>
+					<td>
+						<input type="text" name="dinner" width="100%"/>
+					</td>
+					<td bgcolor="#ADADAD"></td>
+					<td>
+						<input type="text" name="other" width="100%"/>
+					</td>
+					<td bgcolor="#ADADAD"></td>
+					<td>
+						<input type="text" name="RMBExchangeRate" width="100%"/>
+					</td>
+					<td bgcolor="#ADADAD"></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td colspan="2">Subtotal in figures 小计: </td>
+					<td bgcolor="#ADADAD"></td>
+					<td bgcolor="#ADADAD"></td>
+					<td bgcolor="#ADADAD"></td>
+					<td bgcolor="#ADADAD"></td>
+					<td bgcolor="#ADADAD"></td>
+					<td bgcolor="#ADADAD"></td>
+					<td bgcolor="#ADADAD"></td>
+					<td bgcolor="#ADADAD"></td>
+					<td bgcolor="#ADADAD"></td>
+					<td bgcolor="#ADADAD"></td>
+					<td bgcolor="#ADADAD"></td>
+					<td bgcolor="#ADADAD"></td>
+					<td bgcolor="#ADADAD"></td>
+					<td bgcolor="#ADADAD"></td>
+					<td bgcolor="#ADADAD"></td>
+					<td bgcolor="#ADADAD"></td>
+					<td bgcolor="#ADADAD"></td>
+					<td bgcolor="#ADADAD"></td>
+					<td bgcolor="#ADADAD"></td>
+					<td bgcolor="#ADADAD"></td>
+					<td bgcolor="#ADADAD"></td>
+					<td bgcolor="#ADADAD"></td>
+					<td bgcolor="#ADADAD"></td>
+				</tr>
+			</table>
+    
     </div>
 </div>
