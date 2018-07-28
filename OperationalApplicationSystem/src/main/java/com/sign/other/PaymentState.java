@@ -95,6 +95,8 @@ public class PaymentState {
 			return "Petty Cash备用金";
 		}else if (paymentSubject.equals("7")) {
 			return "Other 其他";
+		}else if (paymentSubject.equals("8")) {
+			return "Travel 差旅费";
 		}else {
 			return "";
 		}

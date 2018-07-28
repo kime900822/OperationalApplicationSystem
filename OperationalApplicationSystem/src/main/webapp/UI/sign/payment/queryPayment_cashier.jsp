@@ -11,7 +11,7 @@ function datagrid_tree_operation() {
 
 
 function datagrid_paymentSubject() {
-    return [{'1':'Fixed Asset 固定资产'},{'2':'Raw Material 原材料'},{'3':'Consumable 消耗品'},{'4':'Subcontractor 外包'},{'5':'Service 服务'},{'6':'Petty Cash备用金'},{'7':'Other 其他'}]
+    return [{'1':'Fixed Asset 固定资产'},{'2':'Raw Material 原材料'},{'3':'Consumable 消耗品'},{'4':'Subcontractor 外包'},{'5':'Service 服务'},{'6':'Petty Cash备用金'},{'7':'Other 其他'},{'8':'Travel 差旅费'}]
 }
 
 function datagrid_paymentState() {
@@ -253,6 +253,7 @@ function mailInformPayment(){
 	              <option value="4">Subcontractor 外包</option>
 	              <option value="5">Service 服务</option>
 	              <option value="6">Petty Cash备用金</option>
+	              <option value="8">Travel 差旅费</option>
 	              <option value="7">Other 其他</option>
             	</select>
         		</td>

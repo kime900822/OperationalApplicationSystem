@@ -74,6 +74,8 @@ $(function(){
 	changeAmount();
 	isChange();
 	changePaymentTerm();
+	
+	showVisitTR();
 
 })
 
@@ -1264,6 +1266,27 @@ function isHandingFee(){
 	
 }
 
+
+function showVisitTR(){
+	var value=$.CurrentNavtab.find("#j_payment_paymentSubject").val();
+	if(value=='8'){
+		$.CurrentNavtab.find("#j_payment_visit_form").show();
+	}else{
+		$.CurrentNavtab.find("#j_payment_visit_form").hide();
+	}
+}	
+
+
+function showVisitForm(){
+	
+	
+	
+	
+	
+	
+}
+
+
 </script>
 <div class="bjui-pageContent">
     <div class="bs-example" style="width:1100px">
@@ -1455,7 +1478,7 @@ function isHandingFee(){
 						Payment Subject <label style="color:red;font-size:12px"><b>*</b></label>
 					</td>
 					<td>
-						<select name="paymentSubject" data-toggle="selectpicker" id="j_payment_paymentSubject"  data-rule="required" data-width="190px">
+						<select name="paymentSubject" data-toggle="selectpicker" id="j_payment_paymentSubject" onchange="showVisitTR();"  data-rule="required" data-width="190px">
 	                        <option value=""></option>
 	                        <option value="1">Fixed Asset 固定资产</option>
 	                        <option value="2">Raw Material 原材料</option>
@@ -1463,6 +1486,7 @@ function isHandingFee(){
 	                        <option value="4">Subcontractor 外包</option>
 	                        <option value="5">Service 服务</option>
 	                        <option value="6">Petty Cash 备用金</option>
+	                        <option value="8">Travel 差旅费</option>
 	                        <option value="7">Other 其他</option>
                     	</select>
 					</td>
@@ -1481,9 +1505,12 @@ function isHandingFee(){
                     	</select>
 					</td>				
 				</tr>
-				
-				
-				
+				<tr id="j_payment_visit_form" style="display:none">
+					<td colspan="4" >
+						<a href="#" id="j_payment_visit_form_show">差旅填单 Travel Expense Form *</a>
+					</td>
+				</tr >
+					
 				<tr>
 					<td colspan="4">
 						<table id="payterm" class="table" width="100%">
