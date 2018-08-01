@@ -192,9 +192,15 @@ public class PaymentAction extends ActionBase {
 	private String gmDate_t;
 	private String downloadType;
 	private String poNo;
+	private String visitId;
 	
 	
-	
+	public String getVisitId() {
+		return visitId;
+	}
+	public void setVisitId(String visitId) {
+		this.visitId = visitId;
+	}
 	public String getPoNo() {
 		return poNo;
 	}

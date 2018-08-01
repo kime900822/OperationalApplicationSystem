@@ -7,6 +7,8 @@ import antlr.StringUtils;
 
 public class Message {
 	
+	public static String SUCCESS="SUCCESS";
+	
 	/**
 	 * 上传成功
 	 */

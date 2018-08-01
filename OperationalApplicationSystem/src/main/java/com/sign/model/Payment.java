@@ -449,11 +449,18 @@ public class Payment {
 	private String deptManagerDate;
 	@Column
 	private String GMApproveDate;
-	
-	
-	
+	@Column
+	private String visitId;
 
 
+
+	public String getVisitId() {
+		return visitId;
+	}
+
+	public void setVisitId(String visitId) {
+		this.visitId = visitId;
+	}
 
 	public String getDeptManagerDate() {
 		return deptManagerDate;

@@ -75,7 +75,6 @@ $(function(){
 	isChange();
 	changePaymentTerm();
 	
-	showVisitTR();
 
 })
 
@@ -875,6 +874,7 @@ function dataToFace(){
             	$.CurrentNavtab.find("#j_payment_state").val(json.state);
             	showButton(json.state,json.isPrint,json.UID,json.documentAuditID,json.deptManagerID);
             	changeAmount();
+            	showVisitTR();
             }else{
             	 BJUI.alertmsg('error', json.message); 
             }
@@ -1245,6 +1245,7 @@ function getOriginalPayment(){
            				$.CurrentNavtab.find("#j_payment_amount_"+i+"_t").removeAttr('disabled');
            			}
             	}
+            	$.CurrentNavtab.find("#j_payment_visit_id").val(josn.paymentVisitId);
         		changeAmount();
             }else{
             	 BJUI.alertmsg('error', json.message); 
@@ -1278,13 +1279,24 @@ function showVisitTR(){
 
 
 function showVisitForm(){
-	
-	
-	
-	
-	
+	BJUI.dialog({
+	    id:'payment-visit-form-view',
+	    url:'sign/payment/visit/payment_visit_form_view.jsp',
+	    data:{id:$.CurrentNavtab.find("#j_payment_visit_id").val()},
+	    title:'差旅填单',
+	    width:1200,
+	    height:800,
+	    beforeClose:function(o){
+	    	
+			return true;
+	    }
+	})
 	
 }
+
+	
+	
+
 
 
 </script>
@@ -1292,6 +1304,7 @@ function showVisitForm(){
     <div class="bs-example" style="width:1100px">
         <form id="j_payment_form" data-toggle="ajaxform">
 			<input type="hidden" name="id" id="j_payment_id" value="">
+			<input type="hidden" name="visitId" id="j_payment_visit_id" value="">
 			<input type="hidden" name="state" id="j_payment_state" value="">
 			<input type="hidden" name="isPrint" id="j_payment_isPrint" value="">
             <div class="bjui-row-0" align="center">
@@ -1507,7 +1520,7 @@ function showVisitForm(){
 				</tr>
 				<tr id="j_payment_visit_form" style="display:none">
 					<td colspan="4" >
-						<a href="#" id="j_payment_visit_form_show">差旅填单 Travel Expense Form *</a>
+						<a href="#" id="j_payment_visit_form_show" onclick="showVisitForm()" >差旅填单 Travel Expense Form *</a>
 					</td>
 				</tr >
 					

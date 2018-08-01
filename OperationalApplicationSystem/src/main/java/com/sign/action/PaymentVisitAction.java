@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.ParentPackage;
+import org.hibernate.dialect.pagination.LimitHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -267,6 +268,37 @@ public class PaymentVisitAction extends ActionBase{
 		}
 		
 		return SUCCESS;
+	}
+	
+	@Action(value="checkPaymentVisit",results={@org.apache.struts2.convention.annotation.Result(type="stream",
+	params={
+			"inputName", "reslutJson"
+	})})
+	public String checkPaymentVisit() throws UnsupportedEncodingException{
+	
+	
+	try {
+		List<PaymentVisit> lPaymentVisits= paymentVisitBIZ.query(" where referenceNo='"+referenceNo+"' And state='"+PaymentVisitHelp.COMPLETED+"'");
+		if (lPaymentVisits.size()>0) {
+			result.setMessage(Message.SUCCESS);
+			result.setStatusCode("200");
+			Map<String, String>map=new HashMap<>();
+			map.put("id", lPaymentVisits.get(0).getId());
+			result.setParams(map);
+		}else{
+			result.setMessage("Reference No ERRPR! ");
+			result.setStatusCode("300");
+		}
+	
+	} catch (Exception e) {
+		logUtil.logInfo("查询出差申请单异常:"+e.getMessage());
+		result.setMessage(e.getMessage());
+		result.setStatusCode("300");
+	}
+	
+	reslutJson=new ByteArrayInputStream(new Gson().toJson(result).getBytes("UTF-8")); 	
+	
+	return SUCCESS;
 	}
 	
 	@Action(value="savePaymentVisit",results={@org.apache.struts2.convention.annotation.Result(type="stream",

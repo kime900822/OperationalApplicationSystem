@@ -238,4 +238,39 @@ jQuery.extend({
       v = v.replace(/E/g, weekDayString); 
       return v; 
     } 
-  
+  	
+  	
+  	//强制2位小数
+  	function toDecimal2(x) {  
+  		if(x==''||x==undefined){
+  			return '';
+  		}
+        var f = parseFloat(x);  
+        if(f==0){
+        	return '-';
+        }
+        if (isNaN(f)) {  
+            return false;  
+        }  
+        var f = Math.round(x*100)/100;  
+        var s = f.toString();  
+        var rs = s.indexOf('.');  
+        if (rs < 0) {  
+            rs = s.length;  
+            s += '.';  
+        }  
+        while (s.length <= rs + 2) {  
+            s += '0';  
+        }  
+        return s;  
+  	}  	
+  	
+  	
+  	function toNumber(x){
+  		if(x==''||x==undefined){
+  			return 0;
+  		}
+  		return parseFloat(x);
+  	}
+  	
+  	

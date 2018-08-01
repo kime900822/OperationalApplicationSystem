@@ -3,9 +3,11 @@
 
 <script type="text/javascript">
 $(function(){
-
-		
 	
+	if('${param.id}'!=null&&'${param.id}'!=''&&'${param.id}'!=undefined){
+		paymentVisitViewDateToFace('${param.id}');
+	}
+	tdChange();	
 })
 
 
@@ -19,7 +21,7 @@ function paymentVisitViewCheckSave(o){
 }
 
 function paymentVisitViewFaceToDate(){
-	var o=$.CurrentNavtab.find("#j_payment_visit_view_form").serializeJson();
+	var o=$.CurrentDialog.find("#j_payment_visit_view_form").serializeJson();
 	o.employees=$("#datagrid-payment-visit").data('allData');
 	o.uId='${user.uid}';
 	o.uName='${user.name}';
@@ -27,31 +29,32 @@ function paymentVisitViewFaceToDate(){
 	return o;
 }
 
-function paymentVisitViewDateToFace(o){
+function paymentVisitViewDateToFace(id){
 	
-	var id = $(o).text();
 	
 	BJUI.ajax('doajax', {
-	    url: 'getpaymentVisitByID.action',
+	    url: 'getPaymentVisitByID.action',
 	    loadingmask: true,
 	    data:{id:id},	    
 	    okCallback: function(json, options) {
 	    	if(json.status='200'){
-	    		$.CurrentNavtab.find("#j_payment_visit_view_visitDateFrom").val(json.visitDateFrom);
-	    		$.CurrentNavtab.find("#j_payment_visit_view_visitDateTo").val(json.visitDateTo);
-	    		$.CurrentNavtab.find("#j_payment_visit_view_totalLevelWorkHours").val(json.totalLevelWorkHours);
-	    		$.CurrentNavtab.find("#j_payment_visit_view_applicantDate").val(json.applicantDate);
-	    		$.CurrentNavtab.find("#j_payment_visit_view_visitPurpose").selectpicker().selectpicker('val',json.visitPurpose).selectpicker('refresh');
-	    		$.CurrentNavtab.find("#j_payment_visit_view_projectNo").val(json.projectNo);
+	    		$.CurrentDialog.find("#j_payment_visit_view_visitDateFrom").val(json.visitDateFrom);
+	    		$.CurrentDialog.find("#j_payment_visit_view_visitDateTo").val(json.visitDateTo);
+	    		$.CurrentDialog.find("#j_payment_visit_view_totalLevelWorkHours").val(json.totalLevelWorkHours);
+	    		$.CurrentDialog.find("#j_payment_visit_view_applicantDate").val(json.applicantDate);
+	    		$.CurrentDialog.find("#j_payment_visit_view_visitPurpose").selectpicker().selectpicker('val',json.visitPurpose).selectpicker('refresh');
+	    		$.CurrentDialog.find("#j_payment_visit_view_projectNo").val(json.projectNo);
 	    		if(json.businessTrip=='Domestic 国内')
 	    		{
-	    			$.CurrentNavtab.find("#j_payment_visit_view_domestic").iCheck('check'); 
+	    			$.CurrentDialog.find("#j_payment_visit_view_domestic").iCheck('check'); 
 	    		}else if(json.businessTrip=='Oversea 国外'){
-	    			$.CurrentNavtab.find("#j_payment_visit_view_oversea").iCheck('check'); 
+	    			$.CurrentDialog.find("#j_payment_visit_view_oversea").iCheck('check'); 
 	    		}
 	    		
-	    		$.CurrentNavtab.find("#j_payment_visit_view_DetailPlace").val(json.visitDetailPlace);
-	    		$.CurrentNavtab.find("#j_payment_visit_view_DetailPurpose").val(json.visitDetailPurpose);
+	    		$.CurrentDialog.find("#j_payment_visit_view_DetailPlace").val(json.visitDetailPlace);
+	    		$.CurrentDialog.find("#j_payment_visit_view_DetailPurpose").val(json.visitDetailPurpose);
+	    		
+	    		$.CurrentDialog.find("#datagrid-payment-visit-employee").refresh(false);
 	    	}
 	    }
 	})
@@ -79,8 +82,7 @@ function paymentVisitViewSave(){
 	    data:{json:JSON.stringify(o)},	    
 	    okCallback: function(json, options) {
             if(json.status='200'){
-            	 BJUI.alertmsg('info', json.message); 
-            	 $.CurrentNavtab.find("#j_payment_visit_view_id").val(json.params.id);
+            	 $.CurrentDialog.find("#j_payment_visit_view_id").val(json.params.id);
             }else{
             	 BJUI.alertmsg('error', json.message); 
             }
@@ -91,6 +93,123 @@ function paymentVisitViewSave(){
 	
 }
 
+function changeReferenceNo(){
+	var referenceNo=$.CurrentDialog.find("#j_payment_visit_view_referenceNo").val();
+	BJUI.ajax('doajax', {
+	    url: 'checkPaymentVisit.action',
+	    loadingmask: true,
+	    data:{referenceNo:referenceNo},	    
+	    okCallback: function(json, options) {
+            if(json.status='200'){
+            	paymentVisitViewDateToFace(json.params.id);
+            }else{
+            	 BJUI.alertmsg('error', json.message); 
+            }
+	    }
+	});	
+	
+	
+}
+
+
+function tdChange(){
+	var reg = /(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9]([0-9])?$)/;
+	var trs=$.CurrentDialog.find("#table-business-trip-user").children().eq(0).children();
+	for(var i=4;i<trs.length;i++){
+		var tds=trs.get(i).children;	
+		for(var j=4;j<tds.length;j++){
+			var td=tds[j];
+			td.children[0].onchange=function(){
+				var txt=this;
+				if(j!=4&&j!=17){
+					if (!reg.test(txt.val())){
+						txt.val('');
+					}else{
+						txt.val(toDecimal2(txt.val()));
+					}
+					
+					//交通费合计					
+					if(j>4 && j<15){
+						var total=0;
+						total+=toNumber(tds[5].children[0].val());
+						total+=toNumber(tds[6].children[0].val());
+						total+=toNumber(tds[7].children[0].val());
+						total+=toNumber(tds[8].children[0].val());
+						total+=toNumber(tds[9].children[0].val());
+						total+=toNumber(tds[10].children[0].val());
+						total+=toNumber(tds[13].children[0].val());
+						total+=toNumber(tds[14].children[0].val());
+						tds[15].html(toDecimal2(total));
+					}
+					//过路费税额
+					if(j==10){
+						tds[11].html(toDecimal2(txt.val()/1.03));
+						tds[12].html(toDecimal2(txt.val()/1.03*0.03));
+					}
+					//住宿费
+					if(j==17||j==19){
+						if(tds[19].children[0].val()>0){
+							if(tds[19].children[0].val()=='VO'){
+								tds[16].html(toDecimal2(tds[19].children[0].val()))
+								tds[18].html('-');
+							}else if(tds[19].children[0].val()=='V6'){
+								tds[16].html(toDecimal2(tds[19].children[0].val()/1.06))
+								tds[18].html(toDecimal2(tds[19].children[0].val()/1.06*0.06))
+							}							
+						}
+					}
+					//误餐费
+					if(j>19&&j<23){
+						var total=0;
+						total+=toNumber(tds[20].children[0].val());
+						total+=toNumber(tds[21].children[0].val());
+						total+=toNumber(tds[22].children[0].val());
+						tds[23].html(toDecimal2(total));
+					}
+					//总计部分
+					var total=0;
+					total+=toNumber(tds[15].html());
+					total+=toNumber(tds[19].html());
+					total+=toNumber(tds[23].html());
+					total+=toNumber(tds[24].children(":first").val());
+					tds[25].html(toDecimal2(total));
+					
+					if(tds[27].children[0].val()==''){
+						tds[26].html('-');
+					}else{
+						tds[26].html(toDecimal2(tds[25].html()));
+					}
+					
+					total=0;
+					total+=toNumber(trs[4].children[j].children[0].val());
+					total+=toNumber(trs[5].children[j].children[0].val());
+					total+=toNumber(trs[6].children[j].children[0].val());
+					total+=toNumber(trs[7].children[j].children[0].val());
+					total+=toNumber(trs[8].children[j].children[0].val());
+					total+=toNumber(trs[9].children[j].children[0].val());
+					trs[10].childeren[j].html(toDecimal2(total))
+					
+					}
+					//币种选择
+					if(j==4){
+						if(td.children(":first").val()=='RMB'){
+							tds.eq(26).children(":first").val('1');
+						}else{
+							tds.eq(26).children(":first").val('');
+						}
+						
+					}
+					
+					
+					
+				};		
+		
+		}
+
+		
+		
+	}
+}
 
 
 </script>
@@ -101,14 +220,15 @@ function paymentVisitViewSave(){
 <div class="bjui-pageContent">
     <div class="bs-example" style="width:1700px">
         <form id="j_payment_visit_view_form" data-toggle="ajaxform">
-			<input type="hidden" name="id" id="j_payment_id" value="${param.id}">
+			<input type="hidden" name="id" id="j_payment_visit_id" value="${param.id}">
+			<input type="hidden" name="id" id="j_payment_visit_view_id" value="">
             <div class="bjui-row-0" align="center">
             <h2 class="row-label">出差单申请</h2><br> 
             </div>
 			<table class="table" style="font-size:12px;">
 				<tr>
 					<td width="200px">Reference No.<br>单号</td>
-					<td width="200px"><input type="text" size="19" name="referenceNo" data-nobtn="true" id="j_payment_visit_view_referenceNo"  ></td>					
+					<td width="200px"><input type="text" size="19" name="referenceNo" onchange="changeReferenceNo();" data-nobtn="true" id="j_payment_visit_view_referenceNo"  ></td>					
 					<td width="200px"></td>
 					<td width="200px"></td>	
 					<td width="900px"></td>				
@@ -165,7 +285,7 @@ function paymentVisitViewSave(){
 						Visit Detail Place<label style="color:red;font-size:12px"><b>*:</b></label>:<br>出差具体目的地 <label style="color:red;font-size:12px"><b>*</b></label>:
 					</td>
 					<td colspan="4">
-						<textarea cols="50" rows="3" id="j_payment_visit_view_DetailPlace"  name="visitDetailPlace" data-toggle="autoheight"></textarea>
+						<textarea cols="50" rows="3" id="j_payment_visit_view_DetailPlace"  name="visitDetailPlace" data-toggle="autoheight"   disabled="disabled" ></textarea>
 					</td>
 				</tr>
 				<tr>
@@ -173,17 +293,17 @@ function paymentVisitViewSave(){
 						Visit Detail Purpose<label style="color:red;font-size:12px"><b>*:</b></label>:<br>出差具体事由<label style="color:red;font-size:12px"><b>*</b></label>:
 					</td>
 					<td colspan="4">
-						<textarea cols="50" rows="3" id="j_payment_visit_view_DetailPurpose"  name="visitDetailPurpose" data-toggle="autoheight"></textarea>
+						<textarea cols="50" rows="3" id="j_payment_visit_view_DetailPurpose"  name="visitDetailPurpose" data-toggle="autoheight"   disabled="disabled" ></textarea>
 					</td>
 				</tr>
 				<tr height="400px">
 					<td colspan="5" >
-						   <table class="table table-bordered" id="datagrid-payment-visit" data-toggle="datagrid" data-options="{
+						   <table class="table table-bordered" id="datagrid-payment-visit-employee" data-toggle="datagrid" data-options="{
 						        height: '100%',
 						        gridTitle : '出差人员',
 						        showToolbar: true,
 						        local: 'local',
-						        dataUrl: 'getpaymentVisitEmployee.action?visitId=${param.id}',
+						        dataUrl: 'getPaymentVisitEmployee.action?visitId= ',
 						        delUrl:'json/ajaxDone.json',
 						        editUrl: 'sign/payment/visit/payment_visit_edit.jsp',
 						        editMode: {dialog:{width:'800',height:430,title:'Edit Employee',mask:true}},
@@ -219,7 +339,7 @@ function paymentVisitViewSave(){
         </form>
     </div>
     <div>
-    	<table border="1" cellspacing="0" width="2000px">
+    	<table border="1" cellspacing="0" width="2000px" id="table-business-trip-user">
     			<tr>
     				<th colspan="28" align="center">
 						<h5>Business Trip Expense Application Form<br>差旅费申请单</h5>    				
