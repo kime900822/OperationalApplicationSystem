@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.kime.model.ApproveHis;
 import com.sign.model.paymentVisit.PaymentVisit;
+import com.sign.model.paymentVisit.PaymentVisitBusinessTrip;
 
 public interface PaymentVisitBIZ {
 
@@ -22,6 +23,8 @@ public interface PaymentVisitBIZ {
 	ApproveHis approve(String level, String comment, String approveState, String tradeId);
 	
 	public PaymentVisit queryById(String id);
+	
+	public void savePaymentVisitView(List<PaymentVisitBusinessTrip> list,String id,String paymentId);
 
 	
 }

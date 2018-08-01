@@ -57,11 +57,19 @@ public class PaymentVisit {
 	@Transient
 	List<PaymentVisitEmployee> employees;
 	@Transient
+	List<PaymentVisitBusinessTrip> businessTrips;
+	@Transient
 	List<ApproveList> approveList;
 	@Transient
 	List<ApproveHis> approveHis;
 	
 	
+	public List<PaymentVisitBusinessTrip> getBusinessTrips() {
+		return businessTrips;
+	}
+	public void setBusinessTrips(List<PaymentVisitBusinessTrip> businessTrips) {
+		this.businessTrips = businessTrips;
+	}
 	public String getState() {
 		return state;
 	}

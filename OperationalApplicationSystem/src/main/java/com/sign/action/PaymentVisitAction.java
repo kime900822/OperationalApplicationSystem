@@ -33,9 +33,11 @@ import com.kime.utils.CommonUtil;
 import com.kime.utils.PDFUtil;
 import com.opensymphony.xwork2.ActionContext;
 import com.sign.biz.PaymentVisitBIZ;
+import com.sign.dao.impl.PyamentVisitDAOImpl;
 import com.sign.model.Payment;
 import com.sign.model.Stamp;
 import com.sign.model.paymentVisit.PaymentVisit;
+import com.sign.model.paymentVisit.PaymentVisitBusinessTrip;
 import com.sign.model.paymentVisit.PaymentVisitEmployee;
 import com.sign.other.PaymentState;
 import com.sign.other.PaymentVisitHelp;
@@ -73,7 +75,15 @@ public class PaymentVisitAction extends ActionBase{
 	private String level;
 	private String approveState;
 	
+	private String paymentId;
 	
+	
+	public String getPaymentId() {
+		return paymentId;
+	}
+	public void setPaymentId(String paymentId) {
+		this.paymentId = paymentId;
+	}
 	public String getTradeId() {
 		return tradeId;
 	}
@@ -366,6 +376,29 @@ public class PaymentVisitAction extends ActionBase{
 		reslutJson=new ByteArrayInputStream(new Gson().toJson(result).getBytes("UTF-8")); 	
 		return SUCCESS;
 	}
+	
+	
+	@Action(value="savepaymentVisitView",results={@org.apache.struts2.convention.annotation.Result(type="stream",
+			params={
+					"inputName", "reslutJson"
+			})})
+	public String savepaymentVisitView() throws UnsupportedEncodingException {
+		
+		List<PaymentVisitBusinessTrip> list=(List<PaymentVisitBusinessTrip>) new Gson().fromJson(json, PaymentVisitBusinessTrip.class);
+		
+		try {
+			paymentVisitBIZ.savePaymentVisitView(list,id,paymentId);
+			result.setMessage(Message.SUCCESS);
+			result.setStatusCode("200");
+			
+		} catch (Exception e) {
+			result.setMessage(e.getMessage());
+			result.setStatusCode("300");
+		}
+		
+		reslutJson=new ByteArrayInputStream(new Gson().toJson(result).getBytes("UTF-8")); 	
+		return SUCCESS;
+	}	
 	
 	
 	@Action(value="submitPaymentVisit",results={@org.apache.struts2.convention.annotation.Result(type="stream",

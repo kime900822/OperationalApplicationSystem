@@ -4,10 +4,12 @@
 <script type="text/javascript">
 $(function(){
 	
-	if('${param.id}'!=null&&'${param.id}'!=''&&'${param.id}'!=undefined){
-		paymentVisitViewDateToFace('${param.id}');
+	if('${param.visitId}'!=null&&'${param.visitId}'!=''&&'${param.visitId}'!=undefined){
+		paymentVisitViewDateToFace('${param.visitId}');
 	}
-	tdChange();	
+	payment_visit_bind_change();
+	
+	
 })
 
 
@@ -21,11 +23,33 @@ function paymentVisitViewCheckSave(o){
 }
 
 function paymentVisitViewFaceToDate(){
-	var o=$.CurrentDialog.find("#j_payment_visit_view_form").serializeJson();
-	o.employees=$("#datagrid-payment-visit").data('allData');
-	o.uId='${user.uid}';
-	o.uName='${user.name}';
-	
+	var o=[];
+	var t;
+	var trs=$.CurrentDialog.find("#table-business-trip-user").children().eq(0).children();
+	for(var i=4;i<trs.length;i++){
+		var tds=trs.get(i).children;	
+		t.visitId=$.CurrentDialog.find("#j_payment_visit_id").val();
+		t.rowNum=i-3;
+		t.currency=tds[4].children[0].value;
+		t.metro=tds[5].children[0].value;
+		t.taxi=tds[6].children[0].value;
+		t.train=tds[7].children[0].value;
+		t.bus=tds[8].children[0].value;
+		t.rentalCar=tds[9].children[0].value;
+		t.roadTail=tds[10].children[0].value;
+		t.selfDriver=tds[13].children[0].value;
+		t.airTicket=tds[14].children[0].value;
+		t.hotelTaxRate=tds[17].children[0].value;
+		t.hotel=tds[19].children[0].value;
+		t.breakfast=tds[20].children[0].value;
+		t.lunch=tds[21].children[0].value;
+		t.dinner=tds[22].children[0].value;
+		t.other=tds[24].children[0].value;
+		t.RMBExchangeRate=tds[26].children[0].value;
+		t.total=tds[27].innerHTML;
+		o.push(t);
+	}
+		
 	return o;
 }
 
@@ -79,7 +103,7 @@ function paymentVisitViewSave(){
 	BJUI.ajax('doajax', {
 	    url: 'savepaymentVisitView.action',
 	    loadingmask: true,
-	    data:{json:JSON.stringify(o)},	    
+	    data:{json:JSON.stringify(o),id:'${param.visitId}',paymentId:'${param.paymentId}'},	    
 	    okCallback: function(json, options) {
             if(json.status='200'){
             	 $.CurrentDialog.find("#j_payment_visit_view_id").val(json.params.id);
@@ -102,6 +126,7 @@ function changeReferenceNo(){
 	    okCallback: function(json, options) {
             if(json.status='200'){
             	paymentVisitViewDateToFace(json.params.id);
+            	 $.CurrentDialog.find("#j_payment_visit_id").val(json.params.id);
             }else{
             	 BJUI.alertmsg('error', json.message); 
             }
@@ -112,104 +137,148 @@ function changeReferenceNo(){
 }
 
 
-function tdChange(){
-	var reg = /(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9]([0-9])?$)/;
+function payment_visit_bind_change(){
 	var trs=$.CurrentDialog.find("#table-business-trip-user").children().eq(0).children();
 	for(var i=4;i<trs.length;i++){
 		var tds=trs.get(i).children;	
 		for(var j=4;j<tds.length;j++){
 			var td=tds[j];
-			td.children[0].onchange=function(){
-				var txt=this;
-				if(j!=4&&j!=17){
-					if (!reg.test(txt.val())){
-						txt.val('');
-					}else{
-						txt.val(toDecimal2(txt.val()));
-					}
-					
-					//交通费合计					
-					if(j>4 && j<15){
-						var total=0;
-						total+=toNumber(tds[5].children[0].val());
-						total+=toNumber(tds[6].children[0].val());
-						total+=toNumber(tds[7].children[0].val());
-						total+=toNumber(tds[8].children[0].val());
-						total+=toNumber(tds[9].children[0].val());
-						total+=toNumber(tds[10].children[0].val());
-						total+=toNumber(tds[13].children[0].val());
-						total+=toNumber(tds[14].children[0].val());
-						tds[15].html(toDecimal2(total));
-					}
-					//过路费税额
-					if(j==10){
-						tds[11].html(toDecimal2(txt.val()/1.03));
-						tds[12].html(toDecimal2(txt.val()/1.03*0.03));
-					}
-					//住宿费
-					if(j==17||j==19){
-						if(tds[19].children[0].val()>0){
-							if(tds[19].children[0].val()=='VO'){
-								tds[16].html(toDecimal2(tds[19].children[0].val()))
-								tds[18].html('-');
-							}else if(tds[19].children[0].val()=='V6'){
-								tds[16].html(toDecimal2(tds[19].children[0].val()/1.06))
-								tds[18].html(toDecimal2(tds[19].children[0].val()/1.06*0.06))
-							}							
-						}
-					}
-					//误餐费
-					if(j>19&&j<23){
-						var total=0;
-						total+=toNumber(tds[20].children[0].val());
-						total+=toNumber(tds[21].children[0].val());
-						total+=toNumber(tds[22].children[0].val());
-						tds[23].html(toDecimal2(total));
-					}
-					//总计部分
-					var total=0;
-					total+=toNumber(tds[15].html());
-					total+=toNumber(tds[19].html());
-					total+=toNumber(tds[23].html());
-					total+=toNumber(tds[24].children(":first").val());
-					tds[25].html(toDecimal2(total));
-					
-					if(tds[27].children[0].val()==''){
-						tds[26].html('-');
-					}else{
-						tds[26].html(toDecimal2(tds[25].html()));
-					}
-					
-					total=0;
-					total+=toNumber(trs[4].children[j].children[0].val());
-					total+=toNumber(trs[5].children[j].children[0].val());
-					total+=toNumber(trs[6].children[j].children[0].val());
-					total+=toNumber(trs[7].children[j].children[0].val());
-					total+=toNumber(trs[8].children[j].children[0].val());
-					total+=toNumber(trs[9].children[j].children[0].val());
-					trs[10].childeren[j].html(toDecimal2(total))
-					
-					}
-					//币种选择
-					if(j==4){
-						if(td.children(":first").val()=='RMB'){
-							tds.eq(26).children(":first").val('1');
-						}else{
-							tds.eq(26).children(":first").val('');
-						}
-						
-					}
-					
-					
-					
-				};		
+			if(td.children[0]!=null && td.children[0]!=undefined){
+				$(td.children[0]).attr('onchange','payment_visit_change_txt('+i+','+j+')');
+			}
+		}
+	}
+} 
+
+function payment_visit_change_txt(i,j){
+	var trs=$.CurrentDialog.find("#table-business-trip-user").children().eq(0).children();
+	var tds=trs.get(i).children;
+	
+	var reg = /(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9]([0-9])?$)/;
+	var txt=tds[j].children[0];
+	if(j!=4&&j!=17){
+		if (!reg.test(txt.value)){
+			txt.value='';
+		}else{
+			txt.value=toDecimal2(txt.value);
+		}
 		
+		//交通费合计					
+		if(j>4 && j<15){
+			var total=0;
+			total+=toNumber(tds[5].children[0].value);
+			total+=toNumber(tds[6].children[0].value);
+			total+=toNumber(tds[7].children[0].value);
+			total+=toNumber(tds[8].children[0].value);
+			total+=toNumber(tds[9].children[0].value);
+			total+=toNumber(tds[10].children[0].value);
+			total+=toNumber(tds[13].children[0].value);
+			total+=toNumber(tds[14].children[0].value);
+			tds[15].innerHTML=toDecimal2(total);
+		}
+		//过路费税额
+		if(j==10){
+			tds[11].innerHTML=toDecimal2(txt.value/1.03);
+			tds[12].innerHTML=toDecimal2(txt.value/1.03*0.03);
+		}
+		//住宿费
+		if(j==19){
+			if(tds[19].children[0].value>0){
+				if(tds[17].children[0].value=='V0'){
+					tds[16].innerHTML=toDecimal2(tds[19].children[0].value)
+					tds[18].innerHTML='-';
+				}else if(tds[17].children[0].value=='V6'){
+					tds[16].innerHTML=toDecimal2(tds[19].children[0].value/1.06)
+					tds[18].innerHTML=toDecimal2(tds[19].children[0].value/1.06*0.06)
+				}							
+			}
+		}
+		//误餐费
+		if(j>19&&j<23){
+			var total=0;
+			total+=toNumber(tds[20].children[0].value);
+			total+=toNumber(tds[21].children[0].value);
+			total+=toNumber(tds[22].children[0].value);
+			tds[23].innerHTML=toDecimal2(total);
+		}
+		//总计部分
+		var total=0;
+		total+=toNumber(tds[15].innerHTML);
+		total+=toNumber(tds[19].children[0].value);
+		total+=toNumber(tds[23].innerHTML);
+		total+=toNumber(tds[24].children[0].value);
+		tds[25].innerHTML=toDecimal2(total);
+		
+		if(tds[26].children[0].value==''){
+			tds[27].innerHTML='-';
+		}else{
+			tds[27].innerHTML=toDecimal2(toNumber(tds[25].innerHTML)*toNumber(tds[26].children[0].value));
 		}
 
+		if(j==17||j==26){
+			total=0
+		}else{
+			total=0;
+			total+=toNumber(trs[4].children[j].children[0].value);
+			total+=toNumber(trs[5].children[j].children[0].value);
+			total+=toNumber(trs[6].children[j].children[0].value);
+			total+=toNumber(trs[7].children[j].children[0].value);
+			total+=toNumber(trs[8].children[j].children[0].value);
+			total+=toNumber(trs[9].children[j].children[0].value);
+		}
+		
+		trs[10].children[j-1].innerHTML=toDecimal2(total);
 		
 		
-	}
+		}
+		//币种选择
+		if(j==4){
+			if(tds[4].children[0].value=='RMB'){
+				tds[26].children[0].value='1.00';
+			}else{
+				tds[26].children[0].value='';
+			}
+			
+			if(tds[26].children[0].value==''){
+				tds[27].innerHTML='-';
+			}else{
+				tds[27].innerHTML=toDecimal2(toNumber(tds[25].innerHTML)*toNumber(tds[26].children[0].value));
+			}
+			
+		}
+		
+		if(j==17){
+			if(tds[19].children[0].value>0){
+				if(tds[17].children[0].value=='V0'){
+					tds[16].innerHTML=toDecimal2(tds[19].children[0].value)
+					tds[18].innerHTML='-';
+				}else if(tds[17].children[0].value=='V6'){
+					tds[16].innerHTML=toDecimal2(tds[19].children[0].value/1.06)
+					tds[18].innerHTML=toDecimal2(tds[19].children[0].value/1.06*0.06)
+				}else{
+					tds[16].innerHTML=''
+					tds[18].innerHTML='';
+				}							
+			}
+		}
+		
+		var t=[11,12,15,16,18,23,25,27];
+		t.forEach(function(k,n){
+			total=0;
+			total+=toNumber(trs[4].children[k].innerHTML);
+			total+=toNumber(trs[5].children[k].innerHTML);
+			total+=toNumber(trs[6].children[k].innerHTML);
+			total+=toNumber(trs[7].children[k].innerHTML);
+			total+=toNumber(trs[8].children[k].innerHTML);
+			total+=toNumber(trs[9].children[k].innerHTML);
+			trs[10].children[k-1].innerHTML=toDecimal2(total);
+
+			
+		})
+
+	
 }
+
 
 
 </script>
@@ -220,12 +289,12 @@ function tdChange(){
 <div class="bjui-pageContent">
     <div class="bs-example" style="width:1700px">
         <form id="j_payment_visit_view_form" data-toggle="ajaxform">
-			<input type="hidden" name="id" id="j_payment_visit_id" value="${param.id}">
+			<input type="hidden" name="id" id="j_payment_visit_id" value="${param.visitId}">
 			<input type="hidden" name="id" id="j_payment_visit_view_id" value="">
             <div class="bjui-row-0" align="center">
             <h2 class="row-label">出差单申请</h2><br> 
             </div>
-			<table class="table" style="font-size:12px;">
+			<table class="table" style="font-size:12px" >
 				<tr>
 					<td width="200px">Reference No.<br>单号</td>
 					<td width="200px"><input type="text" size="19" name="referenceNo" onchange="changeReferenceNo();" data-nobtn="true" id="j_payment_visit_view_referenceNo"  ></td>					
@@ -303,7 +372,7 @@ function tdChange(){
 						        gridTitle : '出差人员',
 						        showToolbar: true,
 						        local: 'local',
-						        dataUrl: 'getPaymentVisitEmployee.action?visitId= ',
+						        dataUrl: 'getPaymentVisitEmployee.action?visitId=',
 						        delUrl:'json/ajaxDone.json',
 						        editUrl: 'sign/payment/visit/payment_visit_edit.jsp',
 						        editMode: {dialog:{width:'800',height:430,title:'Edit Employee',mask:true}},
@@ -339,7 +408,7 @@ function tdChange(){
         </form>
     </div>
     <div>
-    	<table border="1" cellspacing="0" width="2000px" id="table-business-trip-user">
+    	<table border="1" cellspacing="0" width="2000px" id="table-business-trip-user" >
     			<tr>
     				<th colspan="28" align="center">
 						<h5>Business Trip Expense Application Form<br>差旅费申请单</h5>    				
@@ -389,7 +458,7 @@ function tdChange(){
 					<td></td>
 					<td></td>
 					<td>
-						<select data-toggle="selectpicker" name="usedCurrency" data-width="75px" >
+						<select data-toggle="selectpicker" name="usedCurrency" data-width="75px"  >
 							<option value=""></option>
 							<option value="RMB">RMB</option>
 							<option value="USD">USD</option>

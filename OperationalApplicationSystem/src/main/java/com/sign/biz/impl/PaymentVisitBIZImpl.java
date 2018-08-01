@@ -26,11 +26,15 @@ import com.kime.model.User;
 import com.kime.utils.CommonUtil;
 import com.kime.utils.PropertiesUtil;
 import com.sign.biz.PaymentVisitBIZ;
+import com.sign.dao.PaymentDAO;
+import com.sign.dao.PaymentVisitBusinessTripDAO;
 import com.sign.dao.PaymentVisitDAO;
 import com.sign.dao.PaymentVisitEmployeeDAO;
+import com.sign.model.Payment;
 import com.sign.model.Stamp;
 import com.sign.model.StampApprove;
 import com.sign.model.paymentVisit.PaymentVisit;
+import com.sign.model.paymentVisit.PaymentVisitBusinessTrip;
 import com.sign.model.paymentVisit.PaymentVisitEmployee;
 import com.sign.other.PaymentVisitHelp;
 
@@ -56,6 +60,10 @@ public class PaymentVisitBIZImpl extends BizBase implements PaymentVisitBIZ {
 	UserDAO userDAO;
 	@Autowired
 	ApproveHisBIZ approveHisBIZ;
+	@Autowired
+	PaymentVisitBusinessTripDAO paymentVisitBusinessTripDAO;
+	@Autowired
+	PaymentDAO paymentDAO;
 	
 	@Override
 	@Transactional(readOnly=false,propagation=Propagation.REQUIRED,rollbackFor=Exception.class )
@@ -227,8 +235,21 @@ public class PaymentVisitBIZImpl extends BizBase implements PaymentVisitBIZ {
 		paymentVisit.setApproveHis(approveHisBIZ.getApproveHisByTradeId(paymentVisit.getId()));
 		paymentVisit.setApproveList(approveListDAO.query("where tradeId='"+id+"' order by level "));
 		paymentVisit.setEmployees(PaymentVisitEmployeeDAO.query(" where visitId='"+id+"' order by id "));
+		paymentVisit.setBusinessTrips(paymentVisitBusinessTripDAO.query(" where visitId='"+paymentVisit.getId()+"' order by rowNum"));
+		
 		return paymentVisit;
 		
+	}
+
+	@Override
+	public void savePaymentVisitView(List<PaymentVisitBusinessTrip> list, String id, String paymentId) {
+		for (PaymentVisitBusinessTrip paymentVisitBusinessTrip : list) {
+			paymentVisitBusinessTripDAO.save(paymentVisitBusinessTrip);
+		}
+		Payment payment=paymentDAO.query(" where id='"+paymentId+"' ").get(0);
+		payment.setVisitId(id);
+		paymentDAO.update(payment);
+
 	}
 
 	

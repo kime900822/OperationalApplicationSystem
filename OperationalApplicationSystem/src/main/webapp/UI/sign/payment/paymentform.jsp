@@ -1282,7 +1282,7 @@ function showVisitForm(){
 	BJUI.dialog({
 	    id:'payment-visit-form-view',
 	    url:'sign/payment/visit/payment_visit_form_view.jsp',
-	    data:{id:$.CurrentNavtab.find("#j_payment_visit_id").val()},
+	    data:{visitId:$.CurrentNavtab.find("#j_payment_visit_id").val(),paymentId:$.CurrentNavtab.find("#j_payment_id").val()},
 	    title:'差旅填单',
 	    width:1200,
 	    height:800,
