@@ -42,14 +42,14 @@ public class PaymentVisitBusinessTripDAOImpl  extends HibernateDaoSupport implem
 	@Override
 	public List<PaymentVisitBusinessTrip> query(String where) {
 		Session session=this.getSessionFactory().openSession();
-		String hql="FROM PaymentVisit "+where;
+		String hql="FROM PaymentVisitBusinessTrip "+where;
 		return session.createQuery(hql).list();
 	}
 
 	@Override
 	public List<PaymentVisitBusinessTrip> query(String where, Integer pageSize, Integer pageCurrent) {
 		Session session=this.getSessionFactory().openSession();
-		String hql="FROM PaymentVisit "+where;
+		String hql="FROM PaymentVisitBusinessTrip "+where;
 		return session.createQuery(hql).setFirstResult((pageCurrent-1)*pageSize).setMaxResults(pageSize).list();
 	}
 

@@ -24,7 +24,5 @@ public interface PaymentVisitBIZ {
 	
 	public PaymentVisit queryById(String id);
 	
-	public void savePaymentVisitView(List<PaymentVisitBusinessTrip> list,String id,String paymentId);
-
 	
 }

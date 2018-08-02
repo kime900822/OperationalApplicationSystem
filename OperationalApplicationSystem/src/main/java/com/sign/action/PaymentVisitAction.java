@@ -378,28 +378,6 @@ public class PaymentVisitAction extends ActionBase{
 	}
 	
 	
-	@Action(value="savepaymentVisitView",results={@org.apache.struts2.convention.annotation.Result(type="stream",
-			params={
-					"inputName", "reslutJson"
-			})})
-	public String savepaymentVisitView() throws UnsupportedEncodingException {
-		
-		List<PaymentVisitBusinessTrip> list=(List<PaymentVisitBusinessTrip>) new Gson().fromJson(json, PaymentVisitBusinessTrip.class);
-		
-		try {
-			paymentVisitBIZ.savePaymentVisitView(list,id,paymentId);
-			result.setMessage(Message.SUCCESS);
-			result.setStatusCode("200");
-			
-		} catch (Exception e) {
-			result.setMessage(e.getMessage());
-			result.setStatusCode("300");
-		}
-		
-		reslutJson=new ByteArrayInputStream(new Gson().toJson(result).getBytes("UTF-8")); 	
-		return SUCCESS;
-	}	
-	
 	
 	@Action(value="submitPaymentVisit",results={@org.apache.struts2.convention.annotation.Result(type="stream",
 			params={

@@ -76,6 +76,7 @@
 <script src="B-JUI/plugins/download/jquery.fileDownload.js"></script>
 <!-- util -->
 <script src="B-JUI/js/util.js"></script>
+<script src="B-JUI/js/dict.js"></script>
 <script src="B-JUI/js/ajaxfileupload.js"></script>
 <!-- zoomify -->
 <script src="B-JUI/plugins/zoomify/zoomify.min.js"></script>

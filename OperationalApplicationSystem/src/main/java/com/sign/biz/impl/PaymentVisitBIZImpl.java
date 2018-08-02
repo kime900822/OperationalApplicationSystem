@@ -62,8 +62,6 @@ public class PaymentVisitBIZImpl extends BizBase implements PaymentVisitBIZ {
 	ApproveHisBIZ approveHisBIZ;
 	@Autowired
 	PaymentVisitBusinessTripDAO paymentVisitBusinessTripDAO;
-	@Autowired
-	PaymentDAO paymentDAO;
 	
 	@Override
 	@Transactional(readOnly=false,propagation=Propagation.REQUIRED,rollbackFor=Exception.class )
@@ -241,16 +239,6 @@ public class PaymentVisitBIZImpl extends BizBase implements PaymentVisitBIZ {
 		
 	}
 
-	@Override
-	public void savePaymentVisitView(List<PaymentVisitBusinessTrip> list, String id, String paymentId) {
-		for (PaymentVisitBusinessTrip paymentVisitBusinessTrip : list) {
-			paymentVisitBusinessTripDAO.save(paymentVisitBusinessTrip);
-		}
-		Payment payment=paymentDAO.query(" where id='"+paymentId+"' ").get(0);
-		payment.setVisitId(id);
-		paymentDAO.update(payment);
-
-	}
 
 	
 	
