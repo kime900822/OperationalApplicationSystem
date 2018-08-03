@@ -30,24 +30,27 @@ function paymentVisitViewFaceToDate(){
 		var tds=trs.get(i).children;	
 		t.visitId=$.CurrentDialog.find("#j_payment_visit_view_id").val();
 		t.rowNum=i-3;
-		t.currency=tds[4].children[0].value;
-		t.metro=tds[5].children[0].value;
-		t.taxi=tds[6].children[0].value;
-		t.train=tds[7].children[0].value;
-		t.bus=tds[8].children[0].value;
-		t.rentalCar=tds[9].children[0].value;
-		t.roadTail=tds[10].children[0].value;
-		t.selfDriver=tds[13].children[0].value;
-		t.airTicket=tds[14].children[0].value;
-		t.hotelTaxRate=tds[17].children[0].value;
-		t.hotel=tds[19].children[0].value;
-		t.breakfast=tds[20].children[0].value;
-		t.lunch=tds[21].children[0].value;
-		t.dinner=tds[22].children[0].value;
-		t.other=tds[24].children[0].value;
-		t.RMBExchangeRate=tds[26].children[0].value;
-		t.total=tds[27].innerHTML;
-		o.push(t);
+		if(tds[4].children[0].value!=''){
+			t.currency=tds[4].children[0].value;
+			t.metro=tds[5].children[0].value;
+			t.taxi=tds[6].children[0].value;
+			t.train=tds[7].children[0].value;
+			t.bus=tds[8].children[0].value;
+			t.rentalCar=tds[9].children[0].value;
+			t.roadTail=tds[10].children[0].value;
+			t.selfDriver=tds[13].children[0].value;
+			t.airTicket=tds[14].children[0].value;
+			t.hotelTaxRate=tds[17].children[0].value;
+			t.hotel=tds[19].children[0].value;
+			t.breakfast=tds[20].children[0].value;
+			t.lunch=tds[21].children[0].value;
+			t.dinner=tds[22].children[0].value;
+			t.other=tds[24].children[0].value;
+			t.RMBExchangeRate=tds[26].children[0].value;
+			t.total=tds[27].innerHTML;
+			o.push(t);
+		}
+		
 	}
 		
 	return o;
@@ -85,9 +88,19 @@ function paymentVisitViewDateToFace(id){
         				table.append("<tr><td>"+item.employeeNo+"</td><td>"+item.employeeBUNo+"</td><td>"+item.employeeName+"</td><td>"+item.advanceAmount+"</td><td>"+item.hotelBookingByHR+"</td><td>"+item.hotelName+"</td><td>"+item.carArrangeByHR+"</td>><td>"+item.carArrangePeriod+"</td>><td>"+item.airTickerBookingByHR+"</td>><td>"+item.flightNO+"</td>><td>"+item.visarArrangeByHR+"</td></tr>");	    				
         			})
         		}
-	
-
+		
+	    		if(json.businessTrips!=undefined&&json.businessTrips!=""){
+	    			var trs=$.CurrentDialog.find("#table-business-trip-finance").children().eq(0).children();
+	    			$.each(json.businessTrips,function(i,item){	  		
+	    				
+	    				
+        			})
+	    			
+	    		}
+	    		
+	    		
 	    		$.CurrentDialog.find('form:eq(0)').trigger('bjui.ajaxStop')
+	    		
 	    	}
 	    }
 	})
@@ -923,7 +936,7 @@ function payment_visit_change_txt(i,j){
 				</tr>
 				<tr>
 					<td colspan="5">
-						<table border="1" cellspacing="0" width="2000px" id="table-business-trip-user" >
+						<table border="1" cellspacing="0" width="2080px" id="table-business-trip-finance" >
 			    			<tr>
 			    				<th colspan="29" align="center">
 									<h5>Business Trip Expense Application Form<br>差旅费申请单</h5>    				
