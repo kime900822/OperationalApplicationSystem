@@ -267,7 +267,7 @@ jQuery.extend({
   	
   	
   	function toNumber(x){
-  		if(x==''||x==undefined||x=='-'){
+  		if(x==''||x==' '||x==undefined||x=='-'){
   			return 0;
   		}
   		return parseFloat(x);

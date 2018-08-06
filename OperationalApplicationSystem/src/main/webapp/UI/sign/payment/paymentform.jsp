@@ -506,9 +506,9 @@ function showButton(state,print,uid,documentAuditid,deptManagerid){
 		$.CurrentNavtab.find('#payment-acc').hide();
 		$.CurrentNavtab.find('#payment-invalid-tr').hide();
 		$.CurrentNavtab.find('#payment-return-tr').hide();	
-		$("input[id*='j_payment']").attr('disabled','disabled');
-		$("select[id*='j_payment']").attr('disabled','disabled');
-		$("textarea[id*='j_payment']").attr('disabled','disabled')
+		$.CurrentNavtab.find("input[id*='j_payment']").attr('disabled','disabled');
+		$.CurrentNavtab.find("select[id*='j_payment']").attr('disabled','disabled');
+		$.CurrentNavtab.find("textarea[id*='j_payment']").attr('disabled','disabled')
 	}else{
 	if(state==''){//新建 退回
 		$.CurrentNavtab.find('#payment-save').show();
@@ -577,9 +577,9 @@ function showButton(state,print,uid,documentAuditid,deptManagerid){
 		$.CurrentNavtab.find('#payment-invalid-tr').hide();
 		$.CurrentNavtab.find('#payment-return-tr').hide();					
 		$.CurrentNavtab.find('#payment-delete').hide();
-		$("input[id*='j_payment']").attr('disabled','disabled');
-		$("select[id*='j_payment']").attr('disabled','disabled');	
-		 $("textarea[id*='j_payment']").attr('disabled','disabled')
+		$.CurrentNavtab.find("input[id*='j_payment']").attr('disabled','disabled');
+		$.CurrentNavtab.find("select[id*='j_payment']").attr('disabled','disabled');	
+		$.CurrentNavtab.find("textarea[id*='j_payment']").attr('disabled','disabled')
 		$.CurrentNavtab.find('#upfile_other').hide();
 		$.CurrentNavtab.find('#upfile_contract').hide();
 		$.CurrentNavtab.find('#upfile_invoice').hide();
@@ -594,9 +594,9 @@ function showButton(state,print,uid,documentAuditid,deptManagerid){
 		$.CurrentNavtab.find('#payment-print').hide();
 		$.CurrentNavtab.find('#payment-invalid-tr').hide();
 		$.CurrentNavtab.find('#payment-return-tr').hide();		
-		$("input[id*='j_payment']").attr('disabled','disabled');
-		$("select[id*='j_payment']").attr('disabled','disabled');
-		 $("textarea[id*='j_payment']").attr('disabled','disabled')
+		$.CurrentNavtab.find("input[id*='j_payment']").attr('disabled','disabled');
+		$.CurrentNavtab.find("select[id*='j_payment']").attr('disabled','disabled');
+		$.CurrentNavtab.find("textarea[id*='j_payment']").attr('disabled','disabled')
 		$.CurrentNavtab.find('#upfile_other').hide();
 		$.CurrentNavtab.find('#upfile_contract').hide();
 		$.CurrentNavtab.find('#upfile_invoice').hide();
@@ -625,9 +625,9 @@ function showButton(state,print,uid,documentAuditid,deptManagerid){
 		$.CurrentNavtab.find('#payment-return-tr').show();	
 		
 		$.CurrentNavtab.find('#j_payment_documentAudit').val('${user.name}')
-		$("input[id*='j_payment']").attr('disabled','disabled');
-		$("select[id*='j_payment']").attr('disabled','disabled');
-		$("textarea[id*='j_payment']").attr('disabled','disabled')
+		$.CurrentNavtab.find("input[id*='j_payment']").attr('disabled','disabled');
+		$.CurrentNavtab.find("select[id*='j_payment']").attr('disabled','disabled');
+		$.CurrentNavtab.find("textarea[id*='j_payment']").attr('disabled','disabled')
 		$.CurrentNavtab.find('#j_payment_refNoofBank').removeAttr('disabled');
 		$.CurrentNavtab.find('#j_payment_refNoofBank').removeAttr('readonly').attr('data-rule','required');
 		$.CurrentNavtab.find('#upfile_other').hide();
@@ -644,9 +644,9 @@ function showButton(state,print,uid,documentAuditid,deptManagerid){
 		$.CurrentNavtab.find('#payment-invalid-tr').hide();
 		$.CurrentNavtab.find('#payment-return-tr').hide();	
 		$.CurrentNavtab.find('#payment-delete').hide();
-		$("input[id*='j_payment']").attr('disabled','disabled');
-		$("select[id*='j_payment']").attr('disabled','disabled'); 
-		$("textarea[id*='j_payment']").attr('disabled','disabled')
+		$.CurrentNavtab.find("input[id*='j_payment']").attr('disabled','disabled');
+		$.CurrentNavtab.find("select[id*='j_payment']").attr('disabled','disabled'); 
+		$.CurrentNavtab.find("textarea[id*='j_payment']").attr('disabled','disabled')
 		$.CurrentNavtab.find('#upfile_other').hide();
 		$.CurrentNavtab.find('#upfile_contract').hide();
 		$.CurrentNavtab.find('#upfile_invoice').hide();
@@ -661,9 +661,9 @@ function showButton(state,print,uid,documentAuditid,deptManagerid){
 		$.CurrentNavtab.find('#payment-delete').hide();
 		$.CurrentNavtab.find('#payment-invalid-tr').hide();
 		$.CurrentNavtab.find('#payment-return-tr').hide();	
-		$("input[id*='j_payment']").attr('disabled','disabled');
-		$("select[id*='j_payment']").attr('disabled','disabled');
-		$("textarea[id*='j_payment']").attr('disabled','disabled')
+		$.CurrentNavtab.find("input[id*='j_payment']").attr('disabled','disabled');
+		$.CurrentNavtab.find("select[id*='j_payment']").attr('disabled','disabled');
+		$.CurrentNavtab.find("textarea[id*='j_payment']").attr('disabled','disabled')
 		$.CurrentNavtab.find('#upfile_other').hide();
 		$.CurrentNavtab.find('#upfile_contract').hide();
 		$.CurrentNavtab.find('#upfile_invoice').hide();
@@ -678,9 +678,9 @@ function showButton(state,print,uid,documentAuditid,deptManagerid){
 		$.CurrentNavtab.find('#payment-invalid-tr').hide();
 		$.CurrentNavtab.find('#payment-return-tr').hide();	
 		$.CurrentNavtab.find('#payment-delete').hide();
-		$("input[id*='j_payment']").attr('disabled','disabled');
-		$("select[id*='j_payment']").attr('disabled','disabled');
-		$("textarea[id*='j_payment']").attr('disabled','disabled')
+		$.CurrentNavtab.find("input[id*='j_payment']").attr('disabled','disabled');
+		$.CurrentNavtab.find("select[id*='j_payment']").attr('disabled','disabled');
+		$.CurrentNavtab.find("textarea[id*='j_payment']").attr('disabled','disabled')
 		$.CurrentNavtab.find('#upfile_other').hide();
 		$.CurrentNavtab.find('#upfile_contract').hide();
 		$.CurrentNavtab.find('#upfile_invoice').hide();
@@ -699,9 +699,9 @@ function showButton(state,print,uid,documentAuditid,deptManagerid){
 		$.CurrentNavtab.find('#payment-invalid-tr').hide();
 		$.CurrentNavtab.find('#payment-return-tr').hide();	
 		$.CurrentNavtab.find('#payment-delete').hide();
-		$("input[id*='j_payment']").attr('disabled','disabled');
-		$("select[id*='j_payment']").attr('disabled','disabled');
-		$("textarea[id*='j_payment']").attr('disabled','disabled')
+		$.CurrentNavtab.find("input[id*='j_payment']").attr('disabled','disabled');
+		$.CurrentNavtab.find("select[id*='j_payment']").attr('disabled','disabled');
+		$.CurrentNavtab.find("textarea[id*='j_payment']").attr('disabled','disabled')
 		$.CurrentNavtab.find('#upfile_other').hide();
 		$.CurrentNavtab.find('#upfile_contract').hide();
 		$.CurrentNavtab.find('#upfile_invoice').hide();
@@ -1285,14 +1285,21 @@ function showVisitForm(){
 	BJUI.dialog({
 	    id:'payment-visit-form-view',
 	    url:'sign/payment/visit/payment_visit_form_view.jsp',
-	    data:{visitId:$.CurrentNavtab.find("#j_payment_visit_id").val()},
+	    data:{visitId:$.CurrentNavtab.find("#j_payment_visit_id").val(),state:$.CurrentNavtab.find("#j_payment_state").val()},
 	    title:'差旅填单',
 	    width:1200,
 	    height:800,
 	    beforeClose:function(o){
-	    	
-	    	
-	    	
+	    	$.CurrentNavtab.find("#j_payment_visit_id").val(o.find("#j_payment_visit_view_id").val());	
+	    	$.CurrentNavtab.find("#j_payment_usageDescription").val(o.find("#j_payment_visit_view_visitDateFrom").val()+' '+o.find("#j_payment_visit_view_visitDateTo").val()+'  '+o.find("#j_payment_visit_view_DetailPlace").val()+'  '+o.find("#j_payment_visit_view_visitPurpose").val());	
+	    	var landwayTotal=toNumber(o.find("#table-business-trip-total-metro").html())+toNumber(o.find("#table-business-trip-total-taxi").val())+toNumber(o.find("#table-business-trip-total-train").val())+toNumber(o.find("#table-business-trip-total-bus").val())+toNumber(o.find("#table-business-trip-total-rentalCar").val())+toNumber(o.find("#table-business-trip-total-roadToilWithoutVAT").val())+toNumber(o.find("#table-business-trip-total-selfDriver").val())
+	    	$.CurrentNavtab.find("#j_payment_amount_1_t").val(landwayTotal);	
+	    	$.CurrentNavtab.find("#j_payment_amount_2_t").val(toNumber(o.find("#table-business-trip-total-roadToilVAT").html()));	
+	    	$.CurrentNavtab.find("#j_payment_amount_3_t").val(toNumber(o.find("#table-business-trip-total-hotelWithoutVAT").html()));	
+	    	$.CurrentNavtab.find("#j_payment_amount_4_t").val(toNumber(o.find("#table-business-trip-total-hotelVAT").html()));	
+	    	$.CurrentNavtab.find("#j_payment_amount_5_t").val(toNumber(o.find("#table-business-trip-total-mealTotal").html()));	
+	    	$.CurrentNavtab.find("#j_payment_amount_6_t").val(toNumber(o.find("#table-business-trip-total-airTicket").html()));	
+	    	changeAmount();
 			return true;
 	    }
 	})

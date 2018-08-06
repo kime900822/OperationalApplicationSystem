@@ -9,6 +9,20 @@ $(function(){
 	}
 	payment_visit_bind_change();
 	
+	if('${param.state}'==''||'${param.state}'==null||'${param.state}'==undefined||'${param.state}'=='0'){
+		$.CurrentDialog.find("#tr-business-trip-user").show();
+		$.CurrentDialog.find("#tr-business-trip-finance").hide();
+		$.CurrentDialog.find("#payment-visit-view-save").show();
+		$.CurrentDialog.find("#payment-visit-view-subjcode").hide();
+		$.CurrentDialog.find("#payment-visit-view-export").hide();
+	}else{
+		$.CurrentDialog.find("#tr-business-trip-user").hide();
+		$.CurrentDialog.find("#tr-business-trip-finance").show();
+		$.CurrentDialog.find("#payment-visit-view-save").hide();
+		$.CurrentDialog.find("#payment-visit-view-subjcode").show();
+		$.CurrentDialog.find("#payment-visit-view-export").show();
+	}		
+	
 	
 })
 
@@ -127,7 +141,7 @@ function paymentVisitViewDateToFace(id){
 	    				trs[item.rowNum].children[28].innerHTML=toDecimal2(item.total);
         			})
 	    			
-	        		for(var j=5;j<28;j++){
+	        		for(var j=5;j<29;j++){
 	        			total=0;
 		    			total+=toNumber(trs[4].children[j].innerHTML);
 		    			total+=toNumber(trs[5].children[j].innerHTML);
@@ -169,6 +183,9 @@ function paymentVisitViewSave(){
 	    okCallback: function(json, options) {
             if(json.status='200'){
             	 $.CurrentDialog.find("#j_payment_visit_view_id").val(json.params.id);
+            	 $.CurrentDialog.find("#j_payment_visit_view_object").val(o);
+            	 $.CurrentDialog.find("input").attr('disabled','disabled');
+            	 $.CurrentDialog.find("select").attr('disabled','disabled');	
             }else{
             	 BJUI.alertmsg('error', json.message); 
             }
@@ -359,6 +376,7 @@ function payment_visit_change_txt(i,j){
         <form id="j_payment_visit_view_form" data-toggle="ajaxform">
 			<input type="hidden" name="id" id="j_payment_visit_view_id" value="${param.visitId}">
 			<input type="hidden" name="id" id="j_payment_visit_view_status" value="${param.status}">
+			<input type="hidden" id="j_payment_visit_view_object" >
             <div class="bjui-row-0" align="center">
             <h2 class="row-label">出差单申请</h2><br> 
             </div>
@@ -452,7 +470,7 @@ function payment_visit_change_txt(i,j){
 						    </table>
 					</td>
 				</tr>
-				<tr>
+				<tr id="tr-business-trip-user">
 					<td colspan="5" >
 						<table border="1" cellspacing="0" width="2000px" id="table-business-trip-user" >
 		    			<tr>
@@ -947,34 +965,34 @@ function payment_visit_change_txt(i,j){
 							<td></td>
 							<td></td>
 							<td colspan="2">Subtotal in figures 小计: </td>
-							<td bgcolor="#ADADAD"></td>
-							<td bgcolor="#ADADAD"></td>
-							<td bgcolor="#ADADAD"></td>
-							<td bgcolor="#ADADAD"></td>
-							<td bgcolor="#ADADAD"></td>
-							<td bgcolor="#ADADAD"></td>
-							<td bgcolor="#ADADAD"></td>
-							<td bgcolor="#ADADAD"></td>
-							<td bgcolor="#ADADAD"></td>
-							<td bgcolor="#ADADAD"></td>
-							<td bgcolor="#ADADAD"></td>
-							<td bgcolor="#ADADAD"></td>
-							<td bgcolor="#ADADAD"></td>
-							<td bgcolor="#ADADAD"></td>
-							<td bgcolor="#ADADAD"></td>
-							<td bgcolor="#ADADAD"></td>
-							<td bgcolor="#ADADAD"></td>
-							<td bgcolor="#ADADAD"></td>
-							<td bgcolor="#ADADAD"></td>
-							<td bgcolor="#ADADAD"></td>
-							<td bgcolor="#ADADAD"></td>
-							<td bgcolor="#ADADAD"></td>
-							<td bgcolor="#ADADAD"></td>
+							<td bgcolor="#ADADAD" id='table-business-trip-total-metro'></td>
+							<td bgcolor="#ADADAD" id='table-business-trip-total-taxi'></td>
+							<td bgcolor="#ADADAD" id='table-business-trip-total-train'></td>
+							<td bgcolor="#ADADAD" id='table-business-trip-total-bus'></td>
+							<td bgcolor="#ADADAD" id='table-business-trip-total-rentalCar'></td>
+							<td bgcolor="#ADADAD" id='table-business-trip-total-roadToil'></td>
+							<td bgcolor="#ADADAD" id='table-business-trip-total-roadToilWithoutVAT'></td>
+							<td bgcolor="#ADADAD" id='table-business-trip-total-roadToilVAT'></td>
+							<td bgcolor="#ADADAD" id='table-business-trip-total-selfDriver'></td>
+							<td bgcolor="#ADADAD" id='table-business-trip-total-airTicket'></td>
+							<td bgcolor="#ADADAD" id='table-business-trip-total-transportationTotal'></td>
+							<td bgcolor="#ADADAD" id='table-business-trip-total-hotelWithoutVAT'></td>
+							<td bgcolor="#ADADAD" id='table-business-trip-total-hotelTaxRate'></td>
+							<td bgcolor="#ADADAD" id='table-business-trip-total-hotelVAT'></td>
+							<td bgcolor="#ADADAD" id='table-business-trip-total-hotel'></td>
+							<td bgcolor="#ADADAD" id='table-business-trip-total-breakfast'></td>
+							<td bgcolor="#ADADAD" id='table-business-trip-total-lunch'></td>
+							<td bgcolor="#ADADAD" id='table-business-trip-total-dinner'></td>
+							<td bgcolor="#ADADAD" id='table-business-trip-total-mealTotal'></td>
+							<td bgcolor="#ADADAD" id='table-business-trip-total-other'></td>
+							<td bgcolor="#ADADAD" id='table-business-trip-total-originalCurrencyTotal'></td>
+							<td bgcolor="#ADADAD" id='table-business-trip-total-RMBExchangeRate'></td>
+							<td bgcolor="#ADADAD" id='table-business-trip-total-total'></td>
 						</tr>
 					</table>
 					</td>
 				</tr>
-				<tr>
+				<tr id="tr-business-trip-finance">
 					<td colspan="5">
 						<table border="1" cellspacing="0" width="2080px" id="table-business-trip-finance" >
 			    			<tr>
@@ -1251,4 +1269,5 @@ function payment_visit_change_txt(i,j){
 			</table>	
         </form>
     </div>
+  </div>
  
