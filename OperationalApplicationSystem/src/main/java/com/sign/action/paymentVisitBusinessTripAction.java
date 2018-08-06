@@ -34,7 +34,7 @@ public class paymentVisitBusinessTripAction extends ActionBase{
 			})})
 	public String savepaymentVisitView() throws UnsupportedEncodingException {
 		
-		List<PaymentVisitBusinessTrip> list=(List<PaymentVisitBusinessTrip>) new Gson().fromJson(json, new TypeToken<ArrayList<PaymentVisitBusinessTripBIZ>>() {}.getType());
+		List<PaymentVisitBusinessTrip> list= new Gson().fromJson(json, new TypeToken<ArrayList<PaymentVisitBusinessTrip>>() {}.getType());
 		
 		try {
 			for (PaymentVisitBusinessTrip paymentVisitBusinessTrip : list) {

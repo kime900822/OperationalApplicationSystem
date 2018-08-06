@@ -29,25 +29,33 @@ function paymentVisitViewFaceToDate(){
 	for(var i=4;i<10;i++){
 		var tds=trs.get(i).children;	
 		t.visitId=$.CurrentDialog.find("#j_payment_visit_view_id").val();
-		t.rowNum=i-3;
 		if(tds[4].children[0].value!=''){
+			t.rowNum=i;
 			t.currency=tds[4].children[0].value;
-			t.metro=tds[5].children[0].value;
-			t.taxi=tds[6].children[0].value;
-			t.train=tds[7].children[0].value;
-			t.bus=tds[8].children[0].value;
-			t.rentalCar=tds[9].children[0].value;
-			t.roadTail=tds[10].children[0].value;
-			t.selfDriver=tds[13].children[0].value;
-			t.airTicket=tds[14].children[0].value;
+			t.metro=parseFloat(tds[5].children[0].value);
+			t.taxi=parseFloat(tds[6].children[0].value);
+			t.train=parseFloat(tds[7].children[0].value);
+			t.bus=parseFloat(tds[8].children[0].value);
+			t.rentalCar=parseFloat(tds[9].children[0].value);
+			t.roadToil=parseFloat(tds[10].children[0].value);
+			t.roadToilWithoutVAT=parseFloat(tds[11].innerHTML);
+			t.roadToilVAT=parseFloat(tds[12].innerHTML);
+			t.selfDriver=parseFloat(tds[13].children[0].value);
+			t.airTicket=parseFloat(tds[14].children[0].value);
+			t.landwayTotal=toNumber(t.metro)+toNumber(t.taxi)+toNumber(t.train)+toNumber(t.bus)+toNumber(t.rentalCar)+toNumber(t.roadToilWithoutVAT)+toNumber(t.selfDriver);
+			t.transportationTotal=parseFloat(tds[15].innerHTML);
+			t.hotelWithoutVAT=parseFloat(tds[16].innerHTML);
 			t.hotelTaxRate=tds[17].children[0].value;
-			t.hotel=tds[19].children[0].value;
-			t.breakfast=tds[20].children[0].value;
-			t.lunch=tds[21].children[0].value;
-			t.dinner=tds[22].children[0].value;
-			t.other=tds[24].children[0].value;
-			t.RMBExchangeRate=tds[26].children[0].value;
-			t.total=tds[27].innerHTML;
+			t.hotelVAT=parseFloat(tds[18].innerHTML);
+			t.hotel=parseFloat(tds[19].children[0].value);
+			t.breakfast=parseFloat(tds[20].children[0].value);
+			t.lunch=parseFloat(tds[21].children[0].value);
+			t.dinner=parseFloat(tds[22].children[0].value);
+			t.mealTotal=parseFloat(tds[23].innerHTML);
+			t.other=toNumber(tds[24].children[0].value);
+			t.originalCurrencyTotal=toNumber(tds[25].innerHTML);
+			t.RMBExchangeRate=toNumber(tds[26].children[0].value);
+			t.total=toNumber(tds[27].innerHTML);
 			o.push(t);
 		}
 		
@@ -89,15 +97,47 @@ function paymentVisitViewDateToFace(id){
         			})
         		}
 		
+	    		var trs=$.CurrentDialog.find("#table-business-trip-finance").children().eq(0).children();
 	    		if(json.businessTrips!=undefined&&json.businessTrips!=""){
-	    			var trs=$.CurrentDialog.find("#table-business-trip-finance").children().eq(0).children();
-	    			$.each(json.businessTrips,function(i,item){	  		
-	    				
-	    				
+	    			$.each(json.businessTrips,function(i,item){	  	
+	    				trs[item.rowNum].children[4].innerHTML=item.currency;
+	    				trs[item.rowNum].children[5].innerHTML=toDecimal2(item.metro);
+	    				trs[item.rowNum].children[6].innerHTML=toDecimal2(item.taxi);
+	    				trs[item.rowNum].children[7].innerHTML=toDecimal2(item.train);
+	    				trs[item.rowNum].children[8].innerHTML=toDecimal2(item.bus);
+	    				trs[item.rowNum].children[9].innerHTML=toDecimal2(item.rentalCar);
+	    				trs[item.rowNum].children[10].innerHTML=toDecimal2(item.roadToil);
+	    				trs[item.rowNum].children[11].innerHTML=toDecimal2(item.roadToilWithoutVAT);
+	    				trs[item.rowNum].children[12].innerHTML=toDecimal2(item.roadToilVAT);
+	    				trs[item.rowNum].children[13].innerHTML=toDecimal2(item.selfDriver);
+	    				trs[item.rowNum].children[14].innerHTML=toDecimal2(item.airTicket);
+	    				trs[item.rowNum].children[15].innerHTML=toDecimal2(item.landwayTotal);
+	    				trs[item.rowNum].children[16].innerHTML=toDecimal2(item.transportationTotal);
+	    				trs[item.rowNum].children[17].innerHTML=toDecimal2(item.hotelWithoutVAT);
+	    				trs[item.rowNum].children[18].innerHTML=item.hotelTaxRate;
+	    				trs[item.rowNum].children[19].innerHTML=toDecimal2(item.hotelVAT);
+	    				trs[item.rowNum].children[20].innerHTML=toDecimal2(item.hotel);
+	    				trs[item.rowNum].children[21].innerHTML=toDecimal2(item.breakfast);
+	    				trs[item.rowNum].children[22].innerHTML=toDecimal2(item.lunch);
+	    				trs[item.rowNum].children[23].innerHTML=toDecimal2(item.dinner);
+	    				trs[item.rowNum].children[24].innerHTML=toDecimal2(item.mealTotal);
+	    				trs[item.rowNum].children[25].innerHTML=toDecimal2(item.other);
+	    				trs[item.rowNum].children[26].innerHTML=toDecimal2(item.originalCurrencyTotal);
+	    				trs[item.rowNum].children[27].innerHTML=toDecimal2(item.RMBExchangeRate);
+	    				trs[item.rowNum].children[28].innerHTML=toDecimal2(item.total);
         			})
 	    			
+	        		for(var j=5;j<28;j++){
+	        			total=0;
+		    			total+=toNumber(trs[4].children[j].innerHTML);
+		    			total+=toNumber(trs[5].children[j].innerHTML);
+		    			total+=toNumber(trs[6].children[j].innerHTML);
+		    			total+=toNumber(trs[7].children[j].innerHTML);
+		    			total+=toNumber(trs[8].children[j].innerHTML);
+		    			total+=toNumber(trs[9].children[j].innerHTML);
+		    			trs[10].children[j-1].innerHTML=toDecimal2(total);
+		    		}
 	    		}
-	    		
 	    		
 	    		$.CurrentDialog.find('form:eq(0)').trigger('bjui.ajaxStop')
 	    		
@@ -947,7 +987,7 @@ function payment_visit_change_txt(i,j){
 								<th rowspan="3" width="100px" align="center">Start from where<br>出发地点</th>
 								<th rowspan="3" width="100px" align="center">End to where<br>到达地点</th>
 								<th rowspan="3" width="100px" align="center">Description<br>摘要</th>
-								<th colspan="24" align="center">Expense Description 费用分类</th>
+								<th colspan="25" align="center">Expense Description 费用分类</th>
 							</tr>
 							<tr>
 								<th rowspan="2" align="center">Currency Used<br>消费币种</th>

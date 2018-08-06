@@ -34,13 +34,27 @@ public class PaymentVisitBusinessTrip {
 	@Column
 	private double rentalCar;
 	@Column
-	private double roadTail;
+	private double roadToil;
+	@Column
+	private double roadToilWithoutVAT;
+	@Column
+	private double roadToilVAT;
 	@Column
 	private double selfDriver;
 	@Column
 	private double airTicket;
 	@Column
+	private double landwayTotal;
+	@Column
+	private double transportationTotal;
+	@Column
+	private double hotelWithoutVAT;
+	@Column
 	private String hotelTaxRate;
+	@Column
+	private double hotelVAT;
+	@Column
+	private double hotel;
 	@Column
 	private double breakfast;
 	@Column
@@ -48,11 +62,90 @@ public class PaymentVisitBusinessTrip {
 	@Column
 	private double dinner;
 	@Column
+	private double mealTotal;
+	@Column
 	private double other;
+	@Column
+	private double originalCurrencyTotal;
 	@Column
 	private double RMBExchangeRate;
 	@Column
 	private double total;
+
+	
+	
+	public double getRoadToilWithoutVAT() {
+		return roadToilWithoutVAT;
+	}
+
+	public void setRoadToilWithoutVAT(double roadToilWithoutVAT) {
+		this.roadToilWithoutVAT = roadToilWithoutVAT;
+	}
+
+	public double getRoadToilVAT() {
+		return roadToilVAT;
+	}
+
+	public void setRoadToilVAT(double roadToilVAT) {
+		this.roadToilVAT = roadToilVAT;
+	}
+
+	public double getLandwayTotal() {
+		return landwayTotal;
+	}
+
+	public void setLandwayTotal(double landwayTotal) {
+		this.landwayTotal = landwayTotal;
+	}
+
+	public double getTransportationTotal() {
+		return transportationTotal;
+	}
+
+	public void setTransportationTotal(double transportationTotal) {
+		this.transportationTotal = transportationTotal;
+	}
+
+	public double getHotelWithoutVAT() {
+		return hotelWithoutVAT;
+	}
+
+	public void setHotelWithoutVAT(double hotelWithoutVAT) {
+		this.hotelWithoutVAT = hotelWithoutVAT;
+	}
+
+	
+	public double getHotelVAT() {
+		return hotelVAT;
+	}
+
+	public void setHotelVAT(double hotelVAT) {
+		this.hotelVAT = hotelVAT;
+	}
+
+	public double getHotel() {
+		return hotel;
+	}
+
+	public void setHotel(double hotel) {
+		this.hotel = hotel;
+	}
+
+	public double getMealTotal() {
+		return mealTotal;
+	}
+
+	public void setMealTotal(double mealTotal) {
+		this.mealTotal = mealTotal;
+	}
+
+	public double getOriginalCurrencyTotal() {
+		return originalCurrencyTotal;
+	}
+
+	public void setOriginalCurrencyTotal(double originalCurrencyTotal) {
+		this.originalCurrencyTotal = originalCurrencyTotal;
+	}
 
 	public String getId() {
 		return id;
@@ -126,12 +219,14 @@ public class PaymentVisitBusinessTrip {
 		this.rentalCar = rentalCar;
 	}
 
-	public double getRoadTail() {
-		return roadTail;
+
+
+	public double getRoadToil() {
+		return roadToil;
 	}
 
-	public void setRoadTail(double roadTail) {
-		this.roadTail = roadTail;
+	public void setRoadToil(double roadToil) {
+		this.roadToil = roadToil;
 	}
 
 	public double getSelfDriver() {
