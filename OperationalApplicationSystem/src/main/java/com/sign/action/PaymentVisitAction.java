@@ -354,7 +354,7 @@ public class PaymentVisitAction extends ActionBase{
 					paymentVisit.setReferenceNo(code);
 					paymentVisit.setId(UUID.randomUUID().toString().replaceAll("-", ""));
 					paymentVisit.setDateTmp(CommonUtil.getDateTemp());
-					paymentVisit.setState("0");
+					paymentVisit.setState(PaymentVisitHelp.SAVE);
 					paymentVisitBIZ.save(paymentVisit);
 					result.setMessage(Message.SAVE_MESSAGE_SUCCESS);
 					result.setStatusCode("200");

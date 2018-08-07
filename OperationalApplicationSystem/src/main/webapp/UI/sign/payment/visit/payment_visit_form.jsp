@@ -145,7 +145,8 @@ function paymentVisitSave(){
             if(json.status='200'){
             	 BJUI.alertmsg('info', json.message); 
             	 $.CurrentNavtab.find("#j_payment_visit_id").val(json.params.id);
-            	 $.CurrentNavtab.find("#j_payment_applicationCode").val(json.params.applicationCode);
+            	 $.CurrentNavtab.find("#j_payment_visit_referenceNo").val(json.params.referenceNO);
+            	 paymentVisitShowButton('SAVE')
 
             }else{
             	 BJUI.alertmsg('error', json.message); 
@@ -270,6 +271,15 @@ function paymentVisitShowButton(state){
 			 $("select[id*='j_payment_visit']").removeAttr('disabled');
 			 $("textarea[id*='j_payment_visit']").removeAttr('disabled');
 			 $.CurrentNavtab.find('#j_payment_visit_form').find(".btn-group").show();
+		}else{
+			 $.CurrentNavtab.find('#payment-visit-delete').hide();
+			 $.CurrentNavtab.find('#payment-visit-submit').hide();
+			 $.CurrentNavtab.find('#payment-visit-print-business').hide();
+			 $.CurrentNavtab.find('#payment-visit-print-travel').hide();
+			 $("input[id*='j_payment_visit']").attr('disabled','disabled');
+			 $("select[id*='j_payment_visit']").attr('disabled','disabled');
+			 $("textarea[id*='j_payment_visit']").attr('disabled','disabled');
+			 $.CurrentNavtab.find('#j_payment_visit_form').find(".btn-group").hide();
 		}
 	}else{
 		 $.CurrentNavtab.find('#payment-visit-delete').hide();
