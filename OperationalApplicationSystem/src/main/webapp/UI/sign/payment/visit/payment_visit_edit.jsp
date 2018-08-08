@@ -37,16 +37,62 @@ function paymentVisitEmployeeSelected(obj,id){
 	
 }
  
+ 
+function  paymentVisitEmployeeChange(){
+	var id=$.CurrentDialog.find('#j_payment_visit_employee_employeeNo').val();
+	if(id!=''){
+		BJUI.ajax('doajax', {
+			url:'getUserByID.action',
+			loadingmask:true,
+			data:{uid:id},
+			okCallback:function(json, options) {
+				if (json.length > 0) {
+					$.CurrentDialog.find('#j_payment_visit_employee_employeeName').val(json[0].name);
+					$.CurrentDialog.find('#j_payment_visit_employee_employeeBUNo').val(json[0].department.did);
+				} else {
+					BJUI.alertmsg('error', 'userid不存在');
+					$.CurrentDialog.find('#j_payment_visit_employee_employeeName').val('');
+					$.CurrentDialog.find('#j_payment_visit_employee_employeeBUNo').val('');
+				}
+			}
+		})
+	}
+	
+	
+	
+}
+ 
+function paymentVisitEmployeeSaveCheck(){
+	
+	 if($.CurrentDialog.find("#j_payment_visit_employee_hotelBookingByHR").val()=='YES' && $.CurrentDialog.find("#j_payment_visit_employee_hotelName").val()==''){
+		 BJUI.alertmsg('warn', 'HotelName Can`t Null!');
+		 return false;
+	 }
+	 if($.CurrentDialog.find("#j_payment_visit_employee_carArrangeByHR").val()=='YES'&&$.CurrentDialog.find("#j_payment_visit_employee_carArrangePeriod")==''){
+		 BJUI.alertmsg('warn', 'CarArrangePeriod Can`t Null!');
+		 return false;
+	 }
+	 if($.CurrentDialog.find("#j_payment_visit_employee_airTickerBookingByHR").val()=='YES'&&$.CurrentDialog.find("#j_payment_visit_employee_flightNO")==''){
+		 BJUI.alertmsg('warn', 'FlightNO Can`t Null!');
+		 return false;
+	 }
+	 
+	 return true;
+	
+}
+
+
+ 
 </script> 
     
 <div class="bjui-pageContent">
     <div class="bs-example" >
-        <form action="modPaymentVisitEmployee.action?callback=?" class="datagrid-edit-form" data-toggle="validate" data-data-type="jsonp">
+        <form action="modPaymentVisitEmployee.action?callback=?" class="datagrid-edit-form" data-toggle="validate" data-data-type="jsonp" onsubmit="return paymentVisitEmployeeSaveCheck()">
             <div class="bjui-row col-2">
                 
                 <label class="row-label">Visit Employee No.<label style="color:red;font-size:12px"><b>*</b></label><br> 出差人员  <label style="color:red;font-size:12px"><b>*</b></label></label>
                 <div class="row-input required">
-                    <input type="text" name="employeeNo" value="${param.employeeNo}" data-toggle="findgrid" onblur="isHandingFee()" data-options="{
+                    <input type="text" name="employeeNo" value="${param.employeeNo}" id="j_payment_visit_employee_employeeNo" data-toggle="findgrid" onchange="paymentVisitEmployeeChange()" data-options="{
 			            group: '',
 			            include: 'employeeNo:uid,employeeBUNo:did,employeeName:name',
 			            dialogOptions: {title:'选择出差人员'},
@@ -64,11 +110,11 @@ function paymentVisitEmployeeSelected(obj,id){
                 </div>
                 <label class="row-label">Visit Employee BU No.<br>出差人员部门代码</label>
                 <div class="row-input required">
-                    <input type="text" name="employeeBUNo" value="${param.employeeBUNo}" readonly="" data-rule="required">
+                    <input type="text" name="employeeBUNo" id="j_payment_visit_employee_employeeBUNo" value="${param.employeeBUNo}" readonly="" data-rule="required">
                 </div>
                 <label class="row-label">Visit Employee Name<br>出差人员姓名</label>
                 <div class="row-input required">
-					<input type="text" name="employeeName"  readonly=""  data-rule="required" value="${param.employeeName}">
+					<input type="text" name="employeeName" id="j_payment_visit_employee_employeeName" readonly=""  data-rule="required" value="${param.employeeName}">
                 </div>
                 <label class="row-label">Advance Amount<br>预付款金额</label>
                 <div class="row-input required">

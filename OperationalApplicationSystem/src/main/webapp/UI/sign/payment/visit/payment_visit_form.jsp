@@ -325,6 +325,16 @@ function paymentVisitPrintTravel(){
 }
 
 
+
+function paymentVisitEmployeeLevelTime(){
+	var startTime=$.CurrentNavtab.find("#j_payment_visit_visitDateFrom").val();
+	var endTime=$.CurrentNavtab.find("#j_payment_visit_visitDateTo").val();
+	if(startTime!=''&& endTime!=''){
+		$.CurrentNavtab.find("#j_payment_visit_totalLevelWorkHours").val(leaveTime(startTime,endTime));
+	}
+	
+}
+
 </script>
 
 
@@ -335,7 +345,8 @@ function paymentVisitPrintTravel(){
         <form id="j_payment_visit_form" data-toggle="ajaxform">
 			<input type="hidden" name="id" id="j_payment_visit_id" value="${param.id}">
             <div class="bjui-row-0" align="center">
-            <h2 class="row-label">出差单申请</h2><br> 
+            <h2 class="row-label">出差单申请</h2>
+            <h2 class="row-label">Business Travel Application</h2><br>
             </div>
 			<table class="table" style="font-size:12px;">
 				<tr>
@@ -382,9 +393,9 @@ function paymentVisitPrintTravel(){
 				<tr>
 					<td >Visit Date  <label style="color:red;font-size:12px"><b>*</b></label><br>
 					出差期间  <label style="color:red;font-size:12px"><b>*</b></label></td>
-					<td colspan="4"><input type="text" size="19" name="visitDateFrom" id="j_payment_visit_visitDateFrom"  data-toggle="datepicker" placeholder="点击选择日期" data-nobtn="true" id="j_payment_lendDate" value="" data-pattern="yyyy-MM-dd HH:mm:ss" />
+					<td colspan="4"><input type="text" size="19" name="visitDateFrom" id="j_payment_visit_visitDateFrom" onchange="paymentVisitEmployeeLevelTime()" data-toggle="datepicker" placeholder="点击选择日期" data-nobtn="true" id="j_payment_lendDate" value="" data-pattern="yyyy-MM-dd HH:mm:ss" />
 					TO:&nbsp;&nbsp;&nbsp;&nbsp;
-					<input type="text" size="19" name="visitDateTo" id="j_payment_visit_visitDateTo"  data-toggle="datepicker" placeholder="点击选择日期" data-nobtn="true" id="j_payment_lendDate" value="" data-pattern="yyyy-MM-dd HH:mm:ss" />				
+					<input type="text" size="19" name="visitDateTo" id="j_payment_visit_visitDateTo"  onchange="paymentVisitEmployeeLevelTime()"  data-toggle="datepicker" placeholder="点击选择日期" data-nobtn="true" id="j_payment_lendDate" value="" data-pattern="yyyy-MM-dd HH:mm:ss" />				
 					</td>	
 				</tr>
 				<tr>

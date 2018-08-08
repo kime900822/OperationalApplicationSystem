@@ -180,6 +180,7 @@ $(function(){
 				<th data-options="{name:'referenceNo',width:150,align:'center',finalWidth:'true'}">ReferenceNo</th>
 				<th data-options="{name:'uId',width:150,align:'center',finalWidth:'true'}">Cimtas ID</th>
 				<th data-options="{name:'uName',width:150,align:'center',finalWidth:'true'}">User Name</th>
+				<th data-options="{name:'state',width:150,align:'center',finalWidth:'true'}">Approval Status</th>
 			</tr>
         </thead>
     </table>

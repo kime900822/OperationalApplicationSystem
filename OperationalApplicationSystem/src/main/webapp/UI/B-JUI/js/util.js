@@ -1,6 +1,7 @@
 /** 数字金额大写转换(可以处理整数,小数,负数) */    
 function smalltoBIG(n)     
     {    
+	    n=(n+'').replace(/,/,'');
         var fraction = ['角', '分'];    
         var digit = ['零', '壹', '贰', '叁', '肆', '伍', '陆', '柒', '捌', '玖'];    
         var unit = [ ['元', '万', '亿'], ['', '拾', '佰', '仟']  ];    
@@ -274,7 +275,198 @@ jQuery.extend({
   	}
   	
   	
-  	
+  	function leaveTime(timeStart,timeEnd){  
+
+  	    var starttime = timeStart;
+
+  	    var endtime = timeEnd;
+
+  	    var datetime1 = new Date(starttime), datetime2 = new Date(endtime);
+
+  	    var date1 = datetime1.setHours(0,0,0);    //开始日期，毫秒表示
+
+  	    var date2 = datetime2.setHours(0,0,0);    //结束日期，毫秒表示
+
+  	    var starttimeleft=starttime.substring(0,10);//获取时间到月份
+
+  	    var endtimeleft=endtime.substring(0,10);
+
+  	    var beginDate = new Date(starttimeleft.replace(/-/g, "/"));
+
+  	    var endDate = new Date(endtimeleft.replace(/-/g, "/"));
+
+  	    var dayNum = parseInt(Math.abs(beginDate  -  endDate)  /  1000  /  60  /  60  /24);
+
+  	    var startWeek = beginDate.getDay(); 
+
+  	    var starHour=Number(starttime.substring(11,13));
+
+  	    var endHour=Number(endtime.substring(11,13)); 
+  	    
+  	    var starMinute=Number(starttime.substring(14,16));
+
+	    var endMinute=Number(endtime.substring(14,16)); 
+	    
+	    if(starMinute>=15 && starMinute<=45){
+	    	starHour=starHour+0.5;
+	    }else if(starMinute<15){
+	    	starHour=starHour+1;
+	    }
+	    
+	    if(endMinute>=15 && endMinute<=45){
+	    	endHour=endHour+0.5;
+	    }else if(endMinute>45){
+	    	endHour=endHour+1;
+	    }
+	    
+	    var firstDayHour=0;
+	    var lastDayHour=0;
+	    
+  	    var travelHours = 0;    //保存请假小时数
+
+  	    var travelTimeHours = 0;
+
+  	    var iNow = 0;
+
+  	    var dayinweek= new Date(starttime).getDay();/////开始日期是星期几
+
+  	    var dayendweek = new Date(endtime).getDay();//结束日期是星期几   
+
+  	//////根据上班时间 9:00--18:00 把小时
+
+  	 
+
+
+  	    if(date1 ==date2 ){//开始结束时间均在一天
+  	         if((starHour<=12 && endHour<=12)||(starHour>=13 && endHour>=13)){
+  	        	travelHours=endHour-starHour;
+  	         }else if(starHour>=13 ){
+  	             travelHours =endHour-starHour-1
+  	         }
+  	    }else{
+
+  	    	
+  		    if(starHour<=13 && starHou>=12){
+  		    	firstDayHour=4;
+  		    }else if( starHour >13 && starHour<=17){
+  		    	firstDayHour=17-starHour;
+  		    }else if(starHour<12 && starHour>=8){
+  		    	firstDayHour=4+12-starHour;
+  		    }else if(starHour<8){
+		    	firstDayHour=8;
+		    }else if(starHour>17){
+		    	firstDayHour=0;
+		    }
+  		    
+  		    if(endHour<=13 && endHour>=12){
+  		    	lastDayHour=4;
+  		    }else if( endHour >13 && endHour<17){
+  		    	lastDayHour=15-endHour;
+  		    }else if(endHour<12 && endHour>=8){
+  		    	lastDayHour=12-endHour;
+  		    }else if(endHour<8){
+  		    	lastDayHour=0;
+  		    }else if(endHour>17){
+  		    	lastDayHour=8;
+  		    }
+  		    
+  	        
+
+  	         if(0< dayinweek && dayinweek <6 && dayendweek == 0 ||  0< dayinweek && dayinweek <6 && dayendweek == 6){
+
+  	             travelTimeHours +=(weekendBetween(dayNum) - 1)*8; 
+
+  	         }else if(0< dayendweek && dayendweek <6 && dayinweek == 0 ||  0< dayendweek && dayendweek <6 && dayinweek == 6 ){
+
+  	             travelTimeHours +=(weekendBetween(dayNum) - 1)*8; 
+
+  	         }else if(dayinweek !=6 && dayinweek !=0 && dayendweek !=6 && dayendweek !=0){
+
+  	             travelTimeHours +=(weekendBetween(dayNum) - 2)*8; 
+
+  	         }
+
+  	         
+//
+//  	        if(dayinweek !=6 && dayinweek !=0){
+//
+//  	            if(starHour>=9 && starHour<=12){ 
+//
+//  	                travelTimeHours+=8; 
+//
+//  	            }
+//
+//  	            
+//
+//  	            if(starHour>=13 && starHour<=18){
+//
+//  	                travelTimeHours+=4; 
+//
+//  	            }
+//
+//  	        }  
+//
+//  	        if(dayendweek !=6 && dayendweek !=0){ 
+//
+//  	            if(endHour>=9 && endHour<=12){
+//
+//  	                travelTimeHours+=4; 
+//
+//  	            } 
+//
+//  	            if(endHour>=13 && endHour<=18){
+//
+//  	                travelTimeHours+=8; 
+//
+//  	            }
+//
+//  	        } 
+
+  	    }
+
+  	    return travelTimeHours+firstDayHour+lastDayHour;
+//  	    var timeDays = travelHours / 8; 
+//
+//  	    var travelTime = travelTimeHours /8;
+//
+//  	    var travelTimeDay = timeDays + travelTime;
+
+
+  	    // 去除周六日  ；
+
+  	    function weekendBetween(dayNum){
+
+  	        var iNow = 0; 
+
+  	        dayNum =dayNum +1;
+
+  	        for (var i=0; i<dayNum; i++) {
+
+  	            var firstDay = startWeek % 7; 
+
+  	            if(firstDay==0) firstDay=7;
+
+  	            if (firstDay < 6) {
+
+  	                iNow++;
+
+  	            }
+
+  	            if (firstDay == 7) {
+
+  	                firstDay = 1;
+
+  	            }
+
+  	            startWeek ++;
+
+  	        }
+
+  	        return iNow;
+
+  	    } 
+
+  	} 	
   	
   	
   	

@@ -378,7 +378,8 @@ function payment_visit_change_txt(i,j){
 			<input type="hidden" name="id" id="j_payment_visit_view_status" value="${param.status}">
 			<input type="hidden" id="j_payment_visit_view_object" >
             <div class="bjui-row-0" align="center">
-            <h2 class="row-label">出差单申请</h2><br> 
+            <h2 class="row-label">出差单申请</h2>
+            <h2 class="row-label">Business Travel Application</h2><br>
             </div>
 			<table class="table" style="font-size:12px" >
 				<tr>
