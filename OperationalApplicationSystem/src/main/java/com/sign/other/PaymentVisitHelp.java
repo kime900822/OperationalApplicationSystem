@@ -13,6 +13,8 @@ public class PaymentVisitHelp {
 	
 	public final static String COMPLETED="COMPLETED";
 	
+	public final static String CANCEL="CANCEL";
+	
 
 	public static String getVisitPurpose(String type) {
 		String result="";

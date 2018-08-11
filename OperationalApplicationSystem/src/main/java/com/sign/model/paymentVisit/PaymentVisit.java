@@ -39,7 +39,7 @@ public class PaymentVisit {
 	@Column
 	String visitDateTo;
 	@Column
-	Integer totalLevelWorkHours;
+	Integer totalLeaveWorkHours;
 	@Column
 	String businessTrip;
 	@Column
@@ -130,11 +130,12 @@ public class PaymentVisit {
 	public void setVisitDateTo(String visitDateTo) {
 		this.visitDateTo = visitDateTo;
 	}
-	public Integer getTotalLevelWorkHours() {
-		return totalLevelWorkHours;
+
+	public Integer getTotalLeaveWorkHours() {
+		return totalLeaveWorkHours;
 	}
-	public void setTotalLevelWorkHours(Integer totalLevelWorkHours) {
-		this.totalLevelWorkHours = totalLevelWorkHours;
+	public void setTotalLeaveWorkHours(Integer totalLeaveWorkHours) {
+		this.totalLeaveWorkHours = totalLeaveWorkHours;
 	}
 	public String getBusinessTrip() {
 		return businessTrip;

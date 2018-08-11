@@ -70,6 +70,32 @@ public class PaymentVisitAction extends ActionBase{
 	List<ApproveHis> approveHis;
 	String nextApprove;
 	
+	String dId;
+	String applicationDate_f;
+	String applicationDate_t;
+	
+	
+	public String getdId() {
+		return dId;
+	}
+	public void setdId(String dId) {
+		this.dId = dId;
+	}
+	public String getApplicationDate_f() {
+		return applicationDate_f;
+	}
+	public void setApplicationDate_f(String applicationDate_f) {
+		this.applicationDate_f = applicationDate_f;
+	}
+	public String getApplicationDate_t() {
+		return applicationDate_t;
+	}
+	public void setApplicationDate_t(String applicationDate_t) {
+		this.applicationDate_t = applicationDate_t;
+	}
+
+
+
 	private String tradeId;
 	private String comment;
 	private String level;
@@ -414,6 +440,39 @@ public class PaymentVisitAction extends ActionBase{
 		User user=(User)session.getAttribute("user");
 		String hql="";
 		String where="";
+		
+		
+		if (!"".equals(applicationDate_f)&&applicationDate_f!=null) {
+			where += " AND P.applicantDate>='"+applicationDate_f+"' ";
+		}
+		if (!"".equals(applicationDate_t)&&applicationDate_t!=null) {
+			where += " AND P.applicantDate <= '"+applicationDate_t+"' ";
+		}
+		if (!"".equals(referenceNo)&&referenceNo!=null) {
+			where += " AND P.referenceNo like '%"+referenceNo+"%' ";
+		}
+		if (!"".equals(state)&&state!=null) {
+			where += " AND P.state = '"+state+"' ";
+		}
+		if (!"".equals(uId)&&uId!=null) {
+			where += " AND P.uId = '"+uId+"' ";
+		}
+		if (!"".equals(dId)&&dId!=null) {
+			where += " AND P.uId in( select uid from User where did like '"+dId+"') ";
+		}
+		
+		if(queryType.equals("manager")) {
+			hql=" select P from PaymentVisit P where P.nextApprove='"+user.getUid()+"' "+where+" order By P.dateTmp desc";
+		}
+		if(queryType.equals("admin")) {
+			hql=" select P from PaymentVisit P where P.uId in( select uid from User where did ='"+user.getDid()+"') "+where+" order By P.dateTmp desc";
+		}
+		if(queryType.equals("user")) {
+			hql=" select P from PaymentVisit P where P.uId='"+user.getUid()+"' "+where+" order By P.dateTmp desc";
+		}
+		if(queryType.equals("all")) {
+			hql=" select P from PaymentVisit P where 1=1 "+where+" order By P.dateTmp desc";
+		}
 
 		List<PaymentVisit> list=paymentVisitBIZ.query(" ORDER BY referenceNo DESC",Integer.parseInt(pageSize),Integer.parseInt(pageCurrent));
 		int total=paymentVisitBIZ.query(hql).size();
@@ -456,6 +515,25 @@ public class PaymentVisitAction extends ActionBase{
 		return SUCCESS;
 	}
 	
+	@Action(value="cancelPaymentVisit",results={@org.apache.struts2.convention.annotation.Result(type="stream",
+			params={
+					"inputName", "reslutJson"
+			})})
+	public String cancelPaymentVisit() throws UnsupportedEncodingException{	
+		try {
+			paymentVisitBIZ.cancel(id);
+			result.setStatusCode("200");
+			result.setMessage(Message.SUCCESS);
+		} catch (Exception e) {
+			result.setStatusCode("300");
+			result.setMessage(e.getMessage());
+		}
+		
+		reslutJson=new ByteArrayInputStream(new Gson().toJson(result).getBytes("UTF-8"));  	
+		return SUCCESS;
+	}
+	
+	
 	
 	@Action(value="paymentVisitPrintBusiness",results={@org.apache.struts2.convention.annotation.Result(type="stream",
 			params={
@@ -497,7 +575,7 @@ public class PaymentVisitAction extends ActionBase{
 		map.put("visitDateFrom", paymentVisit.getVisitDateFrom());
 		map.put("applicantDate", paymentVisit.getApplicantDate());
 		map.put("visitDateTo", paymentVisit.getVisitDateTo());
-		map.put("hours", String.valueOf(paymentVisit.getTotalLevelWorkHours()));
+		map.put("hours", String.valueOf(paymentVisit.getTotalLeaveWorkHours()));
 		map.put("visitDetailPlace", paymentVisit.getVisitDetailPlace());
 		map.put("managerCheck", managerCheck);
 		
@@ -516,6 +594,49 @@ public class PaymentVisitAction extends ActionBase{
     	
 		SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");		 
 		fileName = "F-HR&ADM-01 Leave Requisition 请假单"+sf.format(new Date()).toString()+ ".pdf";
+		fileName= new String(fileName.getBytes(), "ISO8859-1");
+		
+		reslutJson = is;            
+        logUtil.logInfo("打印请假单："+paymentVisit.getReferenceNo());
+		}
+	    catch(Exception e) {
+	    	logUtil.logInfo("打印请假单异常："+e.getMessage());
+	        e.printStackTrace();
+	    }
+		
+		
+		 return "success";
+	}
+	
+	
+	
+	@Action(value="paymentVisitPrintTravel",results={@org.apache.struts2.convention.annotation.Result(type="stream",
+			params={
+					"inputName", "reslutJson",
+					"contentType","application/vnd.ms-excel",
+					"contentDisposition","attachment;filename=%{fileName}",
+					"bufferSize","1024"
+			})})
+    public String paymentVisitPrintTravel() throws Exception {
+		try {
+			
+		PaymentVisit paymentVisit=paymentVisitBIZ.queryById(id);
+		
+		ActionContext ac = ActionContext.getContext();   
+		ServletContext sc = (ServletContext) ac.get(ServletActionContext.SERVLET_CONTEXT);   
+		String path = sc.getRealPath("/");  
+		
+		ByteArrayOutputStream os=PDFUtil.printPaymentVisitTravelPDF(paymentVisit, path+printUrl);
+		
+		byte[] fileContent = os.toByteArray();
+    	ByteArrayInputStream is = new ByteArrayInputStream(fileContent);
+    	
+    	HttpServletResponse response = (HttpServletResponse)
+    			ActionContext.getContext().get(org.apache.struts2.StrutsStatics.HTTP_RESPONSE);
+    	response.setHeader("Set-Cookie", "fileDownload=true; path=/");
+    	
+		SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");		 
+		fileName = "出差申请单"+sf.format(new Date()).toString()+ ".pdf";
 		fileName= new String(fileName.getBytes(), "ISO8859-1");
 		
 		reslutJson = is;            

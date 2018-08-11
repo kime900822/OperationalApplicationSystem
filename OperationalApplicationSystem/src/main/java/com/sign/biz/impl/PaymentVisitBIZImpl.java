@@ -25,6 +25,7 @@ import com.kime.model.Dict;
 import com.kime.model.User;
 import com.kime.utils.CommonUtil;
 import com.kime.utils.PropertiesUtil;
+import com.kime.utils.mail.SendMail;
 import com.sign.biz.PaymentVisitBIZ;
 import com.sign.dao.PaymentDAO;
 import com.sign.dao.PaymentVisitBusinessTripDAO;
@@ -237,6 +238,19 @@ public class PaymentVisitBIZImpl extends BizBase implements PaymentVisitBIZ {
 		
 		return paymentVisit;
 		
+	}
+
+	@Override
+	@Transactional(readOnly=false,propagation=Propagation.REQUIRED,rollbackFor=Exception.class )
+	public void cancel(String id) {
+		PaymentVisit paymentVisit=queryById(id);
+		paymentVisit.setState(PaymentVisitHelp.CANCEL);
+		for (PaymentVisitEmployee paymentVisitEmployee : paymentVisit.getEmployees()) {
+			List<User> lUsers=userDAO.query(" where uid='"+paymentVisitEmployee.getEmployeeNo()+"'");
+			if (lUsers.size()>0) {
+				SendMail.SendMail(lUsers.get(0).getEmail(),PropertiesUtil.ReadProperties(Message.MAIL_PROPERTIES, "mailTitleOfPaymentVisit") , PropertiesUtil.ReadProperties(Message.MAIL_PROPERTIES, "mailContentOfPaymentVisitCancel"));
+			}
+		}
 	}
 
 

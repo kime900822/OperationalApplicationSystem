@@ -564,8 +564,8 @@ function checkReturn(){
 					<td width="50px" align="center" class="bg" >订单号<br/>PO No.</td>
 					<td width="60px" align="center" class="bg">币别<br/>Currency</td>
 					<td width="110px" align="center" class="bg">金额<br/>Amount</td>
-					<td width="100px" rowspan="8" align="center" >支付用途<br/>Usage<br/>Description</td>
-					<td colspan="4" rowspan="6"  id="usageDescription" style="word-wrap: break-word; word-break: normal;"></td>
+					<td width="100px" rowspan="9" align="center" >支付用途<br/>Usage<br/>Description</td>
+					<td colspan="4" rowspan="7"  id="usageDescription" style="word-wrap: break-word; word-break: normal;"></td>
 				</tr>
 				
 				
@@ -644,6 +644,17 @@ function checkReturn(){
                     </td>
 					<td></td>
 				</tr>		
+				<tr align="center">
+					<td align="center"><label id="paymentSubject_8"></label></td>
+					<td align="left">&nbspTravel 差旅费</td>
+					<td></td>
+					<td align="right">&nbsp<br>&nbsp</td>
+					<td></td>
+					<td></td>
+					<td> 
+                    </td>
+					<td></td>
+				</tr>	
 				<tr>
 					<td colspan="2" class="bg" align="right">金额(小写)<br/>Amount in figures:</td>
 					<td colspan="6" align="right"><label id="amountInFigures"></label></td>

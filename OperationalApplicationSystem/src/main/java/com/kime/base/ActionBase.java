@@ -41,10 +41,17 @@ public class ActionBase extends ActionSupport{
 	protected String thead;
 	protected String orders;
 	protected String printUrl;
+	protected String queryType;
 	
 	
 	
 	
+	public String getQueryType() {
+		return queryType;
+	}
+	public void setQueryType(String queryType) {
+		this.queryType = queryType;
+	}
 	public String getPrintUrl() {
 		return printUrl;
 	}

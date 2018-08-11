@@ -41,7 +41,13 @@ function datagrid_tree_operation() {
         	<tr>
         		<td colspan="6" height="10px"></td>
         	</tr>
-        	<tr>
+        	<tr>        		
+        		<td>
+        		<span>BU NO：</span>
+        		</td>
+        		<td>
+            	<input type="text" name="dId" class="form-control" size="15" data-rule="number" >
+        		</td>
         		<td>
         		<span>Status</span>
         		</td>
@@ -50,7 +56,6 @@ function datagrid_tree_operation() {
 	              <option value="" >all</option>
             	</select>
         		</td>
-        		<td colspan="2"></td>
         		<td colspan="2" align="center">
         		<div class="btn-group">
                 <button type="submit" class="btn-green" data-icon="search">Search</button>

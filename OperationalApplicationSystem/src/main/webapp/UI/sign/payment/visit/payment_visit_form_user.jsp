@@ -31,15 +31,9 @@ function datagrid_tree_operation() {
         		<td width="180px">
             	<input type="text" name="referenceN0" value=""  size="15">
         		</td>
-        		<td>
-        		<span>Cimtas ID：</span>
-        		</td>
-        		<td width="180px">
-        		<input type="text" name="uId" value="" size="15">
-        		</td>
         	</tr>    
         	<tr>
-        		<td colspan="6" height="10px"></td>
+        		<td colspan="4" height="10px"></td>
         	</tr>
         	<tr>
         		<td>
@@ -50,7 +44,6 @@ function datagrid_tree_operation() {
 	              <option value="" >all</option>
             	</select>
         		</td>
-        		<td colspan="2"></td>
         		<td colspan="2" align="center">
         		<div class="btn-group">
                 <button type="submit" class="btn-green" data-icon="search">Search</button>
@@ -69,7 +62,7 @@ function datagrid_tree_operation() {
     <table class="table table-bordered" id="datagrid-payment-admin-filter" data-toggle="datagrid" data-options="{
         height: '100%',
         gridTitle : 'Payment_Visit management',
-        dataUrl: 'getPaymentVisit.action?queryType=admin',
+        dataUrl: 'getPaymentVisit.action?queryType=user',
         dataType: 'jsonp',
         showToolbar: true,
         toolbarItem: 'export',

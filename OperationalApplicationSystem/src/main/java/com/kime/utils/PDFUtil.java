@@ -21,6 +21,7 @@ import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.PdfStamper;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.kime.model.HeadColumn;
+import com.sign.model.paymentVisit.PaymentVisit;
 
 import freemarker.template.utility.StringUtil;
 
@@ -155,6 +156,59 @@ public class PDFUtil {
         stamper.setFormFlattening(true);
         stamper.close();
             
+        return ba;	
+		
+	}
+	
+	
+	/**
+	 * 出差申请单打印
+	 * @param paymentVisit
+	 * @param url
+	 * @return
+	 * @throws Exception
+	 */
+	public static ByteArrayOutputStream  printPaymentVisitTravelPDF(PaymentVisit paymentVisit,String url) throws Exception {
+		ByteArrayOutputStream ba=new ByteArrayOutputStream();
+		
+		PdfReader reader = new PdfReader(url);
+		PdfStamper stamper = new PdfStamper(reader, ba);
+		BaseFont bf = BaseFont.createFont("STSongStd-Light", "UniGB-UCS2-H", BaseFont.NOT_EMBEDDED);
+		AcroFields form = stamper.getAcroFields();
+        form.addSubstitutionFont(bf);
+        form.setFieldProperty("companyOfSender", "textfont", bf, null);
+        form.setField("referenceNo",paymentVisit.getReferenceNo());
+        form.setField("applicantDate",paymentVisit.getApplicantDate());
+        form.setField("visitPurpose",paymentVisit.getVisitPurpose());
+        form.setField("projectNo",paymentVisit.getProjectNo());
+        form.setField("visitDate","Form:"+paymentVisit.getVisitDateFrom()+"  TO: "+paymentVisit.getVisitDateTo());
+        form.setField("totalLeaveWorkHours",String.valueOf(paymentVisit.getTotalLeaveWorkHours()));
+        form.setField("businessTrip",paymentVisit.getBusinessTrip());
+        form.setField("visitDetailPlace",paymentVisit.getVisitDetailPlace());
+        form.setField("visitDetailPurpose",paymentVisit.getReferenceNo());
+        
+        stamper.setFormFlattening(true);
+        stamper.close();
+        
+        
+        Document document = new Document();
+        PdfWriter writer = PdfWriter.getInstance(document, ba);
+        PdfPTable table = new PdfPTable(520);
+		table.setLockedWidth(true);
+		table.setTotalWidth(520);
+		table.setHorizontalAlignment(Element.ALIGN_LEFT);
+		
+		
+		
+		
+		
+		
+		
+		
+        BaseFont bfChinese = BaseFont.createFont("STSongStd-Light", "UniGB-UCS2-H",
+                BaseFont.NOT_EMBEDDED);
+        
+        
         return ba;	
 		
 	}

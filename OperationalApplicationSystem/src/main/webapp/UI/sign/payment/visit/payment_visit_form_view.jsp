@@ -89,7 +89,7 @@ function paymentVisitViewDateToFace(id){
 	    	if(json.status='200'){
 	    		$.CurrentDialog.find("#j_payment_visit_view_visitDateFrom").val(json.visitDateFrom);
 	    		$.CurrentDialog.find("#j_payment_visit_view_visitDateTo").val(json.visitDateTo);
-	    		$.CurrentDialog.find("#j_payment_visit_view_totalLevelWorkHours").val(json.totalLevelWorkHours);
+	    		$.CurrentDialog.find("#j_payment_visit_view_totalLeaveWorkHours").val(json.totalLeaveWorkHours);
 	    		$.CurrentDialog.find("#j_payment_visit_view_applicantDate").val(json.applicantDate);
 	    		$.CurrentDialog.find("#j_payment_visit_view_visitPurpose").val(getVisitViewVisitPurpose(json.visitPurpose));
 	    		$.CurrentDialog.find("#j_payment_visit_view_projectNo").val(json.projectNo);
@@ -425,7 +425,7 @@ function payment_visit_change_txt(i,j){
 				<tr>
 					<td >Total Leave Work Hours  <label style="color:red;font-size:12px"><b>*</b></label><br>
 					总共出差工作天数时数  <label style="color:red;font-size:12px"><b>*</b></label></td>
-					<td colspan="4"><input type="text" size="19" name="totalLevelWorkHours" id="j_payment_visit_view_totalLevelWorkHours" disabled="disabled">&nbsp;Hours</td>		
+					<td colspan="4"><input type="text" size="19" name="totalLeaveWorkHours" id="j_payment_visit_view_totalLeaveWorkHours" disabled="disabled">&nbsp;Hours</td>		
 				</tr>
 				<tr>
 					<td >Domestic/Oversea  <label style="color:red;font-size:12px"><b>*</b></label><br>

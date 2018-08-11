@@ -35,7 +35,7 @@ function paymentVisitCheckSave(o){
 	if(o.visitDateFrom==null||o.visitDateFrom==''||o.visitDateTo==null||o.visitDateTo==''){
 		err+=' Visit Date can`t be empty!<br>'
 	}
-	if(o.totalLevelWorkHours==null||o.totalLevelWorkHours==''){
+	if(o.totalLeaveWorkHours==null||o.totalLeaveWorkHours==''){
 		err+=' Total Leave Work Hours can`t be empty!<br>'
 	}
 	if(o.businessTrip==null||o.businessTrip==''){
@@ -73,7 +73,7 @@ function paymentVisitDateToFace(id){
 	    		$.CurrentNavtab.find("#j_payment_visit_referenceNo").val(json.referenceNo);
 	    		$.CurrentNavtab.find("#j_payment_visit_visitDateFrom").val(json.visitDateFrom);
 	    		$.CurrentNavtab.find("#j_payment_visit_visitDateTo").val(json.visitDateTo);
-	    		$.CurrentNavtab.find("#j_payment_visit_totalLevelWorkHours").val(json.totalLevelWorkHours);
+	    		$.CurrentNavtab.find("#j_payment_visit_totalLeaveWorkHours").val(json.totalLeaveWorkHours);
 	    		$.CurrentNavtab.find("#j_payment_visit_applicantDate").val(json.applicantDate);
 	    		$.CurrentNavtab.find("#j_payment_visit_visitPurpose").selectpicker().selectpicker('val',json.visitPurpose).selectpicker('refresh');
 	    		$.CurrentNavtab.find("#j_payment_visit_projectNo").val(json.projectNo);
@@ -262,11 +262,13 @@ function paymentVisitShowButton(state){
 			 $.CurrentNavtab.find('#payment-visit-submit').hide();
 			 $.CurrentNavtab.find('#payment-visit-print-business').hide();
 			 $.CurrentNavtab.find('#payment-visit-print-travel').hide();
+			 $.CurrentNavtab.find('#payment-visit-cancel').hide();
 		}else if(state=='SAVE'||state.indexOf('Rejected')>0){
 			 $.CurrentNavtab.find('#payment-visit-delete').show();
 			 $.CurrentNavtab.find('#payment-visit-submit').show();
 			 $.CurrentNavtab.find('#payment-visit-print-business').hide();
 			 $.CurrentNavtab.find('#payment-visit-print-travel').hide();
+			 $.CurrentNavtab.find('#payment-visit-cancel').hide();
 			 $("input[id*='j_payment_visit']").removeAttr('disabled');
 			 $("select[id*='j_payment_visit']").removeAttr('disabled');
 			 $("textarea[id*='j_payment_visit']").removeAttr('disabled');
@@ -276,6 +278,7 @@ function paymentVisitShowButton(state){
 			 $.CurrentNavtab.find('#payment-visit-submit').hide();
 			 $.CurrentNavtab.find('#payment-visit-print-business').hide();
 			 $.CurrentNavtab.find('#payment-visit-print-travel').hide();
+			 $.CurrentNavtab.find('#payment-visit-cancel').hide();
 			 $("input[id*='j_payment_visit']").attr('disabled','disabled');
 			 $("select[id*='j_payment_visit']").attr('disabled','disabled');
 			 $("textarea[id*='j_payment_visit']").attr('disabled','disabled');
@@ -294,13 +297,15 @@ function paymentVisitShowButton(state){
 	if(state=='COMPLETED'){
 		 $.CurrentNavtab.find('#payment-visit-print-business').show();
 		 $.CurrentNavtab.find('#payment-visit-print-travel').show();
+		 $.CurrentNavtab.find('#payment-visit-cancel').show();
 	}
+	
 }
 
 
-function checkTotalLevelWorkHours(){
+function checkTotalLeaveWorkHours(){
 	
-	var o = $.CurrentNavtab.find("#j_payment_visit_totalLevelWorkHours");
+	var o = $.CurrentNavtab.find("#j_payment_visit_totalLeaveWorkHours");
 	var ret =  /^[0-9]*[1-9][0-9]*$/;
 	if(!ret.test(o.val())){
 	  	 o.val("");
@@ -321,7 +326,11 @@ function paymentVisitPrintBusiness(){
 }
 
 function paymentVisitPrintTravel(){
-
+	BJUI.ajax('ajaxdownload', {
+		 url: 'paymentVisitPrintTravel.action',
+		 loadingmask: true,
+		 data:{id:$.CurrentNavtab.find("#j_payment_visit_id").val(),printUrl:'/templet/paymentVisitPrintTravel.pdf'}
+	})
 }
 
 
@@ -330,9 +339,25 @@ function paymentVisitEmployeeLevelTime(){
 	var startTime=$.CurrentNavtab.find("#j_payment_visit_visitDateFrom").val();
 	var endTime=$.CurrentNavtab.find("#j_payment_visit_visitDateTo").val();
 	if(startTime!=''&& endTime!=''){
-		$.CurrentNavtab.find("#j_payment_visit_totalLevelWorkHours").val(leaveTime(startTime,endTime));
+		$.CurrentNavtab.find("#j_payment_visit_totalLeaveWorkHours").val(leaveTime(startTime,endTime));
 	}
 	
+}
+
+
+function paymentVisitViewCancel(){
+	BJUI.ajax('doajax', {
+	    url: 'cancelPaymentVisit.action',
+	    loadingmask: true,
+	    data:{id:$.CurrentNavtab.find("#j_payment_visit_id").val()},	    
+	    okCallback: function(json, options) {
+            if(json.status='200'){
+            	BJUI.alertmsg('info', json.message); 
+            }else{
+            	BJUI.alertmsg('error', json.message); 
+            }
+	    }
+	});	
 }
 
 </script>
@@ -401,7 +426,7 @@ function paymentVisitEmployeeLevelTime(){
 				<tr>
 					<td >Total Leave Work Hours  <label style="color:red;font-size:12px"><b>*</b></label><br>
 					总共出差工作天数时数  <label style="color:red;font-size:12px"><b>*</b></label></td>
-					<td colspan="4"><input type="text" size="19" name="totalLevelWorkHours" id="j_payment_visit_totalLevelWorkHours" onblur="checkTotalLevelWorkHours()" >&nbsp;Hours</td>		
+					<td colspan="4"><input type="text" size="19" name="totalLeaveWorkHours" id="j_payment_visit_totalLeaveWorkHours" onblur="checkTotalLeaveWorkHours()" >&nbsp;Hours</td>		
 				</tr>
 				<tr>
 					<td >Domestic/Oversea  <label style="color:red;font-size:12px"><b>*</b></label><br>
@@ -472,7 +497,8 @@ function paymentVisitEmployeeLevelTime(){
 					<td colspan="5" align="center">
 	            		<button type="button" id="payment-visit-save" class="btn-default" data-icon="save" onClick="paymentVisitSave()" >Save</button>&nbsp;&nbsp;&nbsp;&nbsp;
 	            		<button type="button" id="payment-visit-submit" class="btn-default" data-icon="arrow-up" onClick="paymentVisitSubmit()">Submit</button>&nbsp;&nbsp;&nbsp;&nbsp;
-	            		<button type="button" id="payment-visit-delete" class="btn-default" data-icon="close" onClick="paymentVisitDelete()" >Delete</button>
+	            		<button type="button" id="payment-visit-delete" class="btn-default" data-icon="close" onClick="paymentVisitDelete()" >Delete</button>&nbsp;&nbsp;&nbsp;&nbsp;
+	            		<button type="button" id="payment-visit-cancel" class="btn-default" data-icon="arrow-down" onClick="paymentVisitViewCancel()" style="height:50px" >Cancel this travel business<br>取消预申请</button>&nbsp;&nbsp;&nbsp;&nbsp;
 	            		<button type="button" id="payment-visit-print-business" class="btn-default" data-icon="print" style="height:50px" onClick="paymentVisitPrintBusiness()" >Print Out  business leave paper<br>打印请假单</button>
 	            		<button type="button" id="payment-visit-print-travel" class="btn-default" data-icon="print" style="height:50px" onClick="paymentVisitPrintTravel()" >Print Out Pre-Travel Expense <br>打印出差预申请单</button>            			
             		</td>		
