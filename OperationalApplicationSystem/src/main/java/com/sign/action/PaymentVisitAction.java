@@ -474,8 +474,8 @@ public class PaymentVisitAction extends ActionBase{
 			hql=" select P from PaymentVisit P where 1=1 "+where+" order By P.dateTmp desc";
 		}
 
-		List<PaymentVisit> list=paymentVisitBIZ.query(" ORDER BY referenceNo DESC",Integer.parseInt(pageSize),Integer.parseInt(pageCurrent));
-		int total=paymentVisitBIZ.query(hql).size();
+		List<PaymentVisit> list=paymentVisitBIZ.queryByHql(hql,Integer.parseInt(pageSize),Integer.parseInt(pageCurrent));
+		int total=paymentVisitBIZ.queryByHql(hql).size();
 		
 			
 		queryResult.setList(list);

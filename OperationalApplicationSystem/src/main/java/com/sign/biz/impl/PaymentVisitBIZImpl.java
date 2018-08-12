@@ -253,6 +253,16 @@ public class PaymentVisitBIZImpl extends BizBase implements PaymentVisitBIZ {
 		}
 	}
 
+	@Override
+	public List<PaymentVisit> queryByHql(String hql) {
+		return commonDAO.queryByHql(hql);
+	}
+
+	@Override
+	public List<PaymentVisit> queryByHql(String hql, Integer pageSize, Integer pageCurrent) {
+		return commonDAO.queryByHql(hql,pageSize,pageCurrent);
+	}
+
 
 	
 	

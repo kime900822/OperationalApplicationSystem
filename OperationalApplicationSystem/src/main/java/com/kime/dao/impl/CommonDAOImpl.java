@@ -50,6 +50,11 @@ public class CommonDAOImpl extends HibernateDaoSupport implements CommonDAO{
 		Session session=this.getSessionFactory().openSession();
 		session.createQuery(hql).executeUpdate();		
 	}
+	@Override
+	public List queryByHql(String hql, Integer pageSize, Integer pageCurrent) {
+		Session session=this.getSessionFactory().openSession();
+		return session.createQuery(hql).setFirstResult((pageCurrent-1)*pageSize).setMaxResults(pageSize).list();
+	}
 
 	
 	

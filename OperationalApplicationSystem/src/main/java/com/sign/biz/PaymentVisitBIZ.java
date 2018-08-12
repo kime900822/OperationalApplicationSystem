@@ -18,6 +18,10 @@ public interface PaymentVisitBIZ {
 	
 	public List<PaymentVisit> query(String where,Integer pageSize,Integer pageCurrent);
 	
+	public List<PaymentVisit> queryByHql(String hql);
+	
+	public List<PaymentVisit> queryByHql(String hql,Integer pageSize,Integer pageCurrent);
+	
 	public String getMaxCode();
 	
 	ApproveHis approve(String level, String comment, String approveState, String tradeId);

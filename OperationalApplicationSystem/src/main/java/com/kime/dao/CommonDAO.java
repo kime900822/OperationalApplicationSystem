@@ -6,6 +6,8 @@ public interface CommonDAO {
 	
 	public List queryByHql(String hql);
 	
+	public List queryByHql(String hql,Integer pageSize,Integer pageCurrent);
+	
 	public List queryBySql(String sql);
 	
 	public void executeSQL(String sql);
