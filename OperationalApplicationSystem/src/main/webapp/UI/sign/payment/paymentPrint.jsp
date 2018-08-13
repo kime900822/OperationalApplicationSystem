@@ -324,8 +324,8 @@ function dataToFace(){
 					<td width="50px" align="center" class="bg" >订单号<br/>PO No.</td>
 					<td width="60px" align="center" class="bg">币别<br/>Currency</td>
 					<td width="110px" align="center" class="bg">金额<br/>Amount</td>
-					<td width="100px" rowspan="8" align="center" >支付用途<br/>Usage<br/>Description</td>
-					<td colspan="4" rowspan="6"  id="usageDescription" style="word-wrap: break-word; word-break: normal;"></td>
+					<td width="100px" rowspan="9" align="center" >支付用途<br/>Usage<br/>Description</td>
+					<td colspan="4" rowspan="7"  id="usageDescription" style="word-wrap: break-word; word-break: normal;"></td>
 				</tr>
 				
 				
@@ -389,8 +389,6 @@ function dataToFace(){
 					<td><label id="PONo_6"></label></td>
 					<td><label id="currency_6"></label></td>
 					<td style="text-align: right"><label id="amount_6"></label></td>
-					<td colspan="2" rowspan="2">手续费<br>Handing&nbsp&nbspFee</td>
-					<td colspan="2" rowspan="2" id="handingFee"></td>
 				</tr>	
 				<tr align="center">
 					<td align="center"><label id="paymentSubject_7"></label></td>
@@ -401,6 +399,19 @@ function dataToFace(){
 					<td></td>
 					<td> 
 						
+                    </td>
+					<td></td>
+					<td colspan="2" rowspan="2">手续费<br>Handing&nbsp&nbspFee</td>
+					<td colspan="2" rowspan="2" id="handingFee"></td>
+				</tr>
+				<tr align="center">
+					<td align="center"><label id="paymentSubject_8"></label></td>
+					<td align="left">&nbspTravel 差旅费</td>
+					<td></td>
+					<td align="right">&nbsp<br>&nbsp</td>
+					<td></td>
+					<td></td>
+					<td> 
                     </td>
 					<td></td>
 				</tr>		
