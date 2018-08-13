@@ -23,6 +23,7 @@ import com.itextpdf.text.pdf.PdfWriter;
 import com.kime.model.HeadColumn;
 import com.sign.model.paymentVisit.PaymentVisit;
 import com.sign.model.paymentVisit.PaymentVisitEmployee;
+import com.sign.other.PaymentVisitHelp;
 
 import freemarker.template.utility.StringUtil;
 
@@ -145,6 +146,7 @@ public class PDFUtil {
 		PdfStamper stamper = new PdfStamper(reader, ba);
 		//BaseFont bf = BaseFont.createFont("STSongStd-Light", "UniGB-UCS2-H", BaseFont.NOT_EMBEDDED);
 		BaseFont bf = BaseFont.createFont("STSongStd-Light", "UniGB-UCS2-H", BaseFont.NOT_EMBEDDED);
+		
 		AcroFields form = stamper.getAcroFields();
         form.addSubstitutionFont(bf);
         form.setFieldProperty("companyOfSender", "textfont", bf, null);
@@ -169,68 +171,132 @@ public class PDFUtil {
 	 * @return
 	 * @throws Exception
 	 */
-	public static ByteArrayOutputStream  printPaymentVisitTravelPDF(PaymentVisit paymentVisit,String url) throws Exception {
+	public static ByteArrayOutputStream  printPaymentVisitTravelPDF(PaymentVisit paymentVisit) throws Exception {
 		ByteArrayOutputStream ba=new ByteArrayOutputStream();
 		
-		PdfReader reader = new PdfReader(url);
-		PdfStamper stamper = new PdfStamper(reader, ba);
-		BaseFont bf = BaseFont.createFont("STSongStd-Light", "UniGB-UCS2-H", BaseFont.NOT_EMBEDDED);
-		AcroFields form = stamper.getAcroFields();
-        form.addSubstitutionFont(bf);
-        form.setFieldProperty("companyOfSender", "textfont", bf, null);
-        form.setField("referenceNo",paymentVisit.getReferenceNo());
-        form.setField("applicantDate",paymentVisit.getApplicantDate());
-        form.setField("visitPurpose",paymentVisit.getVisitPurpose());
-        form.setField("projectNo",paymentVisit.getProjectNo());
-        form.setField("visitDate","Form:"+paymentVisit.getVisitDateFrom()+"  TO: "+paymentVisit.getVisitDateTo());
-        form.setField("totalLeaveWorkHours",String.valueOf(paymentVisit.getTotalLeaveWorkHours()));
-        form.setField("businessTrip",paymentVisit.getBusinessTrip());
-        form.setField("visitDetailPlace",paymentVisit.getVisitDetailPlace());
-        form.setField("visitDetailPurpose",paymentVisit.getReferenceNo());
-        
-        stamper.setFormFlattening(true);
-        stamper.close();
-        
-        
-        Document document = new Document();
-        PdfWriter writer = PdfWriter.getInstance(document, ba);
-        writer.setViewerPreferences(PdfWriter.PageModeUseThumbs);
-		BaseFont bfChinese = BaseFont.createFont("STSongStd-Light", "UniGB-UCS2-H",
-                BaseFont.NOT_EMBEDDED);
-		Font headFont= new Font(bfChinese, 6, Font.BOLD);
+		
+		Document document = new Document();
+		PdfWriter writer = PdfWriter.getInstance(document, ba);
+		writer.setViewerPreferences(PdfWriter.PageModeUseThumbs);
+		document.setPageSize(PageSize.A4);
+		document.open();
+		
+//		BaseFont bfChinese = BaseFont.createFont("STSongStd-Light", "UniGB-UCS2-H",
+//                BaseFont.NOT_EMBEDDED);
+		BaseFont bfChinese=BaseFont.createFont("c:\\Windows\\fonts\\SIMSUN.TTC,0",BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
+		Font titleFont= new Font(bfChinese, 10, Font.BOLD);
         Font cellFont= new Font(bfChinese, 6, Font.NORMAL);
 		//表头
     	PdfPCell pdfCell = new PdfPCell();
 		String[] headers=new String[11];
-		headers[0]="Visit Employee No.*<br>出差人员*";
-		headers[1]="Visit Employee BU No.<br>出差人员部门代码";
-		headers[2]="Visit Employee Name<br>出差人员姓名";
-		headers[3]="预付款金额<br>Advance Amount*";
-		headers[4]="A.是否HR预定酒店<br>Hotel Booking by HR";
-		headers[5]="酒店名称<br>Hotel Name";
-		headers[6]="B.是否HR派车<br>Car Arrange by HR";
-		headers[7]="派车时间<br>Car Arrange Period";
-		headers[8]="C.是否HR定机票<br>Air Ticket Booking by HR";
-		headers[9]="具体航班号<br>Flight No.";
-		headers[10]="D.是否HR办理签证<br>Visar Arrange by HR";
+		headers[0]="Visit Employee No.*\n 出差人员*";
+		headers[1]="Visit Employee BU No.\n 出差人员部门代码";
+		headers[2]="Visit Employee Name\n 出差人员姓名";
+		headers[3]="预付款金额\n Advance Amount*";
+		headers[4]="A.是否HR预定酒店 \n Hotel Booking by HR";
+		headers[5]="酒店名称  \n Hotel Name";
+		headers[6]="B.是否HR派车\n Car Arrange by HR";
+		headers[7]="派车时间\n Car Arrange Period";
+		headers[8]="C.是否HR定机票\nAir Ticket Booking by HR";
+		headers[9]="具体航班号\nFlight No.";
+		headers[10]="D.是否HR办理签证\nVisar Arrange by HR";
 		
-		float[] widths={150/1600*620,150/1600*620,150/1600*620,120/1600*620,150/1600*620,200/1600*620,120/1600*620,150/1600*620,150/1600*620,100/1600*620,150/1600*620};
+		float[] widths1={120,400};
+		float[] widths={40,50,50,40,50,70,40,50,50,30,50};
 		String[] columns={"employeeNo","employeeBUNo","employeeName","advanceAmount","hotelBookingByHR","hotelName","carArrangeByHR","carArrangePeriod","airTickerBookingByHR","flightNO","visarArrangeByHR"};
 		
+		Paragraph paragraph=new Paragraph("出差申请单",titleFont);
+		paragraph.setAlignment(1);
+		document.add(paragraph);
+		paragraph=new Paragraph(" ",cellFont);
+		document.add(paragraph);
+		paragraph=new Paragraph("Business Travel Application",titleFont);
+		paragraph.setAlignment(1);
+		document.add(paragraph);
+		paragraph=new Paragraph(" ",cellFont);
+		document.add(paragraph);
 		
-		PdfPTable table = new PdfPTable(widths);
+		PdfPTable table = new PdfPTable(widths1);
 		table.setLockedWidth(true);
 		table.setTotalWidth(520);
 		table.setHorizontalAlignment(Element.ALIGN_LEFT);
-		Paragraph paragraph=new Paragraph();
+		
+		
+		pdfCell=new PdfPCell();
+		pdfCell.setMinimumHeight(16);
+    	pdfCell.setVerticalAlignment(Element.ALIGN_CENTER);
+    	paragraph = new Paragraph("Reference No. \n 单号", cellFont);
+    	pdfCell.setPhrase(paragraph);
+		table.addCell(pdfCell);
+		paragraph = new Paragraph(paymentVisit.getReferenceNo(), cellFont);
+    	pdfCell.setPhrase(paragraph);
+		table.addCell(pdfCell);
+		paragraph = new Paragraph("Applicant Date \n 申请日期", cellFont);
+    	pdfCell.setPhrase(paragraph);
+		table.addCell(pdfCell);
+		paragraph = new Paragraph(paymentVisit.getApplicantDate(), cellFont);
+    	pdfCell.setPhrase(paragraph);
+		table.addCell(pdfCell);
+		paragraph = new Paragraph("Visit Purpose * \n 出差目的*", cellFont);
+    	pdfCell.setPhrase(paragraph);
+		table.addCell(pdfCell);
+		paragraph = new Paragraph(PaymentVisitHelp.getVisitPurpose(paymentVisit.getVisitPurpose()), cellFont);
+    	pdfCell.setPhrase(paragraph);
+		table.addCell(pdfCell);
+		paragraph = new Paragraph("Project No * \n 项目号*", cellFont);
+    	pdfCell.setPhrase(paragraph);
+		table.addCell(pdfCell);
+		paragraph = new Paragraph(paymentVisit.getProjectNo(), cellFont);
+    	pdfCell.setPhrase(paragraph);
+		table.addCell(pdfCell);
+		paragraph = new Paragraph("Visit Date * \n 出差期间*", cellFont);
+    	pdfCell.setPhrase(paragraph);
+		table.addCell(pdfCell);
+		paragraph = new Paragraph("Form:"+paymentVisit.getVisitDateFrom()+" TO:"+paymentVisit.getVisitDateTo(), cellFont);
+    	pdfCell.setPhrase(paragraph);
+		table.addCell(pdfCell);
+		paragraph = new Paragraph("Total Leave Work Hours * \n 总共出差工作天数时数*", cellFont);
+    	pdfCell.setPhrase(paragraph);
+		table.addCell(pdfCell);
+		paragraph = new Paragraph(String.valueOf(paymentVisit.getTotalLeaveWorkHours()), cellFont);
+    	pdfCell.setPhrase(paragraph);
+		table.addCell(pdfCell);
+		paragraph = new Paragraph("Domestic/Oversea * \n 国内国外*", cellFont);
+    	pdfCell.setPhrase(paragraph);
+		table.addCell(pdfCell);
+		paragraph = new Paragraph(paymentVisit.getBusinessTrip(), cellFont);
+    	pdfCell.setPhrase(paragraph);
+		table.addCell(pdfCell);
+		paragraph = new Paragraph("Visit Detail Place* \n 出差具体目的地*", cellFont);
+    	pdfCell.setPhrase(paragraph);
+		table.addCell(pdfCell);
+		paragraph = new Paragraph(paymentVisit.getVisitDetailPlace(), cellFont);
+    	pdfCell.setPhrase(paragraph);
+		table.addCell(pdfCell);
+		paragraph = new Paragraph("Visit Detail Purpose* \n 出差具体事由*", cellFont);
+    	pdfCell.setPhrase(paragraph);
+		table.addCell(pdfCell);
+		paragraph = new Paragraph(paymentVisit.getVisitDetailPurpose(), cellFont);
+    	pdfCell.setPhrase(paragraph);
+		table.addCell(pdfCell);
+		
+		document.add(table);
+	
+		paragraph=new Paragraph(" ",cellFont);
+		document.add(paragraph);
+		
+		table = new PdfPTable(widths);
+		table.setLockedWidth(true);
+		table.setTotalWidth(520);
+		table.setHorizontalAlignment(Element.ALIGN_LEFT);
+		paragraph=new Paragraph();
 		
     	for (int i = 0; i < headers.length; i++) {    	
         	pdfCell = new PdfPCell();
         	pdfCell.setMinimumHeight(16);
-        	pdfCell.setBackgroundColor(BaseColor.GRAY); 
         	pdfCell.setHorizontalAlignment(Element.ALIGN_CENTER);
         	pdfCell.setVerticalAlignment(Element.ALIGN_CENTER);
-        	paragraph = new Paragraph(headers[i], headFont);
+        	paragraph = new Paragraph(headers[i], cellFont);
         	pdfCell.setPhrase(paragraph);
 			table.addCell(pdfCell);
 	    }
@@ -254,7 +320,7 @@ public class PDFUtil {
 		}
 		
     	document.add(table);
-	    document.close();
+    	document.close();
 
         return ba;	
 		

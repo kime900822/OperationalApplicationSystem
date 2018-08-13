@@ -622,11 +622,7 @@ public class PaymentVisitAction extends ActionBase{
 			
 		PaymentVisit paymentVisit=paymentVisitBIZ.queryById(id);
 		
-		ActionContext ac = ActionContext.getContext();   
-		ServletContext sc = (ServletContext) ac.get(ServletActionContext.SERVLET_CONTEXT);   
-		String path = sc.getRealPath("/");  
-		
-		ByteArrayOutputStream os=PDFUtil.printPaymentVisitTravelPDF(paymentVisit, path+printUrl);
+		ByteArrayOutputStream os=PDFUtil.printPaymentVisitTravelPDF(paymentVisit);
 		
 		byte[] fileContent = os.toByteArray();
     	ByteArrayInputStream is = new ByteArrayInputStream(fileContent);

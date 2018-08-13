@@ -329,7 +329,7 @@ function paymentVisitPrintTravel(){
 	BJUI.ajax('ajaxdownload', {
 		 url: 'paymentVisitPrintTravel.action',
 		 loadingmask: true,
-		 data:{id:$.CurrentNavtab.find("#j_payment_visit_id").val(),printUrl:'/templet/paymentVisitPrintTravel.pdf'}
+		 data:{id:$.CurrentNavtab.find("#j_payment_visit_id").val()}
 	})
 }
 
