@@ -181,9 +181,9 @@ public class PDFUtil {
 		document.setPageSize(PageSize.A4);
 		document.open();
 		
-//		BaseFont bfChinese = BaseFont.createFont("STSongStd-Light", "UniGB-UCS2-H",
-//                BaseFont.NOT_EMBEDDED);
-		BaseFont bfChinese=BaseFont.createFont("c:\\Windows\\fonts\\SIMSUN.TTC,0",BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
+		BaseFont bfChinese = BaseFont.createFont("STSongStd-Light", "UniGB-UCS2-H",
+                BaseFont.NOT_EMBEDDED);
+		//BaseFont bfChinese=BaseFont.createFont("c:\\Windows\\fonts\\SIMSUN.TTC,0",BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
 		Font titleFont= new Font(bfChinese, 10, Font.BOLD);
         Font cellFont= new Font(bfChinese, 6, Font.NORMAL);
 		//表头
@@ -224,7 +224,7 @@ public class PDFUtil {
 		
 		pdfCell=new PdfPCell();
 		pdfCell.setMinimumHeight(16);
-    	pdfCell.setVerticalAlignment(Element.ALIGN_CENTER);
+    	pdfCell.setVerticalAlignment(Element.ALIGN_BOTTOM);
     	paragraph = new Paragraph("Reference No. \n 单号", cellFont);
     	pdfCell.setPhrase(paragraph);
 		table.addCell(pdfCell);
