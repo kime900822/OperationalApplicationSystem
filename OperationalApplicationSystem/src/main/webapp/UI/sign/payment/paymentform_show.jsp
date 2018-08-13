@@ -629,8 +629,7 @@ function checkReturn(){
 					<td><label id="PONo_6"></label></td>
 					<td><label id="currency_6"></label></td>
 					<td style="text-align: right"><label id="amount_6"></label></td>
-					<td colspan="2" rowspan="2">手续费<br>Handing&nbsp&nbspFee</td>
-					<td colspan="2" rowspan="2" id="handingFee"></td>
+					
 				</tr>	
 				<tr align="center">
 					<td align="center"><label id="paymentSubject_7"></label></td>
@@ -643,6 +642,8 @@ function checkReturn(){
 						
                     </td>
 					<td></td>
+					<td colspan="2" rowspan="2">手续费<br>Handing&nbsp&nbspFee</td>
+					<td colspan="2" rowspan="2" id="handingFee"></td>
 				</tr>		
 				<tr align="center">
 					<td align="center"><label id="paymentSubject_8"></label></td>
