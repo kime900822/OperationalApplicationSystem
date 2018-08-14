@@ -7,20 +7,26 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.ObjectUtils.Null;
+
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.Element;
 import com.itextpdf.text.Font;
+import com.itextpdf.text.Image;
 import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.AcroFields;
 import com.itextpdf.text.pdf.BaseFont;
+import com.itextpdf.text.pdf.PdfContentByte;
+import com.itextpdf.text.pdf.PdfGState;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.PdfStamper;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.kime.model.HeadColumn;
+import com.sign.model.Payment;
 import com.sign.model.paymentVisit.PaymentVisit;
 import com.sign.model.paymentVisit.PaymentVisitEmployee;
 import com.sign.other.PaymentVisitHelp;
@@ -322,6 +328,123 @@ public class PDFUtil {
     	document.add(table);
     	document.close();
 
+        return ba;	
+		
+	}
+	
+	
+	/**
+	 * 付款申请打印
+	 * @param map
+	 * @param url
+	 * @return
+	 * @throws Exception
+	 */
+	public static ByteArrayOutputStream  printPaymentPDF(Payment payment,String url,String markImagePath) throws Exception {
+		ByteArrayOutputStream ba=new ByteArrayOutputStream();
+
+		PdfReader reader = new PdfReader(url);
+		PdfStamper stamper = new PdfStamper(reader, ba);
+		BaseFont bf = BaseFont.createFont("STSongStd-Light", "UniGB-UCS2-H", BaseFont.NOT_EMBEDDED);
+		
+		Font cellFont= new Font(bf, 6, Font.NORMAL);
+		AcroFields form = stamper.getAcroFields();
+        form.addSubstitutionFont(bf);
+        form.setFieldProperty("companyOfSender", "textfont", cellFont, null);
+
+        form.setField("code",payment.getCode());
+        if (payment.getUrgent()!=null&&payment.getUrgent().equals("1")) {
+        	form.setField("urgent","[color=red]Urgent : ●[/color]");
+		}
+        form.setField("applicationDate",payment.getApplicationDate());
+        form.setField("requestPaymentDate",payment.getRequestPaymentDate());
+        form.setField("contacturalPaymentDate",payment.getContacturalPaymentDate());
+        if(payment.getPayType().equals("Cash")) {
+        	form.setField("cash","√");
+        }else if (payment.getPayType().equals("Banking")) {
+        	form.setField("banking","√");
+		}else if (payment.getPayType().equals("AdvanceWriteoff")) {
+			form.setField("advance","√");
+		}
+        
+        form.setField("uId",payment.getUID());
+        form.setField("uName",payment.getUName());
+        form.setField("departmentName",payment.getDepartmentName());
+        form.setField("departmentID",payment.getDepartmentID());
+        form.setField("beneficiary",payment.getBeneficiary());
+        form.setField("beneficiaryE",payment.getBeneficiaryE());
+        form.setField("beneficiaryAccountNO",payment.getBeneficiaryAccountNO());
+        form.setField("beneficiaryAccountBank",payment.getBeneficiaryAccountBank());
+        if (payment.getBeneficiaryChange()!=null&&payment.getBeneficiaryChange().equals("1")) {
+        	form.setField("beneficiaryChange","Y");
+		}
+        if (payment.getBeneficiaryAccountNOChange()!=null&&payment.getBeneficiaryAccountNOChange().equals("1")) {
+        	form.setField("beneficiaryAccountNOChange","Y");
+		}
+        form.setField("supplierCode",payment.getSupplierCode());
+        form.setField("refNoofBank",payment.getRefNoofBank());
+        form.setField("paymentSubject_"+payment.getPaymentSubject(),"Y");
+        form.setField("paymentDays_"+payment.getPaymentTerm(),payment.getPaymentDays_1());
+        if (payment.getAmount_1()!=null&&!payment.getAmount_1().equals("")&&!payment.getAmount_1().equals("0.00")) {
+        	form.setField("receivingOrApprovalDate_1",payment.getReceivingOrApprovalDate_1());
+        	form.setField("amount_1",CommonUtil.formatAmount(payment.getAmount_1()));
+        	form.setField("PONo_1",payment.getPONo_1());
+        	form.setField("currency_1",payment.getCurrency_1());
+		}
+        
+        if (payment.getAmount_2()!=null&&!payment.getAmount_2().equals("")&&!payment.getAmount_2().equals("0.00")) {
+        	form.setField("receivingOrApprovalDate_2",payment.getReceivingOrApprovalDate_2());
+        	form.setField("amount_2",CommonUtil.formatAmount(payment.getAmount_2()));
+        	form.setField("PONo_2",payment.getPONo_2());
+        	form.setField("currency_2",payment.getCurrency_2());
+		}
+        
+        if (payment.getAmount_3()!=null&&!payment.getAmount_3().equals("")&&!payment.getAmount_3().equals("0.00")) {
+        	form.setField("receivingOrApprovalDate_3",payment.getReceivingOrApprovalDate_3());
+        	form.setField("amount_3",CommonUtil.formatAmount(payment.getAmount_3()));
+        	form.setField("PONo_3",payment.getPONo_3());
+        	form.setField("currency_3",payment.getCurrency_3());
+		}
+        
+        if (payment.getAmount_4()!=null&&!payment.getAmount_4().equals("")&&!payment.getAmount_4().equals("0.00")) {
+        	form.setField("receivingOrApprovalDate_4",payment.getReceivingOrApprovalDate_4());
+        	form.setField("amount_4",payment.getAmount_4());
+        	form.setField("PONo_4",payment.getPONo_4());
+        	form.setField("currency_4",payment.getCurrency_4());
+		}
+        
+        if (payment.getAmount_5()!=null&&!payment.getAmount_5().equals("")&&!payment.getAmount_5().equals("0.00")) {
+        	form.setField("receivingOrApprovalDate_5",payment.getReceivingOrApprovalDate_5());
+        	form.setField("amount_5",CommonUtil.formatAmount(payment.getAmount_5()));
+        	form.setField("PONo_5",payment.getPONo_5());
+        	form.setField("currency_5",payment.getCurrency_5());
+		}
+        
+        if (payment.getAmount_6()!=null&&!payment.getAmount_6().equals("")&&!payment.getAmount_6().equals("0.00")) {
+        	form.setField("receivingOrApprovalDate_6",payment.getReceivingOrApprovalDate_6());
+        	form.setField("amount_6",CommonUtil.formatAmount(payment.getAmount_6()));
+        	form.setField("PONo_6",payment.getPONo_6());
+        	form.setField("currency_6",payment.getCurrency_6());
+		}
+        
+        form.setField("usageDescription",payment.getUsageDescription());
+        form.setField("handingFee",payment.getHandingFee());
+        form.setField("amountInFigures","RMB "+CommonUtil.formatAmount(payment.getAmountInFigures()));
+        form.setField("amountInBig",CommonUtil.digitUppercase(Double.parseDouble(payment.getAmountInFigures())));
+        form.setField("documentAudit",payment.getDocumentAudit());
+        form.setField("deptManager",payment.getDeptManager()+"/"+payment.getDeptManagerDate());
+        
+        PdfContentByte under = stamper.getUnderContent(1);;
+        PdfGState gs = new PdfGState();
+        gs.setFillOpacity(0.3f);
+        Image img = Image.getInstance(markImagePath);
+        img.setAbsolutePosition(400, 1200);
+        under.setGState(gs);
+        under.addImage(img);
+        
+        stamper.setFormFlattening(true);
+        stamper.close();
+            
         return ba;	
 		
 	}

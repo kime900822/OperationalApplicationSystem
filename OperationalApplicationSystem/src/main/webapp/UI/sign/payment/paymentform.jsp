@@ -312,8 +312,13 @@ function printPayment(){
 	    okalert:false,
 	    okCallback: function(json, options) {
             if(json.status='200'){
-            	window.open("sign\\payment\\paymentPrint.jsp?id="+pid);  
-            	$.CurrentNavtab.find("#j_payment_code").val(json.params.code);
+            	BJUI.ajax('ajaxdownload', {
+           		 url: 'paymentPrintPDF.action',
+           		 loadingmask: true,
+           		 data:{id:pid,printUrl:'/templet/paymentPrint.pdf'}
+           		})
+/*             	window.open("sign\\payment\\paymentPrint.jsp?id="+pid);  
+            	$.CurrentNavtab.find("#j_payment_code").val(json.params.code); */
         		
             }else{
             	 BJUI.alertmsg('error', json.message); 

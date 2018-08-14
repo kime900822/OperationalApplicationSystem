@@ -16,9 +16,11 @@ import java.util.Map;
 import java.util.UUID;
 
 import javax.persistence.Column;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.ObjectUtils.Null;
+import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.ParentPackage;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +45,7 @@ import com.sign.biz.PaymentWeekBIZ;
 import com.sign.model.Payment;
 import com.sign.model.PaymentPO;
 import com.sign.model.PaymentWeek;
+import com.sign.model.paymentVisit.PaymentVisit;
 import com.sign.other.FileSave;
 import com.sign.other.PaymentState;
 
@@ -1965,7 +1968,46 @@ public class PaymentAction extends ActionBase {
     }
 	
 	
-	
+	@Action(value="paymentPrintPDF",results={@org.apache.struts2.convention.annotation.Result(type="stream",
+			params={
+					"inputName", "reslutJson",
+					"contentType","application/vnd.ms-excel",
+					"contentDisposition","attachment;filename=%{fileName}",
+					"bufferSize","1024"
+			})})
+    public String paymentPrintPDF() throws Exception {
+		try {
+			
+		Payment payment=paymentBIZ.getPayment(" where id='"+id+"'").get(0);
+		
+		ActionContext ac = ActionContext.getContext();   
+		ServletContext sc = (ServletContext) ac.get(ServletActionContext.SERVLET_CONTEXT);   
+		String path = sc.getRealPath("/");  
+		
+		ByteArrayOutputStream os=PDFUtil.printPaymentPDF(payment, path+printUrl,path+"/UI/images/invalid.png");
+		
+		byte[] fileContent = os.toByteArray();
+    	ByteArrayInputStream is = new ByteArrayInputStream(fileContent);
+    	
+    	HttpServletResponse response = (HttpServletResponse)
+    			ActionContext.getContext().get(org.apache.struts2.StrutsStatics.HTTP_RESPONSE);
+    	response.setHeader("Set-Cookie", "fileDownload=true; path=/");
+    	
+		SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");		 
+		fileName = "付款申请单_"+payment.getCode()+"_"+sf.format(new Date()).toString()+ ".pdf";
+		fileName= new String(fileName.getBytes(), "ISO8859-1");
+		
+		reslutJson = is;            
+        logUtil.logInfo("打印付款申请单："+payment.getCode());
+		}
+	    catch(Exception e) {
+	    	logUtil.logInfo("打印付款申请单："+e.getMessage());
+	        e.printStackTrace();
+	    }
+		
+		
+		 return "success";
+	}
 	
 	
 }
