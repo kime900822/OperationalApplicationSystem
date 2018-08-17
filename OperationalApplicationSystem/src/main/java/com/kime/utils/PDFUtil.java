@@ -29,6 +29,7 @@ import com.kime.model.HeadColumn;
 import com.sign.model.Payment;
 import com.sign.model.paymentVisit.PaymentVisit;
 import com.sign.model.paymentVisit.PaymentVisitEmployee;
+import com.sign.other.PaymentState;
 import com.sign.other.PaymentVisitHelp;
 
 import freemarker.template.utility.StringUtil;
@@ -340,7 +341,7 @@ public class PDFUtil {
 	 * @return
 	 * @throws Exception
 	 */
-	public static ByteArrayOutputStream  printPaymentPDF(Payment payment,String url,String markImagePath) throws Exception {
+	public static ByteArrayOutputStream  printPaymentPDF(Payment payment,String url) throws Exception {
 		ByteArrayOutputStream ba=new ByteArrayOutputStream();
 
 		PdfReader reader = new PdfReader(url);
@@ -354,7 +355,7 @@ public class PDFUtil {
 
         form.setField("code",payment.getCode());
         if (payment.getUrgent()!=null&&payment.getUrgent().equals("1")) {
-        	form.setField("urgent","[color=red]Urgent : ●[/color]");
+        	form.setField("urgent","Urgent : ●");
 		}
         form.setField("applicationDate",payment.getApplicationDate());
         form.setField("requestPaymentDate",payment.getRequestPaymentDate());
@@ -433,14 +434,10 @@ public class PDFUtil {
         form.setField("amountInBig",CommonUtil.digitUppercase(Double.parseDouble(payment.getAmountInFigures())));
         form.setField("documentAudit",payment.getDocumentAudit());
         form.setField("deptManager",payment.getDeptManager()+"/"+payment.getDeptManagerDate());
-        
-        PdfContentByte under = stamper.getUnderContent(1);;
-        PdfGState gs = new PdfGState();
-        gs.setFillOpacity(0.3f);
-        Image img = Image.getInstance(markImagePath);
-        img.setAbsolutePosition(400, 1200);
-        under.setGState(gs);
-        under.addImage(img);
+       
+        if(payment.getState().equals(PaymentState.INVALIDPAYMENT)) {
+        	form.setField("invalid","INVALID");
+        }
         
         stamper.setFormFlattening(true);
         stamper.close();

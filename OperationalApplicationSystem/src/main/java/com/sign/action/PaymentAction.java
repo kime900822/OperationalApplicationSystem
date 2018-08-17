@@ -1984,7 +1984,7 @@ public class PaymentAction extends ActionBase {
 		ServletContext sc = (ServletContext) ac.get(ServletActionContext.SERVLET_CONTEXT);   
 		String path = sc.getRealPath("/");  
 		
-		ByteArrayOutputStream os=PDFUtil.printPaymentPDF(payment, path+printUrl,path+"/UI/images/invalid.png");
+		ByteArrayOutputStream os=PDFUtil.printPaymentPDF(payment, path+printUrl);
 		
 		byte[] fileContent = os.toByteArray();
     	ByteArrayInputStream is = new ByteArrayInputStream(fileContent);
