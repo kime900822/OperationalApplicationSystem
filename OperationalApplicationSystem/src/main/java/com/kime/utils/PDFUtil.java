@@ -25,6 +25,7 @@ import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.PdfStamper;
 import com.itextpdf.text.pdf.PdfWriter;
+import com.kime.infoenum.Message;
 import com.kime.model.HeadColumn;
 import com.sign.model.Payment;
 import com.sign.model.paymentVisit.PaymentVisit;
@@ -152,7 +153,9 @@ public class PDFUtil {
 		PdfReader reader = new PdfReader(url);
 		PdfStamper stamper = new PdfStamper(reader, ba);
 		//BaseFont bf = BaseFont.createFont("STSongStd-Light", "UniGB-UCS2-H", BaseFont.NOT_EMBEDDED);
-		BaseFont bf = BaseFont.createFont("STSongStd-Light", "UniGB-UCS2-H", BaseFont.NOT_EMBEDDED);
+		BaseFont bf = BaseFont.createFont(Message.FONT_ARAIL_APTH, BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
+		
+		
 		
 		AcroFields form = stamper.getAcroFields();
         form.addSubstitutionFont(bf);
@@ -188,11 +191,12 @@ public class PDFUtil {
 		document.setPageSize(PageSize.A4);
 		document.open();
 		
-		BaseFont bfChinese = BaseFont.createFont("STSongStd-Light", "UniGB-UCS2-H",
-                BaseFont.NOT_EMBEDDED);
-		//BaseFont bfChinese=BaseFont.createFont("c:\\Windows\\fonts\\SIMSUN.TTC,0",BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
+//		BaseFont bfChinese = BaseFont.createFont("STSongStd-Light", "UniGB-UCS2-H",
+//                BaseFont.NOT_EMBEDDED);
+		BaseFont bfChinese = BaseFont.createFont(Message.FONT_ARAIL_APTH, BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
 		Font titleFont= new Font(bfChinese, 10, Font.BOLD);
         Font cellFont= new Font(bfChinese, 6, Font.NORMAL);
+        Font formFont= new Font(bfChinese, 12, Font.NORMAL);
 		//表头
     	PdfPCell pdfCell = new PdfPCell();
 		String[] headers=new String[11];
@@ -232,58 +236,58 @@ public class PDFUtil {
 		pdfCell=new PdfPCell();
 		pdfCell.setMinimumHeight(16);
     	pdfCell.setVerticalAlignment(Element.ALIGN_BOTTOM);
-    	paragraph = new Paragraph("Reference No. \n 单号", cellFont);
+    	paragraph = new Paragraph("Reference No. \n 单号", formFont);
     	pdfCell.setPhrase(paragraph);
 		table.addCell(pdfCell);
-		paragraph = new Paragraph(paymentVisit.getReferenceNo(), cellFont);
+		paragraph = new Paragraph(paymentVisit.getReferenceNo(), formFont);
     	pdfCell.setPhrase(paragraph);
 		table.addCell(pdfCell);
-		paragraph = new Paragraph("Applicant Date \n 申请日期", cellFont);
+		paragraph = new Paragraph("Applicant Date \n 申请日期", formFont);
     	pdfCell.setPhrase(paragraph);
 		table.addCell(pdfCell);
-		paragraph = new Paragraph(paymentVisit.getApplicantDate(), cellFont);
+		paragraph = new Paragraph(paymentVisit.getApplicantDate(), formFont);
     	pdfCell.setPhrase(paragraph);
 		table.addCell(pdfCell);
-		paragraph = new Paragraph("Visit Purpose * \n 出差目的*", cellFont);
+		paragraph = new Paragraph("Visit Purpose * \n 出差目的*", formFont);
     	pdfCell.setPhrase(paragraph);
 		table.addCell(pdfCell);
-		paragraph = new Paragraph(PaymentVisitHelp.getVisitPurpose(paymentVisit.getVisitPurpose()), cellFont);
+		paragraph = new Paragraph(PaymentVisitHelp.getVisitPurpose(paymentVisit.getVisitPurpose()), formFont);
     	pdfCell.setPhrase(paragraph);
 		table.addCell(pdfCell);
-		paragraph = new Paragraph("Project No * \n 项目号*", cellFont);
+		paragraph = new Paragraph("Project No * \n 项目号*", formFont);
     	pdfCell.setPhrase(paragraph);
 		table.addCell(pdfCell);
-		paragraph = new Paragraph(paymentVisit.getProjectNo(), cellFont);
+		paragraph = new Paragraph(paymentVisit.getProjectNo(), formFont);
     	pdfCell.setPhrase(paragraph);
 		table.addCell(pdfCell);
-		paragraph = new Paragraph("Visit Date * \n 出差期间*", cellFont);
+		paragraph = new Paragraph("Visit Date * \n 出差期间*", formFont);
     	pdfCell.setPhrase(paragraph);
 		table.addCell(pdfCell);
-		paragraph = new Paragraph("Form:"+paymentVisit.getVisitDateFrom()+" TO:"+paymentVisit.getVisitDateTo(), cellFont);
+		paragraph = new Paragraph("Form:"+paymentVisit.getVisitDateFrom()+" TO:"+paymentVisit.getVisitDateTo(), formFont);
     	pdfCell.setPhrase(paragraph);
 		table.addCell(pdfCell);
-		paragraph = new Paragraph("Total Leave Work Hours * \n 总共出差工作天数时数*", cellFont);
+		paragraph = new Paragraph("Total Leave Work Hours * \n 总共出差工作天数时数*", formFont);
     	pdfCell.setPhrase(paragraph);
 		table.addCell(pdfCell);
-		paragraph = new Paragraph(String.valueOf(paymentVisit.getTotalLeaveWorkHours()), cellFont);
+		paragraph = new Paragraph(String.valueOf(paymentVisit.getTotalLeaveWorkHours()), formFont);
     	pdfCell.setPhrase(paragraph);
 		table.addCell(pdfCell);
-		paragraph = new Paragraph("Domestic/Oversea * \n 国内国外*", cellFont);
+		paragraph = new Paragraph("Domestic/Oversea * \n 国内国外*", formFont);
     	pdfCell.setPhrase(paragraph);
 		table.addCell(pdfCell);
-		paragraph = new Paragraph(paymentVisit.getBusinessTrip(), cellFont);
+		paragraph = new Paragraph(paymentVisit.getBusinessTrip(), formFont);
     	pdfCell.setPhrase(paragraph);
 		table.addCell(pdfCell);
-		paragraph = new Paragraph("Visit Detail Place* \n 出差具体目的地*", cellFont);
+		paragraph = new Paragraph("Visit Detail Place* \n 出差具体目的地*", formFont);
     	pdfCell.setPhrase(paragraph);
 		table.addCell(pdfCell);
-		paragraph = new Paragraph(paymentVisit.getVisitDetailPlace(), cellFont);
+		paragraph = new Paragraph(paymentVisit.getVisitDetailPlace(), formFont);
     	pdfCell.setPhrase(paragraph);
 		table.addCell(pdfCell);
-		paragraph = new Paragraph("Visit Detail Purpose* \n 出差具体事由*", cellFont);
+		paragraph = new Paragraph("Visit Detail Purpose* \n 出差具体事由*", formFont);
     	pdfCell.setPhrase(paragraph);
 		table.addCell(pdfCell);
-		paragraph = new Paragraph(paymentVisit.getVisitDetailPurpose(), cellFont);
+		paragraph = new Paragraph(paymentVisit.getVisitDetailPurpose(), formFont);
     	pdfCell.setPhrase(paragraph);
 		table.addCell(pdfCell);
 		
@@ -346,7 +350,8 @@ public class PDFUtil {
 
 		PdfReader reader = new PdfReader(url);
 		PdfStamper stamper = new PdfStamper(reader, ba);
-		BaseFont bf = BaseFont.createFont("STSongStd-Light", "UniGB-UCS2-H", BaseFont.NOT_EMBEDDED);
+		//BaseFont bf = BaseFont.createFont("STSongStd-Light", "UniGB-UCS2-H", BaseFont.NOT_EMBEDDED);
+		BaseFont bf = BaseFont.createFont(Message.FONT_ARAIL_APTH, BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
 		
 		Font cellFont= new Font(bf, 6, Font.NORMAL);
 		AcroFields form = stamper.getAcroFields();

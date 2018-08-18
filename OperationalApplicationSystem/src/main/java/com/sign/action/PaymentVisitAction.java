@@ -58,7 +58,7 @@ public class PaymentVisitAction extends ActionBase{
 	String projectNo;
 	String visitDateFrom;
 	String visitDateTo;
-	Integer totalLevelWorkHours;
+	Double totalLevelWorkHours;
 	String businessTrip;
 	String visitDetailPlace;
 	String visitDetailPurpose;
@@ -194,10 +194,10 @@ public class PaymentVisitAction extends ActionBase{
 	public void setVisitDateTo(String visitDateTo) {
 		this.visitDateTo = visitDateTo;
 	}
-	public Integer getTotalLevelWorkHours() {
+	public Double getTotalLevelWorkHours() {
 		return totalLevelWorkHours;
 	}
-	public void setTotalLevelWorkHours(Integer totalLevelWorkHours) {
+	public void setTotalLevelWorkHours(Double totalLevelWorkHours) {
 		this.totalLevelWorkHours = totalLevelWorkHours;
 	}
 	public String getBusinessTrip() {
@@ -578,6 +578,7 @@ public class PaymentVisitAction extends ActionBase{
 		map.put("hours", String.valueOf(paymentVisit.getTotalLeaveWorkHours()));
 		map.put("visitDetailPlace", paymentVisit.getVisitDetailPlace());
 		map.put("managerCheck", managerCheck);
+		map.put("referenceNo", paymentVisit.getReferenceNo());
 		
 		ActionContext ac = ActionContext.getContext();   
 		ServletContext sc = (ServletContext) ac.get(ServletActionContext.SERVLET_CONTEXT);   

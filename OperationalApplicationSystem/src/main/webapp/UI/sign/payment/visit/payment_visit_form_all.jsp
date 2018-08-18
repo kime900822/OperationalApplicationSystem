@@ -74,7 +74,7 @@ function datagrid_tree_operation() {
     <table class="table table-bordered" id="datagrid-payment-admin-filter" data-toggle="datagrid" data-options="{
         height: '100%',
         gridTitle : 'Payment_Visit management',
-        dataUrl: 'getPaymentVisit.action?queryType=admin',
+        dataUrl: 'getPaymentVisit.action?queryType=all',
         dataType: 'jsonp',
         showToolbar: true,
         toolbarItem: 'export',

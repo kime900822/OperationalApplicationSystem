@@ -208,8 +208,8 @@ public class PaymentVisitBIZImpl extends BizBase implements PaymentVisitBIZ {
 					paymentVisit.setState(paymentVisit.getApproveList().get(Integer.parseInt(level)).getName()+" Rejected");
 				}else {
 					if (Integer.parseInt(level)+2<=paymentVisit.getApproveList().size()) {
-						paymentVisit.setState(paymentVisit.getApproveList().get(Integer.parseInt(level)).getName()+" Approval");
-						paymentVisit.setNextApprove(paymentVisit.getApproveList().get(Integer.parseInt(level)).getUid());
+						paymentVisit.setState(paymentVisit.getApproveList().get(Integer.parseInt(level+1)).getName()+" Approval");
+						paymentVisit.setNextApprove(paymentVisit.getApproveList().get(Integer.parseInt(level+1)).getUid());
 					}else {
 						paymentVisit.setState(PaymentVisitHelp.COMPLETED);
 						paymentVisit.setNextApprove("");

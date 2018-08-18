@@ -5,6 +5,8 @@
 $(function(){
 	var today = new Date().formatDate('yyyy-MM-dd');
 	$.CurrentNavtab.find('#j_payment_visit_applicantDate').val(today);
+	$.CurrentNavtab.find("#j_payment_visit_visitDateFrom").val(today+' 08:00:00');
+	$.CurrentNavtab.find("#j_payment_visit_visitDateTo").val(today+' 17:00:00');
 
 	if('${param.id}'!=null&&'${param.id}'!=''){
 		paymentVisitDateToFace('${param.id}');
@@ -211,6 +213,7 @@ function paymentVisitApprove(o){
 		size:"small",
 		title:"Comment?", 
 		callback:function (result) {
+		if(result!=null){
 		approveState=$(o).attr('name')
 		level = $(o).parent().siblings().eq(1).html();
 		
@@ -232,7 +235,9 @@ function paymentVisitApprove(o){
 	    }
 	 	})
  	
-		}})
+		}
+		}
+	})
 }
 
 
@@ -260,14 +265,10 @@ function paymentVisitShowButton(state){
 		if(state==''){
 			 $.CurrentNavtab.find('#payment-visit-delete').hide();
 			 $.CurrentNavtab.find('#payment-visit-submit').hide();
-			 $.CurrentNavtab.find('#payment-visit-print-business').hide();
-			 $.CurrentNavtab.find('#payment-visit-print-travel').hide();
 			 $.CurrentNavtab.find('#payment-visit-cancel').hide();
 		}else if(state=='SAVE'||state.indexOf('Rejected')>0){
 			 $.CurrentNavtab.find('#payment-visit-delete').show();
 			 $.CurrentNavtab.find('#payment-visit-submit').show();
-			 $.CurrentNavtab.find('#payment-visit-print-business').hide();
-			 $.CurrentNavtab.find('#payment-visit-print-travel').hide();
 			 $.CurrentNavtab.find('#payment-visit-cancel').hide();
 			 $("input[id*='j_payment_visit']").removeAttr('disabled');
 			 $("select[id*='j_payment_visit']").removeAttr('disabled');
@@ -276,28 +277,29 @@ function paymentVisitShowButton(state){
 		}else{
 			 $.CurrentNavtab.find('#payment-visit-delete').hide();
 			 $.CurrentNavtab.find('#payment-visit-submit').hide();
-			 $.CurrentNavtab.find('#payment-visit-print-business').hide();
-			 $.CurrentNavtab.find('#payment-visit-print-travel').hide();
 			 $.CurrentNavtab.find('#payment-visit-cancel').hide();
 			 $("input[id*='j_payment_visit']").attr('disabled','disabled');
 			 $("select[id*='j_payment_visit']").attr('disabled','disabled');
 			 $("textarea[id*='j_payment_visit']").attr('disabled','disabled');
 			 $.CurrentNavtab.find('#j_payment_visit_form').find(".btn-group").hide();
 		}
+		if(state=='COMPLETED'){
+			$.CurrentNavtab.find('#payment-visit-cancel').show();
+		}
 	}else{
 		 $.CurrentNavtab.find('#payment-visit-delete').hide();
 		 $.CurrentNavtab.find('#payment-visit-submit').hide();
 		 $.CurrentNavtab.find('#payment-visit-save').hide();
+		 $.CurrentNavtab.find('#payment-visit-cancel').hide();
 		 $.CurrentNavtab.find('#j_payment_visit_form').find(".btn-group[role='group']").hide();
 		 $("input[id*='j_payment_visit']").attr('disabled','disabled');
 		 $("select[id*='j_payment_visit']").attr('disabled','disabled');
 		 $("textarea[id*='j_payment_visit']").attr('disabled','disabled');
 	}
 	
-	if(state=='COMPLETED'){
-		 $.CurrentNavtab.find('#payment-visit-print-business').show();
-		 $.CurrentNavtab.find('#payment-visit-print-travel').show();
-		 $.CurrentNavtab.find('#payment-visit-cancel').show();
+	if(state==''||state=='SAVE'||state=='SUBMIT'||state.indexOf('Rejected')>0){
+		 $.CurrentNavtab.find('#payment-visit-print-business').hide();
+		 $.CurrentNavtab.find('#payment-visit-print-travel').hide();
 	}
 	
 }

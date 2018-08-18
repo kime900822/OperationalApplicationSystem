@@ -346,7 +346,7 @@ jQuery.extend({
   	    }else{
 
   	    	
-  		    if(starHour<=13 && starHou>=12){
+  		    if(starHour<=13 && starHour>=12){
   		    	firstDayHour=4;
   		    }else if( starHour >13 && starHour<=17){
   		    	firstDayHour=17-starHour;
