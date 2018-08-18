@@ -309,7 +309,7 @@ jQuery.extend({
 	    
 	    if(starMinute>=15 && starMinute<=45){
 	    	starHour=starHour+0.5;
-	    }else if(starMinute<15){
+	    }else if(starMinute>0 && starMinute<15){
 	    	starHour=starHour+1;
 	    }
 	    
@@ -322,8 +322,6 @@ jQuery.extend({
 	    var firstDayHour=0;
 	    var lastDayHour=0;
 	    
-  	    var travelHours = 0;    //保存请假小时数
-
   	    var travelTimeHours = 0;
 
   	    var iNow = 0;
@@ -339,9 +337,11 @@ jQuery.extend({
 
   	    if(date1 ==date2 ){//开始结束时间均在一天
   	         if((starHour<=12 && endHour<=12)||(starHour>=13 && endHour>=13)){
-  	        	travelHours=endHour-starHour;
-  	         }else if(starHour>=13 ){
-  	             travelHours =endHour-starHour-1
+  	        	travelTimeHours=endHour-starHour;
+  	         }else if(starHour>=12 && starHour<=13){
+  	        	travelTimeHours =endHour-13
+  	         }else if(starHour<=12 && endHour>=13){
+  	        	travelTimeHours= endHour - starHour-1;
   	         }
   	    }else{
 

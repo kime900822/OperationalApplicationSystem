@@ -212,7 +212,7 @@ public class PDFUtil {
 		headers[9]="具体航班号\nFlight No.";
 		headers[10]="D.是否HR办理签证\nVisar Arrange by HR";
 		
-		float[] widths1={120,400};
+		float[] widths1={150,370};
 		float[] widths={40,50,50,40,50,70,40,50,50,30,50};
 		String[] columns={"employeeNo","employeeBUNo","employeeName","advanceAmount","hotelBookingByHR","hotelName","carArrangeByHR","carArrangePeriod","airTickerBookingByHR","flightNO","visarArrangeByHR"};
 		

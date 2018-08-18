@@ -7,6 +7,7 @@ $(function(){
 	$.CurrentNavtab.find('#j_payment_visit_applicantDate').val(today);
 	$.CurrentNavtab.find("#j_payment_visit_visitDateFrom").val(today+' 08:00:00');
 	$.CurrentNavtab.find("#j_payment_visit_visitDateTo").val(today+' 17:00:00');
+	$.CurrentNavtab.find("#j_payment_visit_totalLeaveWorkHours").val('8.0');
 
 	if('${param.id}'!=null&&'${param.id}'!=''){
 		paymentVisitDateToFace('${param.id}');
@@ -264,10 +265,12 @@ function paymentVisitShowButton(state){
 	var viewType='${param.viewtype}';
 	if(viewType == ''){
 		if(state==''){
+			 $.CurrentNavtab.find('#payment-visit-save').show();
 			 $.CurrentNavtab.find('#payment-visit-delete').hide();
 			 $.CurrentNavtab.find('#payment-visit-submit').hide();
 			 $.CurrentNavtab.find('#payment-visit-cancel').hide();
 		}else if(state=='SAVE'||state.indexOf('Rejected')>0){
+			 $.CurrentNavtab.find('#payment-visit-save').show();
 			 $.CurrentNavtab.find('#payment-visit-delete').show();
 			 $.CurrentNavtab.find('#payment-visit-submit').show();
 			 $.CurrentNavtab.find('#payment-visit-cancel').hide();
@@ -276,6 +279,7 @@ function paymentVisitShowButton(state){
 			 $("textarea[id*='j_payment_visit']").removeAttr('disabled');
 			 $.CurrentNavtab.find('#j_payment_visit_form').find(".btn-group").show();
 		}else{
+			 $.CurrentNavtab.find('#payment-visit-save').hide();
 			 $.CurrentNavtab.find('#payment-visit-delete').hide();
 			 $.CurrentNavtab.find('#payment-visit-submit').hide();
 			 $.CurrentNavtab.find('#payment-visit-cancel').hide();
@@ -301,6 +305,9 @@ function paymentVisitShowButton(state){
 	if(state==''||state=='SAVE'||state=='SUBMIT'||state.indexOf('Rejected')>0){
 		 $.CurrentNavtab.find('#payment-visit-print-business').hide();
 		 $.CurrentNavtab.find('#payment-visit-print-travel').hide();
+	}else{
+		 $.CurrentNavtab.find('#payment-visit-print-business').show();
+		 $.CurrentNavtab.find('#payment-visit-print-travel').show();
 	}
 	
 }
@@ -309,8 +316,8 @@ function paymentVisitShowButton(state){
 function checkTotalLeaveWorkHours(){
 	
 	var o = $.CurrentNavtab.find("#j_payment_visit_totalLeaveWorkHours");
-	var ret =  /^[0-9]*[1-9][0-9]*$/;
-	if(!ret.test(o.val())){
+	var ret =  /^\d+(\.\d+)?$/;
+	if(!ret.test(o.val())&&o.val()!=''){
 	  	 o.val("");
 	  	 BJUI.alertmsg('error', 'Plese Enter Right Type'); 
 	   }
@@ -341,6 +348,13 @@ function paymentVisitPrintTravel(){
 function paymentVisitEmployeeLevelTime(){
 	var startTime=$.CurrentNavtab.find("#j_payment_visit_visitDateFrom").val();
 	var endTime=$.CurrentNavtab.find("#j_payment_visit_visitDateTo").val();
+	var datetime1 = new Date(startTime), datetime2 = new Date(endTime);
+	if(datetime1>=datetime2){
+		BJUI.alertmsg('error', 'The end date must be greater than the start date.');
+		$.CurrentNavtab.find("#j_payment_visit_totalLeaveWorkHours").val('');
+		return false;
+	}
+	
 	if(startTime!=''&& endTime!=''){
 		$.CurrentNavtab.find("#j_payment_visit_totalLeaveWorkHours").val(leaveTime(startTime,endTime));
 	}

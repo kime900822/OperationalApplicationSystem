@@ -73,7 +73,7 @@ function datagrid_tree_operation() {
         showToolbar: true,
         toolbarItem: 'export',
         editMode: {navtab:{width:'830',height:800,title:'Edit Payment',mask:true,fresh:true}},
-        editUrl: 'sign/payment/visit/payment_visit_form.jsp?viewtype=admin',
+        editUrl: 'sign/payment/visit/payment_visit_form.jsp?viewtype=manager',
         paging: {pageSize:30, pageCurrent:1},
         linenumberAll: true,
         contextMenuB: true,
