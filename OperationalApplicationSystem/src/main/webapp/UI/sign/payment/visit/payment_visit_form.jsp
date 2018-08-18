@@ -208,34 +208,35 @@ function paymentVisitDelete(){
 
 function paymentVisitApprove(o){
 
-	$.CurrentNavtab.find('form:eq(0)').trigger('bjui.ajaxStart')
+	
 	bootbox.prompt({
 		size:"small",
 		title:"Comment?", 
 		callback:function (result) {
 		if(result!=null){
-		approveState=$(o).attr('name')
-		level = $(o).parent().siblings().eq(1).html();
-		
-		BJUI.ajax('doajax', {
-	    url: 'approvePaymentVisit.action',
-	    loadingmask: true,
-	    data:{approveState:approveState,comment:result,tradeId:$.CurrentNavtab.find("#j_payment_visit_id").val(),level:level},	    
-	    okCallback: function(json, options) {
-	           if(json.status='200'){
-	           	 BJUI.alertmsg('info', json.message); 
-	           	 $(o).parent().siblings().eq(5).html(json.params.data.comment);
-	           	 $(o).parent().siblings().eq(6).html(json.params.data.status);
-	           	 $(o).parent().siblings().eq(7).html(json.params.data.date);
-	           	 $(o).hide().siblings().hide();
-	           }else{
-	           	 BJUI.alertmsg('error', json.message); 
-	           }
-	           $.CurrentNavtab.find('form:eq(0)').trigger('bjui.ajaxStop')
-	    }
-	 	})
- 	
-		}
+			$.CurrentNavtab.find('form:eq(0)').trigger('bjui.ajaxStart')
+			approveState=$(o).attr('name')
+			level = $(o).parent().siblings().eq(1).html();
+			
+			BJUI.ajax('doajax', {
+		    url: 'approvePaymentVisit.action',
+		    loadingmask: true,
+		    data:{approveState:approveState,comment:result,tradeId:$.CurrentNavtab.find("#j_payment_visit_id").val(),level:level},	    
+		    okCallback: function(json, options) {
+		           if(json.status='200'){
+		           	 BJUI.alertmsg('info', json.message); 
+		           	 $(o).parent().siblings().eq(5).html(json.params.data.comment);
+		           	 $(o).parent().siblings().eq(6).html(json.params.data.status);
+		           	 $(o).parent().siblings().eq(7).html(json.params.data.date);
+		           	 $(o).hide().siblings().hide();
+		           }else{
+		           	 BJUI.alertmsg('error', json.message); 
+		           }
+		           $.CurrentNavtab.find('form:eq(0)').trigger('bjui.ajaxStop')
+		    }
+		 	})
+	 	
+			}
 		}
 	})
 }
