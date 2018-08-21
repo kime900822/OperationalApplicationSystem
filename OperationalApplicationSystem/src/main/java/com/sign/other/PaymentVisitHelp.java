@@ -11,7 +11,7 @@ public class PaymentVisitHelp {
 	
 	public final static String INVALID="INVALID";
 	
-	public final static String COMPLETED="COMPLETED";
+	public final static String COMPLETED="END APPROVAL";
 	
 	public final static String CANCEL="CANCEL";
 	
@@ -31,7 +31,7 @@ public class PaymentVisitHelp {
 				result= "New Customer Development (新客户开发)";
 				break;
 			case 4:
-				result= "Local Goverment Visit (当地政府相关拜访) ";
+				result= "New Facility purchase (新设备采购)";
 				break;
 			case 5:
 				result= "Training (培训)";

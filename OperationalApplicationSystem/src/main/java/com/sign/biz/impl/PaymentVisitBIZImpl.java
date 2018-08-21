@@ -4,6 +4,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import org.aspectj.weaver.ast.Var;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -104,9 +106,29 @@ public class PaymentVisitBIZImpl extends BizBase implements PaymentVisitBIZ {
 				}		
 				List<Approve> lApproves = approveBIZ.getApproveAndChild(list.get(0).getValueExplain());	
 				
+				Boolean[] isNeed= {false,false,false,false};
+				for (PaymentVisitEmployee obj : paymentVisit.getEmployees()) {
+					if(obj.getHotelBookingByHR().equals("YES")) {
+						isNeed[0]=true;
+					}
+					if(obj.getCarArrangeByHR().equals("YES")) {
+						isNeed[1]=true;
+					}
+					if(obj.getAirTickerBookingByHR().equals("YES")) {
+						isNeed[2]=true;
+					}
+					if(obj.getVisarArrangeByHR().equals("YES")) {
+						isNeed[3]=true;
+					}
+				}
+				
+				
+				
 				if (lApproves.size()==0) {
 					throw new Exception(paymentVisitApprove+"未绑定签核流程");
 				}
+				
+				
 				
 				if (lApproves.get(0).getUid().equals("Dept. Head")) {
 					
@@ -123,6 +145,11 @@ public class PaymentVisitBIZImpl extends BizBase implements PaymentVisitBIZ {
 					}
 
 
+				}
+				
+				for(int i=0;i<lApproves.size();i++) {
+					
+					
 				}
 				
 				for (Approve approve : lApproves) {
@@ -206,6 +233,7 @@ public class PaymentVisitBIZImpl extends BizBase implements PaymentVisitBIZ {
 				
 				if (approveState.equals("Rejected")) {
 					paymentVisit.setState(paymentVisit.getApproveList().get(Integer.parseInt(level)).getName()+" Rejected");
+					paymentVisit.setNextApprove(paymentVisit.getApproveList().get(0).getUid());
 				}else {
 					if (Integer.parseInt(level)+2<=paymentVisit.getApproveList().size()) {
 						paymentVisit.setState(paymentVisit.getApproveList().get(Integer.parseInt(level+1)).getName()+" Approval");

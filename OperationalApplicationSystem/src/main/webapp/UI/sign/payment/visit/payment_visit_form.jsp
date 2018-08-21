@@ -414,7 +414,7 @@ function paymentVisitViewCancel(){
                         	<option value="1" >Supplier Visit (供应商拜访)</option>
                         	<option value="2" >Customer Visit (客户拜访)</option>
                         	<option value="3" >New Customer Development (新客户开发)</option>
-                        	<option value="4" >Local Goverment Visit (当地政府相关拜访)</option>
+                        	<option value="4" >New Facility purchase (新设备采购)</option>
                         	<option value="5" >Training (培训)</option>
                         	<option value="6" >QRF Related (QRF 相关)</option>
                         	<option value="7" >New Factory Investment (新厂房投资)</option>
@@ -504,7 +504,7 @@ function paymentVisitViewCancel(){
 										<th data-options="{name:'carArrangePeriod',width:150,align:'center',finalWidth:'true'}">派车时间<br>Car Arrange Period</th>
 										<th data-options="{name:'airTickerBookingByHR',width:150,align:'center',finalWidth:'true'}">C.是否HR定机票<br>Air Ticket Booking by HR</th>
 										<th data-options="{name:'flightNO',width:100,align:'center',finalWidth:'true'}">具体航班号<br>Flight No.</th>
-										<th data-options="{name:'visarArrangeByHR',width:150,align:'center',finalWidth:'true'}">D.是否HR办理签证<br>Visar Arrange by HR</th>
+										<th data-options="{name:'visarArrangeByHR',width:150,align:'center',finalWidth:'true'}">D.是否HR办理签证<br>Visa Arrange by HR</th>
 						            </tr>
 						        </thead>
 						    </table>

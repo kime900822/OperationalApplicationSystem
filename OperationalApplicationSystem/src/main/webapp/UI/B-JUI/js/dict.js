@@ -8,7 +8,7 @@ function getVisitViewVisitPurpose(x){
 	}else if(x=='3'){
 		return 'New Customer Development (新客户开发)';
 	}else if(x=='4'){
-		return 'Local Goverment Visit (当地政府相关拜访)';
+		return 'New Facility purchase (新设备采购)';
 	}else if(x=='5'){
 		return 'Training (培训)';
 	}else if(x=='6'){
