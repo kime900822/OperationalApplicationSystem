@@ -361,12 +361,12 @@ jQuery.extend({
   		    if(endHour<=13 && endHour>=12){
   		    	lastDayHour=4;
   		    }else if( endHour >13 && endHour<17){
-  		    	lastDayHour=15-endHour;
+  		    	lastDayHour=endHour-9;
   		    }else if(endHour<12 && endHour>=8){
-  		    	lastDayHour=12-endHour;
+  		    	lastDayHour=endHour-8;
   		    }else if(endHour<8){
   		    	lastDayHour=0;
-  		    }else if(endHour>17){
+  		    }else if(endHour>=17){
   		    	lastDayHour=8;
   		    }
   		    
