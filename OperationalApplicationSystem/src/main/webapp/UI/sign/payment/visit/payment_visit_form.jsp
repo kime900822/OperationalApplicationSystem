@@ -217,6 +217,10 @@ function paymentVisitApprove(o){
 		if(result!=null){
 			$.CurrentNavtab.find('form:eq(0)').trigger('bjui.ajaxStart')
 			approveState=$(o).attr('name')
+			if(approveState=='Rejected'&&(result==''||result==undefined)){
+				bootbox.alert("Comment can`t empty!");
+				 return false;
+			}
 			level = $(o).parent().siblings().eq(1).html();
 			
 			BJUI.ajax('doajax', {

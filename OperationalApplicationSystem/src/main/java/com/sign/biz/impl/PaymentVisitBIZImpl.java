@@ -148,22 +148,32 @@ public class PaymentVisitBIZImpl extends BizBase implements PaymentVisitBIZ {
 				}
 				
 				for(int i=0;i<lApproves.size();i++) {
-					
-					
+					if(isNeed[i+1]){
+						ApproveList tmp=new ApproveList();
+						tmp.setUid(lApproves.get(i).getUid());
+						tmp.setDid(lApproves.get(i).getDid());
+						tmp.setTradeId(paymentVisit.getId());
+						tmp.setName(lApproves.get(i).getName());
+						tmp.setUname(lApproves.get(i).getUname());
+						tmp.setDname(lApproves.get(i).getDname());
+						tmp.setLevel(lApproves.get(i).getLevel());
+						approveListDAO.save(tmp);
+						lApproveLists.add(tmp);
+					}
 				}
 				
-				for (Approve approve : lApproves) {
-					ApproveList tmp=new ApproveList();
-					tmp.setUid(approve.getUid());
-					tmp.setDid(approve.getDid());
-					tmp.setTradeId(paymentVisit.getId());
-					tmp.setName(approve.getName());
-					tmp.setUname(approve.getUname());
-					tmp.setDname(approve.getDname());
-					tmp.setLevel(approve.getLevel());
-					approveListDAO.save(tmp);
-					lApproveLists.add(tmp);
-				}
+//				for (Approve approve : lApproves) {
+//					ApproveList tmp=new ApproveList();
+//					tmp.setUid(approve.getUid());
+//					tmp.setDid(approve.getDid());
+//					tmp.setTradeId(paymentVisit.getId());
+//					tmp.setName(approve.getName());
+//					tmp.setUname(approve.getUname());
+//					tmp.setDname(approve.getDname());
+//					tmp.setLevel(approve.getLevel());
+//					approveListDAO.save(tmp);
+//					lApproveLists.add(tmp);
+//				}
 				
 				
 				for (ApproveList approveList : paymentVisit.getApproveList()) {
