@@ -40,7 +40,7 @@ function paymentVisitEmployeeSelected(obj,id){
  
 function  paymentVisitEmployeeChange(){
 	var id=$.CurrentDialog.find('#j_payment_visit_employee_employeeNo').val();
-	if(id!=''){
+	if(id!=''&&id!=undefined){
 		BJUI.ajax('doajax', {
 			url:'getUserByID.action',
 			loadingmask:true,

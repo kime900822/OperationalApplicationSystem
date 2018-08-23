@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.itextpdf.text.pdf.PdfStructTreeController.returnType;
 import com.kime.base.BizBase;
 import com.kime.biz.ApproveBIZ;
 import com.kime.biz.ApproveHisBIZ;
@@ -301,7 +302,5 @@ public class PaymentVisitBIZImpl extends BizBase implements PaymentVisitBIZ {
 		return commonDAO.queryByHql(hql,pageSize,pageCurrent);
 	}
 
-
-	
 	
 }
