@@ -106,19 +106,19 @@ public class PaymentVisitBIZImpl extends BizBase implements PaymentVisitBIZ {
 				}		
 				List<Approve> lApproves = approveBIZ.getApproveAndChild(list.get(0).getValueExplain());	
 				
-				Boolean[] isNeed= {false,false,false,false};
+				Boolean[] isNeed= {true,false,false,false,false};
 				for (PaymentVisitEmployee obj : paymentVisit.getEmployees()) {
 					if(obj.getHotelBookingByHR().equals("YES")) {
-						isNeed[0]=true;
-					}
-					if(obj.getCarArrangeByHR().equals("YES")) {
 						isNeed[1]=true;
 					}
-					if(obj.getAirTickerBookingByHR().equals("YES")) {
+					if(obj.getCarArrangeByHR().equals("YES")) {
 						isNeed[2]=true;
 					}
-					if(obj.getVisarArrangeByHR().equals("YES")) {
+					if(obj.getAirTickerBookingByHR().equals("YES")) {
 						isNeed[3]=true;
+					}
+					if(obj.getVisarArrangeByHR().equals("YES")) {
+						isNeed[4]=true;
 					}
 				}
 				
@@ -148,7 +148,7 @@ public class PaymentVisitBIZImpl extends BizBase implements PaymentVisitBIZ {
 				}
 				
 				for(int i=0;i<lApproves.size();i++) {
-					if(isNeed[i+1]){
+					if(isNeed[i]){
 						ApproveList tmp=new ApproveList();
 						tmp.setUid(lApproves.get(i).getUid());
 						tmp.setDid(lApproves.get(i).getDid());
