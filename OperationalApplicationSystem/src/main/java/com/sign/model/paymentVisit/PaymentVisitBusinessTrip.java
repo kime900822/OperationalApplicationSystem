@@ -22,6 +22,14 @@ public class PaymentVisitBusinessTrip {
 	@Column
 	private int rowNum;
 	@Column
+	private int date;
+	@Column
+	private int startFrom;
+	@Column
+	private int endTo;
+	@Column
+	private int description;
+	@Column
 	private String currency;
 	@Column
 	private double metro;
@@ -74,6 +82,38 @@ public class PaymentVisitBusinessTrip {
 
 	
 	
+	public int getDate() {
+		return date;
+	}
+
+	public void setDate(int date) {
+		this.date = date;
+	}
+
+	public int getStartFrom() {
+		return startFrom;
+	}
+
+	public void setStartFrom(int startFrom) {
+		this.startFrom = startFrom;
+	}
+
+	public int getEndTo() {
+		return endTo;
+	}
+
+	public void setEndTo(int endTo) {
+		this.endTo = endTo;
+	}
+
+	public int getDescription() {
+		return description;
+	}
+
+	public void setDescription(int description) {
+		this.description = description;
+	}
+
 	public double getRoadToilWithoutVAT() {
 		return roadToilWithoutVAT;
 	}

@@ -45,6 +45,10 @@ function paymentVisitViewFaceToDate(){
 		t.visitId=$.CurrentDialog.find("#j_payment_visit_view_id").val();
 		if(tds[4].children[0].value!=''){
 			t.rowNum=i;
+			t.date=tds[0].children[0].value;
+			t.startFrom=tds[1].children[0].value;
+			t.endTo=tds[2].children[0].value;
+			t.description=tds[3].children[0].value;
 			t.currency=tds[4].children[0].value;
 			t.metro=parseFloat(tds[5].children[0].value);
 			t.taxi=parseFloat(tds[6].children[0].value);
@@ -114,6 +118,10 @@ function paymentVisitViewDateToFace(id){
 	    		var trs=$.CurrentDialog.find("#table-business-trip-finance").children().eq(0).children();
 	    		if(json.businessTrips!=undefined&&json.businessTrips!=""){
 	    			$.each(json.businessTrips,function(i,item){	  	
+	    				trs[item.rowNum].children[0].innerHTML=item.date;
+	    				trs[item.rowNum].children[1].innerHTML=item.startFrom;
+	    				trs[item.rowNum].children[2].innerHTML=item.endTo;
+	    				trs[item.rowNum].children[3].innerHTML=item.description;
 	    				trs[item.rowNum].children[4].innerHTML=item.currency;
 	    				trs[item.rowNum].children[5].innerHTML=toDecimal2(item.metro);
 	    				trs[item.rowNum].children[6].innerHTML=toDecimal2(item.taxi);
@@ -136,7 +144,7 @@ function paymentVisitViewDateToFace(id){
 	    				trs[item.rowNum].children[23].innerHTML=toDecimal2(item.dinner);
 	    				trs[item.rowNum].children[24].innerHTML=toDecimal2(item.mealTotal);
 	    				trs[item.rowNum].children[25].innerHTML=toDecimal2(item.other);
-	    				trs[item.rowNum].children[26].innerHTML=toDecimal2(item.originalCurrencyTotal);
+	    				trs[item.rowNum].children[26].innerHTML=toDecimal(item.originalCurrencyTotal,4);
 	    				trs[item.rowNum].children[27].innerHTML=toDecimal2(item.RMBExchangeRate);
 	    				trs[item.rowNum].children[28].innerHTML=toDecimal2(item.total);
         			})
@@ -319,14 +327,36 @@ function payment_visit_change_txt(i,j){
 		//币种选择
 		if(j==4){
 			if(tds[4].children[0].value=='RMB'){
-				tds[26].children[0].value='1.00';
+				tds[26].children[0].value='1.0000';
 			}else{
 				tds[26].children[0].value='';
 			}
 			
+			if(i==4&&tds[4].children[0].value=='RMB'){
+				for(var k=5 ; k<=9 ;k++){
+					trs.get(k).children[4].find("option").remove();
+					trs.get(k).children[4].append("<option value=''></option>")
+					trs.get(k).children[4].append("<option value='RMB'>RMB</option>")
+				}
+			}else{
+				for(var k=5 ; k<=9 ;k++){
+					trs.get(k).children[4].find("option").remove();
+					trs.get(k).children[4].append("<option value=''></option>")
+					trs.get(k).children[4].append("<option value='RMB'>RMB</option>")
+					trs.get(k).children[4].append("<option value='USD'>USD</option>")
+					trs.get(k).children[4].append("<option value='TRY'>TRY</option>")
+					trs.get(k).children[4].append("<option value='GBP'>GBP</option>")
+					trs.get(k).children[4].append("<option value='EUR'>EUR</option>")
+					trs.get(k).children[4].append("<option value='JPY'>JPY</option>")
+				}
+			}
+				
+			
+			
 			if(tds[26].children[0].value==''){
 				tds[27].innerHTML='-';
 			}else{
+				tds[26].children[0].value=toDecimal(tds[26].children[0].value,4);
 				tds[27].innerHTML=toDecimal2(toNumber(tds[25].innerHTML)*toNumber(tds[26].children[0].value));
 			}
 			
@@ -518,10 +548,18 @@ function payment_visit_change_txt(i,j){
 							<th align="center" width="80px">Meal Total<br>餐费合计</th>
 						</tr>
 						<tr height="20xp">
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
+							<td>
+								<input type="text" size="100%" name="date"  data-toggle="datepicker" placeholder="点击选择日期" data-nobtn="true" >
+							</td>
+							<td>
+								<input type="text" name="startFrom" width="100%"/>
+							</td>
+							<td>
+								<input type="text" name="endTo" width="100%"/>
+							</td>
+							<td>
+								<input type="text" name="description" width="100%"/>
+							</td>
 							<td>
 								<select data-toggle="selectpicker" name="usedCurrency" data-width="75px"  >
 									<option value=""></option>
@@ -592,10 +630,18 @@ function payment_visit_change_txt(i,j){
 							<td bgcolor="#ADADAD"></td>
 						</tr>
 						<tr height="20xp">
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
+							<td>
+								<input type="text" size="100%" name="date"  data-toggle="datepicker" placeholder="点击选择日期" data-nobtn="true" >
+							</td>
+							<td>
+								<input type="text" name="startFrom" width="100%"/>
+							</td>
+							<td>
+								<input type="text" name="endTo" width="100%"/>
+							</td>
+							<td>
+								<input type="text" name="description" width="100%"/>
+							</td>
 							<td>
 								<select data-toggle="selectpicker" name="usedCurrency" data-width="75px" >
 									<option value=""></option>
@@ -666,10 +712,18 @@ function payment_visit_change_txt(i,j){
 							<td bgcolor="#ADADAD"></td>
 						</tr>
 						<tr height="20xp">
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
+							<td>
+								<input type="text" size="100%" name="date"  data-toggle="datepicker" placeholder="点击选择日期" data-nobtn="true" >
+							</td>
+							<td>
+								<input type="text" name="startFrom" width="100%"/>
+							</td>
+							<td>
+								<input type="text" name="endTo" width="100%"/>
+							</td>
+							<td>
+								<input type="text" name="description" width="100%"/>
+							</td>
 							<td>
 								<select data-toggle="selectpicker" name="usedCurrency" data-width="75px" >
 									<option value=""></option>
@@ -740,10 +794,18 @@ function payment_visit_change_txt(i,j){
 							<td bgcolor="#ADADAD"></td>
 						</tr>
 						<tr height="20xp">
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
+							<td>
+								<input type="text" size="100%" name="date"  data-toggle="datepicker" placeholder="点击选择日期" data-nobtn="true" >
+							</td>
+							<td>
+								<input type="text" name="startFrom" width="100%"/>
+							</td>
+							<td>
+								<input type="text" name="endTo" width="100%"/>
+							</td>
+							<td>
+								<input type="text" name="description" width="100%"/>
+							</td>
 							<td>
 								<select data-toggle="selectpicker" name="usedCurrency" data-width="75px" >
 									<option value=""></option>
@@ -814,10 +876,18 @@ function payment_visit_change_txt(i,j){
 							<td bgcolor="#ADADAD"></td>
 						</tr>
 						<tr height="20xp">
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
+							<td>
+								<input type="text" size="100%" name="date"  data-toggle="datepicker" placeholder="点击选择日期" data-nobtn="true" >
+							</td>
+							<td>
+								<input type="text" name="startFrom" width="100%"/>
+							</td>
+							<td>
+								<input type="text" name="endTo" width="100%"/>
+							</td>
+							<td>
+								<input type="text" name="description" width="100%"/>
+							</td>
 							<td>
 								<select data-toggle="selectpicker" name="usedCurrency" data-width="75px" >
 									<option value=""></option>
@@ -888,10 +958,18 @@ function payment_visit_change_txt(i,j){
 							<td bgcolor="#ADADAD"></td>
 						</tr>
 						<tr height="20xp">
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
+							<td>
+								<input type="text" size="100%" name="date"  data-toggle="datepicker" placeholder="点击选择日期" data-nobtn="true" >
+							</td>
+							<td>
+								<input type="text" name="startFrom" width="100%"/>
+							</td>
+							<td>
+								<input type="text" name="endTo" width="100%"/>
+							</td>
+							<td>
+								<input type="text" name="description" width="100%"/>
+							</td>
 							<td>
 								<select data-toggle="selectpicker" name="usedCurrency" data-width="75px" >
 									<option value=""></option>

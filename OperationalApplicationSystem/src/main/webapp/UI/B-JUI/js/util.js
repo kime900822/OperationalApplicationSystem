@@ -267,6 +267,31 @@ jQuery.extend({
   	}  	
   	
   	
+  //转小数
+  	function toDecimal(x,y) {  
+  		if(x==''||x==undefined){
+  			return '';
+  		}
+        var f = parseFloat(x);  
+        if(f==0){
+        	return '-';
+        }
+        if (isNaN(f)) {  
+            return false;  
+        }  
+        var f = f.toFixed(y);
+        var s = f.toString();  
+        var rs = s.indexOf('.');  
+        if (rs < 0) {  
+            rs = s.length;  
+            s += '.';  
+        }  
+        while (s.length <= rs + y) {  
+            s += '0';  
+        }  
+        return s;  
+  	}  	
+  	
   	function toNumber(x){
   		if(x==''||x==' '||x==undefined||x=='-'){
   			return 0;
