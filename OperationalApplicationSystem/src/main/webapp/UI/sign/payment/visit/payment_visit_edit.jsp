@@ -51,6 +51,7 @@ function  paymentVisitEmployeeChange(){
 					$.CurrentDialog.find('#j_payment_visit_employee_employeeBUNo').val(json[0].department.did);
 				} else {
 					BJUI.alertmsg('error', 'userid不存在');
+					$.CurrentDialog.find('#j_payment_visit_employee_employeeNoy').val('');
 					$.CurrentDialog.find('#j_payment_visit_employee_employeeName').val('');
 					$.CurrentDialog.find('#j_payment_visit_employee_employeeBUNo').val('');
 				}

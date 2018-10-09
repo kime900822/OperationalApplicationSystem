@@ -206,6 +206,9 @@ function paymentVisitViewSave(){
 
 function changeReferenceNo(){
 	var referenceNo=$.CurrentDialog.find("#j_payment_visit_view_referenceNo").val();
+	if(referenceNo==''){
+		return false;
+	}
 	BJUI.ajax('doajax', {
 	    url: 'checkPaymentVisit.action',
 	    loadingmask: true,
@@ -334,20 +337,20 @@ function payment_visit_change_txt(i,j){
 			
 			if(i==4&&tds[4].children[0].value=='RMB'){
 				for(var k=5 ; k<=9 ;k++){
-					trs.get(k).children[4].find("option").remove();
-					trs.get(k).children[4].append("<option value=''></option>")
-					trs.get(k).children[4].append("<option value='RMB'>RMB</option>")
+					$(trs.get(k).children[4].children[0]).find("option").remove();
+					$(trs.get(k).children[4].children[0]).append("<option value=''></option>")
+					$(trs.get(k).children[4].children[0]).append("<option value='RMB'>RMB</option>")
 				}
 			}else{
 				for(var k=5 ; k<=9 ;k++){
-					trs.get(k).children[4].find("option").remove();
-					trs.get(k).children[4].append("<option value=''></option>")
-					trs.get(k).children[4].append("<option value='RMB'>RMB</option>")
-					trs.get(k).children[4].append("<option value='USD'>USD</option>")
-					trs.get(k).children[4].append("<option value='TRY'>TRY</option>")
-					trs.get(k).children[4].append("<option value='GBP'>GBP</option>")
-					trs.get(k).children[4].append("<option value='EUR'>EUR</option>")
-					trs.get(k).children[4].append("<option value='JPY'>JPY</option>")
+					$(trs.get(k).children[4].children[0]).find("option").remove();
+					$(trs.get(k).children[4].children[0]).append("<option value=''></option>")
+					$(trs.get(k).children[4].children[0]).append("<option value='RMB'>RMB</option>")
+					$(trs.get(k).children[4].children[0]).append("<option value='USD'>USD</option>")
+					$(trs.get(k).children[4].children[0]).append("<option value='TRY'>TRY</option>")
+					$(trs.get(k).children[4].children[0]).append("<option value='GBP'>GBP</option>")
+					$(trs.get(k).children[4].children[0]).append("<option value='EUR'>EUR</option>")
+					$(trs.get(k).children[4].children[0]).append("<option value='JPY'>JPY</option>")
 				}
 			}
 				
