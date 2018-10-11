@@ -26,6 +26,7 @@ import com.kime.model.ApproveHis;
 import com.kime.model.ApproveList;
 import com.kime.model.Dict;
 import com.kime.model.User;
+import com.kime.utils.ApproveListUtil;
 import com.kime.utils.CommonUtil;
 import com.kime.utils.PropertiesUtil;
 import com.kime.utils.mail.SendMail;
@@ -228,7 +229,7 @@ public class PaymentVisitBIZImpl extends BizBase implements PaymentVisitBIZ {
 		ApproveHis approveHis=new ApproveHis();
 		try {
 				PaymentVisit paymentVisit=queryById(tradeId);
-				ApproveList approve=paymentVisit.getApproveList().get(Integer.parseInt(level));
+				ApproveList approve= ApproveListUtil.search(paymentVisit.getApproveList(), level);
 				approveHis.setDate(CommonUtil.getDateTemp());
 				approveHis.setLevel(approve.getLevel());
 				approveHis.setuName(approve.getUname());
