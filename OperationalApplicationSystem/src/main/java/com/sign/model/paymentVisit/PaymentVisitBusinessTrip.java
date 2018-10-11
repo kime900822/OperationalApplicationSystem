@@ -22,13 +22,13 @@ public class PaymentVisitBusinessTrip {
 	@Column
 	private int rowNum;
 	@Column
-	private int date;
+	private String date;
 	@Column
-	private int startFrom;
+	private String startFrom;
 	@Column
-	private int endTo;
+	private String endTo;
 	@Column
-	private int description;
+	private String description;
 	@Column
 	private String currency;
 	@Column
@@ -82,35 +82,36 @@ public class PaymentVisitBusinessTrip {
 
 	
 	
-	public int getDate() {
+	
+	public String getDate() {
 		return date;
 	}
 
-	public void setDate(int date) {
+	public void setDate(String date) {
 		this.date = date;
 	}
 
-	public int getStartFrom() {
+	public String getStartFrom() {
 		return startFrom;
 	}
 
-	public void setStartFrom(int startFrom) {
+	public void setStartFrom(String startFrom) {
 		this.startFrom = startFrom;
 	}
 
-	public int getEndTo() {
+	public String getEndTo() {
 		return endTo;
 	}
 
-	public void setEndTo(int endTo) {
+	public void setEndTo(String endTo) {
 		this.endTo = endTo;
 	}
 
-	public int getDescription() {
+	public String getDescription() {
 		return description;
 	}
 
-	public void setDescription(int description) {
+	public void setDescription(String description) {
 		this.description = description;
 	}
 
