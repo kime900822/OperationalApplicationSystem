@@ -161,6 +161,53 @@ function paymentVisitViewDateToFace(id){
 		    		}
 	    		}
 	    		
+	    		var trs=$.CurrentDialog.find("#table-business-trip-user").children().eq(0).children();
+	    		if(json.businessTrips!=undefined&&json.businessTrips!=""){
+	    			$.each(json.businessTrips,function(i,item){	  	
+	    				trs[item.rowNum].children[0].children[0].value=item.date;
+	    				trs[item.rowNum].children[1].children[0].value=item.startFrom;
+	    				trs[item.rowNum].children[2].children[0].value=item.endTo;
+	    				trs[item.rowNum].children[3].children[0].value=item.description;
+	    				trs[item.rowNum].children[4].children[0].value=item.currency;
+	    				trs[item.rowNum].children[5].children[0].value=toDecimal2(item.metro);
+	    				trs[item.rowNum].children[6].children[0].value=toDecimal2(item.taxi);
+	    				trs[item.rowNum].children[7].children[0].value=toDecimal2(item.train);
+	    				trs[item.rowNum].children[8].children[0].value=toDecimal2(item.bus);
+	    				trs[item.rowNum].children[9].children[0].value=toDecimal2(item.rentalCar);
+	    				trs[item.rowNum].children[10].children[0].value=toDecimal2(item.roadToil);
+	    				trs[item.rowNum].children[11].innerHTML=toDecimal2(item.roadToilWithoutVAT);
+	    				trs[item.rowNum].children[12].innerHTML=toDecimal2(item.roadToilVAT);
+	    				trs[item.rowNum].children[13].children[0].value=toDecimal2(item.selfDriver);
+	    				trs[item.rowNum].children[14].children[0].value=toDecimal2(item.airTicket);
+	    				trs[item.rowNum].children[15].innerHTML=toDecimal2(item.transportationTotal);
+	    				trs[item.rowNum].children[16].innerHTML=toDecimal2(item.hotelWithoutVAT);
+	    				trs[item.rowNum].children[17].children[0].value=item.hotelTaxRate;
+	    				trs[item.rowNum].children[18].innerHTML=toDecimal2(item.hotelVAT);
+	    				trs[item.rowNum].children[19].children[0].value=toDecimal2(item.hotel);
+	    				trs[item.rowNum].children[20].children[0].value=toDecimal2(item.breakfast);
+	    				trs[item.rowNum].children[21].children[0].value=toDecimal2(item.lunch);
+	    				trs[item.rowNum].children[22].children[0].value=toDecimal2(item.dinner);
+	    				trs[item.rowNum].children[23].innerHTML=toDecimal2(item.mealTotal);
+	    				trs[item.rowNum].children[24].children[0].value=toDecimal2(item.other);
+	    				trs[item.rowNum].children[25].innerHTML=toDecimal(item.originalCurrencyTotal,4);
+	    				trs[item.rowNum].children[26].children[0].value=toDecimal2(item.RMBExchangeRate);
+	    				trs[item.rowNum].children[27].innerHTML=toDecimal2(item.total);
+        			})
+	    			
+	        		for(var j=5;j<29;j++){
+	        			total=0;
+		    			total+=toNumber(trs[4].children[j].innerHTML);
+		    			total+=toNumber(trs[5].children[j].innerHTML);
+		    			total+=toNumber(trs[6].children[j].innerHTML);
+		    			total+=toNumber(trs[7].children[j].innerHTML);
+		    			total+=toNumber(trs[8].children[j].innerHTML);
+		    			total+=toNumber(trs[9].children[j].innerHTML);
+		    			trs[10].children[j-1].innerHTML=toDecimal2(total);
+		    		}
+	    		}
+	    		
+	    		
+	    		
 	    		$.CurrentDialog.find('form:eq(0)').trigger('bjui.ajaxStop')
 	    		
 	    	}
