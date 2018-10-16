@@ -168,7 +168,7 @@ function paymentVisitViewDateToFace(id){
 	    				trs[item.rowNum].children[1].children[0].value=item.startFrom;
 	    				trs[item.rowNum].children[2].children[0].value=item.endTo;
 	    				trs[item.rowNum].children[3].children[0].value=item.description;
-	    				trs[item.rowNum].children[4].children[0].value=item.currency;
+	    				$(trs[item.rowNum].children[4].children[0]).selectpicker().selectpicker('val',item.currency).selectpicker('refresh');
 	    				trs[item.rowNum].children[5].children[0].value=toDecimal2(item.metro);
 	    				trs[item.rowNum].children[6].children[0].value=toDecimal2(item.taxi);
 	    				trs[item.rowNum].children[7].children[0].value=toDecimal2(item.train);
@@ -181,7 +181,7 @@ function paymentVisitViewDateToFace(id){
 	    				trs[item.rowNum].children[14].children[0].value=toDecimal2(item.airTicket);
 	    				trs[item.rowNum].children[15].innerHTML=toDecimal2(item.transportationTotal);
 	    				trs[item.rowNum].children[16].innerHTML=toDecimal2(item.hotelWithoutVAT);
-	    				trs[item.rowNum].children[17].children[0].value=item.hotelTaxRate;
+	    				$(trs[item.rowNum].children[17].children[0]).selectpicker().selectpicker('val',item.hotelTaxRate).selectpicker('refresh');
 	    				trs[item.rowNum].children[18].innerHTML=toDecimal2(item.hotelVAT);
 	    				trs[item.rowNum].children[19].children[0].value=toDecimal2(item.hotel);
 	    				trs[item.rowNum].children[20].children[0].value=toDecimal2(item.breakfast);
@@ -193,17 +193,30 @@ function paymentVisitViewDateToFace(id){
 	    				trs[item.rowNum].children[26].children[0].value=toDecimal2(item.RMBExchangeRate);
 	    				trs[item.rowNum].children[27].innerHTML=toDecimal2(item.total);
         			})
-	    			
-	        		for(var j=5;j<29;j++){
-	        			total=0;
-		    			total+=toNumber(trs[4].children[j].innerHTML);
-		    			total+=toNumber(trs[5].children[j].innerHTML);
-		    			total+=toNumber(trs[6].children[j].innerHTML);
-		    			total+=toNumber(trs[7].children[j].innerHTML);
-		    			total+=toNumber(trs[8].children[j].innerHTML);
-		    			total+=toNumber(trs[9].children[j].innerHTML);
-		    			trs[10].children[j-1].innerHTML=toDecimal2(total);
-		    		}
+	    			var t=[11,12,15,16,18,23,25,27];
+	    			var t2=[5,6,7,8,9,10,13,14,17,19,20,21,22,24,26];
+					t.forEach(function(k,n){
+						total=0;
+						total+=toNumber(trs[4].children[k].innerHTML);
+						total+=toNumber(trs[5].children[k].innerHTML);
+						total+=toNumber(trs[6].children[k].innerHTML);
+						total+=toNumber(trs[7].children[k].innerHTML);
+						total+=toNumber(trs[8].children[k].innerHTML);
+						total+=toNumber(trs[9].children[k].innerHTML);
+						trs[10].children[k-1].innerHTML=toDecimal2(total);
+					})
+					
+					t2.forEach(function(k,n){
+						total=0;
+						total+=toNumber(trs[4].children[k].children[0].value);
+						total+=toNumber(trs[5].children[k].children[0].value);
+						total+=toNumber(trs[6].children[k].children[0].value);
+						total+=toNumber(trs[7].children[k].children[0].value);
+						total+=toNumber(trs[8].children[k].children[0].value);
+						total+=toNumber(trs[9].children[k].children[0].value);
+						trs[10].children[k-1].innerHTML=toDecimal2(total);
+					})
+	         		
 	    		}
 	    		
 	    		
@@ -384,13 +397,14 @@ function payment_visit_change_txt(i,j){
 			
 			if(i==4&&tds[4].children[0].value=='RMB'){
 				for(var k=5 ; k<=9 ;k++){
-					$(trs.get(k).children[4].children[0]).empty();
+					$(trs.get(k).children[4].children[0]).selectpicker().empty();
 					$(trs.get(k).children[4].children[0]).append("<option value=''></option>")
 					$(trs.get(k).children[4].children[0]).append("<option value='RMB'>RMB</option>")
+					$(trs.get(k).children[4].children[0]).selectpicker('refresh')
 				}
 			}else{
 				for(var k=5 ; k<=9 ;k++){
-					$(trs.get(k).children[4].children[0]).empty();
+					$(trs.get(k).children[4].children[0]).selectpicker().empty();
 					$(trs.get(k).children[4].children[0]).append("<option value=''></option>")
 					$(trs.get(k).children[4].children[0]).append("<option value='RMB'>RMB</option>")
 					$(trs.get(k).children[4].children[0]).append("<option value='USD'>USD</option>")
@@ -398,6 +412,7 @@ function payment_visit_change_txt(i,j){
 					$(trs.get(k).children[4].children[0]).append("<option value='GBP'>GBP</option>")
 					$(trs.get(k).children[4].children[0]).append("<option value='EUR'>EUR</option>")
 					$(trs.get(k).children[4].children[0]).append("<option value='JPY'>JPY</option>")
+					$(trs.get(k).children[4].children[0]).selectpicker('refresh')
 				}
 			}
 				
