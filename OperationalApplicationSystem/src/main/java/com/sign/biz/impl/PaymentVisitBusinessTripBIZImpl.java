@@ -25,6 +25,21 @@ public class PaymentVisitBusinessTripBIZImpl extends BizBase implements PaymentV
 	public void save(PaymentVisitBusinessTrip paymentVisitBusinessTrip) {
 		paymentVisitBusinessTripDAO.save(paymentVisitBusinessTrip);
 	}
+	
+	@Override
+	@Transactional(readOnly=false,propagation=Propagation.REQUIRED,rollbackFor=Exception.class )
+	public void save(List<PaymentVisitBusinessTrip> lPaymentVisitBusinessTrip) {
+		
+		List<PaymentVisitBusinessTrip> list= paymentVisitBusinessTripDAO.query(" where visitId='"+lPaymentVisitBusinessTrip.get(0).getVisitId()+"'");
+		
+		for (PaymentVisitBusinessTrip paymentVisitBusinessTrip : list) {
+			paymentVisitBusinessTripDAO.delete(paymentVisitBusinessTrip);
+		}
+		
+		for (PaymentVisitBusinessTrip paymentVisitBusinessTrip : lPaymentVisitBusinessTrip) {
+			paymentVisitBusinessTripDAO.save(paymentVisitBusinessTrip);
+		}
+	}
 
 	@Override
 	@Transactional(readOnly=false,propagation=Propagation.REQUIRED,rollbackFor=Exception.class )

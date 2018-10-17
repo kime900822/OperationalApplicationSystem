@@ -16,4 +16,6 @@ public interface PaymentVisitBusinessTripBIZ {
 	public List<PaymentVisitBusinessTrip> query(String where);
 	
 	public List<PaymentVisitBusinessTrip> query(String where,Integer pageSize,Integer pageCurrent);
+
+	void save(List<PaymentVisitBusinessTrip> paymentVisitBusinessTrip);
 }

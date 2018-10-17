@@ -37,9 +37,12 @@ public class paymentVisitBusinessTripAction extends ActionBase{
 		List<PaymentVisitBusinessTrip> list= new Gson().fromJson(json, new TypeToken<ArrayList<PaymentVisitBusinessTrip>>() {}.getType());
 		
 		try {
-			for (PaymentVisitBusinessTrip paymentVisitBusinessTrip : list) {
-				paymentVisitBusinessTripBIZ.save(paymentVisitBusinessTrip);
-			}
+			
+			
+//			for (PaymentVisitBusinessTrip paymentVisitBusinessTrip : list) {
+//				paymentVisitBusinessTripBIZ.save(paymentVisitBusinessTrip);
+//			}
+			paymentVisitBusinessTripBIZ.save(list);
 			result.setMessage(Message.SUCCESS);
 			result.setStatusCode("200");
 			
