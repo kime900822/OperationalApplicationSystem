@@ -91,6 +91,7 @@ function paymentVisitViewDateToFace(id){
 	    data:{id:id},	    
 	    okCallback: function(json, options) {
 	    	if(json.status='200'){
+	    		$.CurrentDialog.find("#j_payment_visit_view_referenceNo").val(json.referenceNo);
 	    		$.CurrentDialog.find("#j_payment_visit_view_visitDateFrom").val(json.visitDateFrom);
 	    		$.CurrentDialog.find("#j_payment_visit_view_visitDateTo").val(json.visitDateTo);
 	    		$.CurrentDialog.find("#j_payment_visit_view_totalLeaveWorkHours").val(json.totalLeaveWorkHours);
@@ -253,7 +254,8 @@ function paymentVisitViewSave(){
             	 $.CurrentDialog.find("#j_payment_visit_view_id").val(json.params.id);
             	 $.CurrentDialog.find("#j_payment_visit_view_object").val(o);
             	 $.CurrentDialog.find("input").attr('disabled','disabled');
-            	 $.CurrentDialog.find("select").attr('disabled','disabled');	
+            	 $.CurrentDialog.find("select").attr('disabled','disabled');
+            	 BJUI.dialog('closeCurrent');
             }else{
             	 BJUI.alertmsg('error', json.message); 
             }

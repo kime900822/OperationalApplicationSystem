@@ -1304,6 +1304,8 @@ function showVisitForm(){
 	    	$.CurrentNavtab.find("#j_payment_amount_4_t").val(toNumber(o.find("#table-business-trip-total-hotelVAT").html()));	
 	    	$.CurrentNavtab.find("#j_payment_amount_5_t").val(toNumber(o.find("#table-business-trip-total-mealTotal").html()));	
 	    	$.CurrentNavtab.find("#j_payment_amount_6_t").val(toNumber(o.find("#table-business-trip-total-airTicket").html()));	
+	    	$.CurrentNavtab.find("#j_payment_currency_1").val($.CurrentDialog.find("#table-business-trip-user").children().eq(0).children().get(4).children[4].children[0].value);
+	    	changeCurrency($.CurrentNavtab.find("#j_payment_currency_1"));
 	    	changeAmount();
 			return true;
 	    }
