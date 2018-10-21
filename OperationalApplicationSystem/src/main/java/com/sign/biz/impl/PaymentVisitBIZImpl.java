@@ -3,7 +3,10 @@ package com.sign.biz.impl;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 import org.aspectj.weaver.ast.Var;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +44,7 @@ import com.sign.model.StampApprove;
 import com.sign.model.paymentVisit.PaymentVisit;
 import com.sign.model.paymentVisit.PaymentVisitBusinessTrip;
 import com.sign.model.paymentVisit.PaymentVisitEmployee;
+import com.sign.other.PaymentHelp;
 import com.sign.other.PaymentVisitHelp;
 
 @Service
@@ -67,6 +71,8 @@ public class PaymentVisitBIZImpl extends BizBase implements PaymentVisitBIZ {
 	ApproveHisBIZ approveHisBIZ;
 	@Autowired
 	PaymentVisitBusinessTripDAO paymentVisitBusinessTripDAO;
+	@Autowired
+	PaymentDAO patmentDAO;
 	
 	@Override
 	@Transactional(readOnly=false,propagation=Propagation.REQUIRED,rollbackFor=Exception.class )
@@ -253,6 +259,7 @@ public class PaymentVisitBIZImpl extends BizBase implements PaymentVisitBIZ {
 					}else {
 						paymentVisit.setState(PaymentVisitHelp.COMPLETED);
 						paymentVisit.setNextApprove("");
+						buildPayment(paymentVisit);
 					}
 					
 				}
@@ -301,6 +308,57 @@ public class PaymentVisitBIZImpl extends BizBase implements PaymentVisitBIZ {
 	@Override
 	public List<PaymentVisit> queryByHql(String hql, Integer pageSize, Integer pageCurrent) {
 		return commonDAO.queryByHql(hql,pageSize,pageCurrent);
+	}
+
+	@Override
+	public void buildPayment(PaymentVisit paymentVisit) throws Exception {
+		Payment payment=new Payment();
+		payment.setApplicationDate(paymentVisit.getApplicantDate());
+		payment.setState(PaymentHelp.SAVEPAYMENT);
+		payment.setVisitId(paymentVisit.getId());
+		payment.setPaymentSubject(PaymentHelp.TRAVEL);
+		payment.setUID(paymentVisit.getuId());
+		payment.setUName(paymentVisit.getuName());
+		payment.setUsageDescription(paymentVisit.getVisitDateFrom()+" "+paymentVisit.getVisitDateTo()+" "+paymentVisit.getVisitDetailPlace()+" "+paymentVisit.getVisitPurpose());
+		payment.setCurrency_1(paymentVisit.getBusinessTrips().size()==0?paymentVisit.getBusinessTrips().get(0).getCurrency():"");
+		payment.setCurrency_2(paymentVisit.getBusinessTrips().size()==0?paymentVisit.getBusinessTrips().get(0).getCurrency():"");
+		payment.setCurrency_3(paymentVisit.getBusinessTrips().size()==0?paymentVisit.getBusinessTrips().get(0).getCurrency():"");
+		payment.setCurrency_4(paymentVisit.getBusinessTrips().size()==0?paymentVisit.getBusinessTrips().get(0).getCurrency():"");
+		payment.setCurrency_5(paymentVisit.getBusinessTrips().size()==0?paymentVisit.getBusinessTrips().get(0).getCurrency():"");
+		payment.setCurrency_6(paymentVisit.getBusinessTrips().size()==0?paymentVisit.getBusinessTrips().get(0).getCurrency():"");
+		double amount_1=0;
+		double amount_2=0;
+		double amount_3=0;
+		double amount_4=0;
+		double amount_5=0;
+		double amount_6=0;
+		
+		for (PaymentVisitBusinessTrip paymentVisitBusinessTrip : paymentVisit.getBusinessTrips()) {
+			amount_1+=paymentVisitBusinessTrip.getLandwayTotal();
+			amount_2+=paymentVisitBusinessTrip.getRoadToilVAT();
+			amount_3+=paymentVisitBusinessTrip.getHotelWithoutVAT();
+			amount_4+=paymentVisitBusinessTrip.getHotelVAT();
+			amount_5+=paymentVisitBusinessTrip.getMealTotal();
+			amount_6+=paymentVisitBusinessTrip.getAirTicket();
+		}
+		payment.setAmount_1(amount_1==0?"":String.valueOf(amount_1));
+		payment.setAmount_2(amount_2==0?"":String.valueOf(amount_2));
+		payment.setAmount_3(amount_3==0?"":String.valueOf(amount_3));
+		payment.setAmount_4(amount_4==0?"":String.valueOf(amount_4));
+		payment.setAmount_5(amount_5==0?"":String.valueOf(amount_5));
+		payment.setAmount_1(amount_6==0?"":String.valueOf(amount_6));
+		
+		payment.setDateTemp(CommonUtil.getDateTemp());
+		payment.setId(UUID.randomUUID().toString().replaceAll("-", ""));
+		
+		List<Dict> lDicts=dictDAO.query(" where key='"+payment.getPaymentSubject()+"'");
+		if (!"".equals(lDicts.get(0).getValue())&&lDicts.get(0).getValue()!=null) {
+			patmentDAO.save(payment);
+			logUtil.logInfo("自动生成付款申请单:"+payment.getId());
+		}else{
+			logUtil.logInfo("自动付款申异常:未维护对应财务人员");
+			throw new Exception("自动付款申异常:未维护对应财务人员");
+		}
 	}
 
 	

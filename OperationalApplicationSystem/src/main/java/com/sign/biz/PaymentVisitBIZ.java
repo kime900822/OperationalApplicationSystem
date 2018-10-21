@@ -29,4 +29,6 @@ public interface PaymentVisitBIZ {
 	public PaymentVisit queryById(String id);
 	
 	public void cancel(String id);
+	
+	public void buildPayment(PaymentVisit paymentVisit) throws Exception;
 }

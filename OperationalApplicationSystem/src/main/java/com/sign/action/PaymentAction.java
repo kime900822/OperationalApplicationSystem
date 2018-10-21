@@ -47,7 +47,7 @@ import com.sign.model.PaymentPO;
 import com.sign.model.PaymentWeek;
 import com.sign.model.paymentVisit.PaymentVisit;
 import com.sign.other.FileSave;
-import com.sign.other.PaymentState;
+import com.sign.other.PaymentHelp;
 
 @Controller
 @Scope("prototype")
@@ -893,7 +893,7 @@ public class PaymentAction extends ActionBase {
 				if (file_other!=null&&!"".equals(file_other)) {
 					payment.setFile_other(file_other);
 				}
-				payment.setState(PaymentState.SAVEPAYMENT);
+				payment.setState(PaymentHelp.SAVEPAYMENT);
 				payment.setId(UUID.randomUUID().toString().replaceAll("-", ""));
 				payment.setDateTemp(CommonUtil.getDateTemp());
 				List<Dict> lDicts=dictBIZ.getDict(" where key='"+payment.getPaymentSubject()+"'");
@@ -911,7 +911,7 @@ public class PaymentAction extends ActionBase {
 				}else{
 					result.setMessage(Message.SAVE_MESSAGE_PAYMENT_ERROR);
 					result.setStatusCode("300");
-					logUtil.logInfo("新增付款申异常:为维护对应财务人员");
+					logUtil.logInfo("新增付款申异常:未维护对应财务人员");
 				}
 			}
 
@@ -963,7 +963,7 @@ public class PaymentAction extends ActionBase {
 	public String accPayment() throws UnsupportedEncodingException{
 			try {
 				Payment payment=paymentBIZ.getPayment(" where id='"+id+"'").get(0);
-				payment.setState(PaymentState.FINACEPAYMENT);
+				payment.setState(PaymentHelp.FINACEPAYMENT);
 				payment.setDocumentAudit(documentAudit);
 				
 				paymentBIZ.accPayment(payment);
@@ -1037,7 +1037,7 @@ public class PaymentAction extends ActionBase {
 	public String submitPayment() throws UnsupportedEncodingException{
 		try {
 			Payment payment=paymentBIZ.getPayment(" where id='"+id+"'").get(0);
-			payment.setState(PaymentState.SUBPAYMENT);
+			payment.setState(PaymentHelp.SUBPAYMENT);
 			paymentBIZ.submitPayment(payment);
 			
 			result.setMessage(Message.SAVE_MESSAGE_SUCCESS);
@@ -1061,7 +1061,7 @@ public class PaymentAction extends ActionBase {
 		try {
 			User user=(User)session.getAttribute("user");
 			Payment payment=paymentBIZ.getPayment(" where id='"+id+"'").get(0);
-			payment.setState(PaymentState.APPROVEPAYMENT);
+			payment.setState(PaymentHelp.APPROVEPAYMENT);
 			//如果是代理审批
 			if (!user.getUid().equals(payment.getDeptManagerID())) {
 				List<Dict> ldict=dictBIZ.getDict(" where type='AGENTEMPLOYEE' and key='"+payment.getDeptManagerID()+"'");
@@ -1101,7 +1101,7 @@ public class PaymentAction extends ActionBase {
 	public String invalidPayment() throws UnsupportedEncodingException{
 		try {
 			Payment payment=paymentBIZ.getPayment(" where id='"+id+"'").get(0);
-			payment.setState(PaymentState.INVALIDPAYMENT);
+			payment.setState(PaymentHelp.INVALIDPAYMENT);
 			payment.setInvalidDescription(invalidDescription);
 			
 			paymentBIZ.invalidPayment(payment);
@@ -1126,7 +1126,7 @@ public class PaymentAction extends ActionBase {
 	public String returnPayment() throws UnsupportedEncodingException{
 		try {
 			Payment payment=paymentBIZ.getPayment(" where id='"+id+"'").get(0);
-			payment.setState(PaymentState.RETURNPAYMENT);
+			payment.setState(PaymentHelp.RETURNPAYMENT);
 			payment.setReturnDescription(returnDescription);
 			payment.setDeptManager("");
 			payment.setDocumentAudit("");
@@ -1153,7 +1153,7 @@ public class PaymentAction extends ActionBase {
 	public String rejectPayment() throws UnsupportedEncodingException{
 		try {
 			Payment payment=paymentBIZ.getPayment(" where id='"+id+"'").get(0);
-			payment.setState(PaymentState.REJECTPAYMENT);
+			payment.setState(PaymentHelp.REJECTPAYMENT);
 			payment.setDeptManager("");
 			payment.setDocumentAudit("");
 			
@@ -1934,8 +1934,8 @@ public class PaymentAction extends ActionBase {
     		}
     		List<Payment> lPayments=paymentBIZ.getPaymentByHql(hql);
     		for (Payment payment : lPayments) {
-				payment.setState(PaymentState.getState(payment.getState()));
-				payment.setPaymentSubject(PaymentState.getPaymentSubject(payment.getPaymentSubject()));
+				payment.setState(PaymentHelp.getState(payment.getState()));
+				payment.setPaymentSubject(PaymentHelp.getPaymentSubject(payment.getPaymentSubject()));
     			if (payment.getUrgent()==null||payment.getUrgent().equals("")) {
     				payment.setUrgent("N");
 				}else {

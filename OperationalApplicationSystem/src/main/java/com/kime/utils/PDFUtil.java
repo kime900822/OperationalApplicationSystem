@@ -30,7 +30,7 @@ import com.kime.model.HeadColumn;
 import com.sign.model.Payment;
 import com.sign.model.paymentVisit.PaymentVisit;
 import com.sign.model.paymentVisit.PaymentVisitEmployee;
-import com.sign.other.PaymentState;
+import com.sign.other.PaymentHelp;
 import com.sign.other.PaymentVisitHelp;
 
 import freemarker.template.utility.StringUtil;
@@ -440,7 +440,7 @@ public class PDFUtil {
         form.setField("documentAudit",payment.getDocumentAudit());
         form.setField("deptManager",payment.getDeptManager()+"/"+payment.getDeptManagerDate());
        
-        if(payment.getState().equals(PaymentState.INVALIDPAYMENT)) {
+        if(payment.getState().equals(PaymentHelp.INVALIDPAYMENT)) {
         	form.setField("invalid","INVALID");
         }
         

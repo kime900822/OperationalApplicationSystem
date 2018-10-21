@@ -33,7 +33,7 @@ import com.sign.dao.PaymentWeekDAO;
 import com.sign.model.Payment;
 import com.sign.model.PaymentPO;
 import com.sign.model.PaymentWeek;
-import com.sign.other.PaymentState;
+import com.sign.other.PaymentHelp;
 
 import javafx.print.Collation;
 
@@ -228,11 +228,11 @@ public class PaymentBIZImpl extends BizBase implements PaymentBIZ {
 	public void financeRejectPayment(String[] ids, String message,User user) throws Exception {
 		for (String id : ids) {
 			Payment payment=paymentDAO.query(" where id='"+id+"'").get(0);
-			if (!payment.getState().equals(PaymentState.FINACEPAYMENT)) {
+			if (!payment.getState().equals(PaymentHelp.FINACEPAYMENT)) {
 				throw new Exception(payment.getCode()+"单子的状态不为Finance,请重新选择");
 			}
 			payment.setFinanceRejectMessage(message);
-			payment.setState(PaymentState.FINANCEREJECTED);
+			payment.setState(PaymentHelp.FINANCEREJECTED);
 			List<User> lUsers=userDAO.query(" where uid='"+payment.getUID()+"'");
 			if (lUsers.size()>0) {		
 				SendMail.SendMail(lUsers.get(0).getEmail(), PropertiesUtil.ReadProperties(Message.MAIL_PROPERTIES, "mailTitleOfFinanceReject"), MessageFormat.format(PropertiesUtil.ReadProperties(Message.MAIL_PROPERTIES, "mailContentOfFinanceReject"),payment.getUName(),TypeChangeUtil.formatMoney(payment.getAmountInFigures(), 2, payment.getCurrency_1()),user.getName(),message));									
@@ -254,12 +254,12 @@ public class PaymentBIZImpl extends BizBase implements PaymentBIZ {
 		//List<PaymentWeek> lPaymentWeeks=paymentWeekDAO.query(" where ids like '%"+ids[0]+"%'");
 		for (String id : ids) {
 			Payment payment=paymentDAO.query(" where id='"+id+"'").get(0);
-			if (!payment.getState().equals(PaymentState.PAYMENTCOMPLETED)) {
+			if (!payment.getState().equals(PaymentHelp.PAYMENTCOMPLETED)) {
 				throw new Exception(payment.getCode()+"单子的状态不为Payment Completed,请重新选择");
 			}
 			payment.setRefNoofBank("");
 			payment.setPaidDate("");
-			payment.setState(PaymentState.GMAPPROVE);
+			payment.setState(PaymentHelp.GMAPPROVE);
 			paymentDAO.update(payment);
 			List<PaymentWeek> lPaymentWeeks=paymentWeekDAO.query(" where pid= '"+payment.getId()+"'");
 			if (lPaymentWeeks.size()>0) {
@@ -313,14 +313,14 @@ public class PaymentBIZImpl extends BizBase implements PaymentBIZ {
 	public void paidPayment(List<Payment> list) throws Exception {
 		StringBuffer sb = new StringBuffer();  
 		for (Payment payment : list) {
-			if (!payment.getState().equals(PaymentState.GMAPPROVE)) {
+			if (!payment.getState().equals(PaymentHelp.GMAPPROVE)) {
 				throw new Exception(payment.getCode()+"单子的状态不为GM Approval,请重新选择");
 			}
-			if (payment.getState().equals(PaymentState.PAYMENTCOMPLETED)) {
+			if (payment.getState().equals(PaymentHelp.PAYMENTCOMPLETED)) {
 				throw new Exception(payment.getCode()+"单子已经处理完毕,请重新选择");
 			}
 			sb.append("'").append(payment.getId()).append("'").append(","); 
-			payment.setState(PaymentState.PAYMENTCOMPLETED);
+			payment.setState(PaymentHelp.PAYMENTCOMPLETED);
 			payment.setPaidDate(CommonUtil.getDate());
 			paymentDAO.update(payment);
 			PaymentWeek paymentWeek=new PaymentWeek();
@@ -347,7 +347,7 @@ public class PaymentBIZImpl extends BizBase implements PaymentBIZ {
 	    
 	    
 	    for (Payment payment : lPayments) {
-		       payment.setState(PaymentState.GMAPPROVE);
+		       payment.setState(PaymentHelp.GMAPPROVE);
 			   payment.setGMApproveDate(CommonUtil.getDateTemp());
 			   paymentDAO.update(payment);
 		       PaymentPO paymentPO=new PaymentPO();

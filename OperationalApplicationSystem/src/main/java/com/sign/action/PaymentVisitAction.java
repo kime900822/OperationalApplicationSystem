@@ -39,7 +39,7 @@ import com.sign.model.Stamp;
 import com.sign.model.paymentVisit.PaymentVisit;
 import com.sign.model.paymentVisit.PaymentVisitBusinessTrip;
 import com.sign.model.paymentVisit.PaymentVisitEmployee;
-import com.sign.other.PaymentState;
+import com.sign.other.PaymentHelp;
 import com.sign.other.PaymentVisitHelp;
 
 @Controller
