@@ -556,7 +556,7 @@ function showButton(state,print,uid,documentAuditid,deptManagerid){
 		}
 		$.CurrentNavtab.find('#payment-invalid-tr').hide();
 		$.CurrentNavtab.find('#payment-return-tr').hide();	
-	}else if(state=='6'&&uid=='${user.uid}'){//保存后可提交
+	}else if(state=='6'&&uid=='${user.uid}'){//出纳退单
 		$.CurrentNavtab.find('#payment-save').show();
 		$.CurrentNavtab.find('#payment-submit').show();
 		$.CurrentNavtab.find('#payment-approve').hide();
@@ -569,8 +569,8 @@ function showButton(state,print,uid,documentAuditid,deptManagerid){
 		}else{
 			$.CurrentNavtab.find('#payment-delete').show();
 		}
-		$.CurrentNavtab.find('#payment-invalid-tr').hide();
-		$.CurrentNavtab.find('#payment-return-tr').hide();	
+		//$.CurrentNavtab.find('#payment-invalid-tr').hide();
+		//$.CurrentNavtab.find('#payment-return-tr').hide();	
 	}else if(state=="4"){//财务处理完成  非财务人员查看。可打印
 		$.CurrentNavtab.find('#payment-save').hide();
 		$.CurrentNavtab.find('#payment-submit').hide();
