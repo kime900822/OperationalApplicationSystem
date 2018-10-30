@@ -34,6 +34,7 @@ import com.kime.utils.ApproveListUtil;
 import com.kime.utils.CommonUtil;
 import com.kime.utils.PropertiesUtil;
 import com.kime.utils.mail.SendMail;
+import com.sign.biz.PaymentBIZ;
 import com.sign.biz.PaymentVisitBIZ;
 import com.sign.dao.PaymentDAO;
 import com.sign.dao.PaymentVisitBusinessTripDAO;
@@ -73,7 +74,7 @@ public class PaymentVisitBIZImpl extends BizBase implements PaymentVisitBIZ {
 	@Autowired
 	PaymentVisitBusinessTripDAO paymentVisitBusinessTripDAO;
 	@Autowired
-	PaymentDAO patmentDAO;
+	PaymentBIZ paymentBIZ;
 	
 	@Override
 	@Transactional(readOnly=false,propagation=Propagation.REQUIRED,rollbackFor=Exception.class )
@@ -367,10 +368,12 @@ public class PaymentVisitBIZImpl extends BizBase implements PaymentVisitBIZ {
 		
 		payment.setDateTemp(CommonUtil.getDateTemp());
 		payment.setId(UUID.randomUUID().toString().replaceAll("-", ""));
+		payment.setCode(paymentBIZ.getMaxCode());
 		
 		List<Dict> lDicts=dictDAO.query(" where key='"+payment.getPaymentSubject()+"'");
 		if (!"".equals(lDicts.get(0).getValue())&&lDicts.get(0).getValue()!=null) {
-			patmentDAO.save(payment);
+			paymentBIZ.savePayment(payment);
+			
 			logUtil.logInfo("自动生成付款申请单:"+payment.getId());
 		}else{
 			logUtil.logInfo("自动付款申异常:未维护对应财务人员");
