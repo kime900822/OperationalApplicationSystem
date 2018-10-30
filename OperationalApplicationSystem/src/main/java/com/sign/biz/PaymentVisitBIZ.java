@@ -24,7 +24,7 @@ public interface PaymentVisitBIZ {
 	
 	public String getMaxCode();
 	
-	ApproveHis approve(String level, String comment, String approveState, String tradeId);
+	ApproveHis approve(String level, String comment, String approveState, String tradeId) throws Exception;
 	
 	public PaymentVisit queryById(String id);
 	

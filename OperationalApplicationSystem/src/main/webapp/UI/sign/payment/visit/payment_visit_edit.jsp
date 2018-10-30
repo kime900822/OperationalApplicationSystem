@@ -7,20 +7,22 @@
 		 $.CurrentDialog.find('#j_payment_visit_employee_advanceAmount').val('${param.advanceAmount}');
 	 }
 	 
-	 
-	 $.CurrentDialog.find('#j_payment_visit_employee_hotelBookingByHR').selectpicker().selectpicker('val','${param.hotelBookingByHR}').selectpicker('refresh');
-	 $.CurrentDialog.find('#j_payment_visit_employee_carArrangeByHR').selectpicker().selectpicker('val','${param.carArrangeByHR}').selectpicker('refresh');
-	 $.CurrentDialog.find('#j_payment_visit_employee_airTickerBookingByHR').selectpicker().selectpicker('val','${param.airTickerBookingByHR}').selectpicker('refresh');
-	 $.CurrentDialog.find('#j_payment_visit_employee_visarArrangeByHR').selectpicker().selectpicker('val','${param.visarArrangeByHR}').selectpicker('refresh');
-	 if('${param.hotelBookingByHR}'=='YES'){
-		 $.CurrentDialog.find("#j_payment_visit_employee_hotelName").removeAttr("disabled");
+	 if('${param.addFlag}'!='true'){
+		 $.CurrentDialog.find('#j_payment_visit_employee_hotelBookingByHR').selectpicker().selectpicker('val','${param.hotelBookingByHR}').selectpicker('refresh');
+		 $.CurrentDialog.find('#j_payment_visit_employee_carArrangeByHR').selectpicker().selectpicker('val','${param.carArrangeByHR}').selectpicker('refresh');
+		 $.CurrentDialog.find('#j_payment_visit_employee_airTickerBookingByHR').selectpicker().selectpicker('val','${param.airTickerBookingByHR}').selectpicker('refresh');
+		 $.CurrentDialog.find('#j_payment_visit_employee_visarArrangeByHR').selectpicker().selectpicker('val','${param.visarArrangeByHR}').selectpicker('refresh'); 
+		 if('${param.hotelBookingByHR}'=='YES'){
+			 $.CurrentDialog.find("#j_payment_visit_employee_hotelName").removeAttr("disabled");
+		 }
+		 if('${param.carArrangeByHR}'=='YES'){
+			 $.CurrentDialog.find("#j_payment_visit_employee_carArrangePeriod").removeAttr("disabled");
+		 }
+		 if('${param.airTickerBookingByHR}'=='YES'){
+			 $.CurrentDialog.find("#j_payment_visit_employee_flightNO").removeAttr("disabled");
+		 }
 	 }
-	 if('${param.carArrangeByHR}'=='YES'){
-		 $.CurrentDialog.find("#j_payment_visit_employee_carArrangePeriod").removeAttr("disabled");
-	 }
-	 if('${param.airTickerBookingByHR}'=='YES'){
-		 $.CurrentDialog.find("#j_payment_visit_employee_flightNO").removeAttr("disabled");
-	 }
+
 	 
  })
  
@@ -157,7 +159,7 @@ function paymentVisitEmployeeSaveCheck(){
                 <label class="row-label">D.是否HR办理签证<br>Visar Arrange by HR</label>
                 <div class="row-input required">
                     <select name="visarArrangeByHR" id="j_payment_visit_employee_visarArrangeByHR" data-toggle="selectpicker"  data-rule="required" data-width="100%"  >
-                         <option value="" selected></option>
+                         <option value="YES" >YES</option>
                          <option value="NO" selected>NO</option>
                     </select>
                 </div>

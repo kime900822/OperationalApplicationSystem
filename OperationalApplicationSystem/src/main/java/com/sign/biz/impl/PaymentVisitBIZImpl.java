@@ -232,7 +232,7 @@ public class PaymentVisitBIZImpl extends BizBase implements PaymentVisitBIZ {
 
 	@Override
 	@Transactional(readOnly=false,propagation=Propagation.REQUIRED,rollbackFor=Exception.class )
-	public ApproveHis approve(String level, String comment, String approveState, String tradeId) {
+	public ApproveHis approve(String level, String comment, String approveState, String tradeId) throws Exception {
 
 		ApproveHis approveHis=new ApproveHis();
 		try {
@@ -276,6 +276,7 @@ public class PaymentVisitBIZImpl extends BizBase implements PaymentVisitBIZ {
 				
 		}catch (Exception e) {
 			logUtil.logError(e.getMessage());
+			throw new Exception(e.getMessage());
 		}
 		
 		return approveHis;
@@ -328,7 +329,7 @@ public class PaymentVisitBIZImpl extends BizBase implements PaymentVisitBIZ {
 		}
 		User user=(User) luser.get(0);
 		payment.setApplicationDate(paymentVisit.getApplicantDate());
-		payment.setState(PaymentHelp.APPROVEPAYMENT);
+		payment.setState(PaymentHelp.SAVEPAYMENT);
 		payment.setVisitId(paymentVisit.getId());
 		payment.setPaymentSubject(PaymentHelp.TRAVEL);
 		payment.setUID(user.getUid());
@@ -337,13 +338,14 @@ public class PaymentVisitBIZImpl extends BizBase implements PaymentVisitBIZ {
 		payment.setDepartmentName(user.getDepartment().getName());
 		payment.setDeptManagerID(user.getDepartment().getUid());
 		payment.setDeptManager(user.getDepartment().getName());
+		payment.setPaymentTerm("");
 		payment.setUsageDescription(paymentVisit.getVisitDateFrom()+" "+paymentVisit.getVisitDateTo()+" "+paymentVisit.getVisitDetailPlace()+" "+paymentVisit.getVisitPurpose());
-		payment.setCurrency_1(paymentVisit.getBusinessTrips().size()==0?paymentVisit.getBusinessTrips().get(0).getCurrency():"");
-		payment.setCurrency_2(paymentVisit.getBusinessTrips().size()==0?paymentVisit.getBusinessTrips().get(0).getCurrency():"");
-		payment.setCurrency_3(paymentVisit.getBusinessTrips().size()==0?paymentVisit.getBusinessTrips().get(0).getCurrency():"");
-		payment.setCurrency_4(paymentVisit.getBusinessTrips().size()==0?paymentVisit.getBusinessTrips().get(0).getCurrency():"");
-		payment.setCurrency_5(paymentVisit.getBusinessTrips().size()==0?paymentVisit.getBusinessTrips().get(0).getCurrency():"");
-		payment.setCurrency_6(paymentVisit.getBusinessTrips().size()==0?paymentVisit.getBusinessTrips().get(0).getCurrency():"");
+		payment.setCurrency_1(paymentVisit.getBusinessTrips().size()==0?"":paymentVisit.getBusinessTrips().get(0).getCurrency());
+		payment.setCurrency_2(paymentVisit.getBusinessTrips().size()==0?"":paymentVisit.getBusinessTrips().get(0).getCurrency());
+		payment.setCurrency_3(paymentVisit.getBusinessTrips().size()==0?"":paymentVisit.getBusinessTrips().get(0).getCurrency());
+		payment.setCurrency_4(paymentVisit.getBusinessTrips().size()==0?"":paymentVisit.getBusinessTrips().get(0).getCurrency());
+		payment.setCurrency_5(paymentVisit.getBusinessTrips().size()==0?"":paymentVisit.getBusinessTrips().get(0).getCurrency());
+		payment.setCurrency_6(paymentVisit.getBusinessTrips().size()==0?"":paymentVisit.getBusinessTrips().get(0).getCurrency());
 		double amount_1=0;
 		double amount_2=0;
 		double amount_3=0;
