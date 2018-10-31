@@ -414,7 +414,7 @@ function paymentVisitViewCancel(){
 				<tr>
 					<td >Visit Purpose <label style="color:red;font-size:12px"><b>*</b></label><br>
 					出差目的  <label style="color:red;font-size:12px"><b>*</b></label></td>
-					<td >
+					<td colspan="4">
 						<select name="visitPurpose" data-toggle="selectpicker" onchange="visitPurposeChange();" id="j_payment_visit_visitPurpose" data-width="500px" >
                         	<option value="" selected></option>
                         	<option value="1" >Supplier Visit (供应商拜访)</option>
@@ -425,10 +425,7 @@ function paymentVisitViewCancel(){
                         	<option value="6" >QRF Related (QRF 相关)</option>
                         	<option value="7" >New Factory Investment (新厂房投资)</option>
                         </select>
-					</td>
-					<td ></td>
-					<td ></td>
-					<td></td>				
+					</td>			
 				</tr>
 				<tr>
 					<td >Project No  <label style="color:red;font-size:12px"><b>*</b></label><br>
@@ -439,9 +436,9 @@ function paymentVisitViewCancel(){
 					<td></td>				
 				</tr>
 				<tr>
-					<td >Currency <br> 币种  ></td>
+					<td >Currency <br> 币种  </td>
 					<td >
-					<select name="currency" data-toggle="selectpicker"   id="j_payment_visit_currency" data-width="500px" >
+					<select name="currency" data-toggle="selectpicker"   id="j_payment_visit_currency" data-width="190px" >
 							<option value=""></option>
 							<option value="RMB">RMB</option>
 							<option value="USD">USD</option>
@@ -451,7 +448,7 @@ function paymentVisitViewCancel(){
 							<option value="JPY">JPY</option>
 					</select>
 					</td>
-					<td >Advance Amount<br>预付款金额</td>
+					<td align="center">Advance Amount<br>预付款金额</td>
 					<td ><input type="text" name="advanceAmount" id="j_payment_visit_advanceAmount"  value="0"></td>
 					<td></td>				
 				</tr>
