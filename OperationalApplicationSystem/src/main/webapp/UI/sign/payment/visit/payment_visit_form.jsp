@@ -50,6 +50,10 @@ function paymentVisitCheckSave(o){
 	if(o.visitDetailPurpose==null||o.visitDetailPurpose==''){
 		err+=' Visit Detail Purpose can`t be empty!<br>'
 	}
+	
+	if(((o.currency!=null&&o.currency!='')&&(o.advanceAmount==null||o.advanceAmount=='')) || ((o.currency==null||o.currency=='')&&(o.advanceAmount!='0'))){
+		err+=' Currency and amount must be both input or empty. !<br>'
+	}
 	return err;
 	
 }
@@ -383,6 +387,19 @@ function paymentVisitViewCancel(){
 	});	
 }
 
+
+function paymengVisitCheckAdvanceAmount(o){
+	var obj=$(o).val();
+	if(checkNumber(obj)){
+		$(o).val(toFiexd(obj,2));
+	}else{
+		BJUI.alertmsg('error', 'Please input the correct amount.'); 
+		$(o).val('0.00')
+	}
+	
+	
+}
+
 </script>
 
 
@@ -449,7 +466,7 @@ function paymentVisitViewCancel(){
 					</select>
 					</td>
 					<td align="center">Advance Amount<br>预付款金额</td>
-					<td ><input type="text" name="advanceAmount" id="j_payment_visit_advanceAmount"  value="0"></td>
+					<td ><input type="text" name="advanceAmount" id="j_payment_visit_advanceAmount"  onchange="paymengVisitCheckAdvanceAmount(this)" value="0.00"></td>
 					<td></td>				
 				</tr>
 				<tr>
@@ -517,7 +534,6 @@ function paymentVisitViewCancel(){
 						            	<th data-options="{name:'employeeNo',width:150,align:'center',finalWidth:'true'}" >Visit Employee No.*<br>出差人员</th>
 						            	<th data-options="{name:'employeeBUNo',width:150,align:'center',finalWidth:'true'}" >Visit Employee BU No.<br>出差人员部门代码</th>
 										<th data-options="{name:'employeeName',width:150,align:'center',finalWidth:'true'}">Visit Employee Name<br>出差人员姓名</th>
-										<th data-options="{name:'advanceAmount',width:120,align:'center',finalWidth:'true'}">Advance Amount<br>预付款金额</th>
 										<th data-options="{name:'hotelBookingByHR',width:150,align:'center',finalWidth:'true'}">A.是否HR预定酒店<br>Hotel Booking by HR</th>
 										<th data-options="{name:'hotelName',width:200,align:'center',finalWidth:'true'}">酒店名称<br>Hotel Name</th>
 										<th data-options="{name:'carArrangeByHR',width:120,align:'center',finalWidth:'true'}">B.是否HR派车<br>Car Arrange by HR</th>

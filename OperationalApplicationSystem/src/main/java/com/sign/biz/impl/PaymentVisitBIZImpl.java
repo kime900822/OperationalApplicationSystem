@@ -338,10 +338,22 @@ public class PaymentVisitBIZImpl extends BizBase implements PaymentVisitBIZ {
 		payment.setPaymentTerm("");
 		payment.setUsageDescription(paymentVisit.getVisitDateFrom()+" "+paymentVisit.getVisitDateTo()+" "+paymentVisit.getVisitDetailPlace()+" "+paymentVisit.getVisitPurpose()+"  单号："+paymentVisit.getReferenceNo());
 		payment.setCurrency_1(paymentVisit.getCurrency());
+		payment.setCurrency_2(paymentVisit.getCurrency());
+		payment.setCurrency_3(paymentVisit.getCurrency());
+		payment.setCurrency_4(paymentVisit.getCurrency());
+		payment.setCurrency_5(paymentVisit.getCurrency());
+		payment.setCurrency_6(paymentVisit.getCurrency());
 		payment.setAmount_1(String.valueOf(paymentVisit.getAdvanceAmount()));
 		payment.setDateTemp(CommonUtil.getDateTemp());
 		payment.setId(UUID.randomUUID().toString().replaceAll("-", ""));
 		payment.setCode(paymentBIZ.getMaxCode());
+		payment.setPaymentTerm(PaymentHelp.PAYMENT_TERM_ADVANCE);
+		payment.setPaymentDays_1("Y");
+		payment.setPaymentDays_2("Y");
+		payment.setPaymentDays_3("Y");
+		payment.setPaymentDays_4("Y");
+		payment.setPaymentDays_5("Y");
+		payment.setPaymentDays_6("Y");
 		
 		List<Dict> lDicts=dictDAO.query(" where key='"+payment.getPaymentSubject()+"'");
 		if (!"".equals(lDicts.get(0).getValue())&&lDicts.get(0).getValue()!=null) {

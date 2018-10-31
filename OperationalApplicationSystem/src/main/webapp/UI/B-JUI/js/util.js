@@ -292,6 +292,28 @@ jQuery.extend({
         return s;  
   	}  	
   	
+  	
+  	function toFiexd(x,y) {  
+  		if(x==''||x==undefined){
+  			return '';
+  		}
+        var f = parseFloat(x);  
+        if (isNaN(f)) {  
+            return false;  
+        }  
+        var f = f.toFixed(y);
+        var s = f.toString();  
+        var rs = s.indexOf('.');  
+        if (rs < 0) {  
+            rs = s.length;  
+            s += '.';  
+        }  
+        while (s.length <= rs + y) {  
+            s += '0';  
+        }  
+        return s;  
+  	}  	
+  	
   	function toNumber(x){
   		if(x==''||x==' '||x==undefined||x=='-'){
   			return 0;
@@ -493,6 +515,17 @@ jQuery.extend({
 
   	} 	
   	
-  	
+  	/**
+  	 * 判断是否数字
+  	 * @param theObj
+  	 * @returns
+  	 */
+  	function checkNumber(theObj) {
+  	  var reg = /^[0-9]+.?[0-9]*$/;
+  	  if (reg.test(theObj)) {
+  	    return true;
+  	  }
+  	  return false;
+  	}
   	
   	

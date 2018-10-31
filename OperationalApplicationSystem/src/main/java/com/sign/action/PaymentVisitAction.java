@@ -69,12 +69,26 @@ public class PaymentVisitAction extends ActionBase{
 	List<ApproveList> approveList;
 	List<ApproveHis> approveHis;
 	String nextApprove;
+	double advanceAmount;
+	String currency;
 	
 	String dId;
 	String applicationDate_f;
 	String applicationDate_t;
 	
 	
+	public double getAdvanceAmount() {
+		return advanceAmount;
+	}
+	public void setAdvanceAmount(double advanceAmount) {
+		this.advanceAmount = advanceAmount;
+	}
+	public String getCurrency() { 
+		return currency;
+	}
+	public void setCurrency(String currency) {
+		this.currency = currency;
+	}
 	public String getdId() {
 		return dId;
 	}

@@ -111,4 +111,12 @@ public class PaymentHelp {
 	public final static String PETTYCASH="6";
 	public final static String OTHER="7";
 	public final static String TRAVEL="8";
+	
+	
+	public final static String PAYMENT_TERM_ADVANCE="1";
+	public final static String PAYMENT_TERM_PAYMENT_AT_SIGHT="2";
+	public final static String PAYMENT_TERM_UPON_RECEIVING="3";
+	public final static String PAYMENT_TERM_UPON_APPROVAL="4";
+	public final static String PAYMENT_TERM_UPON_INVOICE="5";
+	public final static String PAYMENT_TERM_OTHER="6";
 }
