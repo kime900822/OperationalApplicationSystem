@@ -79,7 +79,9 @@ function paymentVisitDateToFace(id){
 	    		$.CurrentNavtab.find("#j_payment_visit_totalLeaveWorkHours").val(json.totalLeaveWorkHours);
 	    		$.CurrentNavtab.find("#j_payment_visit_applicantDate").val(json.applicantDate);
 	    		$.CurrentNavtab.find("#j_payment_visit_visitPurpose").selectpicker().selectpicker('val',json.visitPurpose).selectpicker('refresh');
-	    		$.CurrentNavtab.find("#j_payment_visit_projectNo").val(json.projectNo);
+	    		$.CurrentNavtab.find("#j_payment_visit_projectNo").val(json.projectNo);j_payment_visit_currency
+	    		$.CurrentNavtab.find("#j_payment_visit_currency").selectpicker().selectpicker('val',json.currency).selectpicker('refresh');
+	    		$.CurrentNavtab.find("#j_payment_visit_advanceAmount").val(json.advanceAmount);
 	    		if(json.businessTrip=='Domestic 国内')
 	    		{
 	    			$.CurrentNavtab.find("#j_payment_visit_domestic").iCheck('check'); 
@@ -434,6 +436,23 @@ function paymentVisitViewCancel(){
 					<td ><input type="text" size="19" name="projectNo" id="j_payment_visit_projectNo"></td>
 					<td ></td>
 					<td ></td>
+					<td></td>				
+				</tr>
+				<tr>
+					<td >Currency <br> 币种  ></td>
+					<td >
+					<select name="currency" data-toggle="selectpicker"   id="j_payment_visit_currency" data-width="500px" >
+							<option value=""></option>
+							<option value="RMB">RMB</option>
+							<option value="USD">USD</option>
+							<option value="TRY">TRY</option>
+							<option value="GBP">GBP</option>
+							<option value="EUR">EUR</option>
+							<option value="JPY">JPY</option>
+					</select>
+					</td>
+					<td >Advance Amount<br>预付款金额</td>
+					<td ><input type="text" name="advanceAmount" id="j_payment_visit_advanceAmount"  value="0"></td>
 					<td></td>				
 				</tr>
 				<tr>

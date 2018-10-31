@@ -36,7 +36,7 @@ public class PaymentVisitEmployeeAction extends ActionBase {
 	String employeeNo;
 	String employeeBUNo;
 	String employeeName;
-	BigDecimal advanceAmount; 
+	double advanceAmount; 
 	String hotelBookingByHR;
 	String hotelName;
 	String carArrangeByHR;
@@ -75,10 +75,10 @@ public class PaymentVisitEmployeeAction extends ActionBase {
 	public void setEmployeeName(String employeeName) {
 		this.employeeName = employeeName;
 	}
-	public BigDecimal getAdvanceAmount() {
+	public double getAdvanceAmount() {
 		return advanceAmount;
 	}
-	public void setAdvanceAmount(BigDecimal advanceAmount) {
+	public void setAdvanceAmount(double advanceAmount) {
 		this.advanceAmount = advanceAmount;
 	}
 	public String getHotelBookingByHR() {
@@ -140,7 +140,6 @@ public class PaymentVisitEmployeeAction extends ActionBase {
 		employee.setEmployeeNo(employeeNo);
 		employee.setEmployeeBUNo(employeeBUNo);
 		employee.setEmployeeName(employeeName);
-		employee.setAdvanceAmount(advanceAmount);
 		employee.setAirTickerBookingByHR(airTickerBookingByHR);
 		employee.setCarArrangeByHR(carArrangeByHR);
 		employee.setCarArrangePeriod(carArrangePeriod);

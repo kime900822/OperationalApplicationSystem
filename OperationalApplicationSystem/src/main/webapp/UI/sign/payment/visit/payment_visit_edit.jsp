@@ -119,9 +119,9 @@ function paymentVisitEmployeeSaveCheck(){
                 <div class="row-input required">
 					<input type="text" name="employeeName" id="j_payment_visit_employee_employeeName" readonly=""  data-rule="required" value="${param.employeeName}">
                 </div>
-                <label class="row-label">Advance Amount<br>预付款金额</label>
-                <div class="row-input required">
-                    <input type="text" name="advanceAmount" id="j_payment_visit_employee_advanceAmount" data-rule="required" value="0">
+               
+                <div >
+                    
                 </div>
                 <label class="row-label">A.是否HR预定酒店<br>Hotel Booking by HR</label>
                 <div class="row-input required">

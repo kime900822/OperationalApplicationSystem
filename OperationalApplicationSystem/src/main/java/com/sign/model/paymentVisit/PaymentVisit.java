@@ -54,6 +54,10 @@ public class PaymentVisit {
 	String uName;
 	@Column
 	String nextApprove;
+	@Column
+	String currency;
+	@Column
+	double advanceAmount;
 	@Transient
 	List<PaymentVisitEmployee> employees;
 	@Transient
@@ -64,6 +68,12 @@ public class PaymentVisit {
 	List<ApproveHis> approveHis;
 	
 	
+	public String getCurrency() {
+		return currency;
+	}
+	public void setCurrency(String currency) {
+		this.currency = currency;
+	}
 	public List<PaymentVisitBusinessTrip> getBusinessTrips() {
 		return businessTrips;
 	}
@@ -183,6 +193,12 @@ public class PaymentVisit {
 	}
 	public void setApproveHis(List<ApproveHis> approveHis) {
 		this.approveHis = approveHis;
+	}
+	public double getAdvanceAmount() {
+		return advanceAmount;
+	}
+	public void setAdvanceAmount(double advanceAmount) {
+		this.advanceAmount = advanceAmount;
 	}
 	
 	

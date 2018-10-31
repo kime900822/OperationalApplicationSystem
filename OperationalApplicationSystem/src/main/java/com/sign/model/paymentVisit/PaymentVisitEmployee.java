@@ -28,8 +28,6 @@ public class PaymentVisitEmployee {
 	@Column
 	String employeeName;
 	@Column
-	BigDecimal advanceAmount; 
-	@Column
 	String hotelBookingByHR;
 	@Column
 	String hotelName;
@@ -72,12 +70,6 @@ public class PaymentVisitEmployee {
 	}
 	public void setEmployeeName(String employeeName) {
 		this.employeeName = employeeName;
-	}
-	public BigDecimal getAdvanceAmount() {
-		return advanceAmount;
-	}
-	public void setAdvanceAmount(BigDecimal advanceAmount) {
-		this.advanceAmount = advanceAmount;
 	}
 	public String getHotelBookingByHR() {
 		return hotelBookingByHR;
