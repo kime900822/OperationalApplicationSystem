@@ -83,8 +83,10 @@ function paymentVisitDateToFace(id){
 	    		$.CurrentNavtab.find("#j_payment_visit_totalLeaveWorkHours").val(json.totalLeaveWorkHours);
 	    		$.CurrentNavtab.find("#j_payment_visit_applicantDate").val(json.applicantDate);
 	    		$.CurrentNavtab.find("#j_payment_visit_visitPurpose").selectpicker().selectpicker('val',json.visitPurpose).selectpicker('refresh');
-	    		$.CurrentNavtab.find("#j_payment_visit_projectNo").val(json.projectNo);j_payment_visit_currency
-	    		$.CurrentNavtab.find("#j_payment_visit_currency").selectpicker().selectpicker('val',json.currency).selectpicker('refresh');
+	    		$.CurrentNavtab.find("#j_payment_visit_projectNo").val(json.projectNo);
+	    		if(json.currency!=undefined){
+	    			$.CurrentNavtab.find("#j_payment_visit_currency").selectpicker().selectpicker('val',json.currency).selectpicker('refresh');
+	    		}
 	    		$.CurrentNavtab.find("#j_payment_visit_advanceAmount").val(json.advanceAmount);
 	    		if(json.businessTrip=='Domestic 国内')
 	    		{
@@ -287,7 +289,7 @@ function paymentVisitShowButton(state){
 			 $("input[id*='j_payment_visit']").removeAttr('disabled');
 			 $("select[id*='j_payment_visit']").removeAttr('disabled');
 			 $("textarea[id*='j_payment_visit']").removeAttr('disabled');
-			 $.CurrentNavtab.find('#j_payment_visit_form').find(".btn-group").show();
+			 $.CurrentNavtab.find('#j_payment_visit_form').find(".btn-group[role='group']").show();
 		}else{
 			 $.CurrentNavtab.find('#payment-visit-save').hide();
 			 $.CurrentNavtab.find('#payment-visit-delete').hide();
@@ -296,9 +298,9 @@ function paymentVisitShowButton(state){
 			 $("input[id*='j_payment_visit']").attr('disabled','disabled');
 			 $("select[id*='j_payment_visit']").attr('disabled','disabled');
 			 $("textarea[id*='j_payment_visit']").attr('disabled','disabled');
-			 $.CurrentNavtab.find('#j_payment_visit_form').find(".btn-group").hide();
+			 $.CurrentNavtab.find('#j_payment_visit_form').find(".btn-group[role='group']").hide();
 		}
-		if(state=='COMPLETED'){
+		if(state=='END APPROVAL'){
 			$.CurrentNavtab.find('#payment-visit-cancel').show();
 		}
 	}else{
@@ -465,8 +467,15 @@ function paymengVisitCheckAdvanceAmount(o){
 							<option value="JPY">JPY</option>
 					</select>
 					</td>
-					<td align="center">Advance Amount<br>预付款金额</td>
+					<td ></td>
+					<td ></td>
+					<td></td>				
+				</tr>
+				<tr>
+					<td >Advance Amount<br>预付款金额</td>
 					<td ><input type="text" name="advanceAmount" id="j_payment_visit_advanceAmount"  onchange="paymengVisitCheckAdvanceAmount(this)" value="0.00"></td>
+					<td></td>
+					<td></td>
 					<td></td>				
 				</tr>
 				<tr>

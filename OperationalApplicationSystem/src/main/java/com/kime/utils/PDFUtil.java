@@ -199,22 +199,21 @@ public class PDFUtil {
         Font formFont= new Font(bfChinese, 12, Font.NORMAL);
 		//表头
     	PdfPCell pdfCell = new PdfPCell();
-		String[] headers=new String[11];
+		String[] headers=new String[10];
 		headers[0]="Visit Employee No.*\n 出差人员*";
 		headers[1]="Visit Employee BU No.\n 出差人员部门代码";
 		headers[2]="Visit Employee Name\n 出差人员姓名";
-		headers[3]="预付款金额\n Advance Amount*";
-		headers[4]="A.是否HR预定酒店 \n Hotel Booking by HR";
-		headers[5]="酒店名称  \n Hotel Name";
-		headers[6]="B.是否HR派车\n Car Arrange by HR";
-		headers[7]="派车时间\n Car Arrange Period";
-		headers[8]="C.是否HR定机票\nAir Ticket Booking by HR";
-		headers[9]="具体航班号\nFlight No.";
-		headers[10]="D.是否HR办理签证\nVisar Arrange by HR";
+		headers[3]="A.是否HR预定酒店 \n Hotel Booking by HR";
+		headers[4]="酒店名称  \n Hotel Name";
+		headers[5]="B.是否HR派车\n Car Arrange by HR";
+		headers[6]="派车时间\n Car Arrange Period";
+		headers[7]="C.是否HR定机票\nAir Ticket Booking by HR";
+		headers[8]="具体航班号\nFlight No.";
+		headers[9]="D.是否HR办理签证\nVisar Arrange by HR";
 		
 		float[] widths1={150,370};
-		float[] widths={40,50,50,40,50,70,40,50,50,30,50};
-		String[] columns={"employeeNo","employeeBUNo","employeeName","advanceAmount","hotelBookingByHR","hotelName","carArrangeByHR","carArrangePeriod","airTickerBookingByHR","flightNO","visarArrangeByHR"};
+		float[] widths={40,50,50,50,70,40,50,50,30,50};
+		String[] columns={"employeeNo","employeeBUNo","employeeName","hotelBookingByHR","hotelName","carArrangeByHR","carArrangePeriod","airTickerBookingByHR","flightNO","visarArrangeByHR"};
 		
 		Paragraph paragraph=new Paragraph("出差申请单",titleFont);
 		paragraph.setAlignment(1);
@@ -258,6 +257,18 @@ public class PDFUtil {
     	pdfCell.setPhrase(paragraph);
 		table.addCell(pdfCell);
 		paragraph = new Paragraph(paymentVisit.getProjectNo(), formFont);
+    	pdfCell.setPhrase(paragraph);
+		table.addCell(pdfCell);
+		paragraph = new Paragraph("Currency \n 币种", formFont);
+    	pdfCell.setPhrase(paragraph);
+		table.addCell(pdfCell);
+		paragraph = new Paragraph(paymentVisit.getCurrency(), formFont);
+    	pdfCell.setPhrase(paragraph);
+		table.addCell(pdfCell);
+		paragraph = new Paragraph("Advance Amount \n 预付款金额", formFont);
+    	pdfCell.setPhrase(paragraph);
+		table.addCell(pdfCell);
+		paragraph = new Paragraph(CommonUtil.formatAmount(String.valueOf(paymentVisit.getAdvanceAmount())) , formFont);
     	pdfCell.setPhrase(paragraph);
 		table.addCell(pdfCell);
 		paragraph = new Paragraph("Visit Date * \n 出差期间*", formFont);

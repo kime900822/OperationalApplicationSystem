@@ -1253,7 +1253,8 @@ function getOriginalPayment(){
            				$.CurrentNavtab.find("#j_payment_amount_"+i+"_t").removeAttr('disabled');
            			}
             	}
-            	$.CurrentNavtab.find("#j_payment_visit_id").val(josn.paymentVisitId);
+            	
+            	$.CurrentNavtab.find("#j_payment_visit_id").val(json.paymentVisitId);
         		changeAmount();
             }else{
             	 BJUI.alertmsg('error', json.message); 
@@ -1297,13 +1298,13 @@ function showVisitForm(){
 	    beforeClose:function(o){
 	    	$.CurrentNavtab.find("#j_payment_visit_id").val(o.find("#j_payment_visit_view_id").val());	
 	    	$.CurrentNavtab.find("#j_payment_usageDescription").val(o.find("#j_payment_visit_view_visitDateFrom").val()+' '+o.find("#j_payment_visit_view_visitDateTo").val()+'  '+o.find("#j_payment_visit_view_DetailPlace").val()+'  '+o.find("#j_payment_visit_view_visitPurpose").val());	
-	    	var landwayTotal=toNumber(o.find("#table-business-trip-total-metro").html())+toNumber(o.find("#table-business-trip-total-taxi").val())+toNumber(o.find("#table-business-trip-total-train").val())+toNumber(o.find("#table-business-trip-total-bus").val())+toNumber(o.find("#table-business-trip-total-rentalCar").val())+toNumber(o.find("#table-business-trip-total-roadToilWithoutVAT").val())+toNumber(o.find("#table-business-trip-total-selfDriver").val())
+	    	var landwayTotal=toNumber(o.find("#table-business-trip-total-metro").html())+toNumber(o.find("#table-business-trip-total-taxi").html())+toNumber(o.find("#table-business-trip-total-train").html())+toNumber(o.find("#table-business-trip-total-bus").html())+toNumber(o.find("#table-business-trip-total-rentalCar").html())+toNumber(o.find("#table-business-trip-total-roadToilWithoutVAT").html())+toNumber(o.find("#table-business-trip-total-selfDriver").html())
 	    	$.CurrentNavtab.find("#j_payment_amount_1_t").val(landwayTotal);	
 	    	$.CurrentNavtab.find("#j_payment_amount_2_t").val(toNumber(o.find("#table-business-trip-total-roadToilVAT").html()));	
 	    	$.CurrentNavtab.find("#j_payment_amount_3_t").val(toNumber(o.find("#table-business-trip-total-hotelWithoutVAT").html()));	
 	    	$.CurrentNavtab.find("#j_payment_amount_4_t").val(toNumber(o.find("#table-business-trip-total-hotelVAT").html()));	
 	    	$.CurrentNavtab.find("#j_payment_amount_5_t").val(toNumber(o.find("#table-business-trip-total-mealTotal").html()));	
-	    	$.CurrentNavtab.find("#j_payment_amount_6_t").val(toNumber(o.find("#table-business-trip-total-airTicket").html()));	
+	    	$.CurrentNavtab.find("#j_payment_amount_6_t").val(toNumber(o.find("#table-business-trip-total-other").html()));	
 	    	$.CurrentNavtab.find("#j_payment_currency_1").val($.CurrentDialog.find("#table-business-trip-user").children().eq(0).children().get(4).children[4].children[0].value);
 	    	changeCurrency($.CurrentNavtab.find("#j_payment_currency_1"));
 	    	changeAmount();
