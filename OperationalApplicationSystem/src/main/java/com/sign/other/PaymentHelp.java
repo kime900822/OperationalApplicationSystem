@@ -119,4 +119,9 @@ public class PaymentHelp {
 	public final static String PAYMENT_TERM_UPON_APPROVAL="4";
 	public final static String PAYMENT_TERM_UPON_INVOICE="5";
 	public final static String PAYMENT_TERM_OTHER="6";
+	
+	
+	public final static String PAYTYPE_CASH="Cash";
+	public final static String PAYTYPE_BANKING="Banking";
+	public final static String PAYTYPE_ADVANCEWRITEOFF="AdvanceWriteoff";
 }

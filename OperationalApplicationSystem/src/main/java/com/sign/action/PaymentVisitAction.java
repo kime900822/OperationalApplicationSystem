@@ -32,8 +32,9 @@ import com.kime.model.User;
 import com.kime.utils.CommonUtil;
 import com.kime.utils.PDFUtil;
 import com.opensymphony.xwork2.ActionContext;
+import com.sign.biz.BeneficiaryBIZ;
 import com.sign.biz.PaymentVisitBIZ;
-import com.sign.dao.impl.PyamentVisitDAOImpl;
+import com.sign.dao.impl.PyamentVisitDAOImpl;import com.sign.model.Beneficiary;
 import com.sign.model.Payment;
 import com.sign.model.Stamp;
 import com.sign.model.paymentVisit.PaymentVisit;
@@ -49,6 +50,8 @@ public class PaymentVisitAction extends ActionBase{
 
 	@Autowired
 	PaymentVisitBIZ paymentVisitBIZ;
+	@Autowired
+	BeneficiaryBIZ beneficiaryBIZ;
 	
 	String id;
 	String state;
@@ -374,11 +377,17 @@ public class PaymentVisitAction extends ActionBase{
 			boolean isRepeat = lStrings.size() != new HashSet<String>(lStrings).size();
 			
 			
+			
+			
+			
 			if (isRepeat) {
 				result.setMessage("Employee repeat!");
 				result.setStatusCode("300");
 			}
-			else {
+			else if (beneficiaryBIZ.queryBeneficiary(" where supplierCode='"+paymentVisit.getuId()+"'").size()==0) {
+				result.setMessage("The user is not maintained to the payee.!");
+				result.setStatusCode("300");
+			}{
 				if (!paymentVisit.getId().equals("")&&paymentVisit.getId()!=null) {
 
 					

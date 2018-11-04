@@ -34,12 +34,14 @@ import com.kime.utils.ApproveListUtil;
 import com.kime.utils.CommonUtil;
 import com.kime.utils.PropertiesUtil;
 import com.kime.utils.mail.SendMail;
+import com.sign.biz.BeneficiaryBIZ;
 import com.sign.biz.PaymentBIZ;
 import com.sign.biz.PaymentVisitBIZ;
 import com.sign.dao.PaymentDAO;
 import com.sign.dao.PaymentVisitBusinessTripDAO;
 import com.sign.dao.PaymentVisitDAO;
 import com.sign.dao.PaymentVisitEmployeeDAO;
+import com.sign.model.Beneficiary;
 import com.sign.model.Payment;
 import com.sign.model.Stamp;
 import com.sign.model.StampApprove;
@@ -75,6 +77,8 @@ public class PaymentVisitBIZImpl extends BizBase implements PaymentVisitBIZ {
 	PaymentVisitBusinessTripDAO paymentVisitBusinessTripDAO;
 	@Autowired
 	PaymentBIZ paymentBIZ;
+	@Autowired
+	BeneficiaryBIZ beneficiaryBIZ;
 	
 	@Override
 	@Transactional(readOnly=false,propagation=Propagation.REQUIRED,rollbackFor=Exception.class )
@@ -326,15 +330,23 @@ public class PaymentVisitBIZImpl extends BizBase implements PaymentVisitBIZ {
 		}
 		User user=(User) luser.get(0);
 		payment.setApplicationDate(paymentVisit.getApplicantDate());
-		payment.setState(PaymentHelp.APPROVEPAYMENT);
+		payment.setState(PaymentHelp.SUBPAYMENT);
 		payment.setVisitId(paymentVisit.getId());
 		payment.setPaymentSubject(PaymentHelp.TRAVEL);
 		payment.setUID(user.getUid());
 		payment.setUName(user.getName());
 		payment.setDepartmentID(user.getDid());
 		payment.setDepartmentName(user.getDepartment().getName());
-		payment.setDeptManagerID(user.getDepartment().getUid());
-		payment.setDeptManager(user.getDepartment().getName());
+//		payment.setDeptManagerID(user.getDepartment().getUid());
+//		payment.setDeptManager(user.getDepartment().getName());
+		try {
+			User GM=(User) userDAO.query(" where uid='"+PropertiesUtil.ReadProperties(Message.SYSTEM_PROPERTIES, "GMApprove")+"' ").get(0);
+			payment.setDeptManagerID(GM.getUid());
+			payment.setDeptManager(GM.getName());
+		} catch (Exception e) {
+			logUtil.logInfo("自动付款申异常:总经理信息获取异常:"+paymentVisit.getuName());
+			throw new Exception("自动付款申异常:总经理信息获取异常:"+paymentVisit.getuName());
+		}
 		payment.setPaymentTerm("");
 		payment.setUsageDescription(paymentVisit.getVisitDateFrom()+" "+paymentVisit.getVisitDateTo()+" "+paymentVisit.getVisitDetailPlace()+" "+paymentVisit.getVisitPurpose()+"  单号："+paymentVisit.getReferenceNo());
 		payment.setCurrency_1(paymentVisit.getCurrency());
@@ -346,7 +358,6 @@ public class PaymentVisitBIZImpl extends BizBase implements PaymentVisitBIZ {
 		payment.setAmount_1(String.valueOf(paymentVisit.getAdvanceAmount()));
 		payment.setDateTemp(CommonUtil.getDateTemp());
 		payment.setId(UUID.randomUUID().toString().replaceAll("-", ""));
-		payment.setCode(paymentBIZ.getMaxCode());
 		payment.setPaymentTerm(PaymentHelp.PAYMENT_TERM_ADVANCE);
 		payment.setPaymentDays_1("Y");
 		payment.setPaymentDays_2("Y");
@@ -354,6 +365,27 @@ public class PaymentVisitBIZImpl extends BizBase implements PaymentVisitBIZ {
 		payment.setPaymentDays_4("Y");
 		payment.setPaymentDays_5("Y");
 		payment.setPaymentDays_6("Y");
+		payment.setAmountInFigures(String.valueOf(paymentVisit.getAdvanceAmount()));
+		if (paymentVisit.getCurrency().equals("RMB")) {
+			payment.setPayType(PaymentHelp.PAYTYPE_BANKING);
+		}else {
+			payment.setPayType(PaymentHelp.PAYTYPE_CASH);
+		}
+		
+		try {
+			Beneficiary beneficiary  =beneficiaryBIZ.queryBeneficiary(" where supplierCode='"+paymentVisit.getuId()+"'").get(0);
+			payment.setSupplierCode(beneficiary.getSupplierCode());
+			payment.setBeneficiary(beneficiary.getName());
+			payment.setBeneficiaryE(beneficiary.getEname());
+			payment.setBeneficiaryAccountNO(beneficiary.getAccno());
+			payment.setBeneficiaryAccountBank(beneficiary.getAccbank());
+		} catch (Exception e) {
+			logUtil.logDebug(" 收款人信息获取失败 "+e.getMessage());
+			throw new Exception(" 收款人信息获取失败 "+e.getMessage());
+		}
+		
+		
+		
 		
 		List<Dict> lDicts=dictDAO.query(" where key='"+payment.getPaymentSubject()+"'");
 		if (!"".equals(lDicts.get(0).getValue())&&lDicts.get(0).getValue()!=null) {
