@@ -161,6 +161,20 @@ public class PaymentVisitBIZImpl extends BizBase implements PaymentVisitBIZ {
 
 				}
 				
+				if (paymentVisit.getAdvanceAmount()>0) {
+					try {
+						User GM=(User) userDAO.query(" where uid='"+PropertiesUtil.ReadProperties(Message.SYSTEM_PROPERTIES, "GMApprove")+"' ").get(0);
+						lApproves.get(0).setUid(GM.getUid());
+						lApproves.get(0).setUname(GM.getName());
+						lApproves.get(0).setDid(GM.getDid());
+						lApproves.get(0).setDname(GM.getDepartment().getName());
+						paymentVisit.setNextApprove(GM.getUid());
+					} catch (Exception e) {
+						logUtil.logInfo("自动付款申异常:总经理信息获取异常:"+paymentVisit.getuName());
+						throw new Exception("自动付款申异常:总经理信息获取异常:"+paymentVisit.getuName());
+					}
+				}
+				
 				for(int i=0;i<lApproves.size();i++) {
 					if(isNeed[i]){
 						ApproveList tmp=new ApproveList();
@@ -330,23 +344,15 @@ public class PaymentVisitBIZImpl extends BizBase implements PaymentVisitBIZ {
 		}
 		User user=(User) luser.get(0);
 		payment.setApplicationDate(paymentVisit.getApplicantDate());
-		payment.setState(PaymentHelp.SUBPAYMENT);
+		payment.setState(PaymentHelp.APPROVEPAYMENT);
 		payment.setVisitId(paymentVisit.getId());
 		payment.setPaymentSubject(PaymentHelp.TRAVEL);
 		payment.setUID(user.getUid());
 		payment.setUName(user.getName());
 		payment.setDepartmentID(user.getDid());
 		payment.setDepartmentName(user.getDepartment().getName());
-//		payment.setDeptManagerID(user.getDepartment().getUid());
-//		payment.setDeptManager(user.getDepartment().getName());
-		try {
-			User GM=(User) userDAO.query(" where uid='"+PropertiesUtil.ReadProperties(Message.SYSTEM_PROPERTIES, "GMApprove")+"' ").get(0);
-			payment.setDeptManagerID(GM.getUid());
-			payment.setDeptManager(GM.getName());
-		} catch (Exception e) {
-			logUtil.logInfo("自动付款申异常:总经理信息获取异常:"+paymentVisit.getuName());
-			throw new Exception("自动付款申异常:总经理信息获取异常:"+paymentVisit.getuName());
-		}
+		payment.setDeptManagerID(user.getDepartment().getUid());
+		payment.setDeptManager(user.getDepartment().getName());
 		payment.setPaymentTerm("");
 		payment.setUsageDescription(paymentVisit.getVisitDateFrom()+" "+paymentVisit.getVisitDateTo()+" "+paymentVisit.getVisitDetailPlace()+" "+paymentVisit.getVisitPurpose()+"  单号："+paymentVisit.getReferenceNo());
 		payment.setCurrency_1(paymentVisit.getCurrency());

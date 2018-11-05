@@ -51,9 +51,16 @@ function paymentVisitCheckSave(o){
 		err+=' Visit Detail Purpose can`t be empty!<br>'
 	}
 	
-	if(((o.currency!=null&&o.currency!='')&&(o.advanceAmount==null||o.advanceAmount=='')) || ((o.currency==null||o.currency=='')&&(o.advanceAmount!='0'))){
+	if(((o.currency!=null&&o.currency!='')&&(o.advanceAmount==null||o.advanceAmount=='0.00')) || ((o.currency==null||o.currency=='')&&(o.advanceAmount!='0.00'))){
 		err+=' Currency and amount must be both input or empty. !<br>'
 	}
+	
+	if(o.currency!=null&&o.currency!=''&&o.currency!='0.00'&&o.currency=='RMB'&&parseFloat(o.advanceAmount)<3000){
+		err+=' RMB must be greater than 3000 !<br>'
+	}
+	
+	
+	
 	return err;
 	
 }
@@ -395,7 +402,6 @@ function paymengVisitCheckAdvanceAmount(o){
 	if(checkNumber(obj)){
 		$(o).val(toFiexd(obj,2));
 	}else{
-		BJUI.alertmsg('error', 'Please input the correct amount.'); 
 		$(o).val('0.00')
 	}
 	
@@ -461,10 +467,7 @@ function paymengVisitCheckAdvanceAmount(o){
 							<option value=""></option>
 							<option value="RMB">RMB</option>
 							<option value="USD">USD</option>
-							<option value="TRY">TRY</option>
-							<option value="GBP">GBP</option>
 							<option value="EUR">EUR</option>
-							<option value="JPY">JPY</option>
 					</select>
 					</td>
 					<td ></td>
