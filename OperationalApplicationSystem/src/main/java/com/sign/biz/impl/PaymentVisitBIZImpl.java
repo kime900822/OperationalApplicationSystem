@@ -385,6 +385,7 @@ public class PaymentVisitBIZImpl extends BizBase implements PaymentVisitBIZ {
 			payment.setBeneficiaryE(beneficiary.getEname());
 			payment.setBeneficiaryAccountNO(beneficiary.getAccno());
 			payment.setBeneficiaryAccountBank(beneficiary.getAccbank());
+			payment.setRequestPaymentDate(CommonUtil.getDate());
 		} catch (Exception e) {
 			logUtil.logDebug(" 收款人信息获取失败 "+e.getMessage());
 			throw new Exception(" 收款人信息获取失败 "+e.getMessage());

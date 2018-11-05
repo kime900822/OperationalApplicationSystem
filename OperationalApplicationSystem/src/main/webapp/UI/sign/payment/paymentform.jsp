@@ -349,11 +349,13 @@ function isChange(){
 	
 	$.CurrentNavtab.find("#j_payment_advanceWriteoff").on('ifChecked',function(){
 		$.CurrentNavtab.find('[type=AdvanceWriteoffTr]').show();
+		changeAmount();
 	})
 	$.CurrentNavtab.find("#j_payment_advanceWriteoff").on('ifUnchecked',function(){
 		$.CurrentNavtab.find('[type=AdvanceWriteoffTr]').hide();
         $.CurrentNavtab.find("#j_payment_paymentSubject").removeAttr('disabled');
         $.CurrentNavtab.find("#j_payment_paymentTerm").removeAttr('disabled');
+        changeAmount();
 	})
 	
 	
@@ -369,7 +371,7 @@ function isChange(){
 			$.CurrentNavtab.find("#j_payment_amount_"+i+"_t").removeAttr('disabled');
 		}
 		//$.CurrentNavtab.find("#j_payment_advanceWriteOffAmount_t").val($.CurrentNavtab.find("#j_payment_amountInFigures_t").val());
-		//changeAmount();
+		changeAmount();
 
 	})
 
