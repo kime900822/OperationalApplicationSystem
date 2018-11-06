@@ -248,11 +248,11 @@ public class ApproveAction extends ActionBase{
 	}
 	
 	
-	@Action(value="deleteAppprvoe",results={@org.apache.struts2.convention.annotation.Result(type="stream",
+	@Action(value="deleteApprove",results={@org.apache.struts2.convention.annotation.Result(type="stream",
 			params={
 					"inputName", "reslutJson"
 			})})
-	public String deleteAppprvoe() throws UnsupportedEncodingException{
+	public String deleteApprove() throws UnsupportedEncodingException{
 		List<Approve> lApproves=new Gson().fromJson(json, new TypeToken<ArrayList<Approve>>() {}.getType());
 		String err=approveBIZ.delete(lApproves);
 		if (err==null) {

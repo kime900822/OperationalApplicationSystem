@@ -1,6 +1,7 @@
 package com.sign.biz.impl;
 
 import java.math.BigDecimal;
+import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -161,7 +162,7 @@ public class PaymentVisitBIZImpl extends BizBase implements PaymentVisitBIZ {
 
 				}
 				
-				if (paymentVisit.getAdvanceAmount()>0) {
+				if (paymentVisit.getAdvanceAmount()>5000||paymentVisit.getTotalLeaveWorkHours()>16||paymentVisit.getBusinessTrip().equals("Oversea 国外")) {
 					try {
 						User GM=(User) userDAO.query(" where uid='"+PropertiesUtil.ReadProperties(Message.SYSTEM_PROPERTIES, "GMApprove")+"' ").get(0);
 						lApproves.get(0).setUid(GM.getUid());
@@ -279,6 +280,32 @@ public class PaymentVisitBIZImpl extends BizBase implements PaymentVisitBIZ {
 					}else {
 						paymentVisit.setState(PaymentVisitHelp.COMPLETED);
 						paymentVisit.setNextApprove("");
+						
+						
+						Boolean[] isNeed= {false,false,false,false};
+						for (PaymentVisitEmployee obj : paymentVisit.getEmployees()) {
+							if(obj.getHotelBookingByHR().equals("YES")) {
+								isNeed[0]=true;
+							}
+							if(obj.getCarArrangeByHR().equals("YES")) {
+								isNeed[1]=true;
+							}
+							if(obj.getAirTickerBookingByHR().equals("YES")) {
+								isNeed[2]=true;
+							}
+							if(obj.getVisarArrangeByHR().equals("YES")) {
+								isNeed[3]=true;
+							}
+						}
+						
+						List<User> lUsers=userDAO.queryByHql(" select U from User U left join Dict D on U.uid=D.value where D.type='PAYMENT_VISIT' and D.keyExplain='NOTICE' Order By D.key");
+						for (int i=0;i<4;i++) {
+							if (isNeed[i]&&lUsers.size()>i) {
+								SendMail.SendMail(lUsers.get(i).getEmail(),PropertiesUtil.ReadProperties(Message.MAIL_PROPERTIES, "mailTitleOfPaymentVisit") , MessageFormat.format(PropertiesUtil.ReadProperties(Message.MAIL_PROPERTIES, "mailContentOfPaymentVisitNotice"),paymentVisit.getReferenceNo()));
+							}
+						}
+							
+						
 						if (paymentVisit.getAdvanceAmount()>0) {
 							buildPayment(paymentVisit);
 						}
@@ -313,15 +340,18 @@ public class PaymentVisitBIZImpl extends BizBase implements PaymentVisitBIZ {
 
 	@Override
 	@Transactional(readOnly=false,propagation=Propagation.REQUIRED,rollbackFor=Exception.class )
-	public void cancel(String id) {
+	public void cancel(String id) throws Exception {
 		PaymentVisit paymentVisit=queryById(id);
-		paymentVisit.setState(PaymentVisitHelp.CANCEL);
+		paymentVisit.setState(PaymentVisitHelp.INVALID);
 		for (PaymentVisitEmployee paymentVisitEmployee : paymentVisit.getEmployees()) {
 			List<User> lUsers=userDAO.query(" where uid='"+paymentVisitEmployee.getEmployeeNo()+"'");
 			if (lUsers.size()>0) {
 				SendMail.SendMail(lUsers.get(0).getEmail(),PropertiesUtil.ReadProperties(Message.MAIL_PROPERTIES, "mailTitleOfPaymentVisit") , PropertiesUtil.ReadProperties(Message.MAIL_PROPERTIES, "mailContentOfPaymentVisitCancel"));
 			}
 		}
+		User manager=(User) userDAO.query(" where uid='"+paymentVisit.getApproveList().get(0).getUid()+"'").get(0);
+		SendMail.SendMail(manager.getEmail(),PropertiesUtil.ReadProperties(Message.MAIL_PROPERTIES, "mailTitleOfPaymentVisit") , PropertiesUtil.ReadProperties(Message.MAIL_PROPERTIES, "mailContentOfPaymentVisitCancel"));		
+		update(paymentVisit);
 	}
 
 	@Override
@@ -351,8 +381,14 @@ public class PaymentVisitBIZImpl extends BizBase implements PaymentVisitBIZ {
 		payment.setUName(user.getName());
 		payment.setDepartmentID(user.getDid());
 		payment.setDepartmentName(user.getDepartment().getName());
-		payment.setDeptManagerID(user.getDepartment().getUid());
-		payment.setDeptManager(user.getDepartment().getName());
+		if (paymentVisit.getAdvanceAmount()>0) {
+			payment.setDeptManagerID(paymentVisit.getApproveList().get(0).getUid());
+			payment.setDeptManager(paymentVisit.getApproveList().get(0).getUname());
+		}else {
+			payment.setDeptManagerID(user.getDepartment().getUid());
+			payment.setDeptManager(user.getDepartment().getName());
+		}
+		payment.setDeptManagerDate(CommonUtil.getDateTemp());
 		payment.setPaymentTerm("");
 		payment.setUsageDescription(paymentVisit.getVisitDateFrom()+" "+paymentVisit.getVisitDateTo()+" "+paymentVisit.getVisitDetailPlace()+" "+paymentVisit.getVisitPurpose()+"  单号："+paymentVisit.getReferenceNo());
 		payment.setCurrency_1(paymentVisit.getCurrency());
@@ -390,6 +426,7 @@ public class PaymentVisitBIZImpl extends BizBase implements PaymentVisitBIZ {
 			logUtil.logDebug(" 收款人信息获取失败 "+e.getMessage());
 			throw new Exception(" 收款人信息获取失败 "+e.getMessage());
 		}
+		
 		
 		
 		

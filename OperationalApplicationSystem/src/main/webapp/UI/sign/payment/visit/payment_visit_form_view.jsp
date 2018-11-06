@@ -616,7 +616,7 @@ function payment_visit_change_txt(i,j){
 						</tr>
 						<tr height="20xp">
 							<td>
-								<input type="text" size="100%" name="date"  data-toggle="datepicker" placeholder="点击选择日期" data-nobtn="true" >
+								<input type="text" size="10" name="date"  data-toggle="datepicker" placeholder="点击选择日期" data-nobtn="true" >
 							</td>
 							<td>
 								<input type="text" name="startFrom" width="100%"/>
@@ -698,7 +698,7 @@ function payment_visit_change_txt(i,j){
 						</tr>
 						<tr height="20xp">
 							<td>
-								<input type="text" size="100%" name="date"  data-toggle="datepicker" placeholder="点击选择日期" data-nobtn="true" >
+								<input type="text" size="10" name="date"  data-toggle="datepicker" placeholder="点击选择日期" data-nobtn="true" >
 							</td>
 							<td>
 								<input type="text" name="startFrom" width="100%"/>
@@ -780,7 +780,7 @@ function payment_visit_change_txt(i,j){
 						</tr>
 						<tr height="20xp">
 							<td>
-								<input type="text" size="100%" name="date"  data-toggle="datepicker" placeholder="点击选择日期" data-nobtn="true" >
+								<input type="text" size="10" name="date"  data-toggle="datepicker" placeholder="点击选择日期" data-nobtn="true" >
 							</td>
 							<td>
 								<input type="text" name="startFrom" width="100%"/>
@@ -862,7 +862,7 @@ function payment_visit_change_txt(i,j){
 						</tr>
 						<tr height="20xp">
 							<td>
-								<input type="text" size="100%" name="date"  data-toggle="datepicker" placeholder="点击选择日期" data-nobtn="true" >
+								<input type="text" size="10" name="date"  data-toggle="datepicker" placeholder="点击选择日期" data-nobtn="true" >
 							</td>
 							<td>
 								<input type="text" name="startFrom" width="100%"/>
@@ -944,7 +944,7 @@ function payment_visit_change_txt(i,j){
 						</tr>
 						<tr height="20xp">
 							<td>
-								<input type="text" size="100%" name="date"  data-toggle="datepicker" placeholder="点击选择日期" data-nobtn="true" >
+								<input type="text" size="10" name="date"  data-toggle="datepicker" placeholder="点击选择日期" data-nobtn="true" >
 							</td>
 							<td>
 								<input type="text" name="startFrom" width="100%"/>
@@ -1026,7 +1026,7 @@ function payment_visit_change_txt(i,j){
 						</tr>
 						<tr height="20xp">
 							<td>
-								<input type="text" size="100%" name="date"  data-toggle="datepicker" placeholder="点击选择日期" data-nobtn="true" >
+								<input type="text" size="10" name="date"  data-toggle="datepicker" placeholder="点击选择日期" data-nobtn="true" >
 							</td>
 							<td>
 								<input type="text" name="startFrom" width="100%"/>

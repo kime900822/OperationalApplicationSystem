@@ -275,7 +275,7 @@ function visitPurposeChange(){
 	}else if (val=='7'){
 		$.CurrentNavtab.find("#j_payment_visit_projectNo").val('8400-1');
 	}else if (val=='8'){
-		$.CurrentNavtab.find("#j_payment_visit_projectNo").val('8400-1');
+		$.CurrentNavtab.find("#j_payment_visit_projectNo").val('8200-1');
 	}else{
 		$.CurrentNavtab.find("#j_payment_visit_projectNo").val('');
 	}

@@ -382,6 +382,7 @@ public class PDFUtil {
         	form.setField("banking","√");
 		}else if (payment.getPayType().equals("AdvanceWriteoff")) {
 			form.setField("advance","√");
+			form.setField("advanceAmount",payment.getAdvanceWriteoffWay()+" ,Amount: "+ payment.getAdvanceWriteOffCurrency()+" "+CommonUtil.formatAmount(payment.getAdvanceWriteOffAmount()));
 		}
         
         form.setField("uId",payment.getUID());
