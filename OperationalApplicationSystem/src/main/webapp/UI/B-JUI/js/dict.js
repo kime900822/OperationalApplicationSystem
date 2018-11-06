@@ -15,6 +15,8 @@ function getVisitViewVisitPurpose(x){
 		return 'QRF Related (QRF 相关)';
 	}else if(x=='7'){
 		return 'New Factory Investment (新厂房投资)';
+	}else if(x=='8'){
+		return 'Exhibition (展会)';
 	}else{
 		return '';
 	}

@@ -274,6 +274,8 @@ function visitPurposeChange(){
 		$.CurrentNavtab.find("#j_payment_visit_projectNo").val('61721-999');
 	}else if (val=='7'){
 		$.CurrentNavtab.find("#j_payment_visit_projectNo").val('8400-1');
+	}else if (val=='8'){
+		$.CurrentNavtab.find("#j_payment_visit_projectNo").val('8400-1');
 	}else{
 		$.CurrentNavtab.find("#j_payment_visit_projectNo").val('');
 	}
@@ -449,6 +451,7 @@ function paymengVisitCheckAdvanceAmount(o){
                         	<option value="5" >Training (培训)</option>
                         	<option value="6" >QRF Related (QRF 相关)</option>
                         	<option value="7" >New Factory Investment (新厂房投资)</option>
+                        	<option value="8" >Exhibition (展会)</option>
                         </select>
 					</td>			
 				</tr>
