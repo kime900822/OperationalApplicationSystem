@@ -298,12 +298,28 @@ public class PaymentVisitBIZImpl extends BizBase implements PaymentVisitBIZ {
 							}
 						}
 						
-						List<User> lUsers=userDAO.queryByHql(" select U from User U left join Dict D on U.uid=D.value where D.type='PAYMENT_VISIT' and D.keyExplain='NOTICE' Order By D.key");
-						for (int i=0;i<4;i++) {
-							if (isNeed[i]&&lUsers.size()>i) {
-								SendMail.SendMail(lUsers.get(i).getEmail(),PropertiesUtil.ReadProperties(Message.MAIL_PROPERTIES, "mailTitleOfPaymentVisit") , MessageFormat.format(PropertiesUtil.ReadProperties(Message.MAIL_PROPERTIES, "mailContentOfPaymentVisitNotice"),paymentVisit.getReferenceNo()));
-							}
+						User user=new User();
+						if (isNeed[0]) {
+							user=(User) userDAO.query(" where uid in (select D.value from Dict D where D.type='PAYMENT_VISIT' and D.key='A') ").get(0);
+							paymentVisit.setNoticeA(user.getUid());
+							SendMail.SendMail(user.getEmail(),PropertiesUtil.ReadProperties(Message.MAIL_PROPERTIES, "mailTitleOfPaymentVisit") , MessageFormat.format(PropertiesUtil.ReadProperties(Message.MAIL_PROPERTIES, "mailContentOfPaymentVisitNotice"),paymentVisit.getReferenceNo()));
 						}
+						if (isNeed[1]) {
+							user=(User) userDAO.query(" where uid in (select D.value from Dict D where D.type='PAYMENT_VISIT' and D.key='B') ").get(0);
+							paymentVisit.setNoticeB(user.getUid());
+							SendMail.SendMail(user.getEmail(),PropertiesUtil.ReadProperties(Message.MAIL_PROPERTIES, "mailTitleOfPaymentVisit") , MessageFormat.format(PropertiesUtil.ReadProperties(Message.MAIL_PROPERTIES, "mailContentOfPaymentVisitNotice"),paymentVisit.getReferenceNo()));
+						}
+						if (isNeed[2]) {
+							user=(User) userDAO.query(" where uid in (select D.value from Dict D where D.type='PAYMENT_VISIT' and D.key='C') ").get(0);
+							paymentVisit.setNoticeC(user.getUid());
+							SendMail.SendMail(user.getEmail(),PropertiesUtil.ReadProperties(Message.MAIL_PROPERTIES, "mailTitleOfPaymentVisit") , MessageFormat.format(PropertiesUtil.ReadProperties(Message.MAIL_PROPERTIES, "mailContentOfPaymentVisitNotice"),paymentVisit.getReferenceNo()));
+						}
+						if (isNeed[3]) {
+							user=(User) userDAO.query(" where uid in (select D.value from Dict D where D.type='PAYMENT_VISIT' and D.key='D') ").get(0);
+							paymentVisit.setNoticeD(user.getUid());
+							SendMail.SendMail(user.getEmail(),PropertiesUtil.ReadProperties(Message.MAIL_PROPERTIES, "mailTitleOfPaymentVisit") , MessageFormat.format(PropertiesUtil.ReadProperties(Message.MAIL_PROPERTIES, "mailContentOfPaymentVisitNotice"),paymentVisit.getReferenceNo()));
+						}
+						
 							
 						
 						if (paymentVisit.getAdvanceAmount()>0) {

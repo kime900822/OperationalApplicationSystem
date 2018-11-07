@@ -488,7 +488,7 @@ public class PaymentVisitAction extends ActionBase{
 			hql=" select P from PaymentVisit P where P.nextApprove='"+user.getUid()+"' "+where+" order By P.dateTmp desc";
 		}
 		if(queryType.equals("admin")) {
-			hql=" select P from PaymentVisit P where P.uId in( select uid from User where did ='"+user.getDid()+"') "+where+" order By P.dateTmp desc";
+			hql=" select P from PaymentVisit P where (P.noticeA = '"+user.getUid()+"' or P.noticeB = '"+user.getUid()+"' or P.noticeC = '"+user.getUid()+"' or P.noticeD = '"+user.getUid()+"' ) "+where+" order By P.dateTmp desc";
 		}
 		if(queryType.equals("user")) {
 			hql=" select P from PaymentVisit P where P.uId='"+user.getUid()+"' "+where+" order By P.dateTmp desc";

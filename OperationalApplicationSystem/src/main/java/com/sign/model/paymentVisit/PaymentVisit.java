@@ -58,6 +58,14 @@ public class PaymentVisit {
 	String currency;
 	@Column
 	double advanceAmount;
+	@Column
+	String noticeA;
+	@Column
+	String noticeB;
+	@Column
+	String noticeC;
+	@Column
+	String noticeD;
 	@Transient
 	List<PaymentVisitEmployee> employees;
 	@Transient
@@ -68,6 +76,30 @@ public class PaymentVisit {
 	List<ApproveHis> approveHis;
 	
 	
+	public String getNoticeA() {
+		return noticeA;
+	}
+	public void setNoticeA(String noticeA) {
+		this.noticeA = noticeA;
+	}
+	public String getNoticeB() {
+		return noticeB;
+	}
+	public void setNoticeB(String noticeB) {
+		this.noticeB = noticeB;
+	}
+	public String getNoticeC() {
+		return noticeC;
+	}
+	public void setNoticeC(String noticeC) {
+		this.noticeC = noticeC;
+	}
+	public String getNoticeD() {
+		return noticeD;
+	}
+	public void setNoticeD(String noticeD) {
+		this.noticeD = noticeD;
+	}
 	public String getCurrency() {
 		return currency;
 	}
