@@ -195,7 +195,12 @@ function dataToFace(){
             			
             		})
             	}
-            	
+            	alert(json.visitId)
+            	$.CurrentNavtab.find("#j_payment_state").val(json.state);
+            	if(json.visitId!=undefined&&json.visitId!=''){
+                	$.CurrentNavtab.find("#j_payment_visit_id").val(json.visitId);
+                	$.CurrentNavtab.find("#payment-visit-tr").show();
+            	}
             	showButton(json.state,json.isPrint,json.UID,json.documentAuditID,json.deptManagerID);
             }else{
             	 BJUI.alertmsg('error', json.message); 
@@ -472,10 +477,26 @@ function checkReturn(){
 	return err;
 }
 
+
+function showVisitForm_show(){
+	BJUI.dialog({
+	    id:'payment-visit-form-view-s',
+	    url:'sign/payment/visit/payment_visit_form_view.jsp',
+	    data:{visitId:$.CurrentNavtab.find("#j_payment_visit_id").val(),state:$.CurrentNavtab.find("#j_payment_state").val()},
+	    title:'差旅填单',
+	    width:1200,
+	    height:800
+	})
+	
+}
+
+
 </script>
 <div class="bjui-pageContent">
     <div  class="bs-example" style="width:1300px;padding:20px;" >
     		<input type="hidden" name="id" id="j_payment_id" value="${param.id} ">
+    		<input type="hidden" name="visitId" id="j_payment_visit_id" value="">
+    		<input type="hidden" name="state" id="j_payment_state" value="">
 			<table  style="font-size:10px;">
 				<tr>
 					<td  width="200px"></td>
@@ -715,6 +736,11 @@ function checkReturn(){
 	            		<button type="button" id="payment-assign" class="btn-default" data-icon="undo" >Assign(转交)</button>
 	            		<button type="button" id="payment-acc" class="btn-default" data-icon="check" >Approve(同意)</button>
 	            		<button type="button" id="payment-print" class="btn-default" data-icon="print" >Print Out(打印)</button>
+					</td>
+				</tr>
+				<tr id="payment-visit-tr" style="display:none">
+					<td colspan="3" align="center">
+						<a href="#" id="payment-show-visit-form-view" onclick="showVisitForm_show()" >差旅填信息 Travel Expense Form</a>
 					</td>
 				</tr>
 				<tr id="payment-invalid-tr">

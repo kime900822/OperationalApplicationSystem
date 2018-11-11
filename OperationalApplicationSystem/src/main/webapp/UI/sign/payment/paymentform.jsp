@@ -1256,7 +1256,7 @@ function getOriginalPayment(){
            			}
             	}
             	
-            	$.CurrentNavtab.find("#j_payment_visit_id").val(json.paymentVisitId);
+            	$.CurrentNavtab.find("#j_payment_visit_id").val(json.visitId);
         		changeAmount();
             }else{
             	 BJUI.alertmsg('error', json.message); 
