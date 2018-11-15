@@ -34,6 +34,7 @@ import com.kime.model.User;
 import com.kime.utils.ApproveListUtil;
 import com.kime.utils.CommonUtil;
 import com.kime.utils.PropertiesUtil;
+import com.kime.utils.TypeChangeUtil;
 import com.kime.utils.mail.SendMail;
 import com.sign.biz.BeneficiaryBIZ;
 import com.sign.biz.PaymentBIZ;
@@ -144,23 +145,39 @@ public class PaymentVisitBIZImpl extends BizBase implements PaymentVisitBIZ {
 				}
 				
 				
-				
-				if (lApproves.get(0).getUid().equals("Dept. Head")) {
-					
-					User user=(User) userDAO.query(" where uid='"+paymentVisit.getuId()+"'").get(0);
-					List<User> lUsers =userDAO.query(" where uid='" + user.getDepartment().getUid() + "'");
-					if (lUsers.size() > 0) {
+				List<Dict> lDicts=commonDAO.queryByHql(" select D from Dict D where D.key='"+paymentVisit.getuId()+"' and D.type='SignMan4Manager' ");
+				if (lDicts.size()>0) {
+					List<User> lUsers=userDAO.query(" where uid='"+lDicts.get(0).getValue()+"'");
+					if (list.size()>0) {
 						lApproves.get(0).setUid(lUsers.get(0).getUid());
 						lApproves.get(0).setUname(lUsers.get(0).getName());
 						lApproves.get(0).setDid(lUsers.get(0).getDid());
 						lApproves.get(0).setDname(lUsers.get(0).getDepartment().getName());
 						paymentVisit.setNextApprove(lUsers.get(0).getUid());
-					} else {
-						throw new Exception(" Department Manager is null");
+					}else{
+						throw new Exception("对应签核人员信息不存在，提交审批失败");
 					}
-
-
 				}
+				else {
+					
+					if (lApproves.get(0).getUid().equals("Dept. Head")) {
+						
+						User user=(User) userDAO.query(" where uid='"+paymentVisit.getuId()+"'").get(0);
+						List<User> lUsers =userDAO.query(" where uid='" + user.getDepartment().getUid() + "'");
+						if (lUsers.size() > 0) {
+							lApproves.get(0).setUid(lUsers.get(0).getUid());
+							lApproves.get(0).setUname(lUsers.get(0).getName());
+							lApproves.get(0).setDid(lUsers.get(0).getDid());
+							lApproves.get(0).setDname(lUsers.get(0).getDepartment().getName());
+							paymentVisit.setNextApprove(lUsers.get(0).getUid());
+						} else {
+							throw new Exception(" Department Manager is null");
+						}
+
+
+					}
+				}
+				
 				
 				if (paymentVisit.getAdvanceAmount()>5000||paymentVisit.getTotalLeaveWorkHours()>16||paymentVisit.getBusinessTrip().equals("Oversea 国外")) {
 					try {

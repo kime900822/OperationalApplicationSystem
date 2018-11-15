@@ -76,7 +76,7 @@ public class PaymentBIZImpl extends BizBase implements PaymentBIZ {
 	public void submitPayment(Payment payment) throws Exception {
 		
 		
-		List<Dict> lDicts=commonDAO.queryByHql(" select D from Dict D where D.key='"+payment.getUID()+"'");
+		List<Dict> lDicts=commonDAO.queryByHql(" select D from Dict D where D.key='"+payment.getUID()+"' and D.type='SignMan4Manager' ");
 		if (lDicts.size()>0) {
 			List<User> list=userDAO.query(" where uid='"+lDicts.get(0).getValue()+"'");
 			if (list.size()>0) {
