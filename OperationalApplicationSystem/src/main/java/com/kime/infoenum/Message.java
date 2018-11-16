@@ -116,5 +116,6 @@ public class Message {
 	public static String MAIL_PROPERTIES=StringUtils.class.getClassLoader().getResource("/").getPath()+"/conf/mail.properties";
 	public static String FONT_PATH=StringUtils.class.getClassLoader().getResource("/").getPath()+"/font";
 	public static String FONT_ARAIL_APTH=StringUtils.class.getClassLoader().getResource("/").getPath()+"/font/ARIALUNI.TTF";
+	public static String FONT_WRYH_APTH=StringUtils.class.getClassLoader().getResource("/").getPath()+"/font/WRYH.TTF";
 	
 }

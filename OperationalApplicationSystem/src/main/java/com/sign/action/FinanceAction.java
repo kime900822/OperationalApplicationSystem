@@ -44,6 +44,8 @@ public class FinanceAction extends DictAction {
 				dict.setKey("Petty Cash备用金");
 			}else if (dict.getKey().equals("7")) {
 				dict.setKey("Other 其他");
+			}else if (dict.getKey().equals("8")) {
+				dict.setKey("Travel 备用金");
 			}
 			
 		}
@@ -79,6 +81,8 @@ public class FinanceAction extends DictAction {
 			object.setKey("6");
 		}else if (object.getKey().equals("Other 其他")) {
 			object.setKey("7");
+		}else if (object.getKey().equals("8")) {
+			object.setKey("Travel 备用金");
 		}
 		
 		try {
