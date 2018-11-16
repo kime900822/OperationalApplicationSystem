@@ -153,7 +153,7 @@ public class PDFUtil {
 		PdfReader reader = new PdfReader(url);
 		PdfStamper stamper = new PdfStamper(reader, ba);
 		//BaseFont bf = BaseFont.createFont("STSongStd-Light", "UniGB-UCS2-H", BaseFont.NOT_EMBEDDED);
-		BaseFont bf = BaseFont.createFont(Message.FONT_ARAIL_APTH, BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
+		BaseFont bf = BaseFont.createFont(Message.FONT_ARAILBD_APTH, BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
 		
 		
 		
@@ -193,7 +193,7 @@ public class PDFUtil {
 		
 //		BaseFont bfChinese = BaseFont.createFont("STSongStd-Light", "UniGB-UCS2-H",
 //                BaseFont.NOT_EMBEDDED);
-		BaseFont bfChinese = BaseFont.createFont(Message.FONT_ARAIL_APTH, BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
+		BaseFont bfChinese = BaseFont.createFont(Message.FONT_ARAILBD_APTH, BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
 		Font titleFont= new Font(bfChinese, 10, Font.BOLD);
         Font cellFont= new Font(bfChinese, 6, Font.NORMAL);
         Font formFont= new Font(bfChinese, 12, Font.NORMAL);
@@ -362,7 +362,7 @@ public class PDFUtil {
 		PdfReader reader = new PdfReader(url);
 		PdfStamper stamper = new PdfStamper(reader, ba);
 		//BaseFont bf = BaseFont.createFont("STSongStd-Light", "UniGB-UCS2-H", BaseFont.NOT_EMBEDDED);
-		BaseFont bf = BaseFont.createFont(Message.FONT_ARAIL_APTH, BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
+		BaseFont bf = BaseFont.createFont(Message.FONT_ARAILBD_APTH, BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
 		
 		Font cellFont= new Font(bf, 6, Font.NORMAL);
 		AcroFields form = stamper.getAcroFields();
