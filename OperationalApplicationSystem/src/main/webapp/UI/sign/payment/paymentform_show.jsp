@@ -195,7 +195,7 @@ function dataToFace(){
             			
             		})
             	}
-            	alert(json.visitId)
+
             	$.CurrentNavtab.find("#j_payment_state").val(json.state);
             	if(json.visitId!=undefined&&json.visitId!=''){
                 	$.CurrentNavtab.find("#j_payment_visit_id").val(json.visitId);
