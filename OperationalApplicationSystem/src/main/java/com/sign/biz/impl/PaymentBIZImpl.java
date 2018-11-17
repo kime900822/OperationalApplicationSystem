@@ -126,13 +126,20 @@ public class PaymentBIZImpl extends BizBase implements PaymentBIZ {
 	@Override
 	@Transactional(readOnly=false,propagation=Propagation.REQUIRED,rollbackFor=Exception.class )
 	public void approvePayment(Payment payment) throws Exception {
-		List<Dict> lDicts=dictDAO.query(" where key='"+payment.getPaymentSubject()+"'");
-		if (!lDicts.get(0).getValue().equals("")&&lDicts.get(0).getValue()!=null) {
-			payment.setDocumentAuditID(lDicts.get(0).getValue());
-			paymentDAO.update(payment);
-			User user=(User)userDAO.query(" where id='"+payment.getUID()+"'").get(0);
-			//SendMail.SendMail(user.getEmail(), "Payment application system inform", "Dear sir,<br><br>Your application form which amount is <u><b>"+TypeChangeUtil.formatMoney(payment.getAmountInFigures(),2,payment.getCurrency_1())+"</b></u> have been approved by <u><b>"+payment.getDeptManager()+"</b></u>");	
-			SendMail.SendMail(user.getEmail(), PropertiesUtil.ReadProperties(Message.MAIL_PROPERTIES, "mailTitleOfApprove"), MessageFormat.format(PropertiesUtil.ReadProperties(Message.MAIL_PROPERTIES, "mailContentOfApprove"),TypeChangeUtil.formatMoney(payment.getAmountInFigures(),2,payment.getCurrency_1()),payment.getDeptManager()));	
+		try {
+			List<Dict> lDicts=dictDAO.query(" where key='"+payment.getPaymentSubject()+"'");
+			if (!lDicts.get(0).getValue().equals("")&&lDicts.get(0).getValue()!=null) {
+				payment.setDocumentAuditID(lDicts.get(0).getValue());
+				paymentDAO.update(payment);
+				User user=(User)userDAO.query(" where id='"+payment.getUID()+"'").get(0);
+				//SendMail.SendMail(user.getEmail(), "Payment application system inform", "Dear sir,<br><br>Your application form which amount is <u><b>"+TypeChangeUtil.formatMoney(payment.getAmountInFigures(),2,payment.getCurrency_1())+"</b></u> have been approved by <u><b>"+payment.getDeptManager()+"</b></u>");	
+				SendMail.SendMail(user.getEmail(), PropertiesUtil.ReadProperties(Message.MAIL_PROPERTIES, "mailTitleOfApprove"), MessageFormat.format(PropertiesUtil.ReadProperties(Message.MAIL_PROPERTIES, "mailContentOfApprove"),TypeChangeUtil.formatMoney(payment.getAmountInFigures(),2,payment.getCurrency_1()),payment.getDeptManager()));	
+				logUtil.logInfo("发送邮件：接受地址 "+user.getEmail() + " 发送内容："+ PropertiesUtil.ReadProperties(Message.MAIL_PROPERTIES, "mailTitleOfApprove"));
+			}
+		} catch (Exception e) {
+			logUtil.logInfo(e.getMessage());
+			e.printStackTrace();
+			throw new Exception(e.getMessage());
 		}
 	}
 	
