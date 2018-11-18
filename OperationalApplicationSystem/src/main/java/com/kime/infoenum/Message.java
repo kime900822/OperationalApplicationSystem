@@ -3,6 +3,9 @@
  */
 package com.kime.infoenum;
 
+import com.kime.utils.CommonUtil;
+import com.kime.utils.PropertiesUtil;
+
 import antlr.StringUtils;
 
 public class Message {
@@ -115,6 +118,7 @@ public class Message {
 	public static String SYSTEM_PROPERTIES=StringUtils.class.getClassLoader().getResource("/").getPath()+"/conf/system.properties";
 	public static String MAIL_PROPERTIES=StringUtils.class.getClassLoader().getResource("/").getPath()+"/conf/mail.properties";
 	public static String FONT_PATH=StringUtils.class.getClassLoader().getResource("/").getPath()+"/font";
+	public static String PRINT_FONT=FONT_PATH+"/"+PropertiesUtil.ReadProperties(Message.SYSTEM_PROPERTIES, "PrintFont");
 	public static String FONT_ARAIL_APTH=StringUtils.class.getClassLoader().getResource("/").getPath()+"/font/ARIALUNI.TTF";
 	public static String FONT_ARAILBD_APTH=StringUtils.class.getClassLoader().getResource("/").getPath()+"/font/arialbd.ttf";
 	

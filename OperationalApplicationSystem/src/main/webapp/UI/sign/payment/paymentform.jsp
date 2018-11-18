@@ -1299,7 +1299,7 @@ function showVisitForm(){
 	    height:800,
 	    beforeClose:function(o){
 	    	$.CurrentNavtab.find("#j_payment_visit_id").val(o.find("#j_payment_visit_view_id").val());	
-	    	$.CurrentNavtab.find("#j_payment_usageDescription").val(o.find("#j_payment_visit_view_visitDateFrom").val()+' '+o.find("#j_payment_visit_view_visitDateTo").val()+'  '+o.find("#j_payment_visit_view_DetailPlace").val()+'  '+o.find("#j_payment_visit_view_visitPurpose").val());	
+	    	$.CurrentNavtab.find("#j_payment_usageDescription").val(o.find("#j_payment_visit_view_visitDateFrom").val()+' '+o.find("#j_payment_visit_view_visitDateTo").val()+'  '+o.find("#j_payment_visit_view_DetailPlace").val()+'  '+o.find("#j_payment_visit_view_visitPurpose").val()+'  '+o.find("#j_payment_visit_view_projectNo").val()+'  '+o.find("#j_payment_visit_view_DetailPlace").val());	
 	    	var landwayTotal=toNumber(o.find("#table-business-trip-total-metro").html())+toNumber(o.find("#table-business-trip-total-taxi").html())+toNumber(o.find("#table-business-trip-total-train").html())+toNumber(o.find("#table-business-trip-total-bus").html())+toNumber(o.find("#table-business-trip-total-rentalCar").html())+toNumber(o.find("#table-business-trip-total-roadToilWithoutVAT").html())+toNumber(o.find("#table-business-trip-total-selfDriver").html())
 	    	$.CurrentNavtab.find("#j_payment_amount_1_t").val(landwayTotal);	
 	    	$.CurrentNavtab.find("#j_payment_amount_2_t").val(toNumber(o.find("#table-business-trip-total-roadToilVAT").html()));	

@@ -2,14 +2,20 @@ package com.sign.model;
 
 
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.stereotype.Component;
+
+import com.sign.model.paymentVisit.PaymentVisit;
 
 @Component
 @Entity@Table(name="t_payment")
@@ -451,8 +457,17 @@ public class Payment {
 	private String GMApproveDate;
 	@Column
 	private String visitId;
+	@Transient
+	private PaymentVisit paymentVisit;
 
 
+	public PaymentVisit getPaymentVisit() {
+		return paymentVisit;
+	}
+
+	public void setPaymentVisit(PaymentVisit paymentVisit) {
+		this.paymentVisit = paymentVisit;
+	}
 
 	public String getVisitId() {
 		return visitId;
