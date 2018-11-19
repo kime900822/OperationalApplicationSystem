@@ -448,7 +448,7 @@ public class PDFUtil {
         form.setField("usageDescription",payment.getUsageDescription());
         form.setField("handingFee",payment.getHandingFee());
         form.setField("amountInFigures","RMB "+CommonUtil.formatAmount(payment.getAmountInFigures().replaceAll(",", "")));
-        form.setField("amountInBig",CommonUtil.digitUppercase(Double.parseDouble(payment.getAmountInFigures())));
+        form.setField("amountInBig",CommonUtil.digitUppercase(Double.parseDouble(payment.getAmountInFigures().replaceAll(",", ""))));
         form.setField("documentAudit",payment.getDocumentAudit());
         form.setField("deptManager",payment.getDeptManager()+"/"+payment.getDeptManagerDate());
        
