@@ -43,7 +43,7 @@ function editStamp(o){
 	    url:'sign/stamp/stampform_all_usedFile.jsp',
 	    title:'Used Files',
 	    width:'800',
-	    data:{id:$(o).parent().parent().siblings().eq(2).children().html()}
+	    data:{id:$(o).parent().parent().siblings().eq(3).children().html()}
 	})
 
 	
