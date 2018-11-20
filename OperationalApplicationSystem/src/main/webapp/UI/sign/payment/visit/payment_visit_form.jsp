@@ -51,7 +51,7 @@ function paymentVisitCheckSave(o){
 		err+=' Visit Detail Purpose can`t be empty!<br>'
 	}
 	
-	if(((o.currency!=null&&o.currency!='')&&(o.advanceAmount==null||o.advanceAmount=='0.00')) || ((o.currency==null||o.currency=='')&&(o.advanceAmount!='0.00'))){
+	if(((o.currency!=null&&o.currency!='')&&(o.advanceAmount==null||o.advanceAmount=='0.00')) || ((o.currency==null||o.currency=='')&&(o.advanceAmount!='0.00'&&o.advanceAmount!='0'))){
 		err+=' Currency and amount must be both input or empty. !<br>'
 	}
 	

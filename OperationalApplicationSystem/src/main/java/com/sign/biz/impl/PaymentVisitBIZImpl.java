@@ -121,22 +121,7 @@ public class PaymentVisitBIZImpl extends BizBase implements PaymentVisitBIZ {
 					throw new Exception("未找到类型为:"+paymentVisitApprove+"的签核");
 				}		
 				List<Approve> lApproves = approveBIZ.getApproveAndChild(list.get(0).getValueExplain());	
-				
-				Boolean[] isNeed= {true,false,false,false,false};
-				for (PaymentVisitEmployee obj : paymentVisit.getEmployees()) {
-					if(obj.getHotelBookingByHR().equals("YES")) {
-						isNeed[1]=true;
-					}
-					if(obj.getCarArrangeByHR().equals("YES")) {
-						isNeed[2]=true;
-					}
-					if(obj.getAirTickerBookingByHR().equals("YES")) {
-						isNeed[3]=true;
-					}
-					if(obj.getVisarArrangeByHR().equals("YES")) {
-						isNeed[4]=true;
-					}
-				}
+			
 				
 				
 				
@@ -145,25 +130,50 @@ public class PaymentVisitBIZImpl extends BizBase implements PaymentVisitBIZ {
 				}
 				
 				
-				List<Dict> lDicts=commonDAO.queryByHql(" select D from Dict D where D.key='"+paymentVisit.getuId()+"' and D.type='SignMan4Manager' ");
-				if (lDicts.size()>0) {
-					List<User> lUsers=userDAO.query(" where uid='"+lDicts.get(0).getValue()+"'");
-					if (list.size()>0) {
-						lApproves.get(0).setUid(lUsers.get(0).getUid());
-						lApproves.get(0).setUname(lUsers.get(0).getName());
-						lApproves.get(0).setDid(lUsers.get(0).getDid());
-						lApproves.get(0).setDname(lUsers.get(0).getDepartment().getName());
-						paymentVisit.setNextApprove(lUsers.get(0).getUid());
-					}else{
-						throw new Exception("对应签核人员信息不存在，提交审批失败");
-					}
-				}
-				else {
-					
-					if (lApproves.get(0).getUid().equals("Dept. Head")) {
-						
-						User user=(User) userDAO.query(" where uid='"+paymentVisit.getuId()+"'").get(0);
-						List<User> lUsers =userDAO.query(" where uid='" + user.getDepartment().getUid() + "'");
+				for (int i = 0; i < lApproves.size(); i++) {
+					if (lApproves.get(i).getUid().equals("Dept. Head")) {
+						if (paymentVisit.getAdvanceAmount()>5000||paymentVisit.getTotalLeaveWorkHours()>16||paymentVisit.getBusinessTrip().equals("Oversea 国外")) {
+							try {
+								User GM=(User) userDAO.query(" where uid='"+PropertiesUtil.ReadProperties(Message.SYSTEM_PROPERTIES, "GMApprove")+"' ").get(0);
+								lApproves.get(0).setUid(GM.getUid());
+								lApproves.get(0).setUname(GM.getName());
+								lApproves.get(0).setDid(GM.getDid());
+								lApproves.get(0).setDname(GM.getDepartment().getName());
+								paymentVisit.setNextApprove(GM.getUid());
+							} catch (Exception e) {
+								logUtil.logInfo("自动付款申异常:总经理信息获取异常:"+paymentVisit.getuName());
+								throw new Exception("自动付款申异常:总经理信息获取异常:"+paymentVisit.getuName());
+							}
+						}else {
+							List<Dict> lDicts=commonDAO.queryByHql(" select D from Dict D where D.key='"+paymentVisit.getuId()+"' and D.type='SignMan4Manager' ");
+							if (lDicts.size()>0) {
+								List<User> lUsers=userDAO.query(" where uid='"+lDicts.get(0).getValue()+"'");
+								if (list.size()>0) {
+									lApproves.get(0).setUid(lUsers.get(0).getUid());
+									lApproves.get(0).setUname(lUsers.get(0).getName());
+									lApproves.get(0).setDid(lUsers.get(0).getDid());
+									lApproves.get(0).setDname(lUsers.get(0).getDepartment().getName());
+									paymentVisit.setNextApprove(lUsers.get(0).getUid());
+								}else{
+									throw new Exception("对应签核人员信息不存在，提交审批失败");
+								}
+							}else {
+								User user=(User) userDAO.query(" where uid='"+paymentVisit.getuId()+"'").get(0);
+								List<User> lUsers =userDAO.query(" where uid='" + user.getDepartment().getUid() + "'");
+								if (lUsers.size() > 0) {
+									lApproves.get(0).setUid(lUsers.get(0).getUid());
+									lApproves.get(0).setUname(lUsers.get(0).getName());
+									lApproves.get(0).setDid(lUsers.get(0).getDid());
+									lApproves.get(0).setDname(lUsers.get(0).getDepartment().getName());
+									paymentVisit.setNextApprove(lUsers.get(0).getUid());
+								} else {
+									throw new Exception(" Department Manager is null");
+								}
+							}
+							
+						}
+					}else {
+						List<User> lUsers =userDAO.query(" where uid='" + lApproves.get(0).getUid() + "'");
 						if (lUsers.size() > 0) {
 							lApproves.get(0).setUid(lUsers.get(0).getUid());
 							lApproves.get(0).setUname(lUsers.get(0).getName());
@@ -171,42 +181,18 @@ public class PaymentVisitBIZImpl extends BizBase implements PaymentVisitBIZ {
 							lApproves.get(0).setDname(lUsers.get(0).getDepartment().getName());
 							paymentVisit.setNextApprove(lUsers.get(0).getUid());
 						} else {
-							throw new Exception(" Department Manager is null");
+							throw new Exception(lApproves.get(0).getUid()+" is not exist!");
 						}
-
-
+						
 					}
+					
+					
+					
 				}
 				
 				
-				if (paymentVisit.getAdvanceAmount()>5000||paymentVisit.getTotalLeaveWorkHours()>16||paymentVisit.getBusinessTrip().equals("Oversea 国外")) {
-					try {
-						User GM=(User) userDAO.query(" where uid='"+PropertiesUtil.ReadProperties(Message.SYSTEM_PROPERTIES, "GMApprove")+"' ").get(0);
-						lApproves.get(0).setUid(GM.getUid());
-						lApproves.get(0).setUname(GM.getName());
-						lApproves.get(0).setDid(GM.getDid());
-						lApproves.get(0).setDname(GM.getDepartment().getName());
-						paymentVisit.setNextApprove(GM.getUid());
-					} catch (Exception e) {
-						logUtil.logInfo("自动付款申异常:总经理信息获取异常:"+paymentVisit.getuName());
-						throw new Exception("自动付款申异常:总经理信息获取异常:"+paymentVisit.getuName());
-					}
-				}
 				
-				for(int i=0;i<lApproves.size();i++) {
-					if(isNeed[i]){
-						ApproveList tmp=new ApproveList();
-						tmp.setUid(lApproves.get(i).getUid());
-						tmp.setDid(lApproves.get(i).getDid());
-						tmp.setTradeId(paymentVisit.getId());
-						tmp.setName(lApproves.get(i).getName());
-						tmp.setUname(lApproves.get(i).getUname());
-						tmp.setDname(lApproves.get(i).getDname());
-						tmp.setLevel(lApproves.get(i).getLevel());
-						approveListDAO.save(tmp);
-						lApproveLists.add(tmp);
-					}
-				}
+			
 				
 //				for (Approve approve : lApproves) {
 //					ApproveList tmp=new ApproveList();
