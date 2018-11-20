@@ -188,24 +188,21 @@ public class PaymentVisitBIZImpl extends BizBase implements PaymentVisitBIZ {
 					
 					
 					
-				}
-				
-				
-				
+				}		
 			
 				
-//				for (Approve approve : lApproves) {
-//					ApproveList tmp=new ApproveList();
-//					tmp.setUid(approve.getUid());
-//					tmp.setDid(approve.getDid());
-//					tmp.setTradeId(paymentVisit.getId());
-//					tmp.setName(approve.getName());
-//					tmp.setUname(approve.getUname());
-//					tmp.setDname(approve.getDname());
-//					tmp.setLevel(approve.getLevel());
-//					approveListDAO.save(tmp);
-//					lApproveLists.add(tmp);
-//				}
+				for (Approve approve : lApproves) {
+					ApproveList tmp=new ApproveList();
+					tmp.setUid(approve.getUid());
+					tmp.setDid(approve.getDid());
+					tmp.setTradeId(paymentVisit.getId());
+					tmp.setName(approve.getName());
+					tmp.setUname(approve.getUname());
+					tmp.setDname(approve.getDname());
+					tmp.setLevel(approve.getLevel());
+					approveListDAO.save(tmp);
+					lApproveLists.add(tmp);
+				}
 				
 				
 				for (ApproveList approveList : paymentVisit.getApproveList()) {
