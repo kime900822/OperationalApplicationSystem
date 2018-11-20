@@ -209,9 +209,12 @@ public class PaymentVisitBIZImpl extends BizBase implements PaymentVisitBIZ {
 					approveListDAO.delete(approveList);
 				}
 				
-			}else if (paymentVisit.getState().contains("Rejected")) {
-				paymentVisit.setState(paymentVisit.getApproveHis().get(paymentVisit.getApproveHis().size()-1).getName()+" Approval");
-				approveHisBIZ.delete(paymentVisit.getApproveHis().get(paymentVisit.getApproveHis().size()-1));
+				User user=(User) userDAO.query(" where uid='"+paymentVisit.getNextApprove()+"' ").get(0);
+				SendMail.SendMail(user.getEmail(), PropertiesUtil.ReadProperties(Message.MAIL_PROPERTIES, "mailTitleOfPaymentVisit"), MessageFormat.format(PropertiesUtil.ReadProperties(Message.MAIL_PROPERTIES, "mailContentOfPaymentVisitSubmit"),paymentVisit.getReferenceNo(),paymentVisit.getuName(),paymentVisit.getVisitDetailPurpose(),PropertiesUtil.ReadProperties(Message.SYSTEM_PROPERTIES, "website")));
+				logUtil.logInfo("出差预申请开始审批 发送邮件  地址："+user.getEmail());
+				
+			}else {
+				paymentVisit.setNextApprove(paymentVisit.getApproveList().get(0).getUid());
 			}
 			
 			
@@ -277,6 +280,10 @@ public class PaymentVisitBIZImpl extends BizBase implements PaymentVisitBIZ {
 					if (Integer.parseInt(level)+2<=paymentVisit.getApproveList().size()) {
 						paymentVisit.setState(paymentVisit.getApproveList().get(Integer.parseInt(level+1)).getName()+" Approval");
 						paymentVisit.setNextApprove(paymentVisit.getApproveList().get(Integer.parseInt(level+1)).getUid());
+						User user=(User) userDAO.query(" where uid='"+paymentVisit.getNextApprove()+"' ").get(0);
+						SendMail.SendMail(user.getEmail(), PropertiesUtil.ReadProperties(Message.MAIL_PROPERTIES, "mailTitleOfPaymentVisit"), MessageFormat.format(PropertiesUtil.ReadProperties(Message.MAIL_PROPERTIES, "mailContentOfPaymentVisitSubmit"),paymentVisit.getReferenceNo(),paymentVisit.getuName(),paymentVisit.getVisitDetailPurpose(),PropertiesUtil.ReadProperties(Message.SYSTEM_PROPERTIES, "website")));
+						logUtil.logInfo("出差预申请审批下一步审批  发送邮件  地址："+user.getEmail());
+						
 					}else {
 						paymentVisit.setState(PaymentVisitHelp.COMPLETED);
 						paymentVisit.setNextApprove("");
@@ -303,24 +310,30 @@ public class PaymentVisitBIZImpl extends BizBase implements PaymentVisitBIZ {
 							user=(User) userDAO.query(" where uid in (select D.value from Dict D where D.type='PAYMENT_VISIT' and D.key='A') ").get(0);
 							paymentVisit.setNoticeA(user.getUid());
 							SendMail.SendMail(user.getEmail(),PropertiesUtil.ReadProperties(Message.MAIL_PROPERTIES, "mailTitleOfPaymentVisit") , MessageFormat.format(PropertiesUtil.ReadProperties(Message.MAIL_PROPERTIES, "mailContentOfPaymentVisitNotice"),paymentVisit.getReferenceNo()));
+							logUtil.logInfo("出差预申请审批结束   发送邮件  地址："+user.getEmail());	
 						}
 						if (isNeed[1]) {
 							user=(User) userDAO.query(" where uid in (select D.value from Dict D where D.type='PAYMENT_VISIT' and D.key='B') ").get(0);
 							paymentVisit.setNoticeB(user.getUid());
 							SendMail.SendMail(user.getEmail(),PropertiesUtil.ReadProperties(Message.MAIL_PROPERTIES, "mailTitleOfPaymentVisit") , MessageFormat.format(PropertiesUtil.ReadProperties(Message.MAIL_PROPERTIES, "mailContentOfPaymentVisitNotice"),paymentVisit.getReferenceNo()));
+							logUtil.logInfo("出差预申请审批结束  发送邮件  地址："+user.getEmail());	
 						}
 						if (isNeed[2]) {
 							user=(User) userDAO.query(" where uid in (select D.value from Dict D where D.type='PAYMENT_VISIT' and D.key='C') ").get(0);
 							paymentVisit.setNoticeC(user.getUid());
 							SendMail.SendMail(user.getEmail(),PropertiesUtil.ReadProperties(Message.MAIL_PROPERTIES, "mailTitleOfPaymentVisit") , MessageFormat.format(PropertiesUtil.ReadProperties(Message.MAIL_PROPERTIES, "mailContentOfPaymentVisitNotice"),paymentVisit.getReferenceNo()));
+							logUtil.logInfo("出差预申请审批结束  发送邮件  地址："+user.getEmail());	
 						}
 						if (isNeed[3]) {
 							user=(User) userDAO.query(" where uid in (select D.value from Dict D where D.type='PAYMENT_VISIT' and D.key='D') ").get(0);
 							paymentVisit.setNoticeD(user.getUid());
 							SendMail.SendMail(user.getEmail(),PropertiesUtil.ReadProperties(Message.MAIL_PROPERTIES, "mailTitleOfPaymentVisit") , MessageFormat.format(PropertiesUtil.ReadProperties(Message.MAIL_PROPERTIES, "mailContentOfPaymentVisitNotice"),paymentVisit.getReferenceNo()));
+							logUtil.logInfo("出差预申请审批结束  发送邮件  地址："+user.getEmail());	
 						}
 						
-							
+						user=(User) userDAO.query(" where uid='"+paymentVisit.getuId()+"' ").get(0);
+						SendMail.SendMail(user.getEmail(), PropertiesUtil.ReadProperties(Message.MAIL_PROPERTIES, "mailTitleOfPaymentVisit"), MessageFormat.format(PropertiesUtil.ReadProperties(Message.MAIL_PROPERTIES, "mailContentOfPaymentVisitApprove"),paymentVisit.getReferenceNo(),paymentVisit.getApproveList().get(paymentVisit.getApproveList().size()-1).getUname()));
+						logUtil.logInfo("出差预申请审批结束  发送邮件  地址："+user.getEmail());	
 						
 						if (paymentVisit.getAdvanceAmount()>0) {
 							buildPayment(paymentVisit);
@@ -439,7 +452,7 @@ public class PaymentVisitBIZImpl extends BizBase implements PaymentVisitBIZ {
 			payment.setBeneficiaryAccountBank(beneficiary.getAccbank());
 			payment.setRequestPaymentDate(CommonUtil.getDate());
 		} catch (Exception e) {
-			logUtil.logDebug(" 收款人信息获取失败 "+e.getMessage());
+			logUtil.logInfo(" 收款人信息获取失败 "+e.getMessage());
 			throw new Exception(" 收款人信息获取失败 "+e.getMessage());
 		}
 		
