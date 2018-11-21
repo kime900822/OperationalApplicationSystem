@@ -26,6 +26,7 @@ import org.springframework.stereotype.Controller;
 import com.google.gson.Gson;
 import com.kime.base.ActionBase;
 import com.kime.infoenum.Message;
+import com.kime.model.Approve;
 import com.kime.model.ApproveHis;
 import com.kime.model.ApproveList;
 import com.kime.model.User;
@@ -387,7 +388,7 @@ public class PaymentVisitAction extends ActionBase{
 			else if (beneficiaryBIZ.queryBeneficiary(" where supplierCode='"+paymentVisit.getuId()+"'").size()==0) {
 				result.setMessage("The user is not maintained to the payee.!");
 				result.setStatusCode("300");
-			}{
+			}else {
 				if (!paymentVisit.getId().equals("")&&paymentVisit.getId()!=null) {
 
 					
@@ -557,6 +558,33 @@ public class PaymentVisitAction extends ActionBase{
 	}
 	
 	
+	@Action(value="getPaymentVisitStatus",results={@org.apache.struts2.convention.annotation.Result(type="stream",
+			params={
+					"inputName", "reslutJson"
+			})})
+	public String getPaymentVisitStatus() throws UnsupportedEncodingException{	
+		try {
+			Map<String, String> status=new HashMap<>();
+			status.put(PaymentVisitHelp.SAVE, PaymentVisitHelp.SAVE);
+			status.put(PaymentVisitHelp.SUBMIT, PaymentVisitHelp.SUBMIT);
+			List<Approve> list=paymentVisitBIZ.getApprove();
+			for (Approve approve : list) {
+				status.put(approve.getName()+" Approval", approve.getName()+" Approval");
+				status.put(approve.getName()+" Rejected", approve.getName()+" Rejected");
+			}
+			status.put(PaymentVisitHelp.CANCEL, PaymentVisitHelp.CANCEL);
+			status.put(PaymentVisitHelp.INVALID, PaymentVisitHelp.INVALID);
+			status.put(PaymentVisitHelp.COMPLETED, PaymentVisitHelp.COMPLETED);
+			result.setStatusCode("200");
+			result.setParams(status);
+		} catch (Exception e) {
+			result.setStatusCode("300");
+			result.setMessage(e.getMessage());
+		}
+		
+		reslutJson=new ByteArrayInputStream(new Gson().toJson(result).getBytes("UTF-8"));  	
+		return SUCCESS;
+	}
 	
 	@Action(value="paymentVisitPrintBusiness",results={@org.apache.struts2.convention.annotation.Result(type="stream",
 			params={

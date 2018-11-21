@@ -2,7 +2,9 @@ package com.sign.biz;
 
 import java.util.List;
 
+import com.kime.model.Approve;
 import com.kime.model.ApproveHis;
+import com.kime.model.ApproveList;
 import com.sign.model.paymentVisit.PaymentVisit;
 import com.sign.model.paymentVisit.PaymentVisitBusinessTrip;
 
@@ -31,4 +33,6 @@ public interface PaymentVisitBIZ {
 	public void cancel(String id) throws Exception;
 	
 	public void buildPayment(PaymentVisit paymentVisit) throws Exception;
+
+	List<Approve> getApprove();
 }

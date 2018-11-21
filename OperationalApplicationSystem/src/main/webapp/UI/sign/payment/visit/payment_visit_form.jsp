@@ -522,6 +522,15 @@ function paymengVisitCheckAdvanceAmount(o){
 						<textarea cols="50" rows="3" id="j_payment_visitDetailPurpose"  name="visitDetailPurpose" data-toggle="autoheight"></textarea>
 					</td>
 				</tr>
+				<tr>
+					<td>
+						Remark: Business Trip Standard
+					</td>
+					<td colspan="4">
+						<a href="templet/beneficiary.xls">①Business Trip Management Rev.2</a><br>
+						<a href="templet/beneficiary.xls">②Business Trip Management Instruction -Frequently Question</a>
+					</td>
+				</tr>
 				<tr height="400px">
 					<td colspan="5" >
 						   <table class="table table-bordered" id="datagrid-payment-visit" data-toggle="datagrid" data-options="{
@@ -542,7 +551,8 @@ function paymengVisitCheckAdvanceAmount(o){
 						        columnShowhide:false,
 						        columnFilter:false,
 						        columnMenu:false,
-						        fieldSortable:false
+						        fieldSortable:false,
+						        key:'employeeNo'
 						    }">
 						        <thead>
 						            <tr>

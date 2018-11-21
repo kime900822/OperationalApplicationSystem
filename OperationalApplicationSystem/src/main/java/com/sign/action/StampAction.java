@@ -959,7 +959,7 @@ public class StampAction extends ActionBase{
 				}
 	    		
 	        	Class c = (Class) new Stamp().getClass();  
-	        	ByteArrayOutputStream os=PDFUtil.exportPDF("Seal", c, lStamps, "yyy-MM-dd",lHeadColumns);
+	        	ByteArrayOutputStream os=PDFUtil.exportPDF("Seal", c, lStamps, "yyy-MM-dd",lHeadColumns,"2",9);
 	        	byte[] fileContent = os.toByteArray();
 	        	ByteArrayInputStream is = new ByteArrayInputStream(fileContent);
 	        	
@@ -1028,7 +1028,7 @@ public class StampAction extends ActionBase{
 				}
 	    		
 	        	Class c = (Class) new Stamp().getClass();  
-	        	ByteArrayOutputStream os=PDFUtil.exportPDF("Seal", c, lStamps, "yyy-MM-dd",lHeadColumns);
+	        	ByteArrayOutputStream os=PDFUtil.exportPDF("Seal", c, lStamps, "yyy-MM-dd",lHeadColumns,"2",9);
 	        	byte[] fileContent = os.toByteArray();
 	        	ByteArrayInputStream is = new ByteArrayInputStream(fileContent);
 	        	

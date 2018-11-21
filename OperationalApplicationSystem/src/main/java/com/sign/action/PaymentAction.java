@@ -1639,7 +1639,7 @@ public class PaymentAction extends ActionBase {
 			
 		    
         	Class c = (Class) new PaymentPO().getClass();  
-        	ByteArrayOutputStream os=PDFUtil.exportPDF("PD Report", c, lPaymentPOs, "yyy-MM-dd",lColumns);
+        	ByteArrayOutputStream os=PDFUtil.exportPDF("PD Report", c, lPaymentPOs, "yyy-MM-dd",lColumns,"1",6);
         	byte[] fileContent = os.toByteArray();
         	ByteArrayInputStream is = new ByteArrayInputStream(fileContent);
         	   	

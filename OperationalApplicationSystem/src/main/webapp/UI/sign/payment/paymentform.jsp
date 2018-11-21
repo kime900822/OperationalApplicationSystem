@@ -571,8 +571,8 @@ function showButton(state,print,uid,documentAuditid,deptManagerid){
 		}else{
 			$.CurrentNavtab.find('#payment-delete').show();
 		}
-		//$.CurrentNavtab.find('#payment-invalid-tr').hide();
-		//$.CurrentNavtab.find('#payment-return-tr').hide();	
+		$.CurrentNavtab.find('#payment-invalid-tr').hide();
+		$.CurrentNavtab.find('#payment-return-tr').hide();	
 	}else if(state=="4"){//财务处理完成  非财务人员查看。可打印
 		$.CurrentNavtab.find('#payment-save').hide();
 		$.CurrentNavtab.find('#payment-submit').hide();
@@ -842,12 +842,13 @@ function dataToFace(){
             	$.CurrentNavtab.find("#j_payment_documentAudit").val(json.documentAudit);
             	$.CurrentNavtab.find("#j_payment_deptManager").val(json.deptManager);
             	var b=false;
-            	if(json.state=='0'&&'${user.uid}'==json.UID){
+            	if((json.state=='0'||json.state=='6')&&'${user.uid}'==json.UID){
             		b=true;
             	}
             	if('${param.viewtype}'=='admin'&&json.state!='0'&&json.state!='1'){
             		b=true;
             	}
+
             	
             	if(json.file_invoice!=undefined&&json.file_invoice!=""){
             		var file=json.file_invoice.split('|');

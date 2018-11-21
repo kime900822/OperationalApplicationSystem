@@ -48,6 +48,11 @@ function datagrid_tree_operation() {
         		<td>
             	<select name="state" data-toggle="selectpicker"  data-width="80px">
 	              <option value="" >all</option>
+	              <option value="Save" >Save</option>
+	              <option value="Manager Approval" >Manager Approval</option>
+	              <option value="End Approval" >End Approval</option>
+	              <option value="Invalid" >Invalid</option>
+	              <option value="Cancel" >Cancel</option>
             	</select>
         		</td>
         		<td colspan="2"></td>

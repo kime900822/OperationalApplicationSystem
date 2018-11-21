@@ -3,17 +3,17 @@ package com.sign.other;
 public class PaymentVisitHelp {
 	
 	
-	public final static String SAVE="SAVE";
+	public final static String SAVE="Save";
 	
-	public final static String SUBMIT="SUBMIT";
+	public final static String SUBMIT="Manafer Approval";
 	
-	public final static String REJECT="REJECT";
+	public final static String REJECT="Reject";
 	
-	public final static String INVALID="INVALID";
+	public final static String INVALID="Invalid";
 	
-	public final static String COMPLETED="END APPROVAL";
+	public final static String COMPLETED="End Approval";
 	
-	public final static String CANCEL="CANCEL";
+	public final static String CANCEL="Cancel";
 	
 
 	public static String getVisitPurpose(String type) {

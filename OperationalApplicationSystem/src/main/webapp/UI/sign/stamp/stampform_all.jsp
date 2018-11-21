@@ -206,7 +206,7 @@ function exportCheckedStampPDF(){
         	 icon:'printPDF',
         	 class:'btn-green',
         	 function:exportCheckedStampPDF}],
-        toolbarItem: 'export,printPDF',
+        toolbarItem: 'export',
         editMode: {navtab:{width:'830',height:800,title:'Edit Seal',mask:true,fresh:true}},
         delUrl:'deleteUser.action',
         editUrl: 'sign/stamp/stampform.jsp',
@@ -215,8 +215,7 @@ function exportCheckedStampPDF(){
         contextMenuB: true,
         hScrollbar: true,
         showCheckboxcol: true,
-        filterThead:false,
-        exportOption: {type:'file', options:{url:'exportStampExcel.action?queryType=all', loadingmask:true,queryForm:$.CurrentNavtab.find('#datagrid-stamp-all-query')}}
+        filterThead:false
     }">
         <thead>
             <tr>

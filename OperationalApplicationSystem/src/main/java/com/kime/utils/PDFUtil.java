@@ -38,8 +38,19 @@ import freemarker.template.utility.StringUtil;
 public class PDFUtil {
 
 	
-	
-	public static <T>ByteArrayOutputStream  exportPDF(String title, Class class1, Collection<T> dataset,  String pattern,List<HeadColumn> lColumns) throws Exception {
+	/**
+	 * 
+	 * @param title 文件名字
+	 * @param class1  对象
+	 * @param dataset 数据集合
+	 * @param pattern 
+	 * @param lColumns 打印栏位
+	 * @param direction 打印方向 1 竖向 2 横向
+	 * @param fileSIze 字体大小
+	 * @return
+	 * @throws Exception
+	 */
+	public static <T>ByteArrayOutputStream  exportPDF(String title, Class class1, Collection<T> dataset,  String pattern,List<HeadColumn> lColumns,String direction,int fileSIze) throws Exception {
 		
 
 		ByteArrayOutputStream out=new ByteArrayOutputStream();
@@ -48,7 +59,21 @@ public class PDFUtil {
 	    String[] fields=new String[lColumns.size()];
 	    String[] aligns=new String[lColumns.size()];
 	    float[] widths=new float[lColumns.size()];
+	    float totalWidth=0;
 	    float total=0;
+		
+		Document document = new Document();
+		PdfWriter writer = PdfWriter.getInstance(document, out);
+		writer.setViewerPreferences(PdfWriter.PageModeUseThumbs);
+		if(direction.equals("1")) {
+			document.setPageSize(PageSize.A4);
+			totalWidth=520;
+		}else
+		{
+			document.setPageSize(PageSize.A4.rotate());
+			totalWidth=800;
+		}
+		
 		for (int i = 0; i < lColumns.size(); i++) {
 			headers[i]=lColumns.get(i).getLabel();
 			fields[i]=lColumns.get(i).getName();
@@ -57,24 +82,19 @@ public class PDFUtil {
 			total+=widths[i];
 		}
 		for (int i = 0; i < lColumns.size(); i++) {
-			widths[i]=Float.parseFloat(lColumns.get(i).getWidth())/total*520;
+			widths[i]=Float.parseFloat(lColumns.get(i).getWidth())/total*totalWidth;
 		}
-		
-		Document document = new Document();
-		PdfWriter writer = PdfWriter.getInstance(document, out);
-		writer.setViewerPreferences(PdfWriter.PageModeUseThumbs);
-		document.setPageSize(PageSize.A4);
 		document.open();
 		PdfPTable table = new PdfPTable(widths);
 		table.setLockedWidth(true);
-		table.setTotalWidth(520);
+		table.setTotalWidth(totalWidth);
 		table.setHorizontalAlignment(Element.ALIGN_LEFT);
 		
         BaseFont bfChinese = BaseFont.createFont("STSongStd-Light", "UniGB-UCS2-H",
                 BaseFont.NOT_EMBEDDED);
         Font titleFont= new Font(bfChinese, 12, Font.BOLD);
-        Font headFont= new Font(bfChinese, 6, Font.BOLD);
-        Font cellFont= new Font(bfChinese, 6, Font.NORMAL);
+        Font headFont= new Font(bfChinese, fileSIze, Font.BOLD);
+        Font cellFont= new Font(bfChinese, fileSIze, Font.NORMAL);
 		//表头
     	PdfPCell pdfCell = new PdfPCell();
     	pdfCell.setMinimumHeight(20);

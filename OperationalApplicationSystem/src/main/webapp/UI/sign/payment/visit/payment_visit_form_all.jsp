@@ -10,6 +10,8 @@ function datagrid_tree_operation() {
 }
 
 
+
+
 </script>
 <div class="bjui-pageHeader" style="background-color:#fefefe; border-bottom:none;">
 <form data-toggle="ajaxsearch" data-options="{searchDatagrid:$.CurrentNavtab.find('#datagrid-payment-admin-filter')}" id="datagrid-payment-admin-query">
@@ -54,6 +56,11 @@ function datagrid_tree_operation() {
         		<td>
             	<select name="state" data-toggle="selectpicker"  data-width="80px">
 	              <option value="" >all</option>
+	              <option value="Save" >Save</option>
+	              <option value="Manager Approval" >Manager Approval</option>
+	              <option value="End Approval" >End Approval</option>
+	              <option value="Invalid" >Invalid</option>
+	              <option value="Cancel" >Cancel</option>
             	</select>
         		</td>
         		<td colspan="2" align="center">

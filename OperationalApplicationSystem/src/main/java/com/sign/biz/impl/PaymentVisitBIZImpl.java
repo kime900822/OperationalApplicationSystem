@@ -471,6 +471,15 @@ public class PaymentVisitBIZImpl extends BizBase implements PaymentVisitBIZ {
 		}
 
 	}
+	
+	@Override
+	public List<Approve> getApprove(){
+		String paymentVisitApprove=PropertiesUtil.ReadProperties(Message.SYSTEM_PROPERTIES, "PaymentVisitApprove");
+		List<Dict> list=dictDAO.query(" where type='CHECKTYPE' and key='"+paymentVisitApprove+"'");
+		List<Approve> lApproves = approveBIZ.getApproveAndChild(list.get(0).getValueExplain());	
+		
+		return lApproves;
+	}
 
 	
 }

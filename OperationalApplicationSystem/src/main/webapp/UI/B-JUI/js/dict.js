@@ -22,3 +22,22 @@ function getVisitViewVisitPurpose(x){
 	}
 	
 }
+
+
+function getPaymentVisitStatus(){
+	BJUI.ajax('doajax', {
+	    url: 'getPaymentVisitStatus.action',
+	    loadingmask: true,
+	    data:{id:$.CurrentNavtab.find("#j_payment_visit_id").val()},	    
+	    okCallback: function(json, options) {
+            if(json.status='200'){
+            	return json.params
+            }else{
+            	return [];
+            }
+	    }
+	});	
+	
+	
+	
+}
