@@ -426,7 +426,7 @@ public class PDFUtil {
         
         if (payment.getAmount_4()!=null&&!payment.getAmount_4().equals("")&&!payment.getAmount_4().equals("0.00")) {
         	form.setField("receivingOrApprovalDate_4",payment.getReceivingOrApprovalDate_4());
-        	form.setField("amount_4",payment.getAmount_4());
+        	form.setField("amount_4",CommonUtil.formatAmount(payment.getAmount_4()));
         	form.setField("PONo_4",payment.getPONo_4());
         	form.setField("currency_4",payment.getCurrency_4());
 		}
