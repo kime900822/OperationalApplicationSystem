@@ -1312,7 +1312,14 @@ function showVisitForm(){
 	    			+' Other 其他:'+o.find("#table-business-trip-total-other").html()		
 	    	
 	    	);	
-	    	var landwayTotal=toNumber(o.find("#table-business-trip-total-metro").html())+toNumber(o.find("#table-business-trip-total-taxi").html())+toNumber(o.find("#table-business-trip-total-train").html())+toNumber(o.find("#table-business-trip-total-bus").html())+toNumber(o.find("#table-business-trip-total-rentalCar").html())+toNumber(o.find("#table-business-trip-total-roadToilWithoutVAT").html())+toNumber(o.find("#table-business-trip-total-selfDriver").html())
+	    	var landwayTotal=toNumber(o.find("#table-business-trip-total-metro").html())
+	    		+toNumber(o.find("#table-business-trip-total-taxi").html())
+	    		+toNumber(o.find("#table-business-trip-total-train").html())
+	    		+toNumber(o.find("#table-business-trip-total-bus").html())
+	    		+toNumber(o.find("#table-business-trip-total-rentalCar").html())
+	    		+toNumber(o.find("#table-business-trip-total-roadToilWithoutVAT").html())
+	    		+toNumber(o.find("#table-business-trip-total-selfDriver").html()
+	    		+toNumber(o.find("#table-business-trip-total-airTicket").html())
 	    	$.CurrentNavtab.find("#j_payment_amount_1_t").val(landwayTotal);	
 	    	$.CurrentNavtab.find("#j_payment_amount_2_t").val(toNumber(o.find("#table-business-trip-total-roadToilVAT").html()));	
 	    	$.CurrentNavtab.find("#j_payment_amount_3_t").val(toNumber(o.find("#table-business-trip-total-hotelWithoutVAT").html()));	

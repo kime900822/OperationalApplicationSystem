@@ -164,7 +164,7 @@ function paymentVisitSave(){
             	 BJUI.alertmsg('info', json.message); 
             	 $.CurrentNavtab.find("#j_payment_visit_id").val(json.params.id);
             	 $.CurrentNavtab.find("#j_payment_visit_referenceNo").val(json.params.referenceNO);
-            	 paymentVisitShowButton('SAVE')
+            	 paymentVisitShowButton('Save')
 
             }else{
             	 BJUI.alertmsg('error', json.message); 
@@ -290,7 +290,7 @@ function paymentVisitShowButton(state){
 			 $.CurrentNavtab.find('#payment-visit-delete').hide();
 			 $.CurrentNavtab.find('#payment-visit-submit').hide();
 			 $.CurrentNavtab.find('#payment-visit-cancel').hide();
-		}else if(state=='SAVE'||state.indexOf('Rejected')>0){
+		}else if(state=='Save'||state.indexOf('Rejected')>0){
 			 $.CurrentNavtab.find('#payment-visit-save').show();
 			 $.CurrentNavtab.find('#payment-visit-delete').show();
 			 $.CurrentNavtab.find('#payment-visit-submit').show();
@@ -309,7 +309,7 @@ function paymentVisitShowButton(state){
 			 $("textarea[id*='j_payment_visit']").attr('disabled','disabled');
 			 $.CurrentNavtab.find('#j_payment_visit_form').find(".btn-group[role='group']").hide();
 		}
-		if(state=='END APPROVAL'){
+		if(state=='End Approval'){
 			$.CurrentNavtab.find('#payment-visit-cancel').show();
 		}
 	}else{
@@ -323,7 +323,7 @@ function paymentVisitShowButton(state){
 		 $("textarea[id*='j_payment_visit']").attr('disabled','disabled');
 	}
 	
-	if(state==''||state=='SAVE'||state=='SUBMIT'||state.indexOf('Rejected')>0){
+	if(state==''||state=='Save'||state=='Manafer Approval'||state.indexOf('Rejected')>0){
 		 $.CurrentNavtab.find('#payment-visit-print-business').hide();
 		 $.CurrentNavtab.find('#payment-visit-print-travel').hide();
 	}else{
