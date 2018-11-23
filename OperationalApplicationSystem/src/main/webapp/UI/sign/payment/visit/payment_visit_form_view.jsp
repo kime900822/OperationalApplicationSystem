@@ -16,6 +16,7 @@ $(function(){
 		$.CurrentDialog.find("#payment-visit-view-subjcode").hide();
 		$.CurrentDialog.find("#payment-visit-view-export").hide();
 	}else{
+		$.CurrentDialog.find("#j_payment_visit_view_referenceNo").attr('disabled','disabled');
 		$.CurrentDialog.find("#tr-business-trip-user").hide();
 		$.CurrentDialog.find("#tr-business-trip-finance").show();
 		$.CurrentDialog.find("#payment-visit-view-save").hide();
@@ -31,6 +32,16 @@ $(function(){
 
 function paymentVisitViewCheckSave(o){
 	var err="";
+	if(o!=null&&o!=undefined){
+		for(var i=0;i<o.length;i++){
+			if(o[i].hotel!=null&&o[i].hotel!=undefined){
+				err  +="the Hotel Rate Must choose !";
+			    break; 
+			}
+			
+		}
+	
+	}
 
 	return err;
 	
@@ -38,10 +49,10 @@ function paymentVisitViewCheckSave(o){
 
 function paymentVisitViewFaceToDate(){
 	var o=[];
-	var t={};
 	var trs=$.CurrentDialog.find("#table-business-trip-user").children().eq(0).children();
 	for(var i=4;i<10;i++){
 		var tds=trs.get(i).children;	
+		var t={};
 		t.visitId=$.CurrentDialog.find("#j_payment_visit_view_id").val();
 		if(tds[4].children[0].value!=''){
 			t.rowNum=i;
@@ -159,8 +170,8 @@ function paymentVisitViewDateToFace(id){
 		    			total+=toNumber(trs[8].children[j].innerHTML);
 		    			total+=toNumber(trs[9].children[j].innerHTML);
 		    			trs[10].children[j-1].innerHTML=toDecimal2(total);
-		    		}
-	    		}
+		    			}
+	    			}
 	    		
 	    		var trs=$.CurrentDialog.find("#table-business-trip-user").children().eq(0).children();
 	    		if(json.businessTrips!=undefined&&json.businessTrips!=""){
@@ -397,23 +408,11 @@ function payment_visit_change_txt(i,j){
 				tds[26].children[0].value='';
 			}
 			
-			if(i==4&&tds[4].children[0].value=='RMB'){
+			if(i==4){
 				for(var k=5 ; k<=9 ;k++){
 					$(trs.get(k).children[4].children[0]).selectpicker().empty();
 					$(trs.get(k).children[4].children[0]).append("<option value=''></option>")
-					$(trs.get(k).children[4].children[0]).append("<option value='RMB'>RMB</option>")
-					$(trs.get(k).children[4].children[0]).selectpicker('refresh')
-				}
-			}else{
-				for(var k=5 ; k<=9 ;k++){
-					$(trs.get(k).children[4].children[0]).selectpicker().empty();
-					$(trs.get(k).children[4].children[0]).append("<option value=''></option>")
-					$(trs.get(k).children[4].children[0]).append("<option value='RMB'>RMB</option>")
-					$(trs.get(k).children[4].children[0]).append("<option value='USD'>USD</option>")
-					$(trs.get(k).children[4].children[0]).append("<option value='TRY'>TRY</option>")
-					$(trs.get(k).children[4].children[0]).append("<option value='GBP'>GBP</option>")
-					$(trs.get(k).children[4].children[0]).append("<option value='EUR'>EUR</option>")
-					$(trs.get(k).children[4].children[0]).append("<option value='JPY'>JPY</option>")
+					$(trs.get(k).children[4].children[0]).append("<option value='"+tds[4].children[0].value+"'>"+tds[4].children[0].value+"</option>")
 					$(trs.get(k).children[4].children[0]).selectpicker('refresh')
 				}
 			}

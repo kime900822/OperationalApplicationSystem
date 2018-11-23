@@ -882,6 +882,7 @@ function dataToFace(){
             		
             	$.CurrentNavtab.find("#j_payment_id").val(json.id);
             	$.CurrentNavtab.find("#j_payment_state").val(json.state);
+            	$.CurrentNavtab.find("#j_payment_visit_id").val(json.visitId);
             	showButton(json.state,json.isPrint,json.UID,json.documentAuditID,json.deptManagerID);
             	changeAmount();
             	showVisitTR();
