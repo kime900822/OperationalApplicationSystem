@@ -527,8 +527,8 @@ function paymengVisitCheckAdvanceAmount(o){
 						Remark: Business Trip Standard
 					</td>
 					<td colspan="4">
-						<a href="../templet/Business Trip Management Instruction -Frequently Question.pdf">①Business Trip Management Rev.2</a><br>
-						<a href="../templet/Business Trip Management Rev.2.pdf">②Business Trip Management Instruction -Frequently Question</a>
+						<a  target="_blank" href="../templet/Business Trip Management Instruction -Frequently Question.pdf">①Business Trip Management Rev.2</a><br>
+						<a  target="_blank" href="../templet/Business Trip Management Rev.2.pdf">②Business Trip Management Instruction -Frequently Question</a>
 					</td>
 				</tr>
 				<tr height="400px">
