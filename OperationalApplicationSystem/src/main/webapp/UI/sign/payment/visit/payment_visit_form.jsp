@@ -323,7 +323,7 @@ function paymentVisitShowButton(state){
 		 $("textarea[id*='j_payment_visit']").attr('disabled','disabled');
 	}
 	
-	if(state==''||state=='Save'||state=='Manafer Approval'||state.indexOf('Rejected')>0){
+	if(state==''||state=='Save'||state=='Manager Approval'||state.indexOf('Rejected')>0){
 		 $.CurrentNavtab.find('#payment-visit-print-business').hide();
 		 $.CurrentNavtab.find('#payment-visit-print-travel').hide();
 	}else{

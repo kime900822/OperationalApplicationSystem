@@ -5,7 +5,7 @@ public class PaymentVisitHelp {
 	
 	public final static String SAVE="Save";
 	
-	public final static String SUBMIT="Manafer Approval";
+	public final static String SUBMIT="Manager Approval";
 	
 	public final static String REJECT="Reject";
 	
