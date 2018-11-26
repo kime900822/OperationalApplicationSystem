@@ -3,7 +3,9 @@ package com.sign.action;
 import java.io.ByteArrayInputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.ParentPackage;
@@ -35,7 +37,7 @@ public class paymentVisitBusinessTripAction extends ActionBase{
 	public String savepaymentVisitView() throws UnsupportedEncodingException {
 		
 		List<PaymentVisitBusinessTrip> list= new Gson().fromJson(json, new TypeToken<ArrayList<PaymentVisitBusinessTrip>>() {}.getType());
-		
+		Map<String, Boolean> params=new HashMap<>();
 		try {
 			
 			
@@ -45,10 +47,11 @@ public class paymentVisitBusinessTripAction extends ActionBase{
 			paymentVisitBusinessTripBIZ.save(list);
 			result.setMessage(Message.SUCCESS);
 			result.setStatusCode("200");
-			
+			params.put("save_flag", true);
 		} catch (Exception e) {
 			result.setMessage(e.getMessage());
 			result.setStatusCode("300");
+			params.put("save_flag", false);
 		}
 		
 		reslutJson=new ByteArrayInputStream(new Gson().toJson(result).getBytes("UTF-8")); 	

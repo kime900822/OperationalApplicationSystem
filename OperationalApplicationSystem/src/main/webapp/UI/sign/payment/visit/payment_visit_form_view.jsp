@@ -32,7 +32,10 @@ $(function(){
 
 function paymentVisitViewCheckSave(o){
 	var err="";
-	if(o!=null&&o!=undefined){
+	if(o!=null&&o!=undefined ){
+		err  +=" Pyament visit business trip can`t empty !";
+	}
+	else{
 		for(var i=0;i<o.length;i++){
 			if(o[i].hotel==null||o[i].hotel==undefined||o[i].hotel==''){
 				err  +="the Hotel Rate Must choose !";
@@ -262,13 +265,14 @@ function paymentVisitViewSave(){
 	    data:{json:JSON.stringify(o)},	    
 	    okCallback: function(json, options) {
             if(json.status='200'){
-            	 $.CurrentDialog.find("#j_payment_visit_view_id").val(json.params.id);
             	 $.CurrentDialog.find("#j_payment_visit_view_object").val(o);
             	 $.CurrentDialog.find("input").attr('disabled','disabled');
             	 $.CurrentDialog.find("select").attr('disabled','disabled');
+            	 $.CurrentDialog.find("#j_payment_visit_view_save_flag").val(json.params.save_flag);
             	 BJUI.dialog('closeCurrent');
             }else{
             	 BJUI.alertmsg('error', json.message); 
+            	 $.CurrentDialog.find("#j_payment_visit_view_save_flag").val(false);
             }
 	    }
 	});		
@@ -472,6 +476,7 @@ function payment_visit_change_txt(i,j){
         <form id="j_payment_visit_view_form" data-toggle="ajaxform">
 			<input type="hidden" name="id" id="j_payment_visit_view_id" value="${param.visitId}">
 			<input type="hidden" name="id" id="j_payment_visit_view_status" value="${param.status}">
+			<input type="hidden" name="save_flag" id="j_payment_visit_view_save_flag" value="">
 			<input type="hidden" id="j_payment_visit_view_object" >
             <div class="bjui-row-0" align="center">
             <h2 class="row-label">出差单申请</h2>
