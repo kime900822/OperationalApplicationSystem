@@ -32,7 +32,7 @@ $(function(){
 
 function paymentVisitViewCheckSave(o){
 	var err="";
-	if(o!=null&&o!=undefined ){
+	if(o==null||o==undefined ){
 		err  +=" Pyament visit business trip can`t empty !";
 	}
 	else{

@@ -1492,7 +1492,7 @@ public class PaymentAction extends ActionBase {
 			where += " AND P.supplierCode like '%"+supplierCode+"%' ";
 		}
 
-		String sqlId="  select P.id from t_Payment P WHERE P.UID IN(SELECT u.uid from t_user u where u.did in ( SELECT u1.did from t_user u1 where u1.uid= '"+user.getUid()+"') ) "+where+" ";    		
+		String sqlId="  select P.id from t_Payment P WHERE 1=1 "+where+" ";    		
 		
 		String sqlw="";
 		

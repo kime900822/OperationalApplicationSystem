@@ -53,7 +53,7 @@ public class paymentVisitBusinessTripAction extends ActionBase{
 			result.setStatusCode("300");
 			params.put("save_flag", false);
 		}
-		
+		result.setParams(params);
 		reslutJson=new ByteArrayInputStream(new Gson().toJson(result).getBytes("UTF-8")); 	
 		return SUCCESS;
 	}	
