@@ -132,7 +132,7 @@ public class PaymentVisitBIZImpl extends BizBase implements PaymentVisitBIZ {
 				
 				for (int i = 0; i < lApproves.size(); i++) {
 					if (lApproves.get(i).getUid().equals("Dept. Head")) {
-						if (paymentVisit.getAdvanceAmount()>5000||paymentVisit.getTotalLeaveWorkHours()>16||paymentVisit.getBusinessTrip().equals("Oversea 国外")) {
+						if (paymentVisit.getAdvanceAmount()>5000||paymentVisit.getTotalLeaveWorkHours()>40||paymentVisit.getBusinessTrip().equals("Oversea 国外")) {
 							try {
 								User GM=(User) userDAO.query(" where uid='"+PropertiesUtil.ReadProperties(Message.SYSTEM_PROPERTIES, "GMApprove")+"' ").get(0);
 								lApproves.get(0).setUid(GM.getUid());

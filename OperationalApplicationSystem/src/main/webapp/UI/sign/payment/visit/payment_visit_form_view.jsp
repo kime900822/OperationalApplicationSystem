@@ -37,7 +37,7 @@ function paymentVisitViewCheckSave(o){
 	}
 	else{
 		for(var i=0;i<o.length;i++){
-			if(o[i].hotel==null||o[i].hotel==undefined||o[i].hotel==''){
+			if(o[i].hotel!=null&&o[i].hotel!=undefined&&o[i].hotel!=''&&!isNaN(o[i].hotel)&&o[i].hotelTaxRate==''){
 				err  +="the Hotel Rate Must choose !";
 			    break; 
 			}
