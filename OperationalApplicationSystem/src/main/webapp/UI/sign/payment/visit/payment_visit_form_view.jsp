@@ -34,7 +34,7 @@ function paymentVisitViewCheckSave(o){
 	var err="";
 	if(o!=null&&o!=undefined){
 		for(var i=0;i<o.length;i++){
-			if(o[i].hotel!=null&&o[i].hotel!=undefined){
+			if(o[i].hotel==null||o[i].hotel==undefined||o[i].hotel==''){
 				err  +="the Hotel Rate Must choose !";
 			    break; 
 			}
