@@ -65,6 +65,10 @@
 	<package name="DataImport" extends="Struts 2">
 	
 	</package>
+	
+	<package name="Customs" extends="Struts 2" namespace="Customs">
+	
+	</package>
 </struts>
 
 <!-- END SNIPPET: xworkSample -->

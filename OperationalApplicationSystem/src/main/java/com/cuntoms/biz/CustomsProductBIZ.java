@@ -7,12 +7,14 @@ import com.cuntoms.model.CustomsProduct;
 
 public interface CustomsProductBIZ {
 
-	
-	public String ImportDate(List<CustomsProduct> list);
-	
-	public ByteArrayOutputStream ExportDate(String where);
-	
+
 	public String CusomsHandingOK(List<CustomsProduct> list);
 	
 	public String CusomsHandingNO(List<CustomsProduct> list);
+	
+	public List<CustomsProduct> query(String where);
+	
+	public List<CustomsProduct> query(String where, int pageSize, int pageCurrent);
+	
+	
 }

@@ -84,7 +84,7 @@
         gridTitle : 'Products Import',
         showToolbar: true,
         toolbarItem: 'refresh,|,import,export',
-        dataUrl: 'customs/queryProducts.action',
+        dataUrl: 'customs/queryProduct.action',
         fieldSortable: false,
         filterThead: false,
         linenumberAll: true,
