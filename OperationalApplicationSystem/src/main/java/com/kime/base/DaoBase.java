@@ -32,4 +32,16 @@ public class DaoBase extends HibernateDaoSupport {
 		return session.createSQLQuery(sql).list();
 	}
 	
+	
+	public void save(Object object){
+		this.getHibernateTemplate().save(object);
+	}
+	
+	public void delete(Object object){
+		this.getHibernateTemplate().delete(object);
+	}
+	
+	public void update(Object object){
+		this.getHibernateTemplate().update(object);
+	}
 }
