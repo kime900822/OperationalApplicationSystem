@@ -1,16 +1,22 @@
 package com.cuntoms.biz;
 
-import java.io.ByteArrayOutputStream;
+import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.util.List;
 
 import com.cuntoms.model.CustomsProduct;
+import com.kime.model.HeadColumn;
+import com.kime.model.User;
 
 public interface CustomsProductBIZ {
 
-
-	public String CusomsHandingOK(List<CustomsProduct> list);
+	public void importData(User user,File file, String first, String upfileFileName, int start) throws Exception;
 	
-	public String CusomsHandingNO(List<CustomsProduct> list);
+	public ByteArrayInputStream exportData(String where,List<HeadColumn> lHeadColumns) throws Exception;
+	
+	public String customsHandingOK(String batchNumber,User user);
+	
+	public String customsHandingNO(String batchNumber,User user);
 	
 	public List<CustomsProduct> query(String where);
 	

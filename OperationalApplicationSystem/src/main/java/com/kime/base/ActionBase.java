@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 
 import com.kime.model.QueryResult;
 import com.kime.model.Result;
+import com.kime.model.User;
 import com.kime.utils.LogUtil;
 import com.opensymphony.xwork2.ActionSupport;
 /**
@@ -42,9 +43,6 @@ public class ActionBase extends ActionSupport{
 	protected String orders;
 	protected String printUrl;
 	protected String queryType;
-	
-	
-	
 	
 	public String getQueryType() {
 		return queryType;
@@ -149,6 +147,11 @@ public class ActionBase extends ActionSupport{
 	}
 	public void setFirst(String first) {
 		this.first = first;
+	}
+	
+	
+	public User getUser(){
+		return (User)session.getAttribute("user");
 	}
 	
 	

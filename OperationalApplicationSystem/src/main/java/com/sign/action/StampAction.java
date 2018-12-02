@@ -1015,7 +1015,7 @@ public class StampAction extends ActionBase{
 	    	        sb.append("'").append(ids[i]).append("'").append(",");  
 	    	    }  
 	    	   
-	    	    String hql="select P from Stamp P where id in ("+ sb.toString().substring(0, sb.length() - 1)+") ";
+	    	    String hql="select P from Stamp P where id in ("+ sb.toString().substring(0, sb.length() - 1)+") order by P.dateTmp desc";
 	    		List<Stamp> lStamps=stampBIZ.getStampByHql(hql);
 				
 	    		

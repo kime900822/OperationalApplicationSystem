@@ -59,8 +59,7 @@ public class CustomsRecordsAction extends ActionBase {
     public String  importCustomsRecords() throws FileNotFoundException, IOException{
         try {
 	    	if (upfile!=null) {
-	    		User user=(User)session.getAttribute("user");
-				customsRecordsBIZ.fileToData(user, upfile, first, upfileFileName[0], 2);
+				customsRecordsBIZ.fileToData(getUser(), upfile, first, upfileFileName[0], 2);
 				result.setMessage(Message.UPLOAD_MESSAGE_SUCCESS);
 				result.setStatusCode("200");
 			}else{

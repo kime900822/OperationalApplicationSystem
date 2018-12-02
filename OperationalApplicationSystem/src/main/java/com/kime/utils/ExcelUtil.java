@@ -477,7 +477,7 @@ public static  List FileToList(Class c,File file,String first,String filename,in
     	Object o = c.newInstance();
         //导入时去除对象第一位ID
         for (int j = start-1; j < headers.length; j++) {
-        	String methodName = "set"+headers[j];
+        	String methodName = "set"+headers[j].substring(0, 1).toUpperCase() + headers[j].substring(1);;
             Method setMethod = c.getMethod(methodName,String.class);
             setMethod.invoke(o, new Object[]{ExcelUtil.getCellValue(row.getCell(j-1))});
 		}

@@ -2,6 +2,8 @@ package com.cuntoms.action;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -16,12 +18,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
+import com.analysis.model.CustomsRecords;
 import com.cuntoms.biz.CustomsProductBIZ;
 import com.cuntoms.model.CustomsProduct;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.kime.base.ActionBase;
+import com.kime.infoenum.Message;
 import com.kime.model.HeadColumn;
+import com.kime.model.User;
 import com.kime.utils.ExcelUtil;
 import com.opensymphony.xwork2.ActionContext;
 import com.sign.model.Beneficiary;
@@ -85,6 +90,39 @@ public class CustomerProductAction extends ActionBase {
 	}
 	
 	
+	@Action(value="customsHandingOK",results={@org.apache.struts2.convention.annotation.Result(type="stream",
+			params={
+					"inputName", "reslutJson"
+			})})
+	public String customsHandingOK() throws UnsupportedEncodingException{
+		String r=customsProductBIZ.customsHandingOK(batchNumber,getUser());
+		if (result==null) {
+			result.setMessage("Success!");
+			result.setStatusCode("200");
+		}else{
+			result.setMessage(r);
+			result.setStatusCode("300");
+		}
+		reslutJson=new ByteArrayInputStream(new Gson().toJson(result).getBytes("UTF-8"));  
+		return SUCCESS;
+	}
+	
+	@Action(value="customsHandingNO",results={@org.apache.struts2.convention.annotation.Result(type="stream",
+			params={
+					"inputName", "reslutJson"
+			})})
+	public String customsHandingNO() throws UnsupportedEncodingException{
+		String r=customsProductBIZ.customsHandingNO(batchNumber,getUser());
+		if (result==null) {
+			result.setMessage("Success!");
+			result.setStatusCode("200");
+		}else{
+			result.setMessage(r);
+			result.setStatusCode("300");
+		}
+		reslutJson=new ByteArrayInputStream(new Gson().toJson(result).getBytes("UTF-8"));  
+		return SUCCESS;
+	}
 	
 	
 	@Action(value="queryProduct",results={@org.apache.struts2.convention.annotation.Result(type="stream",
@@ -215,13 +253,9 @@ public class CustomerProductAction extends ActionBase {
     			
     		}
     		
-    		List list  =customsProductBIZ.query(where, Integer.parseInt(pageSize),Integer.parseInt(pageCurrent));
-        	Class c = (Class) new CustomsProduct().getClass();  
-        	ByteArrayOutputStream os = ExcelUtil.exportExcel("CustomsProduct", c, list, "yyy-MM-dd",lHeadColumns);
+    		
         	
-        	
-        	byte[] fileContent = os.toByteArray();
-        	ByteArrayInputStream is = new ByteArrayInputStream(fileContent);
+        	ByteArrayInputStream  is = customsProductBIZ.exportData(where,lHeadColumns);
         	
         	HttpServletResponse response = (HttpServletResponse)
         			ActionContext.getContext().get(org.apache.struts2.StrutsStatics.HTTP_RESPONSE);
@@ -244,4 +278,36 @@ public class CustomerProductAction extends ActionBase {
     }
 	
 
+	
+	/**
+     * excel导入
+     * @return
+     * @throws IOException 
+     * @throws FileNotFoundException 
+     */
+	@Action(value="importCustomsProduct",results={@org.apache.struts2.convention.annotation.Result(type="stream",
+			params={
+					"inputName", "reslutJson"
+			})})
+    public String  importCustomsProduct() throws FileNotFoundException, IOException{
+        try {
+	    	if (upfile!=null) {
+				customsProductBIZ.importData(getUser(), upfile, first, upfileFileName[0], 2);
+				result.setMessage(Message.UPLOAD_MESSAGE_SUCCESS);
+				result.setStatusCode("200");
+			}else{
+				
+				result.setMessage(Message.UPLOAD_MESSAGE_ERROE);
+				result.setStatusCode("300");
+			}
+		} catch (Exception e) {
+			result.setMessage(e.getMessage());
+			result.setStatusCode("300");
+		}
+        reslutJson=new ByteArrayInputStream(new Gson().toJson(result).getBytes("UTF-8"));  
+    	return SUCCESS;
+    }
+	
+	
+	
 }

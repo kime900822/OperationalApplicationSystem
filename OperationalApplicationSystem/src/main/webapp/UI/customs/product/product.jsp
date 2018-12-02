@@ -1,7 +1,56 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
+<script type="text/javascript">
 
+
+function customsProductHandingOK(){
+	var batchNumber=$.CurrentNavtab.find('#customsProductBatchNumber').val();
+	if(batchNumber==undefined || batchNumber==null ||batchNumber==''){
+		BJUI.alertmsg('warn', '上传批次号不能为空！'); 
+		return false;
+	}
+	
+	BJUI.ajax('doajax', {
+	    url: 'customs/customsHandingOK.action',
+	    loadingmask: true,
+	    data:{id:id,json:JSON.stringify(o)},	    
+	    okCallback: function(json, options) {
+            if(json.status='200'){
+            	BJUI.alertmsg('info', json.message); 
+            	$.CurrentNavtab.find('#datagrid-customs-product-filter').refresh();
+            }else{
+            	BJUI.alertmsg('error', json.message); 
+            }
+	    }
+	})	
+	
+	
+	
+}
+
+function customsProductHandingNO(){
+	var batchNumber=$.CurrentNavtab.find('#customsProductBatchNumber').val();
+	if(batchNumber==undefined || batchNumber==null ||batchNumber==''){
+		BJUI.alertmsg('warn', '上传批次号不能为空！'); 
+		return false;
+	}
+	
+	BJUI.ajax('doajax', {
+	    url: 'customs/customsHandingNO.action',
+	    loadingmask: true,
+	    data:{id:id,json:JSON.stringify(o)},	    
+	    okCallback: function(json, options) {
+            if(json.status='200'){
+            	BJUI.alertmsg('info', json.message); 
+            }else{
+            	BJUI.alertmsg('error', json.message); 
+            }
+	    }
+	})	
+}
+
+</script>
 
 
 <div class="bjui-pageHeader" style="background-color:#fefefe; border-bottom:none;">
@@ -51,12 +100,12 @@
         		<span>上传批次号：</span>
         		</td>
         		<td>
-            	<input type="text" name="batchNumber" value="" size="15">
+            	<input type="text" name="batchNumber" id="customsProductBatchNumber" value="" size="15">
         		</td>
         		<td colspan="2">
 	        		<div class="btn-group">
-	                <button type="submit" class="btn-green" data-icon="check">海关系统已操作</button>
-	                <button type="reset" class="btn-orange" data-icon="undo">海关系统取消</button>
+	                <button type="button" class="btn-green" data-icon="check" onclick="customsProductHandingOK()">海关系统已操作</button>
+	                <button type="button" class="btn-orange" data-icon="undo" onclick="customsProductHandingNO()">海关系统取消</button>
 	            	</div>
         		</td>
         		<td colspan="2">
@@ -82,17 +131,18 @@
     <table class="table table-bordered" id="datagrid-customs-product-filter" data-toggle="datagrid" data-options="{
         height: '100%',
         gridTitle : 'Products Import',
+        dataType: 'jsonp',
         showToolbar: true,
         toolbarItem: 'refresh,|,import,export',
         dataUrl: 'customs/queryProduct.action',
         fieldSortable: false,
         filterThead: false,
         linenumberAll: true,
-        paging: false,
+        paging: true,
         contextMenuB: true,
         hScrollbar: true,
         importOption: {type:'dialog', options:{url:'customs/product/product-import.html', width:500, height:300, title:'Import Products'}},
-        exportOption: {type:'file', options:{url:'exportProductExcel.action', loadingmask:true}}
+        exportOption: {type:'file', options:{url:'customs/exportCustomsProduct.action', loadingmask:true}}
     }">
         <thead>
             <tr>
