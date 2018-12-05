@@ -457,8 +457,8 @@ public class DictAction extends ActionBase{
 		List<Dict> ldDicts= new ArrayList<>();
 		try {		
 			User user=(User)session.getAttribute("user");
-			List<Dict> lDictsOfUser=dictBIZ.getDict("WHERE type='CHECKTYPE' and keyExplain='"+user.getUid()+"' ");	
-			ldDicts=dictBIZ.getDict("WHERE type='CHECKTYPE' and keyExplain='' ");
+			List<Dict> lDictsOfUser=dictBIZ.getDict("WHERE type='CHECKTYPE' and key='STAMP' and keyExplain='"+user.getUid()+"' ");	
+			ldDicts=dictBIZ.getDict("WHERE type='CHECKTYPE' and key='STAMP' and keyExplain='' ");
 			for (int i = 0; i < ldDicts.size(); i++) {
 				for (int j = 0; j < lDictsOfUser.size(); j++) {
 					if (ldDicts.get(i).getKey().equals(lDictsOfUser.get(j).getKey())) {

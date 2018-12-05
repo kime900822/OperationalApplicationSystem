@@ -38,7 +38,15 @@ public class CustomsProductBIZImpl extends BizBase implements CustomsProductBIZ{
 	@Transactional(readOnly=false,propagation=Propagation.REQUIRED,rollbackFor=Exception.class )
 	public String customsHandingOK(String batchNumber,User user) {
 		try {
-			List<CustomsProduct> list=customsProductDAO.query(" where batchNumber='"+batchNumber+"'");
+			
+			List<CustomsProduct> list1=customsProductDAO.query(" where batchNumber='"+batchNumber+"' and declaration='Y' ");
+			List<CustomsProduct> list=customsProductDAO.query(" where batchNumber='"+batchNumber+"' and declaration='' ");
+			if (list1.size()>0) {
+				return batchNumber+" 此批号已经进行海关系统操作！";
+			}
+			if (list.size()==0) {
+				return batchNumber+" 此批号不存在！";
+			}
 			for (CustomsProduct customsProduct : list) {
 				customsProduct.setDeclaration("Y");
 				customsProduct.setDeclarationDate(CommonUtil.getDate());
@@ -57,7 +65,14 @@ public class CustomsProductBIZImpl extends BizBase implements CustomsProductBIZ{
 	@Transactional(readOnly=false,propagation=Propagation.REQUIRED,rollbackFor=Exception.class )
 	public String customsHandingNO(String batchNumber,User user) {
 		try {
-			List<CustomsProduct> list=customsProductDAO.query(" where batchNumber='"+batchNumber+"'");
+			List<CustomsProduct> list=customsProductDAO.query(" where batchNumber='"+batchNumber+"' and declaration='Y' ");
+			List<CustomsProduct> list1=customsProductDAO.query(" where batchNumber='"+batchNumber+"' and declaration='' ");
+			if (list1.size()>0) {
+				return batchNumber+" 此批号还未进行海关系统操作，不用取消！";
+			}
+			if (list.size()==0) {
+				return batchNumber+" 此批号不存在！";
+			}
 			for (CustomsProduct customsProduct : list) {
 				customsProduct.setDeclaration("");
 				customsProduct.setDeclarationDate("");
@@ -93,7 +108,7 @@ public class CustomsProductBIZImpl extends BizBase implements CustomsProductBIZ{
 				String date=CommonUtil.getDate();
 				for (CustomsProduct customsProduct : lCustomsProducts) {
 					customsProduct.setBatchNumber(batchNumber);
-					customsProduct.setNo(max++);
+					customsProduct.setNo(String.valueOf(max++));
 					customsProduct.setUploadDate(date);
 					customsProduct.setUploadOperator(user.getUid());
 					if (checkMaterialNo(customsProduct.getMaterialNo())) {
@@ -128,10 +143,10 @@ public class CustomsProductBIZImpl extends BizBase implements CustomsProductBIZ{
 	public int getMaxNO() throws Exception{
 		try {
 			List  list = commonDAO.queryByHql(" select MAX(no) from CustomsProduct");
-			if (list.size()>0) {
+			if (list.size()>0&&list.get(0)!=null) {
 				return Integer.parseInt((String)list.get(0));
 			}else{
-				return 0;
+				return 1;
 			}
 		} catch (NumberFormatException e) {
 			e.printStackTrace();
@@ -144,7 +159,7 @@ public class CustomsProductBIZImpl extends BizBase implements CustomsProductBIZ{
 			Date d = new Date();
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyyMM");
 			List  list = commonDAO.queryByHql(" select MAX(batchNumber) from CustomsProduct where substr(batchNumber,2,6)='"+sdf.format(d)+"'" );
-			if (list.size()>0) {
+			if (list.size()>0&&list.get(0)!=null) {
 				String max= (String)list.get(0);
 				return "B" + String.valueOf(Long.valueOf(max.replace("B", "")) + 1);
 			}else{
@@ -161,7 +176,7 @@ public class CustomsProductBIZImpl extends BizBase implements CustomsProductBIZ{
 	public boolean checkMaterialNo(String materialNo) throws Exception{
 		try {
 			List  list = commonDAO.queryByHql(" select count(1) from CustomsProduct where materialNo='"+materialNo+"'");
-			if (list.size()>0&&Integer.parseInt((String)list.get(0))>0) {
+			if (list.size()>0&&(long)list.get(0)>0) {
 				return false;
 			}else{
 				return true;

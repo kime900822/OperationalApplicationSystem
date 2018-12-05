@@ -96,7 +96,7 @@ public class CustomerProductAction extends ActionBase {
 			})})
 	public String customsHandingOK() throws UnsupportedEncodingException{
 		String r=customsProductBIZ.customsHandingOK(batchNumber,getUser());
-		if (result==null) {
+		if (r==null) {
 			result.setMessage("Success!");
 			result.setStatusCode("200");
 		}else{
@@ -113,7 +113,7 @@ public class CustomerProductAction extends ActionBase {
 			})})
 	public String customsHandingNO() throws UnsupportedEncodingException{
 		String r=customsProductBIZ.customsHandingNO(batchNumber,getUser());
-		if (result==null) {
+		if (r==null) {
 			result.setMessage("Success!");
 			result.setStatusCode("200");
 		}else{

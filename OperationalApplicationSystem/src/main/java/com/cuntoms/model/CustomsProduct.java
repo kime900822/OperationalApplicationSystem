@@ -18,7 +18,7 @@ public class CustomsProduct {
 	@GenericGenerator(name = "uuid", strategy = "uuid")
 	String id;
 	@Column
-	int no;
+	String no;
 	@Column
 	String materialNo;
 	@Column
@@ -34,9 +34,9 @@ public class CustomsProduct {
 	@Column
 	String legalUnitCode2;
 	@Column
-	int declareNumber;
+	String declareNumber;
 	@Column
-	double declarePrice;
+	String declarePrice;
 	@Column
 	String currency;
 	@Column
@@ -64,12 +64,6 @@ public class CustomsProduct {
 	}
 	public void setId(String id) {
 		this.id = id;
-	}
-	public int getNo() {
-		return no;
-	}
-	public void setNo(int no) {
-		this.no = no;
 	}
 	public String getMaterialNo() {
 		return materialNo;
@@ -113,16 +107,23 @@ public class CustomsProduct {
 	public void setLegalUnitCode2(String legalUnitCode2) {
 		this.legalUnitCode2 = legalUnitCode2;
 	}
-	public int getDeclareNumber() {
+	
+	public String getNo() {
+		return no;
+	}
+	public void setNo(String no) {
+		this.no = no;
+	}
+	public String getDeclareNumber() {
 		return declareNumber;
 	}
-	public void setDeclareNumber(int declareNumber) {
+	public void setDeclareNumber(String declareNumber) {
 		this.declareNumber = declareNumber;
 	}
-	public double getDeclarePrice() {
+	public String getDeclarePrice() {
 		return declarePrice;
 	}
-	public void setDeclarePrice(double declarePrice) {
+	public void setDeclarePrice(String declarePrice) {
 		this.declarePrice = declarePrice;
 	}
 	public String getCurrency() {

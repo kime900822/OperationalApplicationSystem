@@ -141,7 +141,7 @@ public class ExcelUtil {
 		} else {
 			cellvalue = "";
 		}
-		if (cellvalue.equals(".00")) {
+		if (cellvalue!=null&&cellvalue.equals(".00")) {
 			cellvalue="0";
 		}
 		return cellvalue;

@@ -14,11 +14,11 @@ function customsProductHandingOK(){
 	BJUI.ajax('doajax', {
 	    url: 'customs/customsHandingOK.action',
 	    loadingmask: true,
-	    data:{id:id,json:JSON.stringify(o)},	    
+	    data:{batchNumber:batchNumber},	    
 	    okCallback: function(json, options) {
             if(json.status='200'){
             	BJUI.alertmsg('info', json.message); 
-            	$.CurrentNavtab.find('#datagrid-customs-product-filter').refresh();
+            	$.CurrentNavtab.find('#datagrid-customs-product-filter').data('bjui.datagrid').refresh(true);
             }else{
             	BJUI.alertmsg('error', json.message); 
             }
@@ -39,10 +39,11 @@ function customsProductHandingNO(){
 	BJUI.ajax('doajax', {
 	    url: 'customs/customsHandingNO.action',
 	    loadingmask: true,
-	    data:{id:id,json:JSON.stringify(o)},	    
+	    data:{batchNumber:batchNumber},	    
 	    okCallback: function(json, options) {
             if(json.status='200'){
             	BJUI.alertmsg('info', json.message); 
+            	$.CurrentNavtab.find('#datagrid-customs-product-filter').data('bjui.datagrid').refresh(true);
             }else{
             	BJUI.alertmsg('error', json.message); 
             }
