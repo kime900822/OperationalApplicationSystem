@@ -459,10 +459,10 @@ public class PaymentVisitBIZImpl extends BizBase implements PaymentVisitBIZ {
 		
 		
 		
-		List<Dict> lDicts=dictDAO.query(" where key='"+payment.getPaymentSubject()+"'");
+		List<Dict> lDicts=dictDAO.query(" where key='"+PaymentHelp.TRAVEL+"'");
 		if (!"".equals(lDicts.get(0).getValue())&&lDicts.get(0).getValue()!=null) {
+			payment.setDocumentAudit(lDicts.get(0).getValue());
 			paymentBIZ.savePayment(payment);
-			
 			logUtil.logInfo("自动生成付款申请单:"+payment.getId());
 		}else{
 			logUtil.logInfo("自动付款申异常:未维护对应财务人员");
