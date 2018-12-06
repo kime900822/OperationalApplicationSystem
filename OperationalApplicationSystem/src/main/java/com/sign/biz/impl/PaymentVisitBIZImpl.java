@@ -418,7 +418,6 @@ public class PaymentVisitBIZImpl extends BizBase implements PaymentVisitBIZ {
 			payment.setDeptManager(user.getDepartment().getName());
 		}
 		payment.setDeptManagerDate(CommonUtil.getDateTemp());
-		payment.setPaymentTerm("");
 		payment.setUsageDescription(paymentVisit.getVisitDateFrom()+" "+paymentVisit.getVisitDateTo()+" "+paymentVisit.getVisitDetailPlace()+" "+paymentVisit.getVisitPurpose()+"  单号："+paymentVisit.getReferenceNo());
 		payment.setCurrency_1(paymentVisit.getCurrency());
 		payment.setCurrency_2(paymentVisit.getCurrency());

@@ -35,7 +35,7 @@ import com.sign.biz.StampBIZ;
 import com.sign.dao.StampDAO;
 import com.sign.model.Stamp;
 import com.sign.model.StampApprove;
-import com.sign.other.StampState;
+import com.sign.other.StampHelp;
 
 @Service
 @Transactional(readOnly = true)
@@ -168,7 +168,7 @@ public class StampBIZImpl extends BizBase implements StampBIZ {
 				}else{
 					if (!approveState.equals("Rejected")) {
 						User user=userBIZ.getUser(" where uid='"+stamp.getApplicantID()+"'").get(0);
-						stamp.setState(StampState.INFORM);
+						stamp.setState(StampHelp.INFORM);
 						SendMail.SendMail(user.getEmail(), PropertiesUtil.ReadProperties(Message.MAIL_PROPERTIES, "mailTitleOfStamp"), MessageFormat.format(PropertiesUtil.ReadProperties(Message.MAIL_PROPERTIES, "mailContentOfStamp"),stamp.getApplicationCode()));						
 					}else {
 						stamp.setState(approveHis.getName()+" Rejected");
@@ -190,7 +190,7 @@ public class StampBIZImpl extends BizBase implements StampBIZ {
 	@Override
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void update(Stamp stamp) throws Exception {
-		if (stamp.getState().equals(StampState.SUBMIT)) {
+		if (stamp.getState().equals(StampHelp.SUBMIT)) {
 			List<StampApprove> lStampApprove = new ArrayList<>();
 			if (stamp.getProjectResponsible() != null && !stamp.getProjectResponsible().equals("")) {
 				Dict approveType = dictDAO.query(" where id='" + stamp.getDocumentType() + "'").get(0);
@@ -307,23 +307,23 @@ public class StampBIZImpl extends BizBase implements StampBIZ {
 	public String getStampState(Integer level,String status){
 		if (status.equals("Rejected")) {
 			if (level==0) {
-				return StampState.LEVEL1_REJECT;
+				return StampHelp.LEVEL1_REJECT;
 			}else if (level==1) {
-				return StampState.LEVEL2_REJECT;
+				return StampHelp.LEVEL2_REJECT;
 			}else if (level==2) {
-				return StampState.LEVEL3_REJECT;
+				return StampHelp.LEVEL3_REJECT;
 			}else if (level==3) {
-				return StampState.INFORM_REJECT;
+				return StampHelp.INFORM_REJECT;
 			}
 		}else{
 			if (level==0) {
-				return StampState.LEVEL1;
+				return StampHelp.LEVEL1;
 			}else if (level==1) {
-				return StampState.LEVEL2;
+				return StampHelp.LEVEL2;
 			}else if (level==2) {
-				return StampState.LEVEL3;
+				return StampHelp.LEVEL3;
 			}else if (level==3) {
-				return StampState.INFORM;
+				return StampHelp.INFORM;
 			}
 		}
 		return "";

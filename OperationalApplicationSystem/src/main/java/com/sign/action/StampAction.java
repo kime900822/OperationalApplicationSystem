@@ -39,7 +39,7 @@ import com.opensymphony.xwork2.ActionContext;
 import com.sign.biz.StampBIZ;
 import com.sign.model.Stamp;
 import com.sign.other.FileSave;
-import com.sign.other.StampState;
+import com.sign.other.StampHelp;
 
 @Controller
 @Scope("prototype")
@@ -484,8 +484,8 @@ public class StampAction extends ActionBase{
 			try {
 		    	if (file!=null) {
 		    		Stamp t=stampBIZ.getStamp(" where id='"+id+"'").get(0);
-		    		if (!t.getState().equals(StampState.INFORM)) {
-		    			result.setMessage("Not "+StampState.INFORM);
+		    		if (!t.getState().equals(StampHelp.INFORM)) {
+		    			result.setMessage("Not "+StampHelp.INFORM);
 						result.setStatusCode("300");
 						reslutJson=new ByteArrayInputStream(new Gson().toJson(result).getBytes("UTF-8"));  
 				    	return SUCCESS;
@@ -545,22 +545,22 @@ public class StampAction extends ActionBase{
 					id=UUID.randomUUID().toString().replaceAll("-", "");
 					stamp.setId(id);
 					stamp.setDateTmp(CommonUtil.getDateTemp());
-					stamp.setState(StampState.SAVE);
+					stamp.setState(StampHelp.SAVE);
 					stampBIZ.saveStamp(stamp);
-					stamp.setState(StampState.SUBMIT);
+					stamp.setState(StampHelp.SUBMIT);
 					stampBIZ.update(stamp);		
 					logUtil.logInfo("提交用章申请单:"+stamp.getApplicationCode());	
 				}else{
 					stamp=stampBIZ.getStampById(id);					
 					stamp.setDateTmp(CommonUtil.getDateTemp());
-					if (!stamp.getState().equals(StampState.SAVE)) {
-						if (!stamp.getState().equals(StampState.INFORM_REJECT)) {
+					if (!stamp.getState().equals(StampHelp.SAVE)) {
+						if (!stamp.getState().equals(StampHelp.INFORM_REJECT)) {
 							stamp.setState(stamp.getStampApprove().get(0).getName()+" Approval");
 						}else{
 							stamp.setState(stamp.getStampApprove().get(stamp.getStampApprove().size()-1).getName()+" Approval");
 						}
 					}else {
-						stamp.setState(StampState.SUBMIT);
+						stamp.setState(StampHelp.SUBMIT);
 					}
 					
 					stampBIZ.update(stamp);		
@@ -611,7 +611,7 @@ public class StampAction extends ActionBase{
 				
 				if (!stamp.getId().equals("")&&stamp.getId()!=null) {
 					if (stamp.getState()==null||stamp.getState().equals("")) {
-						stamp.setState(StampState.SAVE);
+						stamp.setState(StampHelp.SAVE);
 					}
 					
 					stamp.setDateTmp(CommonUtil.getDateTemp());
@@ -631,7 +631,7 @@ public class StampAction extends ActionBase{
 					stamp.setApplicationCode(code);
 					stamp.setId(UUID.randomUUID().toString().replaceAll("-", ""));
 					stamp.setDateTmp(CommonUtil.getDateTemp());
-					stamp.setState(StampState.SAVE);
+					stamp.setState(StampHelp.SAVE);
 					stampBIZ.saveStamp(stamp);
 					result.setMessage(Message.SAVE_MESSAGE_SUCCESS);
 					result.setStatusCode("200");

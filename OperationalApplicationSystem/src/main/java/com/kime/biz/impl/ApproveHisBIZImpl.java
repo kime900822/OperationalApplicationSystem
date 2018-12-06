@@ -25,7 +25,7 @@ import com.sign.biz.StampBIZ;
 import com.sign.dao.StampDAO;
 import com.sign.model.Stamp;
 import com.sign.model.StampApprove;
-import com.sign.other.StampState;
+import com.sign.other.StampHelp;
 
 @Service
 @Transactional(readOnly=true)

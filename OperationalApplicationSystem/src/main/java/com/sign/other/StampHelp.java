@@ -1,6 +1,6 @@
 package com.sign.other;
 
-public class StampState {
+public class StampHelp {
 
 
 	/**
