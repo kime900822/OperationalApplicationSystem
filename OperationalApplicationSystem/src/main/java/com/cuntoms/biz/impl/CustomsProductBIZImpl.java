@@ -3,13 +3,10 @@ package com.cuntoms.biz.impl;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.xmlbeans.impl.xb.xsdschema.Public;
-import org.hibernate.annotations.Where;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -55,9 +52,10 @@ public class CustomsProductBIZImpl extends BizBase implements CustomsProductBIZ{
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+			logUtil.logError("海关操作报错：批次号："+batchNumber+" 错误信息："+e.getMessage());
 			return e.getMessage();
 		}
-		
+		logUtil.logInfo("海关取消操作成功！批次号："+batchNumber);
 		return null;
 	}
 
@@ -81,9 +79,10 @@ public class CustomsProductBIZImpl extends BizBase implements CustomsProductBIZ{
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+			logUtil.logError("海关取消操作报错：批次号："+batchNumber+" 错误信息："+e.getMessage());
 			return e.getMessage();
 		}
-		
+		logUtil.logInfo("海关取消操作成功！批次号："+batchNumber);
 		return null;
 	}
 
@@ -114,12 +113,14 @@ public class CustomsProductBIZImpl extends BizBase implements CustomsProductBIZ{
 					if (checkMaterialNo(customsProduct.getMaterialNo())) {
 						customsProductDAO.save(customsProduct);
 					}else{
+						logUtil.logError("海关文件导入：料号重复："+customsProduct.getMaterialNo());
 						throw new Exception("料号重复:"+customsProduct.getMaterialNo());
 					}
 				}
 				
 				
 			}else{
+				logUtil.logError("海关文件导入：文件没数据");
 				throw new Exception("No data!");
 			}
 			

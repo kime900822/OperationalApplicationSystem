@@ -1,7 +1,6 @@
 package com.cuntoms.action;
 
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -18,27 +17,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
-import com.analysis.model.CustomsRecords;
+import com.cuntoms.biz.CustomsMaterialBIZ;
 import com.cuntoms.biz.CustomsProductBIZ;
-import com.cuntoms.model.CustomsProduct;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.kime.base.ActionBase;
 import com.kime.infoenum.Message;
 import com.kime.model.HeadColumn;
-import com.kime.model.User;
-import com.kime.utils.ExcelUtil;
 import com.opensymphony.xwork2.ActionContext;
-import com.sign.model.Beneficiary;
-
 
 @Controller
 @Scope("prototype")
 @ParentPackage("Customs")
-public class CustomerProductAction extends ActionBase {
-	
+public class CustomsMaterialAction extends ActionBase{
+
 	@Autowired
-	CustomsProductBIZ customsProductBIZ;
+	CustomsMaterialBIZ customsMaterialBIZ;
 	
 	String no_f;
 	String no_t;
@@ -46,12 +40,7 @@ public class CustomerProductAction extends ActionBase {
 	String productNo;
 	String exemptedMode;
 	String batchNumber;
-	public CustomsProductBIZ getCustomsProductBIZ() {
-		return customsProductBIZ;
-	}
-	public void setCustomsProductBIZ(CustomsProductBIZ customsProductBIZ) {
-		this.customsProductBIZ = customsProductBIZ;
-	}
+
 	public String getNo_f() {
 		return no_f;
 	}
@@ -90,12 +79,13 @@ public class CustomerProductAction extends ActionBase {
 	}
 	
 	
-	@Action(value="productHandingOK",results={@org.apache.struts2.convention.annotation.Result(type="stream",
+	
+	@Action(value="materialHandingOK",results={@org.apache.struts2.convention.annotation.Result(type="stream",
 			params={
 					"inputName", "reslutJson"
 			})})
-	public String productHandingOK() throws UnsupportedEncodingException{
-		String r=customsProductBIZ.customsHandingOK(batchNumber,getUser());
+	public String materialHandingOK() throws UnsupportedEncodingException{
+		String r=customsMaterialBIZ.customsHandingOK(batchNumber,getUser());
 		if (r==null) {
 			result.setMessage("Success!");
 			result.setStatusCode("200");
@@ -107,12 +97,12 @@ public class CustomerProductAction extends ActionBase {
 		return SUCCESS;
 	}
 	
-	@Action(value="productHandingNO",results={@org.apache.struts2.convention.annotation.Result(type="stream",
+	@Action(value="materialHandingNO",results={@org.apache.struts2.convention.annotation.Result(type="stream",
 			params={
 					"inputName", "reslutJson"
 			})})
-	public String productHandingNO() throws UnsupportedEncodingException{
-		String r=customsProductBIZ.customsHandingNO(batchNumber,getUser());
+	public String materialHandingNO() throws UnsupportedEncodingException{
+		String r=customsMaterialBIZ.customsHandingNO(batchNumber,getUser());
 		if (r==null) {
 			result.setMessage("Success!");
 			result.setStatusCode("200");
@@ -125,11 +115,11 @@ public class CustomerProductAction extends ActionBase {
 	}
 	
 	
-	@Action(value="queryProduct",results={@org.apache.struts2.convention.annotation.Result(type="stream",
+	@Action(value="queryMaterial",results={@org.apache.struts2.convention.annotation.Result(type="stream",
 			params={
 					"inputName", "reslutJson"
 			})})
-	public String queryProduct() throws UnsupportedEncodingException{	
+	public String queryMaterial() throws UnsupportedEncodingException{	
 		String where="";
 		if (!"".equals(no_f)&&no_f!=null) {
 			where+=" where no >= '"+no_f+"' ";
@@ -175,8 +165,8 @@ public class CustomerProductAction extends ActionBase {
 			
 		}
 		
-		List list  =customsProductBIZ.query(where, Integer.parseInt(pageSize),Integer.parseInt(pageCurrent));
-		int total=customsProductBIZ.query(where).size();
+		List list  =customsMaterialBIZ.query(where, Integer.parseInt(pageSize),Integer.parseInt(pageCurrent));
+		int total=customsMaterialBIZ.query(where).size();
 		
 		queryResult.setList(list);
 		queryResult.setTotalRow(total);
@@ -189,7 +179,7 @@ public class CustomerProductAction extends ActionBase {
 		
 		reslutJson=new ByteArrayInputStream(r.getBytes("UTF-8"));  
 		
-		logUtil.logInfo("查询海关成品数据，条件:"+where);
+		logUtil.logInfo("查询海关料件数据，条件:"+where);
 		return SUCCESS;
 	}
 	
@@ -198,14 +188,14 @@ public class CustomerProductAction extends ActionBase {
      * excel导出
      * @return
      */
-	@Action(value="exportCustomsProduct",results={@org.apache.struts2.convention.annotation.Result(type="stream",
+	@Action(value="exportCustomsMaterial",results={@org.apache.struts2.convention.annotation.Result(type="stream",
 			params={
 					"inputName", "reslutJson",
 					"contentType","application/vnd.ms-excel",
 					"contentDisposition","attachment;filename=%{fileName}",
 					"bufferSize","1024"
 			})})
-    public String exportCustomsProduct() {
+    public String exportCustomsMaterial() {
         try {
         	List<HeadColumn> lHeadColumns=new Gson().fromJson(thead, new TypeToken<ArrayList<HeadColumn>>() {}.getType());
     		String where="";
@@ -255,7 +245,7 @@ public class CustomerProductAction extends ActionBase {
     		
     		
         	
-        	ByteArrayInputStream  is = customsProductBIZ.exportData(where,lHeadColumns);
+        	ByteArrayInputStream  is = customsMaterialBIZ.exportData(where,lHeadColumns);
         	
         	HttpServletResponse response = (HttpServletResponse)
         			ActionContext.getContext().get(org.apache.struts2.StrutsStatics.HTTP_RESPONSE);
@@ -285,14 +275,14 @@ public class CustomerProductAction extends ActionBase {
      * @throws IOException 
      * @throws FileNotFoundException 
      */
-	@Action(value="importCustomsProduct",results={@org.apache.struts2.convention.annotation.Result(type="stream",
+	@Action(value="importCustomsMaterial",results={@org.apache.struts2.convention.annotation.Result(type="stream",
 			params={
 					"inputName", "reslutJson"
 			})})
-    public String  importCustomsProduct() throws FileNotFoundException, IOException{
+    public String  importCustomsMaterial() throws FileNotFoundException, IOException{
         try {
 	    	if (upfile!=null) {
-				customsProductBIZ.importData(getUser(), upfile, first, upfileFileName[0], 2);
+				customsMaterialBIZ.importData(getUser(), upfile, first, upfileFileName[0], 2);
 				result.setMessage(Message.UPLOAD_MESSAGE_SUCCESS);
 				result.setStatusCode("200");
 			}else{
@@ -307,7 +297,4 @@ public class CustomerProductAction extends ActionBase {
         reslutJson=new ByteArrayInputStream(new Gson().toJson(result).getBytes("UTF-8"));  
     	return SUCCESS;
     }
-	
-	
-	
 }

@@ -10,9 +10,9 @@ import org.hibernate.annotations.GenericGenerator;
 import org.springframework.stereotype.Component;
 
 @Component
-@Entity @Table(name = "t_customs_product")
-public class CustomsProduct {
-
+@Entity @Table(name = "t_customs_material")
+public class CustomsMaterial {
+	
 	@Id
 	@GeneratedValue(generator="uuid")
 	@GenericGenerator(name = "uuid", strategy = "uuid")
@@ -24,7 +24,7 @@ public class CustomsProduct {
 	@Column
 	String productNo;
 	@Column
-	String productName;
+	String materialName;
 	@Column
 	String specification;
 	@Column
@@ -42,9 +42,13 @@ public class CustomsProduct {
 	@Column
 	String exemptedMode;
 	@Column
+	String isMain;
+	@Column
 	String executionMode;
 	@Column
 	String modifyFlag;
+	@Column
+	String maxNumber;
 	@Column
 	String comments;
 	@Column
@@ -59,17 +63,25 @@ public class CustomsProduct {
 	String declarationOperatior;
 	@Column
 	String declarationDate;
+	
+	
+	public String getMaterialName() {
+		return materialName;
+	}
+	public void setMaterialName(String materialName) {
+		this.materialName = materialName;
+	}
 	public String getId() {
 		return id;
 	}
 	public void setId(String id) {
 		this.id = id;
 	}
-	public String getMaterialNo() {
-		return materialNo;
+	public String getNo() {
+		return no;
 	}
-	public void setMaterialNo(String materialNo) {
-		this.materialNo = materialNo;
+	public void setNo(String no) {
+		this.no = no;
 	}
 	public String getProductNo() {
 		return productNo;
@@ -77,16 +89,16 @@ public class CustomsProduct {
 	public void setProductNo(String productNo) {
 		this.productNo = productNo;
 	}
-	public String getProductName() {
-		return productName;
+	public String getMaterialNo() {
+		return materialNo;
 	}
-	public void setProductName(String productName) {
-		this.productName = productName;
+	public void setMaterialNo(String materialNo) {
+		this.materialNo = materialNo;
 	}
-	public String getSpecifications() {
+	public String getSpecification() {
 		return specification;
 	}
-	public void setSpecifications(String specification) {
+	public void setSpecification(String specification) {
 		this.specification = specification;
 	}
 	public String getDeclareUnitCode() {
@@ -106,13 +118,6 @@ public class CustomsProduct {
 	}
 	public void setLegalUnitCode2(String legalUnitCode2) {
 		this.legalUnitCode2 = legalUnitCode2;
-	}
-	
-	public String getNo() {
-		return no;
-	}
-	public void setNo(String no) {
-		this.no = no;
 	}
 	public String getDeclareNumber() {
 		return declareNumber;
@@ -138,6 +143,12 @@ public class CustomsProduct {
 	public void setExemptedMode(String exemptedMode) {
 		this.exemptedMode = exemptedMode;
 	}
+	public String getIsMain() {
+		return isMain;
+	}
+	public void setIsMain(String isMain) {
+		this.isMain = isMain;
+	}
 	public String getExecutionMode() {
 		return executionMode;
 	}
@@ -149,6 +160,12 @@ public class CustomsProduct {
 	}
 	public void setModifyFlag(String modifyFlag) {
 		this.modifyFlag = modifyFlag;
+	}
+	public String getMaxNumber() {
+		return maxNumber;
+	}
+	public void setMaxNumber(String maxNumber) {
+		this.maxNumber = maxNumber;
 	}
 	public String getComments() {
 		return comments;
@@ -192,6 +209,7 @@ public class CustomsProduct {
 	public void setDeclarationDate(String declarationDate) {
 		this.declarationDate = declarationDate;
 	}
+	
 	
 	
 }
