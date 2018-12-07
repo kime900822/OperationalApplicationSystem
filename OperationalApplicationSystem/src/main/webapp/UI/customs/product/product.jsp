@@ -65,8 +65,8 @@ function customsProductHandingNO(){
         		<span>序号：</span>
         		</td>
         		<td width="220px">
-            	<input type="text" name="no_f"  data-nobtn="true" value="" data-toggle="datepicker" size="9" data-rule="number">to:
-            	<input type="text" name="no_t"  data-nobtn="true" value="" data-toggle="datepicker" size="9" data-rule="number">
+            	<input type="text" name="no_f" value=""  size="9" data-rule="number">to:
+            	<input type="text" name="no_t" value=""  size="9" data-rule="number">
         		</td>
         		<td width="150px">
         		<span>料号：</span>

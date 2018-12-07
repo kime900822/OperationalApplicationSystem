@@ -145,7 +145,7 @@ public class CustomsProductBIZImpl extends BizBase implements CustomsProductBIZ{
 		try {
 			List  list = commonDAO.queryByHql(" select MAX(no) from CustomsProduct");
 			if (list.size()>0&&list.get(0)!=null) {
-				return Integer.parseInt((String)list.get(0));
+				return Integer.parseInt((String)list.get(0))+1;
 			}else{
 				return 1;
 			}

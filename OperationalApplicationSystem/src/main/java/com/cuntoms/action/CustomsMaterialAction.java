@@ -37,10 +37,18 @@ public class CustomsMaterialAction extends ActionBase{
 	String no_f;
 	String no_t;
 	String materialNo;
+	String materialName;
 	String productNo;
 	String exemptedMode;
 	String batchNumber;
 
+	
+	public String getMaterialName() {
+		return materialName;
+	}
+	public void setMaterialName(String materialName) {
+		this.materialName = materialName;
+	}
 	public String getNo_f() {
 		return no_f;
 	}
@@ -164,7 +172,15 @@ public class CustomsMaterialAction extends ActionBase{
 			}
 			
 		}
-		
+		if (!"".equals(materialName)&&materialName!=null) {
+			if (where.equals("")) {
+				where+=" where materialName like '%"+materialName+"%' ";
+			}else{
+				where+=" AND materialName like '%"+materialName+"%' ";
+			}
+			
+		}
+		where+=" order by no desc";
 		List list  =customsMaterialBIZ.query(where, Integer.parseInt(pageSize),Integer.parseInt(pageCurrent));
 		int total=customsMaterialBIZ.query(where).size();
 		
@@ -242,8 +258,16 @@ public class CustomsMaterialAction extends ActionBase{
     			}
     			
     		}
+    		if (!"".equals(materialName)&&materialName!=null) {
+    			if (where.equals("")) {
+    				where+=" where materialName like '%"+materialName+"%' ";
+    			}else{
+    				where+=" AND materialName like '%"+materialName+"%' ";
+    			}
+    			
+    		}
     		
-    		
+    		where+=" order by no desc";
         	
         	ByteArrayInputStream  is = customsMaterialBIZ.exportData(where,lHeadColumns);
         	

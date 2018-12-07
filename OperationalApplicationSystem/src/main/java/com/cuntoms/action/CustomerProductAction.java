@@ -44,13 +44,16 @@ public class CustomerProductAction extends ActionBase {
 	String no_t;
 	String materialNo;
 	String productNo;
+	String productName;
 	String exemptedMode;
 	String batchNumber;
-	public CustomsProductBIZ getCustomsProductBIZ() {
-		return customsProductBIZ;
+	
+
+	public String getProductName() {
+		return productName;
 	}
-	public void setCustomsProductBIZ(CustomsProductBIZ customsProductBIZ) {
-		this.customsProductBIZ = customsProductBIZ;
+	public void setProductName(String productName) {
+		this.productName = productName;
 	}
 	public String getNo_f() {
 		return no_f;
@@ -174,6 +177,7 @@ public class CustomerProductAction extends ActionBase {
 			}
 			
 		}
+		where+=" order by no desc";
 		
 		List list  =customsProductBIZ.query(where, Integer.parseInt(pageSize),Integer.parseInt(pageCurrent));
 		int total=customsProductBIZ.query(where).size();
@@ -236,6 +240,14 @@ public class CustomerProductAction extends ActionBase {
     			}
     			
     		}
+    		if (!"".equals(productName)&&productName!=null) {
+    			if (where.equals("")) {
+    				where+=" where productName like '%"+productName+"%' ";
+    			}else{
+    				where+=" AND productName like '%"+productName+"%' ";
+    			}
+    			
+    		}
     		if (!"".equals(exemptedMode)&&exemptedMode!=null) {
     			if (where.equals("")) {
     				where+=" where exemptedMode like '%"+exemptedMode+"%' ";
@@ -254,7 +266,7 @@ public class CustomerProductAction extends ActionBase {
     		}
     		
     		
-        	
+    		where+=" order by no desc";
         	ByteArrayInputStream  is = customsProductBIZ.exportData(where,lHeadColumns);
         	
         	HttpServletResponse response = (HttpServletResponse)
