@@ -55,7 +55,7 @@ public class CustomsClearance {
 	@Column
 	String lotSerialNumber;
 	@Column
-	String BatchNumber;
+	String batchNumber;
 	@Column
 	String operator;
 	@Column
@@ -177,10 +177,10 @@ public class CustomsClearance {
 		this.lotSerialNumber = lotSerialNumber;
 	}
 	public String getBatchNumber() {
-		return BatchNumber;
+		return batchNumber;
 	}
 	public void setBatchNumber(String batchNumber) {
-		BatchNumber = batchNumber;
+		this.batchNumber = batchNumber;
 	}
 	public String getOperator() {
 		return operator;

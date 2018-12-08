@@ -17,10 +17,10 @@
         		<td width="120px">
         		<span>BOM申请日期：</span>
         		</td>
-        		<td width="150px">
+        		<td width="190px">
             	<input type="text" name="BOMDate"  data-nobtn="true"  value="" data-toggle="datepicker" size="9" data-rule="date">
         		</td>
-        		<td colspan="6"  width="840px">
+        		<td colspan="6"  width="800px">
         		<button type="button" class="btn-green" data-icon="search">生成</button>
         		</td>
         	</tr>      
@@ -31,10 +31,10 @@
         		<td width="120px">
         		<span>上传批次号：</span>
         		</td>
-        		<td width="150px">
+        		<td width="190px">
             	<input type="text" name="batchNumber" value=""  size="15">
         		</td>
-        		<td width="840ox" colspan="6">
+        		<td width="800px" colspan="6">
         			<div class="btn-group">
 	                	<button type="submit" class="btn-green" data-icon="search">Search</button>
 	                	<button type="reset" class="btn-orange" data-icon="times">Reset</button>
