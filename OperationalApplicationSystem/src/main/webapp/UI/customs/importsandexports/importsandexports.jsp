@@ -14,19 +14,19 @@
         <div style="margin:0; padding:1px 5px 5px;">
         <table	>
         	<tr>
-        		<td width="150px">
+        		<td width="120px">
         		<span>Order Number：</span>
         		</td>
-        		<td width="180px">
+        		<td width="150px">
             	<input type="text" name="orderNumber" value=""  size="15">
         		</td>
-        		<td width="150px">
+        		<td width="180px">
         		<span>Cimtas Long Item No：</span>
         		</td>
-        		<td width="180px">
+        		<td width="150px">
             	<input type="text" name="cimtasLongItemNo" value=""  size="15">
         		</td>
-	        	<td width="80px">
+	        	<td width="130px">
         		<span>报关进料日期:</span>
         		</td>
         		<td width="220px">
