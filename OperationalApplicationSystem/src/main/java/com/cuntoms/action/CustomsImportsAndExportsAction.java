@@ -85,11 +85,11 @@ public class CustomsImportsAndExportsAction extends ActionBase {
 	}
 	
 	
-	@Action(value="importsAndExportsEditNo",results={@org.apache.struts2.convention.annotation.Result(type="stream",
+	@Action(value="importsCustomsAndExportsEditNo",results={@org.apache.struts2.convention.annotation.Result(type="stream",
 			params={
 					"inputName", "reslutJson"
 			})})
-	public String importsAndExportsEditNo() throws UnsupportedEncodingException{
+	public String importsCustomsAndExportsEditNo() throws UnsupportedEncodingException{
 		String r=customsImportsAndExportsBIZ.editNo(id, no);
 		if (r==null) {
 			CustomsImportsAndExports customsImportsAndExports=customsImportsAndExportsBIZ.getById(id);
@@ -104,11 +104,11 @@ public class CustomsImportsAndExportsAction extends ActionBase {
 		return SUCCESS;
 	}
 	
-	@Action(value="queryImportsAndExports",results={@org.apache.struts2.convention.annotation.Result(type="stream",
+	@Action(value="queryCustomsImportsAndExports",results={@org.apache.struts2.convention.annotation.Result(type="stream",
 			params={
 					"inputName", "reslutJson"
 			})})
-	public String queryImportsAndExports() throws UnsupportedEncodingException{	
+	public String queryCustomsImportsAndExports() throws UnsupportedEncodingException{	
 		String where="";
 		if (!"".equals(entryDate_f)&&entryDate_f!=null) {
 			where+=" where ntryDate >= '"+entryDate_f+"' ";
@@ -160,14 +160,14 @@ public class CustomsImportsAndExportsAction extends ActionBase {
      * excel导出
      * @return
      */
-	@Action(value="exportImportsAndExports",results={@org.apache.struts2.convention.annotation.Result(type="stream",
+	@Action(value="exportCustomsImportsAndExports",results={@org.apache.struts2.convention.annotation.Result(type="stream",
 			params={
 					"inputName", "reslutJson",
 					"contentType","application/vnd.ms-excel",
 					"contentDisposition","attachment;filename=%{fileName}",
 					"bufferSize","1024"
 			})})
-    public String exportImportsAndExports() {
+    public String exportCustomsImportsAndExports() {
         try {
         	List<HeadColumn> lHeadColumns=new Gson().fromJson(thead, new TypeToken<ArrayList<HeadColumn>>() {}.getType());
     		String where="";
@@ -228,11 +228,11 @@ public class CustomsImportsAndExportsAction extends ActionBase {
      * @throws IOException 
      * @throws FileNotFoundException 
      */
-	@Action(value="importImportsAndExports",results={@org.apache.struts2.convention.annotation.Result(type="stream",
+	@Action(value="importCustomsImportsAndExports",results={@org.apache.struts2.convention.annotation.Result(type="stream",
 			params={
 					"inputName", "reslutJson"
 			})})
-    public String  importImportsAndExports() throws FileNotFoundException, IOException{
+    public String  importCustomsImportsAndExports() throws FileNotFoundException, IOException{
         try {
 	    	if (upfile!=null) {
 				customsImportsAndExportsBIZ.importData(getUser(), upfile, first, upfileFileName[0], 2);

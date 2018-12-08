@@ -8,7 +8,7 @@
 
 
 <div class="bjui-pageHeader" style="background-color:#fefefe; border-bottom:none;">
-<form data-toggle="ajaxsearch" data-options="{searchDatagrid:$.CurrentNavtab.find('#datagrid-customs-importsandexports-filter')}" id="datagrid-customs-material-query">
+<form data-toggle="ajaxsearch" data-options="{searchDatagrid:$.CurrentNavtab.find('#datagrid-customs-importsandexports-filter')}" id="datagrid-customs-importsandexports-query">
     <fieldset>
         <legend style="font-weight:normal;">Search：</legend>
         <div style="margin:0; padding:1px 5px 5px;">
@@ -59,7 +59,7 @@
         dataType: 'jsonp',
         showToolbar: true,
         toolbarItem: 'edit,refresh,|,import,export',
-        dataUrl: 'customs/queryImportsAndExports.action',
+        dataUrl: 'customs/queryCustomsImportsAndExports.action',
         editMode: {dialog:{width:'400',height:250,title:'Edit No',mask:true}},
         editUrl: 'customs/importsandexports/importsandexports-edit.jsp',
         fieldSortable: false,
@@ -69,7 +69,7 @@
         contextMenuB: true,
         hScrollbar: true,
         importOption: {type:'dialog', options:{url:'customs/importsandexports/importsandexports-import.html', width:500, height:300, title:'Import materials'}},
-        exportOption: {type:'file', options:{url:'customs/exportImportsAndExports.action', loadingmask:true}}
+        exportOption: {type:'file', options:{url:'customs/exportCustomsImportsAndExports.action', loadingmask:true}}
     }">
         <thead>
             <tr>

@@ -10,7 +10,7 @@
     
 <div class="bjui-pageContent">
     <div class="bs-example" >
-        <form action="customs/importsCustomsAndExportsEditNo.action?callback=?" class="datagrid-edit-form" data-toggle="validate" data-data-type="jsonp">
+        <form action="customs/customsClearanceEditNo.action?callback=?" class="datagrid-edit-form" data-toggle="validate" data-data-type="jsonp">
             <div class="bjui-row col-1">
             	<input type="hidden" name="id" value="${param.id}" />
             	<label class="row-label">Order Number：</label>
