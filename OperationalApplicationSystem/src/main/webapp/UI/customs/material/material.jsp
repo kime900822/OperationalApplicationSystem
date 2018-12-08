@@ -151,7 +151,7 @@ function customsMaterialHandingNO(){
 				<th data-options="{name:'no',width:50,align:'left',finalWidth:'true'}">序号</th>
 				<th data-options="{name:'materialNo',width:200,align:'left',finalWidth:'true'}">料号</th>
 				<th data-options="{name:'productNo',width:200,align:'left',finalWidth:'true'}">商品编码</th>
-				<th data-options="{name:'materialName',width:200,align:'left',finalWidth:'true'}">商品名称</th>
+				<th data-options="{name:'materialName',width:200,align:'left',finalWidth:'true'}">物料名称</th>
 				<th data-options="{name:'specification',width:200,align:'left',finalWidth:'true'}">规格型号</th>
 				<th data-options="{name:'declareUnitCode',width:200,align:'left',finalWidth:'true'}">申报计量单位代码</th>
 				<th data-options="{name:'legalUnitCode1',width:200,align:'left',finalWidth:'true'}">法定计量单位代码</th>

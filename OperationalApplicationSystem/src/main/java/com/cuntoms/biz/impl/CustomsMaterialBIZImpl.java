@@ -16,6 +16,7 @@ import com.cuntoms.biz.CustomsMaterialBIZ;
 import com.cuntoms.dao.CustomsMaterialDAO;
 import com.cuntoms.model.CustomsMaterial;
 import com.cuntoms.model.CustomsProduct;
+import com.cuntoms.other.CustomsMaterialHelp;
 import com.kime.base.BizBase;
 import com.kime.dao.CommonDAO;
 import com.kime.model.HeadColumn;
@@ -31,7 +32,6 @@ public class CustomsMaterialBIZImpl extends BizBase implements CustomsMaterialBI
 	CustomsMaterialDAO customsMaterialDAO;
 	@Autowired
 	CommonDAO commonDAO;
-	
 	
 	@Override
 	@Transactional(readOnly=false,propagation=Propagation.REQUIRED,rollbackFor=Exception.class )
@@ -50,20 +50,21 @@ public class CustomsMaterialBIZImpl extends BizBase implements CustomsMaterialBI
 					if (checkMaterialNo(customsMaterial.getMaterialNo())) {
 						customsMaterialDAO.save(customsMaterial);
 					}else{
-						logUtil.logError("海关文件导入：料号重复："+customsMaterial.getMaterialNo());
-						throw new Exception("料号重复:"+customsMaterial.getMaterialNo());
+						logUtil.logError(CustomsMaterialHelp.title,"导入报错，料号重复："+customsMaterial.getMaterialNo());
+						throw new Exception("导入报错，料号重复："+customsMaterial.getMaterialNo());
 					}
 				}
 				
 				
 			}else{
-				logUtil.logError("海关文件导入：文件没数据");
+				logUtil.logError(CustomsMaterialHelp.title,"导入文件没数据");
 				throw new Exception("No data!");
 			}
 			
+			logUtil.logInfo(CustomsMaterialHelp.title,"导入成功！");
 		} catch (Exception e) {
-			logUtil.logError("海关文件导入报错："+e.getMessage());
-			throw new Exception("海关文件导入报错："+e.getMessage());
+			logUtil.logError(CustomsMaterialHelp.title,"导入报错："+e.getMessage());
+			throw new Exception("导入报错："+e.getMessage());
 		}		
 	}
 
@@ -97,10 +98,10 @@ public class CustomsMaterialBIZImpl extends BizBase implements CustomsMaterialBI
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			logUtil.logError("海关操作报错：批次号："+batchNumber+" 错误信息："+e.getMessage());
+			logUtil.logError(CustomsMaterialHelp.title,"海关系统操作批次号："+batchNumber+" 错误信息："+e.getMessage());
 			return e.getMessage();
 		}
-		logUtil.logInfo("海关取消操作成功！批次号："+batchNumber);
+		logUtil.logInfo(CustomsMaterialHelp.title,"海关系统操作成功！批次号："+batchNumber);
 		return null;
 	}
 
@@ -124,10 +125,10 @@ public class CustomsMaterialBIZImpl extends BizBase implements CustomsMaterialBI
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			logUtil.logError("海关取消操作报错：批次号："+batchNumber+" 错误信息："+e.getMessage());
+			logUtil.logError(CustomsMaterialHelp.title,"海关系统取消报错：批次号："+batchNumber+" 错误信息："+e.getMessage());
 			return e.getMessage();
 		}
-		logUtil.logInfo("海关取消操作成功！批次号："+batchNumber);
+		logUtil.logInfo(CustomsMaterialHelp.title,"海关系统取消成功！批次号："+batchNumber);
 		return null;
 	}
 
@@ -142,6 +143,28 @@ public class CustomsMaterialBIZImpl extends BizBase implements CustomsMaterialBI
 	}
 
 	
+	@Override
+	public CustomsMaterial getByMaterialNo(String materialNo) {
+		List<CustomsMaterial> list=customsMaterialDAO.query(" where materialNo='"+materialNo+"'");
+		
+		if (list.size()>0) {
+			return list.get(0);
+		}else{
+			return null;
+		}
+	}
+
+	
+	@Override
+	public CustomsMaterial getByNo(String no) {
+		List<CustomsMaterial> list=customsMaterialDAO.query(" where no='"+no+"'");
+		if (list.size()>0) {
+			return list.get(0);
+		}else{
+			return null;
+		}
+	}
+
 	public int getMaxNO() throws Exception{
 		try {
 			List  list = commonDAO.queryByHql(" select MAX(no) from CustomsMaterial");

@@ -22,5 +22,7 @@ public interface CustomsMaterialBIZ {
 	
 	public List<CustomsMaterial> query(String where, int pageSize, int pageCurrent);
 	
+	public CustomsMaterial getByMaterialNo(String materialNo);
 	
+	public CustomsMaterial getByNo(String no);
 }

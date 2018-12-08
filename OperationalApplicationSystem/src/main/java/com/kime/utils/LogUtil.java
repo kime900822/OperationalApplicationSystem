@@ -43,4 +43,29 @@ public class LogUtil  {
 			  log.error(" IP:"+ip+" 工号:"+user.getUid()+" 操作:" +message);
 		  }
 	  }
+	  
+	  public void logDebug(String title,String message){
+		  User user=(User) session.getAttribute("user");
+		  String ip = request.getRemoteAddr();
+		  if (user!=null) {
+			  log.debug(" IP:"+ip+" 工号:"+user.getUid()+" 操作:" +title+":"+message);
+		  }
+		  
+	  }
+	  
+	  public  void logInfo(String title,String message){
+		  User user=(User) session.getAttribute("user");
+		  String ip = request.getRemoteAddr();
+		  if (user!=null) {
+			  log.info(" IP:"+ip+" 工号:"+user.getUid()+" 操作:" +title+":"+message);
+		  }
+	  }
+	  
+	  public  void logError(String title,String message){
+		  User user=(User) session.getAttribute("user");
+		  String ip = request.getRemoteAddr();
+		  if (user!=null) {
+			  log.error(" IP:"+ip+" 工号:"+user.getUid()+" 操作:" +title+":"+message);
+		  }
+	  }
 }

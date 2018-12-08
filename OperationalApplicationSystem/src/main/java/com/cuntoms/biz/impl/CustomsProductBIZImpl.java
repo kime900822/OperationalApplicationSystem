@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.cuntoms.biz.CustomsProductBIZ;
 import com.cuntoms.dao.CustomsProductDAO;
 import com.cuntoms.model.CustomsProduct;
+import com.cuntoms.other.CustomsProductHelp;
 import com.kime.base.BizBase;
 import com.kime.dao.CommonDAO;
 import com.kime.model.HeadColumn;
@@ -52,10 +53,10 @@ public class CustomsProductBIZImpl extends BizBase implements CustomsProductBIZ{
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			logUtil.logError("海关操作报错：批次号："+batchNumber+" 错误信息："+e.getMessage());
+			logUtil.logError(CustomsProductHelp.title,"海关操作报错：批次号："+batchNumber+" 错误信息："+e.getMessage());
 			return e.getMessage();
 		}
-		logUtil.logInfo("海关取消操作成功！批次号："+batchNumber);
+		logUtil.logInfo(CustomsProductHelp.title,"海关取消操作成功！批次号："+batchNumber);
 		return null;
 	}
 
@@ -79,10 +80,10 @@ public class CustomsProductBIZImpl extends BizBase implements CustomsProductBIZ{
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			logUtil.logError("海关取消操作报错：批次号："+batchNumber+" 错误信息："+e.getMessage());
+			logUtil.logError(CustomsProductHelp.title,"海关取消操作报错：批次号："+batchNumber+" 错误信息："+e.getMessage());
 			return e.getMessage();
 		}
-		logUtil.logInfo("海关取消操作成功！批次号："+batchNumber);
+		logUtil.logInfo(CustomsProductHelp.title,"海关取消操作成功！批次号："+batchNumber);
 		return null;
 	}
 
@@ -113,19 +114,20 @@ public class CustomsProductBIZImpl extends BizBase implements CustomsProductBIZ{
 					if (checkMaterialNo(customsProduct.getMaterialNo())) {
 						customsProductDAO.save(customsProduct);
 					}else{
-						logUtil.logError("海关文件导入：料号重复："+customsProduct.getMaterialNo());
+						logUtil.logError(CustomsProductHelp.title,"文件导入：料号重复："+customsProduct.getMaterialNo());
 						throw new Exception("料号重复:"+customsProduct.getMaterialNo());
 					}
 				}
 				
 				
 			}else{
-				logUtil.logError("海关文件导入：文件没数据");
+				logUtil.logError(CustomsProductHelp.title,"海关文件导入：文件没数据");
 				throw new Exception("No data!");
 			}
 			
+			logUtil.logInfo(CustomsProductHelp.title,"文件导入：导入成功！");
 		} catch (Exception e) {
-			logUtil.logError("海关文件导入报错："+e.getMessage());
+			logUtil.logError(CustomsProductHelp.title,"文件导入报错："+e.getMessage());
 			throw new Exception("海关文件导入报错："+e.getMessage());
 		}
 	}

@@ -19,6 +19,7 @@ import org.springframework.stereotype.Controller;
 
 import com.cuntoms.biz.CustomsMaterialBIZ;
 import com.cuntoms.biz.CustomsProductBIZ;
+import com.cuntoms.other.CustomsMaterialHelp;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.kime.base.ActionBase;
@@ -195,7 +196,7 @@ public class CustomsMaterialAction extends ActionBase{
 		
 		reslutJson=new ByteArrayInputStream(r.getBytes("UTF-8"));  
 		
-		logUtil.logInfo("查询海关料件数据，条件:"+where);
+		logUtil.logInfo(CustomsMaterialHelp.title,"查询海关料件数据，条件:"+where);
 		return SUCCESS;
 	}
 	
