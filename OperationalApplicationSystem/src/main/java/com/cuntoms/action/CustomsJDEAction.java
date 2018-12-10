@@ -16,6 +16,7 @@ import com.cuntoms.biz.CUstomsJDEBIZ;
 import com.google.gson.Gson;
 import com.kime.base.ActionBase;
 import com.kime.infoenum.Message;
+import com.kime.utils.CommonUtil;
 
 @Controller
 @Scope("prototype")
@@ -24,7 +25,42 @@ public class CustomsJDEAction extends ActionBase {
 
 	@Autowired
 	CUstomsJDEBIZ customsJDEBIZ;
+	String batchNumber;
 	
+
+	public String getBatchNumber() {
+		return batchNumber;
+	}
+
+
+	public void setBatchNumber(String batchNumber) {
+		this.batchNumber = batchNumber;
+	}
+	
+	@Action(value="deleteCustomsJDE",results={@org.apache.struts2.convention.annotation.Result(type="stream",
+			params={
+					"inputName", "reslutJson"
+			})})
+	public String deleteCustomsJDE() throws UnsupportedEncodingException {
+		
+		if (!CommonUtil.isAdmin(getUser())) {
+			result.setMessage("非管理员，没有权限！");
+			result.setStatusCode("300");
+		}else{
+			String r=customsJDEBIZ.deleteByBatchNumber(batchNumber);
+			if (r==null) {
+				result.setMessage("Success!");
+				result.setStatusCode("200");
+			}else{
+				result.setMessage(r);
+				result.setStatusCode("300");
+			}
+		}
+		
+		reslutJson=new ByteArrayInputStream(new Gson().toJson(result).getBytes("UTF-8"));  
+		return SUCCESS;
+	}
+
 
 	@Action(value="queryCustomsJDE",results={@org.apache.struts2.convention.annotation.Result(type="stream",
 			params={

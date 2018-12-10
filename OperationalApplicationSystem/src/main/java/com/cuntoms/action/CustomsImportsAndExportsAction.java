@@ -24,6 +24,7 @@ import com.google.gson.reflect.TypeToken;
 import com.kime.base.ActionBase;
 import com.kime.infoenum.Message;
 import com.kime.model.HeadColumn;
+import com.kime.utils.CommonUtil;
 import com.opensymphony.xwork2.ActionContext;
 
 @Controller
@@ -40,7 +41,15 @@ public class CustomsImportsAndExportsAction extends ActionBase {
 	String entryDate_t;
 	String id;
 	String no;
+	String batchNumber;
 	
+	
+	public String getBatchNumber() {
+		return batchNumber;
+	}
+	public void setBatchNumber(String batchNumber) {
+		this.batchNumber = batchNumber;
+	}
 	public String getId() {
 		return id;
 	}
@@ -83,7 +92,29 @@ public class CustomsImportsAndExportsAction extends ActionBase {
 	public void setEntryDate_t(String entryDate_t) {
 		this.entryDate_t = entryDate_t;
 	}
-	
+	@Action(value="deleteCustomsAndExportsEditNo",results={@org.apache.struts2.convention.annotation.Result(type="stream",
+			params={
+					"inputName", "reslutJson"
+			})})
+	public String deleteCustomsAndExportsEditNo() throws UnsupportedEncodingException{
+		
+		if (!CommonUtil.isAdmin(getUser())) {
+			result.setMessage("非管理员，没有权限！");
+			result.setStatusCode("300");
+		}else{
+			String r=customsImportsAndExportsBIZ.deleteByBatchNumber(batchNumber);
+			if (r==null) {
+				result.setMessage("Success!");
+				result.setStatusCode("200");
+			}else{
+				result.setMessage(r);
+				result.setStatusCode("300");
+			}
+		}
+		
+		reslutJson=new ByteArrayInputStream(new Gson().toJson(result).getBytes("UTF-8"));  
+		return SUCCESS;
+	}
 	
 	@Action(value="importsCustomsAndExportsEditNo",results={@org.apache.struts2.convention.annotation.Result(type="stream",
 			params={

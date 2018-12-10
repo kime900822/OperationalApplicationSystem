@@ -13,4 +13,6 @@ public interface CUstomsJDEBIZ {
 	public List<CustomsMaterial> query(String where);
 	
 	public List<CustomsMaterial> query(String where, int pageSize, int pageCurrent);
+	
+	public String deleteByBatchNumber(String batchNumber);
 }

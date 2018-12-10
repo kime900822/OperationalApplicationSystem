@@ -26,6 +26,7 @@ import com.google.gson.reflect.TypeToken;
 import com.kime.base.ActionBase;
 import com.kime.infoenum.Message;
 import com.kime.model.HeadColumn;
+import com.kime.utils.CommonUtil;
 import com.opensymphony.xwork2.ActionContext;
 
 @Controller
@@ -70,16 +71,24 @@ public class CustomsClearanceAction extends ActionBase {
 					"inputName", "reslutJson"
 			})})
 	public String deleteCustomsClearanceByBatchNumber() throws UnsupportedEncodingException{
-		String r=clearanceBIZ.deleteByBatchNumber(batchNumber);
-		if (r==null) {
-			result.setMessage("Success!");
-			result.setStatusCode("200");
-			reslutJson=new ByteArrayInputStream((callback+"("+new Gson().toJson(null)+")").getBytes()); 
-		}else{
-			result.setMessage(r);
+		if (!CommonUtil.isAdmin(getUser())) {
+			result.setMessage("非管理员，没有权限！");
 			result.setStatusCode("300");
-			reslutJson=new ByteArrayInputStream(new Gson().toJson(result).getBytes("UTF-8")); 
+			reslutJson=new ByteArrayInputStream(new Gson().toJson(result).getBytes("UTF-8"));
+		}else{
+			String r=clearanceBIZ.deleteByBatchNumber(batchNumber);
+			if (r==null) {
+				result.setMessage("Success!");
+				result.setStatusCode("200");
+				reslutJson=new ByteArrayInputStream((callback+"("+new Gson().toJson(null)+")").getBytes()); 
+			}else{
+				result.setMessage(r);
+				result.setStatusCode("300");
+				reslutJson=new ByteArrayInputStream(new Gson().toJson(result).getBytes("UTF-8")); 
+			}
+			
 		}
+		
 		return SUCCESS;
 	}
 

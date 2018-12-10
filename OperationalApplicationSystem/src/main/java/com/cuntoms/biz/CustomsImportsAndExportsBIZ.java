@@ -18,6 +18,8 @@ public interface CustomsImportsAndExportsBIZ {
 	
 	public List<CustomsImportsAndExports> query(String where, int pageSize, int pageCurrent);
 	
+	public String deleteByBatchNumber(String batchNumber);
+	
 	public String editNo(String id,String no);
 
 	public CustomsImportsAndExports getById(String id);

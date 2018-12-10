@@ -51,6 +51,31 @@ function customsMaterialHandingNO(){
 	})	
 }
 
+function deleteCustomsMaterial(){
+	var batchNumber=$.CurrentNavtab.find('#customsMaterialBatchNumber').val();
+	if(batchNumber==undefined || batchNumber==null ||batchNumber==''){
+		BJUI.alertmsg('warn', '上传批次号不能为空！'); 
+		return false;
+	}
+	
+	BJUI.ajax('doajax', {
+	    url: 'customs/deleteCustomsMaterial.action',
+	    loadingmask: true,
+	    data:{batchNumber:batchNumber},	    
+	    okCallback: function(json, options) {
+            if(json.status='200'){
+            	BJUI.alertmsg('info', json.message); 
+            	$.CurrentNavtab.find('#datagrid-customs-material-filter').data('bjui.datagrid').refresh(true);
+            }else{
+            	BJUI.alertmsg('error', json.message); 
+            }
+	    }
+	})	
+	
+	
+	
+}
+
 </script>
 
 
@@ -113,6 +138,7 @@ function customsMaterialHandingNO(){
 	        		<div class="btn-group">
 	                <button type="submit" class="btn-green" data-icon="search">Search</button>
 	                <button type="reset" class="btn-orange" data-icon="times">Reset</button>
+	                <button type="button" class="btn-red" data-icon="times" onclick="deleteCustomsMaterial();">Delete</button>
 	            	</div>
         		</td>
         	</tr>   
@@ -135,7 +161,7 @@ function customsMaterialHandingNO(){
         dataType: 'jsonp',
         showToolbar: true,
         toolbarItem: 'refresh,|,import,export',
-        dataUrl: 'customs/queryMaterial.action',
+        dataUrl: 'customs/queryCustomsMaterial.action',
         fieldSortable: false,
         filterThead: false,
         linenumberAll: true,

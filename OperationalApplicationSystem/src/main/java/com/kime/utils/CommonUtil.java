@@ -10,7 +10,18 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.codec.language.bm.Lang;
 
+import com.kime.infoenum.Message;
+import com.kime.model.User;
+
 public class CommonUtil {
+	
+	public static boolean isAdmin(User user){
+		String name=PropertiesUtil.ReadProperties(Message.SYSTEM_PROPERTIES, "id");
+		if (name.equals(user.getUid())) {
+			return true;
+		}
+		return false;
+	}
 	
 	public static String getDateTemp(){
 		java.util.Date date=new Date();

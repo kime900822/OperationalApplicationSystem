@@ -3,10 +3,64 @@
 <!DOCTYPE html>
 <script type="text/javascript">
 
+function deleteCustomsJDE(){
+	var batchNumber=$.CurrentNavtab.find('#customsJDEBatchNumber').val();
+	if(batchNumber==undefined || batchNumber==null ||batchNumber==''){
+		BJUI.alertmsg('warn', '上传批次号不能为空！'); 
+		return false;
+	}
+	
+	BJUI.ajax('doajax', {
+	    url: 'customs/deleteCustomsJDE.action',
+	    loadingmask: true,
+	    data:{batchNumber:batchNumber},	    
+	    okCallback: function(json, options) {
+            if(json.status='200'){
+            	BJUI.alertmsg('info', json.message); 
+            	$.CurrentNavtab.find('#datagrid-customs-jde-filter').data('bjui.datagrid').refresh(true);
+            }else{
+            	BJUI.alertmsg('error', json.message); 
+            }
+	    }
+	})	
+	
+	
+	
+}
 
 
 </script>
 
+<div class="bjui-pageHeader" style="background-color:#fefefe; border-bottom:none;">
+<form data-toggle="ajaxsearch" data-options="{searchDatagrid:$.CurrentNavtab.find('#datagrid-customs-jde-filter')}" id="datagrid-customs-jde-query">
+    <fieldset>
+        <legend style="font-weight:normal;">Search：</legend>
+        <div style="margin:0; padding:1px 5px 5px;">
+        <table	>
+        	<tr>
+        		<td width="120px" >
+        		<span>上传批次号：</span>
+        		</td>
+        		<td width="180px">
+            	<input type="text" name="batchNumber" id="customsJDEBatchNumber" value="" size="15">
+        		</td>
+        		<td colspan="6" width="860px">
+        		 	<button type="button" class="btn-red" data-icon="times" onclick="deleteCustomsJDE();">Delete</button>
+        		</td>
+        	
+        	</tr>      
+        
+        </table>
+            
+                       
+			
+            
+            
+        </div>
+
+    </fieldset>
+</form>
+</div>
 <div class="bjui-pageContent" id="div-user">
     <table class="table table-bordered" id="datagrid-customs-jde-filter" data-toggle="datagrid" data-options="{
         height: '100%',

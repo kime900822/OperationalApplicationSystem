@@ -190,6 +190,25 @@ public class CustomsProductBIZImpl extends BizBase implements CustomsProductBIZ{
 		}
 		
 	}
+
+	@Override
+	@Transactional(readOnly=false,propagation=Propagation.REQUIRED,rollbackFor=Exception.class )
+	public String deleteByBatchNumber(String batchNumber) {
+		try {
+			List  list = commonDAO.queryByHql(" select count(1) from CustomsProduct where batchNumber='"+batchNumber+"'");
+			if (list.size()>0&&(long)list.get(0)>0) {
+				String hql="delete from CustomsProduct where batchNumber='"+batchNumber+"'";
+				commonDAO.executeHQL(hql);
+			}else{
+				return "数据删除报错：此批次号没有数据";
+			}
+		} catch (Exception e) {
+			logUtil.logError(CustomsProductHelp.title,"数据删除报错："+e.getMessage());
+			return "数据删除报错："+e.getMessage();
+		}
+		return null;
+
+	}
 	
 	
 	

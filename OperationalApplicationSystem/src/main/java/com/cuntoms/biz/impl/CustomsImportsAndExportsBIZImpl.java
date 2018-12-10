@@ -16,6 +16,7 @@ import com.cuntoms.dao.CustomsImportsAndExportsDAO;
 import com.cuntoms.model.CustomsImportsAndExports;
 import com.cuntoms.model.CustomsMaterial;
 import com.cuntoms.other.CustomsImportsAndExportsHelp;
+import com.cuntoms.other.CustomsMaterialHelp;
 import com.kime.base.BizBase;
 import com.kime.dao.CommonDAO;
 import com.kime.model.HeadColumn;
@@ -140,6 +141,26 @@ public class CustomsImportsAndExportsBIZImpl  extends BizBase implements Customs
 		}
 		
 	}
+
+	@Override
+	@Transactional(readOnly=false,propagation=Propagation.REQUIRED,rollbackFor=Exception.class )
+	public String deleteByBatchNumber(String batchNumber) {
+		try {
+			List  list = commonDAO.queryByHql(" select count(1) from CustomsImportsAndExports where batchNumber='"+batchNumber+"'");
+			if (list.size()>0&&(long)list.get(0)>0) {
+				String hql="delete from CustomsImportsAndExports where batchNumber='"+batchNumber+"'";
+				commonDAO.executeHQL(hql);
+			}else{
+				return "数据删除报错：此批次号没有数据";
+			}
+			
+		} catch (Exception e) {
+			logUtil.logError(CustomsImportsAndExportsHelp.title,"数据删除报错："+e.getMessage());
+			return "数据删除报错："+e.getMessage();
+		}
+		return null;
+	}
+	
 	
 
 	

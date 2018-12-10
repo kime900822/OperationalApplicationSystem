@@ -129,6 +129,9 @@ public class CustomsClearanceBIZImpl  extends BizBase implements CustomsClearanc
 	@Transactional(readOnly=false,propagation=Propagation.REQUIRED,rollbackFor=Exception.class )
 	public String deleteByBatchNumber(String batchNumber) {
 		List<CustomsClearance> lClearances=customsCleanceDAO.query(" where batchNumber='"+batchNumber+"'");
+		if (lClearances.size()==0) {
+			return "数据删除报错：此批次号没有数据";
+		}
 		for (CustomsClearance customsClearance : lClearances) {
 			
 			if (customsClearance.getBOMDate()==null||customsClearance.getBOMDate().equals("")) {
@@ -147,7 +150,7 @@ public class CustomsClearanceBIZImpl  extends BizBase implements CustomsClearanc
 			List  list = commonDAO.queryByHql(" select MAX(batchNumber) from CustomsClearance where substr(batchNumber,2,6)='"+sdf.format(d)+"'" );
 			if (list.size()>0&&list.get(0)!=null) {
 				String max= (String)list.get(0);
-				return "A" + String.valueOf(Long.valueOf(max.replace("B", "")) + 1);
+				return "A" + String.valueOf(Long.valueOf(max.replace("A", "")) + 1);
 			}else{
 				return "A"+sdf.format(d)+"01";
 			}

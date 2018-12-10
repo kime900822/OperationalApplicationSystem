@@ -13,7 +13,9 @@ import com.cuntoms.dao.CustomsJDEDAO;
 import com.cuntoms.model.CustomsJDE;
 import com.cuntoms.model.CustomsMaterial;
 import com.cuntoms.other.CustomsJDEHelp;
+import com.cuntoms.other.CustomsProductHelp;
 import com.kime.base.BizBase;
+import com.kime.dao.CommonDAO;
 import com.kime.model.User;
 import com.kime.utils.CommonUtil;
 import com.kime.utils.ExcelUtil;
@@ -24,7 +26,8 @@ public class CUstomsJDEBIZImpl extends BizBase implements CUstomsJDEBIZ {
 
 	@Autowired
 	CustomsJDEDAO customsJDFDAO;
-	
+	@Autowired
+	CommonDAO commonDAO;
 	
 	@Override
 	@Transactional(readOnly=false,propagation=Propagation.REQUIRED,rollbackFor=Exception.class )
@@ -58,6 +61,24 @@ public class CUstomsJDEBIZImpl extends BizBase implements CUstomsJDEBIZ {
 	@Override
 	public List<CustomsMaterial> query(String where, int pageSize, int pageCurrent) {
 		return customsJDFDAO.query(where, pageSize, pageCurrent);
+	}
+
+	@Override
+	@Transactional(readOnly=false,propagation=Propagation.REQUIRED,rollbackFor=Exception.class )
+	public String deleteByBatchNumber(String batchNumber) {
+		try {
+			List  list = commonDAO.queryByHql(" select count(1) from CustomsJDE where batchNumber='"+batchNumber+"'");
+			if (list.size()>0&&(long)list.get(0)>0) {
+				String hql="delete from CustomsJDE where batchNumber='"+batchNumber+"'";
+				commonDAO.executeHQL(hql);
+			}else{
+				return "数据删除报错：此批次号没有数据";
+			}
+		} catch (Exception e) {
+			logUtil.logError(CustomsJDEHelp.title,"数据删除报错："+e.getMessage());
+			return "数据删除报错："+e.getMessage();
+		}
+		return null;
 	}
 	
 	

@@ -3,6 +3,30 @@
 <!DOCTYPE html>
 <script type="text/javascript">
 
+function deleteCustomsImportsAndExports(){
+	var batchNumber=$.CurrentNavtab.find('#customsMaterialBatchNumber').val();
+	if(batchNumber==undefined || batchNumber==null ||batchNumber==''){
+		BJUI.alertmsg('warn', '上传批次号不能为空！'); 
+		return false;
+	}
+	
+	BJUI.ajax('doajax', {
+	    url: 'customs/deleteCustomsImportsAndExports.action',
+	    loadingmask: true,
+	    data:{batchNumber:batchNumber},	    
+	    okCallback: function(json, options) {
+            if(json.status='200'){
+            	BJUI.alertmsg('info', json.message); 
+            	$.CurrentNavtab.find('#datagrid-customs-importsandexports-filter').data('bjui.datagrid').refresh(true);
+            }else{
+            	BJUI.alertmsg('error', json.message); 
+            }
+	    }
+	})	
+	
+	
+	
+}
 
 </script>
 
@@ -17,29 +41,44 @@
         		<td width="120px">
         		<span>Order Number：</span>
         		</td>
-        		<td width="150px">
+        		<td width="180px">
             	<input type="text" name="orderNumber" value=""  size="15">
         		</td>
-        		<td width="180px">
+        		<td width="160px">
         		<span>Cimtas Long Item No：</span>
         		</td>
-        		<td width="150px">
+        		<td width="180px">
             	<input type="text" name="cimtasLongItemNo" value=""  size="15">
         		</td>
-	        	<td width="130px">
+	        	<td width="100px">
         		<span>报关进料日期:</span>
         		</td>
         		<td width="220px">
             	<input type="text" name="entryDate_f"  data-nobtn="true"  value="" data-toggle="datepicker" size="9" data-rule="date">to:
             	<input type="text" name="entryDate_t"  data-nobtn="true"  value="" data-toggle="datepicker" size="9" data-rule="date">
         		</td>
-        		<td width="160px" colspan="2">
+        		<td width="200px" colspan="2">
         			<div class="btn-group">
 	                	<button type="submit" class="btn-green" data-icon="search">Search</button>
 	                	<button type="reset" class="btn-orange" data-icon="times">Reset</button>
 	            	</div>
          		</td>
-        	</tr>      
+        	</tr>  
+        	<tr>
+        		<td colspan="8" height="6px"></td>
+        	</tr>
+        	<tr>
+        		<td>
+        		<span>上传批次号：</span>
+        		</td>
+        		<td>
+            	<input type="text" name="batchNumber" id="customsMaterialBatchNumber" value="" size="15">
+        		</td>
+        		<td colspan="6">
+        		 	<button type="button" class="btn-red" data-icon="times" onclick="deleteCustomsImportsAndExports();">Delete</button>
+        		</td>
+        	
+        	</tr>    
         
         </table>
             

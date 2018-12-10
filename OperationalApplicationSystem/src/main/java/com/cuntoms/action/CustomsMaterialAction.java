@@ -25,6 +25,7 @@ import com.google.gson.reflect.TypeToken;
 import com.kime.base.ActionBase;
 import com.kime.infoenum.Message;
 import com.kime.model.HeadColumn;
+import com.kime.utils.CommonUtil;
 import com.opensymphony.xwork2.ActionContext;
 
 @Controller
@@ -88,6 +89,29 @@ public class CustomsMaterialAction extends ActionBase{
 	}
 	
 	
+	@Action(value="deleteCustomsMaterial",results={@org.apache.struts2.convention.annotation.Result(type="stream",
+			params={
+					"inputName", "reslutJson"
+			})})
+	public String deleteCustomsJDE() throws UnsupportedEncodingException{
+		
+		if (!CommonUtil.isAdmin(getUser())) {
+			result.setMessage("非管理员，没有权限！");
+			result.setStatusCode("300");
+		}else{
+			String r=customsMaterialBIZ.deleteByBatchNumber(batchNumber);
+			if (r==null) {
+				result.setMessage("Success!");
+				result.setStatusCode("200");
+			}else{
+				result.setMessage(r);
+				result.setStatusCode("300");
+			}
+		}
+		
+		reslutJson=new ByteArrayInputStream(new Gson().toJson(result).getBytes("UTF-8"));  
+		return SUCCESS;
+	}
 	
 	@Action(value="materialHandingOK",results={@org.apache.struts2.convention.annotation.Result(type="stream",
 			params={
@@ -124,11 +148,11 @@ public class CustomsMaterialAction extends ActionBase{
 	}
 	
 	
-	@Action(value="queryMaterial",results={@org.apache.struts2.convention.annotation.Result(type="stream",
+	@Action(value="queryCustomsMaterial",results={@org.apache.struts2.convention.annotation.Result(type="stream",
 			params={
 					"inputName", "reslutJson"
 			})})
-	public String queryMaterial() throws UnsupportedEncodingException{	
+	public String queryCustomsMaterial() throws UnsupportedEncodingException{	
 		String where="";
 		if (!"".equals(no_f)&&no_f!=null) {
 			where+=" where no >= '"+no_f+"' ";

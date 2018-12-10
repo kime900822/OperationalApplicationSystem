@@ -18,6 +18,8 @@ public interface CustomsProductBIZ {
 	
 	public String customsHandingNO(String batchNumber,User user);
 	
+	public String deleteByBatchNumber(String batchNumber);
+	
 	public List<CustomsProduct> query(String where);
 	
 	public List<CustomsProduct> query(String where, int pageSize, int pageCurrent);

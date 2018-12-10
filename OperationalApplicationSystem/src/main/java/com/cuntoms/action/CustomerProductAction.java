@@ -27,6 +27,7 @@ import com.kime.base.ActionBase;
 import com.kime.infoenum.Message;
 import com.kime.model.HeadColumn;
 import com.kime.model.User;
+import com.kime.utils.CommonUtil;
 import com.kime.utils.ExcelUtil;
 import com.opensymphony.xwork2.ActionContext;
 import com.sign.model.Beneficiary;
@@ -127,12 +128,36 @@ public class CustomerProductAction extends ActionBase {
 		return SUCCESS;
 	}
 	
-	
-	@Action(value="queryProduct",results={@org.apache.struts2.convention.annotation.Result(type="stream",
+	@Action(value="deleteCustomsProduct",results={@org.apache.struts2.convention.annotation.Result(type="stream",
 			params={
 					"inputName", "reslutJson"
 			})})
-	public String queryProduct() throws UnsupportedEncodingException{	
+	public String deleteCustomsProduct() throws UnsupportedEncodingException {
+		
+		if (!CommonUtil.isAdmin(getUser())) {
+			result.setMessage("非管理员，没有权限！");
+			result.setStatusCode("300");
+		}else{
+			String r=customsProductBIZ.deleteByBatchNumber(batchNumber);
+			if (r==null) {
+				result.setMessage("Success!");
+				result.setStatusCode("200");
+			}else{
+				result.setMessage(r);
+				result.setStatusCode("300");
+			}
+		}
+		
+		reslutJson=new ByteArrayInputStream(new Gson().toJson(result).getBytes("UTF-8"));  
+		return SUCCESS;
+	}
+	
+	
+	@Action(value="queryCustomsProduct",results={@org.apache.struts2.convention.annotation.Result(type="stream",
+			params={
+					"inputName", "reslutJson"
+			})})
+	public String queryCustomsProduct() throws UnsupportedEncodingException{	
 		String where="";
 		if (!"".equals(no_f)&&no_f!=null) {
 			where+=" where no >= '"+no_f+"' ";

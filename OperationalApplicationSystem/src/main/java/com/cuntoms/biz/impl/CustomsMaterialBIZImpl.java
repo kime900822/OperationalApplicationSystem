@@ -17,6 +17,7 @@ import com.cuntoms.dao.CustomsMaterialDAO;
 import com.cuntoms.model.CustomsMaterial;
 import com.cuntoms.model.CustomsProduct;
 import com.cuntoms.other.CustomsMaterialHelp;
+import com.cuntoms.other.CustomsProductHelp;
 import com.kime.base.BizBase;
 import com.kime.dao.CommonDAO;
 import com.kime.model.HeadColumn;
@@ -163,6 +164,25 @@ public class CustomsMaterialBIZImpl extends BizBase implements CustomsMaterialBI
 		}else{
 			return null;
 		}
+	}
+	
+	
+	@Override
+	@Transactional(readOnly=false,propagation=Propagation.REQUIRED,rollbackFor=Exception.class )
+	public String deleteByBatchNumber(String batchNumber) {
+		try {
+			List  list = commonDAO.queryByHql(" select count(1) from CustomsMaterial where batchNumber='"+batchNumber+"'");
+			if (list.size()>0&&(long)list.get(0)>0) {
+				String hql="delete from CustomsMaterial where batchNumber='"+batchNumber+"'";
+				commonDAO.executeHQL(hql);
+			}else{
+				return "数据删除报错：此批次号没有数据";
+			}
+		} catch (Exception e) {
+			logUtil.logError(CustomsMaterialHelp.title,"数据删除报错："+e.getMessage());
+			return "数据删除报错："+e.getMessage();
+		}
+		return null;
 	}
 
 	public int getMaxNO() throws Exception{

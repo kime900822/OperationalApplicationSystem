@@ -4,8 +4,10 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 
+import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
@@ -43,12 +45,16 @@ public class CommonDAOImpl extends HibernateDaoSupport implements CommonDAO{
 	@Override
 	public void executeSQL(String sql) {
 		Session session=this.getSessionFactory().openSession();
+		Transaction trance = session.beginTransaction();
 		session.createSQLQuery(sql).executeUpdate();
+		trance.commit();
 	}
 	@Override
 	public void executeHQL(String hql) {
 		Session session=this.getSessionFactory().openSession();
-		session.createQuery(hql).executeUpdate();		
+		Transaction trance = session.beginTransaction();
+		session.createQuery(hql).executeUpdate();	
+		trance.commit();
 	}
 	@Override
 	public List queryByHql(String hql, Integer pageSize, Integer pageCurrent) {

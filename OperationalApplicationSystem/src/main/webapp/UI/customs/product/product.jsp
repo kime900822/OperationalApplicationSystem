@@ -29,6 +29,31 @@ function customsProductHandingOK(){
 	
 }
 
+function deleteCustomsProduct(){
+	var batchNumber=$.CurrentNavtab.find('#customsProductBatchNumber').val();
+	if(batchNumber==undefined || batchNumber==null ||batchNumber==''){
+		BJUI.alertmsg('warn', '上传批次号不能为空！'); 
+		return false;
+	}
+	
+	BJUI.ajax('doajax', {
+	    url: 'customs/deleteCustomsProduct.action',
+	    loadingmask: true,
+	    data:{batchNumber:batchNumber},	    
+	    okCallback: function(json, options) {
+            if(json.status='200'){
+            	BJUI.alertmsg('info', json.message); 
+            	$.CurrentNavtab.find('#datagrid-customs-product-filter').data('bjui.datagrid').refresh(true);
+            }else{
+            	BJUI.alertmsg('error', json.message); 
+            }
+	    }
+	})	
+	
+	
+	
+}
+
 function customsProductHandingNO(){
 	var batchNumber=$.CurrentNavtab.find('#customsProductBatchNumber').val();
 	if(batchNumber==undefined || batchNumber==null ||batchNumber==''){
@@ -113,6 +138,7 @@ function customsProductHandingNO(){
 	        		<div class="btn-group">
 	                <button type="submit" class="btn-green" data-icon="search">Search</button>
 	                <button type="reset" class="btn-orange" data-icon="times">Reset</button>
+	                <button type="button" class="btn-red" data-icon="times" onclick="deleteCustomsProduct();">Delete</button>
 	            	</div>
         		</td>
         	</tr>   
@@ -135,7 +161,7 @@ function customsProductHandingNO(){
         dataType: 'jsonp',
         showToolbar: true,
         toolbarItem: 'refresh,|,import,export',
-        dataUrl: 'customs/queryProduct.action',
+        dataUrl: 'customs/queryCustomsProduct.action',
         fieldSortable: false,
         filterThead: false,
         linenumberAll: true,
