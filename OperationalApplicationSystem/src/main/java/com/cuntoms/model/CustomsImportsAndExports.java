@@ -43,6 +43,16 @@ public class CustomsImportsAndExports {
 	String operator;
 	@Column
 	String operationDate;
+	@Column
+	String batchNumber;
+	
+	
+	public String getBatchNumber() {
+		return batchNumber;
+	}
+	public void setBatchNumber(String batchNumber) {
+		this.batchNumber = batchNumber;
+	}
 	public String getId() {
 		return id;
 	}

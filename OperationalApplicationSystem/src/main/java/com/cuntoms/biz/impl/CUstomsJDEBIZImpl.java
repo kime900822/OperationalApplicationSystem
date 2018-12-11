@@ -1,6 +1,8 @@
 package com.cuntoms.biz.impl;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,8 +37,11 @@ public class CUstomsJDEBIZImpl extends BizBase implements CUstomsJDEBIZ {
 		try {
 			List<CustomsJDE> lCustomsJDEs=ExcelUtil.FileToList(new CustomsJDE().getClass(),file,first,upfileFileName,start);
 			if (lCustomsJDEs.size()>0) {
+				String batchNumber=getMaxBatchNumber();
+				String date=CommonUtil.getDate();
 				for (CustomsJDE customsJDE : lCustomsJDEs) {
-					customsJDE.setOperationDate(CommonUtil.getDate());
+					customsJDE.setOperationDate(date);
+					customsJDE.setBatchNumber(batchNumber);
 					customsJDFDAO.save(customsJDE);
 				}
 				
@@ -81,6 +86,23 @@ public class CUstomsJDEBIZImpl extends BizBase implements CUstomsJDEBIZ {
 		return null;
 	}
 	
-	
+	public String getMaxBatchNumber() throws Exception{
+		try {
+			Date d = new Date();
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyyMM");
+			List  list = commonDAO.queryByHql(" select MAX(batchNumber) from CustomsJDE where substr(batchNumber,2,6)='"+sdf.format(d)+"'" );
+			if (list.size()>0&&list.get(0)!=null) {
+				String max= (String)list.get(0);
+				return "A" + String.valueOf(Long.valueOf(max.replace("A", "")) + 1);
+			}else{
+				return "A"+sdf.format(d)+"01";
+			}
+		} catch (NumberFormatException e) {
+			e.printStackTrace();
+			throw new Exception(e.getMessage());
+		}
+		
+		
+	}
 
 }

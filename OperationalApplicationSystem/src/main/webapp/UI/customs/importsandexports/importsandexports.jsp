@@ -125,6 +125,7 @@ function deleteCustomsImportsAndExports(){
 				<th data-options="{name:'totalPrice',width:200,align:'left',finalWidth:'true'}">Total Price</th>
 				<th data-options="{name:'operator',width:200,align:'left',finalWidth:'true'}">操作员</th>
 				<th data-options="{name:'operationDate',width:200,align:'left',finalWidth:'true'}">操作日期</th>
+				<th data-options="{name:'batchNumber',width:200,align:'left',finalWidth:'true'}">上传批次号</th>
             </tr>
         </thead>
     </table>

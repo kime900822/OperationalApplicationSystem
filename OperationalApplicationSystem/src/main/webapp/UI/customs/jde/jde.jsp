@@ -106,6 +106,7 @@ function deleteCustomsJDE(){
 				<th data-options="{name:'purchaseOrderLineNumber',width:200,align:'left',finalWidth:'true'}">Purchase Order Line Number</th>
 				<th data-options="{name:'note1',width:200,align:'left',finalWidth:'true'}">Note</th>
 				<th data-options="{name:'operationDate',width:200,align:'left',finalWidth:'true'}">操作日期</th>
+				<th data-options="{name:'batchNumber',width:200,align:'left',finalWidth:'true'}">上传批次号</th>
 				
             </tr>
         </thead>

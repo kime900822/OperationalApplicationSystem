@@ -55,6 +55,7 @@ public class CustomsClearanceBIZImpl  extends BizBase implements CustomsClearanc
 		try {
 			List<CustomsClearance> lClearances=ExcelUtil.FileToList(new CustomsClearance().getClass(),file,first,upfileFileName,start);
 			String batchNumber=getMaxBatchNumber();
+			String date=CommonUtil.getDate();
 			if (lClearances.size()>0) {
 				for (CustomsClearance clearance : lClearances) {
 
@@ -68,7 +69,7 @@ public class CustomsClearanceBIZImpl  extends BizBase implements CustomsClearanc
 						clearance.setNo(customsMaterial.getNo());
 					}
 						
-					clearance.setOperationDate(CommonUtil.getDate());
+					clearance.setOperationDate(date);
 					clearance.setOperator(user.getName());
 					clearance.setBatchNumber(batchNumber);
 					

@@ -70,9 +70,17 @@ public class CustomsJDE {
 	String note1;
 	@Column
 	String operationDate;
+	@Column
+	String batchNumber;
 	
 	
 	
+	public String getBatchNumber() {
+		return batchNumber;
+	}
+	public void setBatchNumber(String batchNumber) {
+		this.batchNumber = batchNumber;
+	}
 	public String getId() {
 		return id;
 	}

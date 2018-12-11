@@ -3,6 +3,8 @@ package com.cuntoms.biz.impl;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +44,8 @@ public class CustomsImportsAndExportsBIZImpl  extends BizBase implements Customs
 		try {
 			List<CustomsImportsAndExports> lCustomsImportsAndExports=ExcelUtil.FileToList(new CustomsImportsAndExports().getClass(),file,first,upfileFileName,start);
 			if (lCustomsImportsAndExports.size()>0) {
+				String batchNumber=getMaxBatchNumber();
+				String date=CommonUtil.getDate();
 				for (CustomsImportsAndExports customsImportsAndExports : lCustomsImportsAndExports) {
 					if (customsImportsAndExports.getEntryDate().equals("")) {
 						logUtil.logError(CustomsImportsAndExportsHelp.title,"导入报错："+customsImportsAndExports.getOrderNumber()+"报关进料日期不能为空。");
@@ -58,9 +62,8 @@ public class CustomsImportsAndExportsBIZImpl  extends BizBase implements Customs
 						customsImportsAndExports.setNo(customsMaterial.getNo());
 					}
 						
-					
-					
-					customsImportsAndExports.setOperationDate(CommonUtil.getDate());
+					customsImportsAndExports.setOperationDate(date);
+					customsImportsAndExports.setBatchNumber(batchNumber);
 					customsImportsAndExports.setOperator(user.getName());
 					
 					customsImportsAndExportsDAO.save(customsImportsAndExports);
@@ -162,7 +165,24 @@ public class CustomsImportsAndExportsBIZImpl  extends BizBase implements Customs
 	}
 	
 	
-
+	public String getMaxBatchNumber() throws Exception{
+		try {
+			Date d = new Date();
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyyMM");
+			List  list = commonDAO.queryByHql(" select MAX(batchNumber) from CustomsImportsAndExports where substr(batchNumber,2,6)='"+sdf.format(d)+"'" );
+			if (list.size()>0&&list.get(0)!=null) {
+				String max= (String)list.get(0);
+				return "A" + String.valueOf(Long.valueOf(max.replace("A", "")) + 1);
+			}else{
+				return "A"+sdf.format(d)+"01";
+			}
+		} catch (NumberFormatException e) {
+			e.printStackTrace();
+			throw new Exception(e.getMessage());
+		}
+		
+		
+	}
 	
 	
 }
