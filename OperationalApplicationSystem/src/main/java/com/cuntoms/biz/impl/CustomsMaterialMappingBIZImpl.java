@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.cuntoms.biz.CustomsMaterialMappingBIZ;
@@ -27,6 +28,7 @@ public class CustomsMaterialMappingBIZImpl extends BizBase implements CustomsMat
 	
 	
 	@Override
+	@Transactional(readOnly=false,propagation=Propagation.REQUIRED,rollbackFor=Exception.class )
 	public void importData(User user, File file, String first, String upfileFileName, int start) throws Exception {
 		try {
 			List<CustomsMaterialMapping> list=ExcelUtil.FileToList(new CustomsMaterialMapping().getClass(),file,first,upfileFileName,start);
@@ -59,10 +61,13 @@ public class CustomsMaterialMappingBIZImpl extends BizBase implements CustomsMat
 	}
 
 	@Override
-	public String delete(CustomsMaterialMapping cMapping) {
+	@Transactional(readOnly=false,propagation=Propagation.REQUIRED,rollbackFor=Exception.class )
+	public String delete(List<CustomsMaterialMapping> list) {
 		try {
-			customsMaterialMappingDAO.delete(cMapping);
-			logUtil.logInfo(CustomsMaterialMappinglHelp.title,"删除成功：旧料号"+cMapping.getOldMaterialNo()+" 新料号："+cMapping.getNewMaterialNo());
+			for (CustomsMaterialMapping customsMaterialMapping : list) {
+				customsMaterialMappingDAO.delete(customsMaterialMapping);
+				logUtil.logInfo(CustomsMaterialMappinglHelp.title,"删除成功：旧料号"+customsMaterialMapping.getOldMaterialNo()+" 新料号："+customsMaterialMapping.getNewMaterialNo());
+			}
 			return null;
 		} catch (Exception e) {
 			logUtil.logError(CustomsMaterialMappinglHelp.title,"删除报错："+e.getMessage());
@@ -72,9 +77,10 @@ public class CustomsMaterialMappingBIZImpl extends BizBase implements CustomsMat
 	}
 
 	@Override
+	@Transactional(readOnly=false,propagation=Propagation.REQUIRED,rollbackFor=Exception.class )
 	public String update(CustomsMaterialMapping cMapping) {
 		try {
-			customsMaterialMappingDAO.delete(cMapping);
+			customsMaterialMappingDAO.update(cMapping);
 			logUtil.logInfo(CustomsMaterialMappinglHelp.title,"更新成功：旧料号"+cMapping.getOldMaterialNo()+" 新料号："+cMapping.getNewMaterialNo());
 			return null;
 		} catch (Exception e) {
@@ -84,9 +90,21 @@ public class CustomsMaterialMappingBIZImpl extends BizBase implements CustomsMat
 	}
 
 	@Override
+	@Transactional(readOnly=false,propagation=Propagation.REQUIRED,rollbackFor=Exception.class )
 	public String save(CustomsMaterialMapping cMapping) {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+			List list=customsMaterialMappingDAO.query(" where oldMaterialNo='"+cMapping.getOldMaterialNo()+"'");
+			if (list.size()>0) {
+				logUtil.logInfo(CustomsMaterialMappinglHelp.title,"新增失败：旧料号"+cMapping.getOldMaterialNo()+"️已存在");
+				return "新增失败：旧料号"+cMapping.getOldMaterialNo()+"️已存在";
+			}
+			customsMaterialMappingDAO.save(cMapping);
+			logUtil.logInfo(CustomsMaterialMappinglHelp.title,"新增成功：旧料号"+cMapping.getOldMaterialNo()+" 新料号："+cMapping.getNewMaterialNo());
+			return null;
+		} catch (Exception e) {
+			logUtil.logError(CustomsMaterialMappinglHelp.title,"新增报错："+e.getMessage());
+			return "新增报错："+e.getMessage();
+		}
 	}
 
 	

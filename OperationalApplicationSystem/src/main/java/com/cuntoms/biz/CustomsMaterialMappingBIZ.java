@@ -14,7 +14,7 @@ public interface CustomsMaterialMappingBIZ {
 	
 	public List<CustomsMaterialMapping> query(String where, int pageSize, int pageCurrent);
 	
-	public String delete(CustomsMaterialMapping cMapping);
+	public String delete(List<CustomsMaterialMapping> list);
 	
 	public String update(CustomsMaterialMapping cMapping);
 	
