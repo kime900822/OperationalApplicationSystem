@@ -111,6 +111,10 @@ public class CustomsProductBIZImpl extends BizBase implements CustomsProductBIZ{
 					customsProduct.setNo(String.valueOf(max++));
 					customsProduct.setUploadDate(date);
 					customsProduct.setUploadOperator(user.getUid());
+					
+					customsProduct.setDeclareNumber(CommonUtil.spaceToNull(customsProduct.getDeclareNumber()));
+					customsProduct.setDeclarePrice(CommonUtil.spaceToNull(customsProduct.getDeclarePrice()));
+					
 					if (checkMaterialNo(customsProduct.getMaterialNo())) {
 						customsProductDAO.save(customsProduct);
 					}else{

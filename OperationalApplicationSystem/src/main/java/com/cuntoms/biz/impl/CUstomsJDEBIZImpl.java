@@ -40,6 +40,12 @@ public class CUstomsJDEBIZImpl extends BizBase implements CUstomsJDEBIZ {
 				String batchNumber=getMaxBatchNumber();
 				String date=CommonUtil.getDate();
 				for (CustomsJDE customsJDE : lCustomsJDEs) {
+					
+					customsJDE.setTransQTY(CommonUtil.spaceToNull(customsJDE.getTransQTY()));
+					customsJDE.setExtendedCostPrice(CommonUtil.spaceToNull(customsJDE.getExtendedCostPrice()));
+					customsJDE.setDocumentNumber(CommonUtil.spaceToNull(customsJDE.getDocumentNumber()));
+					customsJDE.setWeight(CommonUtil.spaceToNull(customsJDE.getWeight()));
+					customsJDE.setPurchaseOrderLineNumber(CommonUtil.spaceToNull(customsJDE.getPurchaseOrderLineNumber()));
 					customsJDE.setOperationDate(date);
 					customsJDE.setBatchNumber(batchNumber);
 					customsJDFDAO.save(customsJDE);

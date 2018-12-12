@@ -62,6 +62,9 @@ public class CustomsImportsAndExportsBIZImpl  extends BizBase implements Customs
 						customsImportsAndExports.setNo(customsMaterial.getNo());
 					}
 						
+					customsImportsAndExports.setNo(CommonUtil.spaceToNull(customsImportsAndExports.getNo()));
+					customsImportsAndExports.setQuantity(CommonUtil.spaceToNull(customsImportsAndExports.getQuantity()));
+					
 					customsImportsAndExports.setOperationDate(date);
 					customsImportsAndExports.setBatchNumber(batchNumber);
 					customsImportsAndExports.setOperator(user.getName());

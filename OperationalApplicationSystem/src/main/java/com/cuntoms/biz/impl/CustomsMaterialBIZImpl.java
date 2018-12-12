@@ -48,6 +48,11 @@ public class CustomsMaterialBIZImpl extends BizBase implements CustomsMaterialBI
 					customsMaterial.setNo(String.valueOf(max++));
 					customsMaterial.setUploadDate(date);
 					customsMaterial.setUploadOperator(user.getUid());
+					
+					customsMaterial.setDeclareNumber(CommonUtil.spaceToNull(customsMaterial.getDeclareNumber()));
+					customsMaterial.setDeclarePrice(CommonUtil.spaceToNull(customsMaterial.getDeclarePrice()));
+					customsMaterial.setMaxNumber(CommonUtil.spaceToNull(customsMaterial.getMaxNumber()));
+					
 					if (checkMaterialNo(customsMaterial.getMaterialNo())) {
 						customsMaterialDAO.save(customsMaterial);
 					}else{

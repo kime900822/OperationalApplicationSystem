@@ -68,7 +68,13 @@ public class CustomsClearanceBIZImpl  extends BizBase implements CustomsClearanc
 					if(checkMaterialNo(customsMaterial.getNo())){
 						clearance.setNo(customsMaterial.getNo());
 					}
-						
+					
+					clearance.setNo(CommonUtil.spaceToNull(clearance.getNo()));
+					clearance.setDia(CommonUtil.spaceToNull(clearance.getDia()));
+					clearance.setSch(CommonUtil.spaceToNull(clearance.getSch()));
+					clearance.setQuantityOrdered(CommonUtil.spaceToNull(clearance.getQuantityOrdered()));
+					clearance.setQuantityIssued(CommonUtil.spaceToNull(clearance.getQuantityIssued()));
+					clearance.setWeight(CommonUtil.spaceToNull(clearance.getWeight()));
 					clearance.setOperationDate(date);
 					clearance.setOperator(user.getName());
 					clearance.setBatchNumber(batchNumber);

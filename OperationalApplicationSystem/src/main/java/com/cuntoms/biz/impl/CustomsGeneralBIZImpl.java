@@ -73,7 +73,7 @@ public class CustomsGeneralBIZImpl  extends BizBase implements CustomsGeneralBIZ
 			if (list.size()>0) {
 				commonDAO.executeHQL(" delete from CustomsGeneralInit ");
 				for (CustomsGeneralInit generalInit : list) {
-					generalInit.setId(CommonUtil.spaceToNull(generalInit.getId()));
+					generalInit.setNo(CommonUtil.spaceToNull(generalInit.getNo()));
 					generalInit.setEarlyNumber(CommonUtil.spaceToNull(generalInit.getEarlyNumber()));
 					generalInit.setIncomingVolume(CommonUtil.spaceToNull(generalInit.getIncomingVolume()));
 					generalInit.setWriteOffVolume(CommonUtil.spaceToNull(generalInit.getWriteOffVolume()));
