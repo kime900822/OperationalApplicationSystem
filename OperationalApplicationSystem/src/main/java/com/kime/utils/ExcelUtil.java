@@ -135,11 +135,11 @@ public class ExcelUtil {
 				break;
 			// 默认的Cell值
 			default:{
-				cellvalue = " ";
+				cellvalue = null;
 			}
 			}
 		} else {
-			cellvalue = "";
+			cellvalue = null;
 		}
 		if (cellvalue!=null&&cellvalue.equals(".00")) {
 			cellvalue="0";

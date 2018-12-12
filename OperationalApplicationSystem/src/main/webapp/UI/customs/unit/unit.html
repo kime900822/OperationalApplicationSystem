@@ -1,0 +1,43 @@
+<script type="text/javascript">
+
+
+BJUI.ajax('doajax', {
+    url: 'getALLType.action',
+    loadingmask: false,
+    okCallback: function(json, options) {
+        $.each(json, function (i, item) {
+            $.CurrentNavtab.find('#j_dict_type').append("<option value='" + item + "'>" + item + "</option>")           
+        })
+        $.CurrentNavtab.find('#j_dict_type').selectpicker('refresh');
+    }
+})	
+
+
+</script>
+
+<div class="bjui-pageContent">
+    <table id="j_datagrid_customs_unit_gird" data-toggle="datagrid" data-options="{
+        height: '100%',
+        gridTitle : 'Unit',
+        showToolbar: true,
+        toolbarItem: 'add,edit,del,save,cancel,|,refresh',
+        dataType: 'jsonp',
+        dataUrl: 'getCustomsUnit.action',
+        editUrl: 'modeCustomsUnit.action',
+        delUrl: 'deleteDict.action',
+        paging: {pageSize:30, pageCurrent:1},
+        linenumberAll: true,
+        hScrollbar: true,
+        inlineEditMult: false,
+        addLocation:'first'
+    }">
+        <thead>
+            <tr>
+           		<th data-options="{name:'id', align:'center',finalWidth:'true', width:200, edit:false,hide:'true'}">ID</th>
+            	<th data-options="{name:'type', align:'center',finalWidth:'true', width:200, edit:false,hide:'true'}">Type</th>
+                <th data-options="{name:'key', align:'center',finalWidth:'true', width:200}">申报计量单位代码</th>
+                <th data-options="{name:'value', align:'center',finalWidth:'true',width:200}">中文单位</th>
+            </tr>
+        </thead>
+    </table>
+</div>

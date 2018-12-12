@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import com.cuntoms.dao.CustomsGeneralDAO;
 import com.cuntoms.model.CustomsGeneral;
+import com.cuntoms.model.CustomsGeneralInit;
 import com.kime.base.DaoBase;
 
 @Repository
@@ -49,6 +50,30 @@ public class CustomsGeneralDAOImpl extends DaoBase implements CustomsGeneralDAO{
 	public List query(String where, Integer pageSize, Integer pageCurrent) {
 		Session session=this.getSessionFactory().openSession();
 		String hql="FROM CustomsGeneral "+where;
+		return session.createQuery(hql).setFirstResult((pageCurrent-1)*pageSize).setMaxResults(pageSize).list();
+	}
+
+	@Override
+	public void save(CustomsGeneralInit generalInit) {
+		this.getHibernateTemplate().save(generalInit);
+	}
+
+	@Override
+	public void delete(CustomsGeneralInit generalInit) {
+		this.getHibernateTemplate().delete(generalInit);
+	}
+
+	@Override
+	public List query4init(String where) {
+		Session session=this.getSessionFactory().openSession();
+		String hql="FROM CustomsGeneralInit "+where;
+		return session.createQuery(hql).list();
+	}
+
+	@Override
+	public List query4init(String where, Integer pageSize, Integer pageCurrent) {
+		Session session=this.getSessionFactory().openSession();
+		String hql="FROM CustomsGeneralInit "+where;
 		return session.createQuery(hql).setFirstResult((pageCurrent-1)*pageSize).setMaxResults(pageSize).list();
 	}
 

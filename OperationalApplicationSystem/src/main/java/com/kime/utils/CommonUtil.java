@@ -9,6 +9,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.codec.language.bm.Lang;
+import org.hibernate.dialect.identity.SybaseAnywhereIdentityColumnSupport;
 
 import com.kime.infoenum.Message;
 import com.kime.model.User;
@@ -108,5 +109,19 @@ public class CommonUtil {
         Double a=Double.valueOf(s);
         DecimalFormat df=new DecimalFormat("###,##0.00"); //保留一位小数  
     	return String.valueOf(df.format(a));
+    }
+    
+    /**
+     * 将空值转换成NULL
+     * @param tmp
+     * @return
+     */
+    public static String spaceToNull(String tmp){
+    	if (tmp!=null&&tmp.equals("")) {
+			return null;
+		}else {
+			return tmp;
+		}
+    	
     }
 }
