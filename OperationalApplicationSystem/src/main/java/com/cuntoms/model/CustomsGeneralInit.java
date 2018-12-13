@@ -26,7 +26,7 @@ public class CustomsGeneralInit {
 	@Column
 	String no;
 	@Column
-	String productName;
+	String productNo;
 	@Column
 	String materialName;
 	@Column
@@ -73,11 +73,12 @@ public class CustomsGeneralInit {
 	public void setNo(String no) {
 		this.no = no;
 	}
-	public String getProductName() {
-		return productName;
+
+	public String getProductNo() {
+		return productNo;
 	}
-	public void setProductName(String productName) {
-		this.productName = productName;
+	public void setProductNo(String productNo) {
+		this.productNo = productNo;
 	}
 	public String getMaterialName() {
 		return materialName;

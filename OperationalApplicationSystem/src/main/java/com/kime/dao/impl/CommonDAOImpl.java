@@ -26,6 +26,7 @@ public class CommonDAOImpl extends HibernateDaoSupport implements CommonDAO{
     public void setSessionFactory() {  
         super.setSessionFactory(sessionFactory);  
     }  
+    
 	@Override
 	public List queryByHql(String hql) {
 		Session session=this.getSessionFactory().openSession();
@@ -42,6 +43,8 @@ public class CommonDAOImpl extends HibernateDaoSupport implements CommonDAO{
 		List<Object[]> list =session.createSQLQuery(sql).list();
 		return list;
 	}
+	
+	
 	@Override
 	public void executeSQL(String sql) {
 		Session session=this.getSessionFactory().openSession();
@@ -60,6 +63,20 @@ public class CommonDAOImpl extends HibernateDaoSupport implements CommonDAO{
 	public List queryByHql(String hql, Integer pageSize, Integer pageCurrent) {
 		Session session=this.getSessionFactory().openSession();
 		return session.createQuery(hql).setFirstResult((pageCurrent-1)*pageSize).setMaxResults(pageSize).list();
+	}
+
+	@Override
+	public List queryBySql(String sql, Class class1) {
+		Session session=this.getSessionFactory().openSession();
+		List list =session.createSQLQuery(sql).addEntity(class1).list();
+		return list;
+	}
+
+	@Override
+	public List queryBySql(String sql, Integer pageSize, Integer pageCurrent, Class class1) {
+		Session session=this.getSessionFactory().openSession();
+		List list =session.createSQLQuery(sql).addEntity(class1).setFirstResult((pageCurrent-1)*pageSize).setMaxResults(pageSize).list();
+		return list;
 	}
 
 	

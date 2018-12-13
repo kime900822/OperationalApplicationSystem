@@ -101,4 +101,52 @@ public class CustomsGeneralAction extends ActionBase{
 		
 		return SUCCESS;
 	}
+	
+	
+	@Action(value="queryCustomsGeneral",results={@org.apache.struts2.convention.annotation.Result(type="stream",
+			params={
+					"inputName", "reslutJson"
+			})})
+	public String queryCustomsGeneral() throws Exception{	
+		
+
+		
+		List list  =customsGeneralBIZ.query(month,Integer.parseInt(pageSize),Integer.parseInt(pageCurrent));
+		int total=customsGeneralBIZ.query(month).size();
+		
+		queryResult.setList(list);
+		queryResult.setTotalRow(total);
+		queryResult.setFirstPage(Integer.parseInt(pageCurrent)==1?true:false);
+		queryResult.setPageNumber(Integer.parseInt(pageCurrent));
+		queryResult.setLastPage(total/Integer.parseInt(pageSize) +1==Integer.parseInt(pageCurrent)&&Integer.parseInt(pageCurrent)!=1?true:false);
+		queryResult.setTotalPage(total/Integer.parseInt(pageSize) +1);
+		queryResult.setPageSize(Integer.parseInt(pageSize));
+		String r=callback+"("+new Gson().toJson(queryResult)+")";
+		
+		reslutJson=new ByteArrayInputStream(r.getBytes("UTF-8"));  
+		
+		return SUCCESS;
+	}
+	
+	
+	@Action(value="saveCustomsGeneral",results={@org.apache.struts2.convention.annotation.Result(type="stream",
+			params={
+					"inputName", "reslutJson"
+			})})
+	public String saveCustomsGeneral() throws Exception{	
+		
+
+		String r=customsGeneralBIZ.saveData(month);
+
+		if (r==null) {
+			result.setMessage("Success!");
+			result.setStatusCode("200");
+		}else{
+			result.setMessage(r);
+			result.setStatusCode("300");
+		}
+		reslutJson=new ByteArrayInputStream(new Gson().toJson(result).getBytes("UTF-8"));  
+		return SUCCESS;
+
+	}
 }

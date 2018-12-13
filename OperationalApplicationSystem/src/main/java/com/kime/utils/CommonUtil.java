@@ -38,6 +38,13 @@ public class CommonUtil {
 		
 	}
 	
+	public static String getMonth(){
+		java.util.Date date=new Date();
+		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM");
+		return sdf.format(date);
+		
+	}
+	
 	public static String getWeek(){
 		java.util.Date date=new Date();
 		Calendar calendar = Calendar.getInstance();

@@ -16,7 +16,7 @@
         		<span>月份：</span>
         		</td>
         		<td width="180px">
-            	<input type="text" name="month" value="" data-toggle="datepicker" data-pattern="yyyy-MM" size="15" data-rule="month" placeholder="点击选择日期">
+            	<input type="text" name="month" value="" data-toggle="datepicker" data-pattern="yyyy-MM" size="15" data-rule="month;required" placeholder="点击选择日期">
         		</td>
         		<td colspan="6" width="860px">
 	        		<div class="btn-group">
@@ -57,7 +57,7 @@
 				<th data-options="{name:'materialNo',width:200,align:'left',finalWidth:'true'}">海关物料编码</th>
 				<th data-options="{name:'jdeMaterialNo',width:200,align:'left',finalWidth:'true'}">JDE物料编码</th>
 				<th data-options="{name:'no',width:100,align:'left',finalWidth:'true'}">料件序号</th>
-				<th data-options="{name:'productName',width:200,align:'left',finalWidth:'true'}">商品编码</th>
+				<th data-options="{name:'productNo',width:200,align:'left',finalWidth:'true'}">商品编码</th>
 				<th data-options="{name:'materialName',width:200,align:'left',finalWidth:'true'}">物料名称</th>
 				<th data-options="{name:'materialSpecification',width:200,align:'left',finalWidth:'true'}">物料规格</th>
 				<th data-options="{name:'unit',width:100,align:'left',finalWidth:'true'}">单位</th>

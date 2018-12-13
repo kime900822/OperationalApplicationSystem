@@ -14,4 +14,8 @@ public interface CommonDAO {
 	
 	public void executeHQL(String hql);
 	
+	public List queryBySql(String sql,Class class1);
+	
+	public List queryBySql(String sql,Integer pageSize,Integer pageCurrent,Class class1);
+	
 }

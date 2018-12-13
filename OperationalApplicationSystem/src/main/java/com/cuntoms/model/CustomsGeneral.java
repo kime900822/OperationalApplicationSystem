@@ -18,7 +18,7 @@ public class CustomsGeneral {
 	@GenericGenerator(name = "uuid", strategy = "uuid")
 	String id;
 	@Column
-	String momth;
+	String month;
 	@Column
 	String materialNo;
 	@Column
@@ -26,7 +26,7 @@ public class CustomsGeneral {
 	@Column
 	String no;
 	@Column
-	String productName;
+	String productNo;
 	@Column
 	String materialName;
 	@Column
@@ -55,11 +55,12 @@ public class CustomsGeneral {
 	public void setId(String id) {
 		this.id = id;
 	}
-	public String getMomth() {
-		return momth;
+
+	public String getMonth() {
+		return month;
 	}
-	public void setMomth(String momth) {
-		this.momth = momth;
+	public void setMonth(String month) {
+		this.month = month;
 	}
 	public String getMaterialNo() {
 		return materialNo;
@@ -79,11 +80,12 @@ public class CustomsGeneral {
 	public void setNo(String no) {
 		this.no = no;
 	}
-	public String getProductName() {
-		return productName;
+
+	public String getProductNo() {
+		return productNo;
 	}
-	public void setProductName(String productName) {
-		this.productName = productName;
+	public void setProductNo(String productNo) {
+		this.productNo = productNo;
 	}
 	public String getMaterialName() {
 		return materialName;

@@ -9,13 +9,11 @@ import com.kime.model.User;
 
 
 public interface CustomsGeneralBIZ {
-	public List<CustomsGeneral> query(String where);
+	public List<CustomsGeneral> query(String month) throws Exception;
 	
-	public List<CustomsGeneral> query(String where, int pageSize, int pageCurrent);
+	public List<CustomsGeneral> query(String month, int pageSize, int pageCurrent) throws Exception;
 	
-	public String deleteByDate(String date);
-	
-	public String buildData();
+	public String saveData(String month);
 	
 	public List<CustomsGeneralInit> query4init(String where);
 	
