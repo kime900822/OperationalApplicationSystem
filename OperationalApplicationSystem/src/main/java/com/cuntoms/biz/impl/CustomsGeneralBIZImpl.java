@@ -73,6 +73,11 @@ public class CustomsGeneralBIZImpl  extends BizBase implements CustomsGeneralBIZ
 			if (list.size()>0) {
 				commonDAO.executeHQL(" delete from CustomsGeneralInit ");
 				for (CustomsGeneralInit generalInit : list) {
+					if (generalInit.getMonth()==null||generalInit.getMonth().equals("")) {
+						logUtil.logError(CustomsGeneralHelp.title4init,"导入错误：月份不能为空：物料编码："+generalInit.getMaterialNo());
+						throw new Exception("导入错误：月份不能为空：物料编码："+generalInit.getMaterialNo());
+					}
+					
 					generalInit.setNo(CommonUtil.spaceToNull(generalInit.getNo()));
 					generalInit.setEarlyNumber(CommonUtil.spaceToNull(generalInit.getEarlyNumber()));
 					generalInit.setIncomingVolume(CommonUtil.spaceToNull(generalInit.getIncomingVolume()));

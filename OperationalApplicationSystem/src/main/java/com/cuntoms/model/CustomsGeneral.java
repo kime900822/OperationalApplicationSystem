@@ -18,7 +18,7 @@ public class CustomsGeneral {
 	@GenericGenerator(name = "uuid", strategy = "uuid")
 	String id;
 	@Column
-	String date;
+	String momth;
 	@Column
 	String materialNo;
 	@Column
@@ -55,11 +55,11 @@ public class CustomsGeneral {
 	public void setId(String id) {
 		this.id = id;
 	}
-	public String getDate() {
-		return date;
+	public String getMomth() {
+		return momth;
 	}
-	public void setDate(String date) {
-		this.date = date;
+	public void setMomth(String momth) {
+		this.momth = momth;
 	}
 	public String getMaterialNo() {
 		return materialNo;

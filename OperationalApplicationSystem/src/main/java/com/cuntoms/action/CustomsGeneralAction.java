@@ -25,7 +25,23 @@ public class CustomsGeneralAction extends ActionBase{
 	@Autowired
 	CustomsGeneralBIZ customsGeneralBIZ;
 	
+	String month;
 	
+	
+	public String getMonth() {
+		return month;
+	}
+
+
+
+
+	public void setMonth(String month) {
+		this.month = month;
+	}
+
+
+
+
 	/**
      * excel导入
      * @return
@@ -64,8 +80,13 @@ public class CustomsGeneralAction extends ActionBase{
 			})})
 	public String queryCustomsGeneralInit() throws UnsupportedEncodingException{	
 		
-		List list  =customsGeneralBIZ.query4init("", Integer.parseInt(pageSize),Integer.parseInt(pageCurrent));
-		int total=customsGeneralBIZ.query4init("").size();
+		String where="";
+		if (month!=null&&!month.equals("")) {
+			where+= " where month='"+month+"' ";
+		}
+		
+		List list  =customsGeneralBIZ.query4init(where, Integer.parseInt(pageSize),Integer.parseInt(pageCurrent));
+		int total=customsGeneralBIZ.query4init(where).size();
 		
 		queryResult.setList(list);
 		queryResult.setTotalRow(total);

@@ -466,6 +466,7 @@
                 ,qq: [/^[1-9]\d{4,}$/, 'The QQ is not in the right format']
                 //,date: [/^\d{4}-\d{1,2}-\d{1,2}$/, 'Please enter the correct date, example:yyyy-mm-dd']
                 ,date:[/^\d{4}[\/\-](0?[1-9]|1[012])[\/\-](0?[1-9]|[12][0-9]|3[01])$/, 'Please enter the correct date, for example:yyyy-MM-dd']
+        		,month:[/^\d{4}-((0([1-9]))|(1(0|1|2)))$/, 'Please enter the correct date, for example:yyyy-MM']
                 //,time: [/^([01]\d|2[0-3])(:[0-5]\d){1,2}$/, 'Please input the correct time, example: 14:30 or 14:30:00']
                 ,time: [/^(2[0123]|(1|0?)[0-9]){1}:([0-5][0-9]){1}:([0-5][0-9]){1}$/, 'Please enter the correct time, example: HH:mm:ss']
                 ,datetime: [/^\d{4}[\/\-](0?[1-9]|1[012])[\/\-](0?[1-9]|[12][0-9]|3[01])\s+(2[0123]|(1|0?)[0-9]){1}:([0-5][0-9]){1}:([0-5][0-9]){1}$/,

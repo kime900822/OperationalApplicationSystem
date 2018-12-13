@@ -18,6 +18,8 @@ public class CustomsGeneralInit {
 	@GenericGenerator(name = "uuid", strategy = "uuid")
 	String id;
 	@Column
+	String month;
+	@Column
 	String materialNo;
 	@Column
 	String jdeMaterialNo;
@@ -39,6 +41,14 @@ public class CustomsGeneralInit {
 	String writeOffVolume;
 	@Column
 	String regulatoryInventory;
+	
+	
+	public String getMonth() {
+		return month;
+	}
+	public void setMonth(String month) {
+		this.month = month;
+	}
 	public String getId() {
 		return id;
 	}
