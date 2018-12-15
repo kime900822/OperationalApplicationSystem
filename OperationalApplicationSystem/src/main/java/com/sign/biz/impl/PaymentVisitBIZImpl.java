@@ -333,6 +333,12 @@ public class PaymentVisitBIZImpl extends BizBase implements PaymentVisitBIZ {
 						
 						user=(User) userDAO.query(" where uid='"+paymentVisit.getuId()+"' ").get(0);
 						SendMail.SendMail(user.getEmail(), PropertiesUtil.ReadProperties(Message.MAIL_PROPERTIES, "mailTitleOfPaymentVisit"), MessageFormat.format(PropertiesUtil.ReadProperties(Message.MAIL_PROPERTIES, "mailContentOfPaymentVisitApprove"),paymentVisit.getReferenceNo(),paymentVisit.getApproveList().get(paymentVisit.getApproveList().size()-1).getUname()));
+						
+						for (PaymentVisitEmployee employee : paymentVisit.getEmployees()) {
+							user=(User) userDAO.query(" where uid='"+employee.getEmployeeNo()+"' ").get(0);
+							SendMail.SendMail(user.getEmail(), PropertiesUtil.ReadProperties(Message.MAIL_PROPERTIES, "mailTitleOfPaymentVisit"), MessageFormat.format(PropertiesUtil.ReadProperties(Message.MAIL_PROPERTIES, "mailContentOfPaymentVisitEmployee"),paymentVisit.getuName(),paymentVisit.getReferenceNo(),paymentVisit.getVisitDateFrom(),paymentVisit.getVisitDateTo(),paymentVisit.getAdvanceAmount()));
+						}
+						
 						logUtil.logInfo("出差预申请审批结束  发送邮件  地址："+user.getEmail());	
 						
 						if (paymentVisit.getAdvanceAmount()>0) {

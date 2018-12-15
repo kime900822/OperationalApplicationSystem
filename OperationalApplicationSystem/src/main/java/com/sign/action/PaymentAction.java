@@ -1778,7 +1778,9 @@ public class PaymentAction extends ActionBase {
 		if (!"".equals(paymentTerm)&&paymentTerm!=null) {
 			where += " AND P.paymentTerm='"+paymentTerm+"'";
 		}
-				
+		if (!"".equals(supplierCode)&&supplierCode!=null) {
+			where += " AND P.supplierCode like '%"+supplierCode+"%' ";
+		}
 			
 		if ("all".equals(queryType)) {
 			hql="  select P from Payment P WHERE P.deptManagerID='"+user.getUid()+"' "+where+" order By P.dateTemp desc";    		

@@ -2,3 +2,4 @@
 /.recommenders/*
 *.class
 /OperationalApplicationSystem/D:/*
+.idea/

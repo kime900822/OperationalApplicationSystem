@@ -15,7 +15,7 @@ function datagrid_paymentSubject() {
 }
 
 function datagrid_paymentState() {
-    return [{'0':'Submit Required'},{'1':'Manager Approval'},{'2':'Audit Approval'},{'3':'Audit Rejected'},{'4':'Finance Approval'},{'5':'Invalid'},{'6':'Finance Rejected'},{'7':'GM Approval'},{'8':'Payment Completed'}]
+    return [{'0':'Submit Required'},{'1':'Manager Approval'},{'2':'Audit Approval'},{'3':'Manager Rejected'},{'4':'Finance Approval'},{'5':'Invalid'},{'6':'Finance Rejected'},{'7':'GM Approval'},{'8':'Payment Completed'}]
 }
 
 
@@ -122,13 +122,18 @@ $(function(){
 		              <option value="0">N</option>
 	            	</select>
          		</td>
+         		<td>
+        			<span>Supplier Code：</span>
+        		</td>
+        		<td>
+        			 <input type="text" name="supplierCode" class="form-control" size="15"  >
+        		</td>
         		<td colspan="2" align="center">
         		<div class="btn-group">
                 <button type="submit" class="btn-green" data-icon="search">Search</button>
                 <button type="reset" class="btn-orange" data-icon="times">Reset</button>
             	</div>
         		</td>
-        		<td colspan="2"></td>
         	</tr>    
         </table>
             

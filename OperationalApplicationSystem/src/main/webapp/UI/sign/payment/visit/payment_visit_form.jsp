@@ -112,7 +112,6 @@ function paymentVisitDateToFace(id){
         		if(json.approveHis!=undefined&&json.approveHis!=""){
         			$.each(json.approveHis,function(i,item){	  		
 	    				obj.append("<tr><td>"+item.name+"</td><td style='display:none'></td><td>"+item.uId+"</td><td>"+item.uName+"</td><td>"+item.dId+"</td><td>"+item.comment+"</td><td>"+item.status+"</td><td>"+item.date+"</td><td></td></tr>");	    				
-	    				maxLevel=parseInt(item.level);
         			})
         						
         		}
@@ -185,14 +184,16 @@ function paymentVisitSubmit(){
 		return false;
 	}
 	
+	var id=$.CurrentNavtab.find("#j_payment_visit_id").val();
+	
 	BJUI.ajax('doajax', {
 	    url: 'submitPaymentVisit.action',
 	    loadingmask: true,
-	    data:{id:$.CurrentNavtab.find("#j_payment_visit_id").val()},	    
+	    data:{id:id},	    
 	    okCallback: function(json, options) {
             if(json.status='200'){
             	BJUI.alertmsg('info', json.message); 
-            	paymentVisitDateToFace(json.params.id)          		 
+            	paymentVisitDateToFace(id)          		 
             }else{
             	 BJUI.alertmsg('error', json.message); 
             }

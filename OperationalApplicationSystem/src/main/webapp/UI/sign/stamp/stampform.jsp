@@ -81,6 +81,7 @@ function dataToFaceStamp(id){
 	    		$.CurrentNavtab.find("#j_stamp_chopQty").val(json.chopQty);
 	    		if(json.urgent=='1'){
             		$.CurrentNavtab.find("#j_stamp_urgent").iCheck('check'); 
+    	    		$.CurrentNavtab.find("#j_stamp_urgentReason").val(json.urgentReason);
             	}
 	    		$.CurrentNavtab.find("#j_stamp_usageDescription").val(json.usageDescription);
             	$.CurrentNavtab.find("#j_stamp_chopObject").val(json.chopObject);
@@ -662,7 +663,7 @@ function setProjectResponsible(){
 						Urgent:<br>急件:
 					</td>
 					<td>
-						<input type="checkbox" name="urgent"  data-toggle="icheck" id="j_stamp_urgent" value="1" data-label="">
+						<input type="checkbox" name="urgent"  data-toggle="icheck" id="j_stamp_urgent" data-label="">
 					</td>
 					<td>
 						Urgent Reason:<br>申请急件原因:
