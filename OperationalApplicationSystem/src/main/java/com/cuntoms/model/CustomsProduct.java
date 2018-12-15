@@ -83,10 +83,10 @@ public class CustomsProduct {
 	public void setProductName(String productName) {
 		this.productName = productName;
 	}
-	public String getSpecifications() {
+	public String getSpecification() {
 		return specification;
 	}
-	public void setSpecifications(String specification) {
+	public void setSpecification(String specification) {
 		this.specification = specification;
 	}
 	public String getDeclareUnitCode() {

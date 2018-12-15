@@ -31,6 +31,8 @@
 </profiles>
   
   
+  
+  
   <dependencies>
  
          <dependency>
@@ -38,7 +40,13 @@
             <artifactId>mail</artifactId>
             <version>${javamail.version}</version>
         </dependency>  
-  
+        
+    <!-- DBCP 连接池 -->    
+	<dependency>
+	    <groupId>commons-dbcp</groupId>
+	    <artifactId>commons-dbcp</artifactId>
+	    <version>1.4</version>
+	</dependency>
   
 	<!-- log4j 日志 -->
 	<dependency>
