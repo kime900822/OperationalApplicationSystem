@@ -42,14 +42,18 @@ public class PaymentVisitEmployeeDAOImpl extends HibernateDaoSupport implements 
 	public List<PaymentVisitEmployee> query(String where) {
 		Session session=this.getSessionFactory().openSession();
 		String hql="FROM PaymentVisitEmployee "+where;
-		return session.createQuery(hql).list();
+		List list = session.createQuery(hql).list();
+		session.close();
+		return list;
 	}
 
 	@Override
 	public List<PaymentVisitEmployee> query(String where, Integer pageSize, Integer pageCurrent) {
 		Session session=this.getSessionFactory().openSession();
 		String hql="FROM PaymentVisitEmployee "+where;
-		return session.createQuery(hql).setFirstResult((pageCurrent-1)*pageSize).setMaxResults(pageSize).list();
+		List list = session.createQuery(hql).setFirstResult((pageCurrent-1)*pageSize).setMaxResults(pageSize).list();
+		session.close();
+		return list;
 	}
 
 	

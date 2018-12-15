@@ -42,35 +42,45 @@ public class PaymentWeekDAOImpl extends HibernateDaoSupport implements PaymentWe
 	@Override
 	public List<PaymentWeek> queryHql(String hql) {
 		Session session=this.getSessionFactory().openSession();
-		return session.createQuery(hql).list();
+		List list = session.createQuery(hql).list();
+		session.close();
+		return list;
 	}
 
 	@Override
 	public List queryWeek(String where) {
 		Session session=this.getSessionFactory().openSession();
 		String hql="select distinct week FROM PaymentWeek "+where;
-		return session.createQuery(hql).list();
+		List list = session.createQuery(hql).list();
+		session.close();
+		return list;
 	}
 
 	@Override
 	public List queryWeek(String where, Integer pageSize, Integer pageCurrent) {
 		Session session=this.getSessionFactory().openSession();
 		String hql="select distinct week FROM PaymentWeek "+where;
-		return session.createQuery(hql).setFirstResult((pageCurrent-1)*pageSize).setMaxResults(pageSize).list();
+		List list = session.createQuery(hql).setFirstResult((pageCurrent-1)*pageSize).setMaxResults(pageSize).list();
+		session.close();
+		return list;
 	}
 	
 	@Override
 	public List<PaymentWeek> query(String where) {
 		Session session=this.getSessionFactory().openSession();
 		String hql="FROM PaymentWeek "+where;
-		return session.createQuery(hql).list();
+		List list = session.createQuery(hql).list();
+		session.close();
+		return list;
 	}
 
 	@Override
 	public List<PaymentWeek> query(String where, Integer pageSize, Integer pageCurrent) {
 		Session session=this.getSessionFactory().openSession();
 		String hql="FROM PaymentWeek "+where;
-		return session.createQuery(hql).setFirstResult((pageCurrent-1)*pageSize).setMaxResults(pageSize).list();
+		List list = session.createQuery(hql).setFirstResult((pageCurrent-1)*pageSize).setMaxResults(pageSize).list();
+		session.close();
+		return list;
 	}
 
 }

@@ -11,6 +11,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 import org.springframework.stereotype.Repository;
+import org.w3c.dom.ls.LSInput;
 
 import com.sign.dao.PaymentDAO;
 import com.sign.model.Payment;
@@ -45,33 +46,41 @@ public class PaymentDAOImpl extends HibernateDaoSupport implements PaymentDAO {
 	public List<Payment> query(String where) {
 		Session session=this.getSessionFactory().openSession();
 		String hql="FROM Payment "+where;
-		return session.createQuery(hql).list();
+		List list = session.createQuery(hql).list();
+		session.close();
+		return list;
 	}
 
 	@Override
 	public List<Payment> query(String where, Integer pageSize, Integer pageCurrent) {
 		Session session=this.getSessionFactory().openSession();
 		String hql="FROM Payment "+where;
-		return session.createQuery(hql).setFirstResult((pageCurrent-1)*pageSize).setMaxResults(pageSize).list();
-
+		List list = session.createQuery(hql).setFirstResult((pageCurrent-1)*pageSize).setMaxResults(pageSize).list();
+		session.close();
+		return list;
 	}
 
 	@Override
 	public List<Payment> queryHql(String hql) {
 		Session session=this.getSessionFactory().openSession();
-		return session.createQuery(hql).list();
+		List list = session.createQuery(hql).list();
+		session.close();
+		return list;
 	}
 
 	@Override
 	public List<Payment> queryHql(String hql, Integer pageSize, Integer pageCurrent) {
 		Session session=this.getSessionFactory().openSession();
-		return session.createQuery(hql).setFirstResult((pageCurrent-1)*pageSize).setMaxResults(pageSize).list();
+		List list = session.createQuery(hql).setFirstResult((pageCurrent-1)*pageSize).setMaxResults(pageSize).list();
+		session.close();
+		return list;
 	}
 
 	@Override
 	public List<PaymentPO> queryPaymentPOSql(String sql) {
 		Session session=this.getSessionFactory().openSession();	
         List list = session.createSQLQuery(sql).list();  
+        session.close();
 		return dataTopaymentPo(list);
 	}
 
@@ -80,6 +89,7 @@ public class PaymentDAOImpl extends HibernateDaoSupport implements PaymentDAO {
 	public List<PaymentPO> queryPaymentPOSql(String sql, Integer pageSize, Integer pageCurrent) {
 		Session session=this.getSessionFactory().openSession();	
         List list = session.createSQLQuery(sql).setFirstResult((pageCurrent-1)*pageSize).setMaxResults(pageSize).list();  
+        session.close();
 		return dataTopaymentPo(list);
 	}
 
@@ -87,7 +97,9 @@ public class PaymentDAOImpl extends HibernateDaoSupport implements PaymentDAO {
 	public List<PaymentPO> queryPaymentPO(String where) {
 		Session session=this.getSessionFactory().openSession();
 		String hql="FROM v_po "+where;
-		return session.createQuery(hql).list();
+		List list = session.createQuery(hql).list();
+		session.close();
+		return list;
 	}
 	
 	

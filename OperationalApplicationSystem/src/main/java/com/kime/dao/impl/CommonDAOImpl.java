@@ -32,7 +32,7 @@ public class CommonDAOImpl extends HibernateDaoSupport implements CommonDAO{
 		Session session=this.getSessionFactory().openSession();
 		Query query = session.createQuery(hql);     
 		List<Object[]> list =query.list(); 
-		
+		session.close();
 		return list;
 	}
 	
@@ -41,6 +41,7 @@ public class CommonDAOImpl extends HibernateDaoSupport implements CommonDAO{
 	public List queryBySql(String sql) {
 		Session session=this.getSessionFactory().openSession();
 		List<Object[]> list =session.createSQLQuery(sql).list();
+		session.close();
 		return list;
 	}
 	
@@ -51,6 +52,7 @@ public class CommonDAOImpl extends HibernateDaoSupport implements CommonDAO{
 		Transaction trance = session.beginTransaction();
 		session.createSQLQuery(sql).executeUpdate();
 		trance.commit();
+		session.close();
 	}
 	@Override
 	public void executeHQL(String hql) {
@@ -58,17 +60,22 @@ public class CommonDAOImpl extends HibernateDaoSupport implements CommonDAO{
 		Transaction trance = session.beginTransaction();
 		session.createQuery(hql).executeUpdate();	
 		trance.commit();
+		session.close();
 	}
 	@Override
 	public List queryByHql(String hql, Integer pageSize, Integer pageCurrent) {
 		Session session=this.getSessionFactory().openSession();
-		return session.createQuery(hql).setFirstResult((pageCurrent-1)*pageSize).setMaxResults(pageSize).list();
+		List list = session.createQuery(hql).setFirstResult((pageCurrent-1)*pageSize).setMaxResults(pageSize).list();
+		session.close();
+		return  list;
+		
 	}
 
 	@Override
 	public List queryBySql(String sql, Class class1) {
 		Session session=this.getSessionFactory().openSession();
 		List list =session.createSQLQuery(sql).addEntity(class1).list();
+		session.close();
 		return list;
 	}
 
@@ -76,6 +83,7 @@ public class CommonDAOImpl extends HibernateDaoSupport implements CommonDAO{
 	public List queryBySql(String sql, Integer pageSize, Integer pageCurrent, Class class1) {
 		Session session=this.getSessionFactory().openSession();
 		List list =session.createSQLQuery(sql).addEntity(class1).setFirstResult((pageCurrent-1)*pageSize).setMaxResults(pageSize).list();
+		session.close();
 		return list;
 	}
 

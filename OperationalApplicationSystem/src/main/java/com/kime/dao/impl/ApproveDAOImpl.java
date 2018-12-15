@@ -15,7 +15,7 @@ import com.kime.model.Approve;
 import com.kime.model.Menu;
 
 @Repository
-public class ApproveDAOLImpl  extends HibernateDaoSupport implements ApproveDAO {
+public class ApproveDAOImpl  extends HibernateDaoSupport implements ApproveDAO {
 
     @Autowired
     private SessionFactory sessionFactory;  
@@ -78,7 +78,9 @@ public class ApproveDAOLImpl  extends HibernateDaoSupport implements ApproveDAO 
 	public List query(String where) {
 		Session session=this.getSessionFactory().openSession();
 		String hql="FROM Approve "+where;
-		return session.createQuery(hql).list();
+		List list = session.createQuery(hql).list();
+		session.close();
+		return list;
 	}
 
 
@@ -86,7 +88,9 @@ public class ApproveDAOLImpl  extends HibernateDaoSupport implements ApproveDAO 
 	public List query(String where, Integer pageSize, Integer pageCurrent) {
 		Session session=this.getSessionFactory().openSession();
 		String hql="FROM Approve "+where;
-		return session.createQuery(hql).setFirstResult((pageCurrent-1)*pageSize).setMaxResults(pageSize).list();
+		List list = session.createQuery(hql).setFirstResult((pageCurrent-1)*pageSize).setMaxResults(pageSize).list();
+		session.close();
+		return list;
 	}
 
 

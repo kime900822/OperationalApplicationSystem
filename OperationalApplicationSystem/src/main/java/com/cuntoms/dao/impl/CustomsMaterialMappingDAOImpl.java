@@ -42,14 +42,19 @@ public class CustomsMaterialMappingDAOImpl  extends DaoBase implements CustomsMa
 	public List query(String where) {
 		Session session=this.getSessionFactory().openSession();
 		String hql="FROM CustomsMaterialMapping "+where;
-		return session.createQuery(hql).list();
+		@SuppressWarnings("rawtypes")
+		List list = session.createQuery(hql).list();
+		session.close();
+		return list;
 	}
 
 	@Override
 	public List query(String where, Integer pageSize, Integer pageCurrent) {
 		Session session=this.getSessionFactory().openSession();
 		String hql="FROM CustomsMaterialMapping "+where;
-		return session.createQuery(hql).setFirstResult((pageCurrent-1)*pageSize).setMaxResults(pageSize).list();
+		List list = session.createQuery(hql).setFirstResult((pageCurrent-1)*pageSize).setMaxResults(pageSize).list();
+		session.close();
+		return list;
 	}
 
 }

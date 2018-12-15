@@ -29,7 +29,9 @@ public class EditorDAOImpl extends HibernateDaoSupport implements EditorDAO {
 	public List query(String where) {
 		Session session=this.getSessionFactory().openSession();
 		String hql="FROM Editor "+where;
-		return session.createQuery(hql).list();
+		List list = session.createQuery(hql).list();
+		session.close();
+		return list;
 	}
 
 	@Override
@@ -47,8 +49,9 @@ public class EditorDAOImpl extends HibernateDaoSupport implements EditorDAO {
 	public List query(String where, int pageSize, int pageCurrent) {
 		Session session=this.getSessionFactory().openSession();
 		String hql="FROM Editor "+where;
-		return session.createQuery(hql).setFirstResult((pageCurrent-1)*pageSize).setMaxResults(pageSize).list();
-
+		List list = session.createQuery(hql).setFirstResult((pageCurrent-1)*pageSize).setMaxResults(pageSize).list();
+		session.close();
+		return list;
 	}
 
 	@Override

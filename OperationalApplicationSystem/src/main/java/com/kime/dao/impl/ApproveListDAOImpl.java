@@ -33,7 +33,9 @@ public class ApproveListDAOImpl extends HibernateDaoSupport implements ApproveLi
 	public List getApproveListByTradeId(String tradeId) {
 		Session session=this.getSessionFactory().openSession();
 		String hql="FROM ApproveList where tradeId='"+tradeId+"' ORDER BY date ";
-		return session.createQuery(hql).list();
+		List list = session.createQuery(hql).list();
+		session.close();
+		return list;
 	}
 
 	@Override
@@ -51,7 +53,9 @@ public class ApproveListDAOImpl extends HibernateDaoSupport implements ApproveLi
 	public List query(String where) {
 		Session session=this.getSessionFactory().openSession();
 		String hql="FROM ApproveList "+where;
-		return session.createQuery(hql).list();
+		List list = session.createQuery(hql).list();
+		session.close();
+		return list;
 	}
 
 	

@@ -27,14 +27,18 @@ public class DictDAOImpl extends HibernateDaoSupport implements DictDAO {
 	public List<Dict> query(String where) {
 		Session session=this.getSessionFactory().openSession();
 		String hql="FROM Dict "+where;
-		return session.createQuery(hql).list();
+		List list = session.createQuery(hql).list();
+		session.close();
+		return list;
 	}
 
 	@Override
 	public List<Dict> query(String where, int pageSize, int pageCurrent) {
 		Session session=this.getSessionFactory().openSession();
 		String hql="FROM Dict "+where;
-		return session.createQuery(hql).setFirstResult((pageCurrent-1)*pageSize).setMaxResults(pageSize).list();
+		List list = session.createQuery(hql).setFirstResult((pageCurrent-1)*pageSize).setMaxResults(pageSize).list();
+		session.close();
+		return list;
 	}
 
 	@Override
@@ -58,9 +62,9 @@ public class DictDAOImpl extends HibernateDaoSupport implements DictDAO {
 	public List getType() {
 		Session session=this.getSessionFactory().openSession();
 		String hql="select distinct r.type from Dict r";
-		return session.createQuery(hql).list();
-		
-		
+		List list = session.createQuery(hql).list();
+		session.close();
+		return list;
 	}
 
 }

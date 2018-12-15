@@ -47,14 +47,18 @@ public class BeneficiaryDAOImpl extends HibernateDaoSupport implements Beneficia
 	public List<Beneficiary> query(String where) {
 		Session session=this.getSessionFactory().openSession();
 		String hql="FROM Beneficiary "+where;
-		return session.createQuery(hql).list();
+		List list = session.createQuery(hql).list();
+		session.close();
+		return list;
 	}
 
 	@Override
 	public List<Beneficiary> query(String where, Integer pageSize, Integer pageCurrent) {
 		Session session=this.getSessionFactory().openSession();
 		String hql="FROM Beneficiary "+where;
-		return session.createQuery(hql).setFirstResult((pageCurrent-1)*pageSize).setMaxResults(pageSize).list();
+		List list = session.createQuery(hql).setFirstResult((pageCurrent-1)*pageSize).setMaxResults(pageSize).list();
+		session.close();
+		return list;
 	}
 
 }

@@ -53,8 +53,9 @@ public class RoleDAOImpl extends HibernateDaoSupport implements RoleDAO {
 	public List query(String where, int pageSize, int pageCurrent) {
 		Session session=this.getSessionFactory().openSession();
 		String hql="FROM Role "+where;
-		return session.createQuery(hql).setFirstResult((pageCurrent-1)*pageSize).setMaxResults(pageSize).list();
-
+		List list = session.createQuery(hql).setFirstResult((pageCurrent-1)*pageSize).setMaxResults(pageSize).list();
+		session.close();
+		return list;
 	}
 
 	@Override
