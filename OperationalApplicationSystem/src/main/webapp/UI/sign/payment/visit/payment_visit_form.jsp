@@ -113,7 +113,9 @@ function paymentVisitDateToFace(id){
         			$.each(json.approveHis,function(i,item){	  		
 	    				obj.append("<tr><td>"+item.name+"</td><td style='display:none'></td><td>"+item.uId+"</td><td>"+item.uName+"</td><td>"+item.dId+"</td><td>"+item.comment+"</td><td>"+item.status+"</td><td>"+item.date+"</td><td></td></tr>");	    				
         			})
-        						
+        			if(json.approveHis[json.approveHis.length-1].status=='Approved'){
+        				maxLevel=json.approveHis[json.approveHis.length-1].level;
+        			}	
         		}
         		
 	    		if(json.approveList!=undefined&&json.approveList!=''&&json.state.indexOf('Rejected')<0){	    
