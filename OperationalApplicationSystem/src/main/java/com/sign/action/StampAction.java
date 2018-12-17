@@ -76,6 +76,7 @@ public class StampAction extends ActionBase{
 		private String chopQty;
 		private String chopObject;
 		private String urgent;
+		private String urgentReason;
 		private String usageDescription;
 		private String attacmentUpload;
 		private String dateTmp;
@@ -96,6 +97,15 @@ public class StampAction extends ActionBase{
 		private String level;
 		private String approveState;
 
+		
+		
+		
+		public String getUrgentReason() {
+			return urgentReason;
+		}
+		public void setUrgentReason(String urgentReason) {
+			this.urgentReason = urgentReason;
+		}
 		public String getUsedFile() {
 			return usedFile;
 		}

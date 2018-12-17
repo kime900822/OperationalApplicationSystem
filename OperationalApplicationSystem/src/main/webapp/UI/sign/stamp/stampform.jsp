@@ -663,7 +663,7 @@ function setProjectResponsible(){
 						Urgent:<br>急件:
 					</td>
 					<td>
-						<input type="checkbox" name="urgent"  data-toggle="icheck" id="j_stamp_urgent" data-label="">
+						<input type="checkbox" name="urgent"  data-toggle="icheck" value='1' id="j_stamp_urgent" data-label="">
 					</td>
 					<td>
 						Urgent Reason:<br>申请急件原因:
