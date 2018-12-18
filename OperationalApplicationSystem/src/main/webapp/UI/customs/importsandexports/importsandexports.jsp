@@ -97,7 +97,7 @@ function deleteCustomsImportsAndExports(){
         gridTitle : 'ImportsAndExports Import',
         dataType: 'jsonp',
         showToolbar: true,
-        toolbarItem: 'edit,refresh,|,import,export',
+        toolbarItem: 'refresh,|,import,export',
         dataUrl: 'customs/queryCustomsImportsAndExports.action',
         editMode: {dialog:{width:'400',height:250,title:'Edit No',mask:true}},
         editUrl: 'customs/importsandexports/importsandexports-edit.jsp',
@@ -113,19 +113,25 @@ function deleteCustomsImportsAndExports(){
         <thead>
             <tr>
             	<th data-options="{name:'id',width:150,align:'center',finalWidth:'true',hide:'true'}">id</th>
-				<th data-options="{name:'no',width:60,align:'left',finalWidth:'true'}">料件序号</th>
 				<th data-options="{name:'entryDate',width:200,align:'left',finalWidth:'true'}">报关进料日期</th>
 				<th data-options="{name:'orTY',width:200,align:'left',finalWidth:'true'}">Or Ty</th>
 				<th data-options="{name:'orderNumber',width:200,align:'left',finalWidth:'true'}">Order Number</th>
-				<th data-options="{name:'cimtasLongItemNo',width:200,align:'left',finalWidth:'true'}">Cimtas Long Item No</th>
-				<th data-options="{name:'materialLongDescription',width:200,align:'left',finalWidth:'true'}">Material Long Description</th>
-				<th data-options="{name:'quantity',width:200,align:'left',finalWidth:'true'}">Quantity</th>
-				<th data-options="{name:'unit',width:200,align:'left',finalWidth:'true'}">单位</th>
-				<th data-options="{name:'unitPrice',width:200,align:'left',finalWidth:'true'}">Unit Price</th>
-				<th data-options="{name:'totalPrice',width:200,align:'left',finalWidth:'true'}">Total Price</th>
+				<th data-options="{name:'cimtasCode',width:200,align:'left',finalWidth:'true'}">Cimtas Code</th>
+				<th data-options="{name:'no',width:60,align:'left',finalWidth:'true'}">备案号</th>
+				<th data-options="{name:'name',width:200,align:'left',finalWidth:'true'}"> name 中文 品名</th>
+				<th data-options="{name:'description',width:200,align:'left',finalWidth:'true'}">Description 规格</th>
+				<th data-options="{name:'quantity',width:200,align:'left',finalWidth:'true'}">Q'TY</th>
+				<th data-options="{name:'unit',width:200,align:'left',finalWidth:'true'}">UNIT</th>
+				<th data-options="{name:'currency',width:200,align:'left',finalWidth:'true'}">Currency</th>
+				<th data-options="{name:'unitPrice',width:200,align:'left',finalWidth:'true'}">UNIT PRICE</th>
+				<th data-options="{name:'amount',width:200,align:'left',finalWidth:'true'}">AMOUNT</th>
+				<th data-options="{name:'unitPriceUSD',width:200,align:'left',finalWidth:'true'}">unit price USD</th>
+				<th data-options="{name:'amountUSD',width:200,align:'left',finalWidth:'true'}">Amount USD</th>
+				<th data-options="{name:'netWeight',width:200,align:'left',finalWidth:'true'}">NET WEIGHT (KG)</th>
+				<th data-options="{name:'origin',width:200,align:'left',finalWidth:'true'}">origin</th>
 				<th data-options="{name:'operator',width:200,align:'left',finalWidth:'true'}">操作员</th>
 				<th data-options="{name:'operationDate',width:200,align:'left',finalWidth:'true'}">操作日期</th>
-				<th data-options="{name:'batchNumber',width:200,align:'left',finalWidth:'true'}">上传批次号</th>
+				<th data-options="{name:'batchNumber',width:200,align:'left',finalWidth:'true'}">batchNumber</th>
             </tr>
         </thead>
     </table>

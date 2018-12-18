@@ -24,7 +24,7 @@ public interface CustomsMaterialBIZ {
 	
 	public String deleteByBatchNumber(String batchNumber);
 	
-	public CustomsMaterial getByMaterialNo(String materialNo);
+	public List getByMaterialNo(String materialNo);
 	
 	public CustomsMaterial getByNo(String no);
 }

@@ -20,50 +20,48 @@ public class CustomsImportsAndExports {
 	@GenericGenerator(name = "uuid", strategy = "uuid")
 	String id;
 	@Column
-	String no;
-	@Column
 	String entryDate;
 	@Column
 	String orTy;
 	@Column
 	String orderNumber;
 	@Column
-	String cimtasLongItemNo;
+	String cimtasCode;
 	@Column
-	String materialLongDescription;
+	String no;
+	@Column
+	String name;
+	@Column
+	String description;
 	@Column
 	String quantity;
 	@Column
 	String unit;
 	@Column
+	String currency;
+	@Column
 	String unitPrice;
 	@Column
-	String totalPrice;
+	String amount;
+	@Column
+	String unitPriceUSD;
+	@Column
+	String amountUSD;
 	@Column
 	String operator;
+	@Column
+	String netWeight;
+	@Column
+	String origin;
 	@Column
 	String operationDate;
 	@Column
 	String batchNumber;
-	
-	
-	public String getBatchNumber() {
-		return batchNumber;
-	}
-	public void setBatchNumber(String batchNumber) {
-		this.batchNumber = batchNumber;
-	}
 	public String getId() {
 		return id;
 	}
 	public void setId(String id) {
 		this.id = id;
-	}
-	public String getNo() {
-		return no;
-	}
-	public void setNo(String no) {
-		this.no = no;
 	}
 	public String getEntryDate() {
 		return entryDate;
@@ -71,23 +69,41 @@ public class CustomsImportsAndExports {
 	public void setEntryDate(String entryDate) {
 		this.entryDate = entryDate;
 	}
+	public String getOrTy() {
+		return orTy;
+	}
+	public void setOrTy(String orTy) {
+		this.orTy = orTy;
+	}
 	public String getOrderNumber() {
 		return orderNumber;
 	}
 	public void setOrderNumber(String orderNumber) {
 		this.orderNumber = orderNumber;
 	}
-	public String getCimtasLongItemNo() {
-		return cimtasLongItemNo;
+	public String getCimtasCode() {
+		return cimtasCode;
 	}
-	public void setCimtasLongItemNo(String cimtasLongItemNo) {
-		this.cimtasLongItemNo = cimtasLongItemNo;
+	public void setCimtasCode(String cimtasCode) {
+		this.cimtasCode = cimtasCode;
 	}
-	public String getMaterialLongDescription() {
-		return materialLongDescription;
+	public String getNo() {
+		return no;
 	}
-	public void setMaterialLongDescription(String materialLongDescription) {
-		this.materialLongDescription = materialLongDescription;
+	public void setNo(String no) {
+		this.no = no;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getDescription() {
+		return description;
+	}
+	public void setDescription(String description) {
+		this.description = description;
 	}
 	public String getQuantity() {
 		return quantity;
@@ -101,17 +117,35 @@ public class CustomsImportsAndExports {
 	public void setUnit(String unit) {
 		this.unit = unit;
 	}
+	public String getCurrency() {
+		return currency;
+	}
+	public void setCurrency(String currency) {
+		this.currency = currency;
+	}
 	public String getUnitPrice() {
 		return unitPrice;
 	}
 	public void setUnitPrice(String unitPrice) {
 		this.unitPrice = unitPrice;
 	}
-	public String getTotalPrice() {
-		return totalPrice;
+	public String getAmount() {
+		return amount;
 	}
-	public void setTotalPrice(String totalPrice) {
-		this.totalPrice = totalPrice;
+	public void setAmount(String amount) {
+		this.amount = amount;
+	}
+	public String getUnitPriceUSD() {
+		return unitPriceUSD;
+	}
+	public void setUnitPriceUSD(String unitPriceUSD) {
+		this.unitPriceUSD = unitPriceUSD;
+	}
+	public String getAmountUSD() {
+		return amountUSD;
+	}
+	public void setAmountUSD(String amountUSD) {
+		this.amountUSD = amountUSD;
 	}
 	public String getOperator() {
 		return operator;
@@ -119,18 +153,33 @@ public class CustomsImportsAndExports {
 	public void setOperator(String operator) {
 		this.operator = operator;
 	}
+	public String getNetWeight() {
+		return netWeight;
+	}
+	public void setNetWeight(String netWeight) {
+		this.netWeight = netWeight;
+	}
+	public String getOrigin() {
+		return origin;
+	}
+	public void setOrigin(String origin) {
+		this.origin = origin;
+	}
 	public String getOperationDate() {
 		return operationDate;
 	}
 	public void setOperationDate(String operationDate) {
 		this.operationDate = operationDate;
 	}
-	public String getOrTy() {
-		return orTy;
+	public String getBatchNumber() {
+		return batchNumber;
 	}
-	public void setOrTy(String orTy) {
-		this.orTy = orTy;
+	public void setBatchNumber(String batchNumber) {
+		this.batchNumber = batchNumber;
 	}
+	
+	
+	
 	
 	
 	

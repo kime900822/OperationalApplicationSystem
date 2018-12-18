@@ -150,14 +150,8 @@ public class CustomsMaterialBIZImpl extends BizBase implements CustomsMaterialBI
 
 	
 	@Override
-	public CustomsMaterial getByMaterialNo(String materialNo) {
-		List<CustomsMaterial> list=customsMaterialDAO.query(" where materialNo='"+materialNo+"'");
-		
-		if (list.size()>0) {
-			return list.get(0);
-		}else{
-			return null;
-		}
+	public List getByMaterialNo(String materialNo) {
+		return customsMaterialDAO.query(" where materialNo='"+materialNo+"'");
 	}
 
 	

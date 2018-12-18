@@ -59,14 +59,14 @@ public class CustomsClearanceBIZImpl  extends BizBase implements CustomsClearanc
 			if (lClearances.size()>0) {
 				for (CustomsClearance clearance : lClearances) {
 
-					CustomsMaterial customsMaterial=customsMaterialBIZ.getByMaterialNo(clearance.getPoseLongItemNo());
-					if(customsMaterial==null){
+					List<CustomsMaterial> lsCustomsMaterials=customsMaterialBIZ.getByMaterialNo(clearance.getPoseLongItemNo());
+					if(lsCustomsMaterials.size()==0){
 						logUtil.logError(CustomsClearanceHelp.title,"导入报错："+clearance.getCimtasNo()+"料件序号未mapping到:"+clearance.getPoseLongItemNo());
 						throw new Exception("导入报错："+clearance.getCimtasNo()+"料件序号未mapping到:"+clearance.getPoseLongItemNo());
 					}
 					
-					if(checkMaterialNo(customsMaterial.getNo())){
-						clearance.setNo(customsMaterial.getNo());
+					if(checkMaterialNo(lsCustomsMaterials.get(0).getNo())){
+						clearance.setNo(lsCustomsMaterials.get(0).getNo());
 					}
 					
 					clearance.setNo(CommonUtil.spaceToNull(clearance.getNo()));

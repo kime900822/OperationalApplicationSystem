@@ -52,14 +52,21 @@ public class CustomsImportsAndExportsBIZImpl  extends BizBase implements Customs
 						throw new Exception("导入报错："+customsImportsAndExports.getOrderNumber()+"报关进料日期不能为空。");
 					}
 
-					CustomsMaterial customsMaterial=customsMaterialBIZ.getByMaterialNo(customsImportsAndExports.getCimtasLongItemNo());
-					if(customsMaterial==null){
-						logUtil.logError(CustomsImportsAndExportsHelp.title,"导入报错："+customsImportsAndExports.getOrderNumber()+"料件序号未mapping到:"+customsImportsAndExports.getCimtasLongItemNo());
-						throw new Exception("导入报错："+customsImportsAndExports.getOrderNumber()+"料件序号未mapping到:"+customsImportsAndExports.getCimtasLongItemNo());
+					List<CustomsMaterial> list=customsMaterialBIZ.getByMaterialNo(customsImportsAndExports.getCimtasCode());
+					if (list.size()>1) {
+						logUtil.logError(CustomsImportsAndExportsHelp.title,"导入报错："+customsImportsAndExports.getOrderNumber()+"料号维护表存在2个相同的料号:"+customsImportsAndExports.getCimtasCode());
+						throw new Exception("导入报错："+customsImportsAndExports.getOrderNumber()+"料号维护表存在2个相同的料号:"+customsImportsAndExports.getCimtasCode());
+					}else if (list.size()==0) {
+						logUtil.logError(CustomsImportsAndExportsHelp.title,"导入报错："+customsImportsAndExports.getOrderNumber()+"料件序号未mapping到:"+customsImportsAndExports.getCimtasCode());
+						throw new Exception("导入报错："+customsImportsAndExports.getOrderNumber()+"料件序号未mapping到:"+customsImportsAndExports.getCimtasCode());
+
 					}
 					
-					if(checkMaterialNo(customsMaterial.getNo())){
-						customsImportsAndExports.setNo(customsMaterial.getNo());
+					
+					if(checkMaterialNo(list.get(0).getNo())){
+						customsImportsAndExports.setNo(list.get(0).getNo());
+						customsImportsAndExports.setName(list.get(0).getMaterialName());
+						customsImportsAndExports.setDescription(list.get(0).getSpecification());
 					}
 						
 					customsImportsAndExports.setNo(CommonUtil.spaceToNull(customsImportsAndExports.getNo()));
