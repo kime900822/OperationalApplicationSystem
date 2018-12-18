@@ -20,19 +20,19 @@ public class CustomsReportBIZImpl extends BizBase implements CustomsReportBIZ {
 	
 	@Override
 	public List queryReport2(String where) {
-		String hql=" select A.orderNumber,A.cimtasLongItemNo,A.quantity,B.transQTY,B.transQTY-A.quantity AS DValue from CustomsImportsAndExports A "
+		String hql=" select A.orderNumber,A.CimtasCode,A.quantity,B.transQTY,B.transQTY-A.quantity AS DValue from CustomsImportsAndExports A "
 				+ " left join CustomsJDE B "
 				+ " on A.orderNumber=B.orderNumber"
-				+ " and A.cimtasLongItemNo=B.cimtasLongItemNo ";
+				+ " and A.CimtasCode=B.cimtasLongItemNo ";
 		return commonDAO.queryByHql(hql);
 	}
 
 	@Override
 	public List queryReport2(String where, int pageSize, int pageCurrent) {
-		String hql=" select A.orderNumber,A.cimtasLongItemNo,A.quantity,B.transQTY,B.transQTY-A.quantity AS DValue from CustomsImportsAndExports A "
+		String hql=" select A.orderNumber,A.CimtasCode,A.quantity,B.transQTY,B.transQTY-A.quantity AS DValue from CustomsImportsAndExports A "
 				+ " left join CustomsJDE B "
 				+ " on A.orderNumber=B.orderNumber"
-				+ " and A.cimtasLongItemNo=B.cimtasLongItemNo ";
+				+ " and A.CimtasCode=B.cimtasLongItemNo ";
 		List list=commonDAO.queryByHql(hql, pageSize, pageCurrent);
 		List<CustomsReport2> lReport2s=new ArrayList<>();
 		for (Object object : list) {
