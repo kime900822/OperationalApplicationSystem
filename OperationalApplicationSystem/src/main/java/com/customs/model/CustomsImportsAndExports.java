@@ -48,11 +48,11 @@ public class CustomsImportsAndExports {
 	@Column
 	String amountUSD;
 	@Column
-	String operator;
-	@Column
 	String netWeight;
 	@Column
 	String origin;
+	@Column
+	String operator;
 	@Column
 	String operationDate;
 	@Column

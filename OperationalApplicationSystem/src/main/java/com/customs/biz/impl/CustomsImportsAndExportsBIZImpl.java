@@ -69,13 +69,13 @@ public class CustomsImportsAndExportsBIZImpl  extends BizBase implements Customs
 						customsImportsAndExports.setDescription(list.get(0).getSpecification());
 					}
 						
-					customsImportsAndExports.setNo(CommonUtil.spaceToNull(customsImportsAndExports.getNo()));
-					customsImportsAndExports.setQuantity(CommonUtil.spaceToNull(customsImportsAndExports.getQuantity()));
-					customsImportsAndExports.setUnitPrice(CommonUtil.spaceToNull(customsImportsAndExports.getUnitPrice()));
-					customsImportsAndExports.setAmount(CommonUtil.spaceToNull(customsImportsAndExports.getAmount()));
-					customsImportsAndExports.setUnitPriceUSD(CommonUtil.spaceToNull(customsImportsAndExports.getUnitPriceUSD()));
-					customsImportsAndExports.setAmountUSD(CommonUtil.spaceToNull(customsImportsAndExports.getAmountUSD()));
-					customsImportsAndExports.setNetWeight(CommonUtil.spaceToNull(customsImportsAndExports.getNetWeight()));
+					customsImportsAndExports.setNo(CommonUtil.spaceToNull(customsImportsAndExports.getNo().trim()));
+					customsImportsAndExports.setQuantity(CommonUtil.spaceToNull(customsImportsAndExports.getQuantity().trim()));
+					customsImportsAndExports.setUnitPrice(CommonUtil.spaceToNull(customsImportsAndExports.getUnitPrice().trim()));
+					customsImportsAndExports.setAmount(CommonUtil.spaceToNull(customsImportsAndExports.getAmount().trim()));
+					customsImportsAndExports.setUnitPriceUSD(CommonUtil.spaceToNull(customsImportsAndExports.getUnitPriceUSD().trim()));
+					customsImportsAndExports.setAmountUSD(CommonUtil.spaceToNull(customsImportsAndExports.getAmountUSD().trim()));
+					customsImportsAndExports.setNetWeight(CommonUtil.spaceToNull(customsImportsAndExports.getNetWeight().trim()));
 					
 					customsImportsAndExports.setOperationDate(date);
 					customsImportsAndExports.setBatchNumber(batchNumber);
