@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang3.ObjectUtils.Null;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -63,13 +64,13 @@ public class CustomsImportsAndExportsBIZImpl  extends BizBase implements Customs
 					}
 					
 					
-					if(checkMaterialNo(list.get(0).getNo())){
-						customsImportsAndExports.setNo(list.get(0).getNo());
-						customsImportsAndExports.setName(list.get(0).getMaterialName());
-						customsImportsAndExports.setDescription(list.get(0).getSpecification());
-					}
+		
+					customsImportsAndExports.setNo(list.get(0).getNo());
+					customsImportsAndExports.setName(list.get(0).getMaterialName());
+					customsImportsAndExports.setDescription(list.get(0).getSpecification());
+
 						
-					customsImportsAndExports.setNo(CommonUtil.spaceToNull(customsImportsAndExports.getNo().trim()));
+					//customsImportsAndExports.setNo(CommonUtil.spaceToNull(customsImportsAndExports.getNo().trim()));
 					customsImportsAndExports.setQuantity(CommonUtil.spaceToNull(customsImportsAndExports.getQuantity().trim()));
 					customsImportsAndExports.setUnitPrice(CommonUtil.spaceToNull(customsImportsAndExports.getUnitPrice().trim()));
 					customsImportsAndExports.setAmount(CommonUtil.spaceToNull(customsImportsAndExports.getAmount().trim()));

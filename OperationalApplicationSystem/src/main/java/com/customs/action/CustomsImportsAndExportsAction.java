@@ -36,7 +36,7 @@ public class CustomsImportsAndExportsAction extends ActionBase {
 	CustomsImportsAndExportsBIZ customsImportsAndExportsBIZ;
 	
 	String orderNumber;
-	String cimtasLongItemNo;
+	String cimtasCode;
 	String entryDate_f;
 	String entryDate_t;
 	String id;
@@ -74,11 +74,11 @@ public class CustomsImportsAndExportsAction extends ActionBase {
 	public void setOrderNumber(String orderNumber) {
 		this.orderNumber = orderNumber;
 	}
-	public String getCimtasLongItemNo() {
-		return cimtasLongItemNo;
+	public String getCimtasCode() {
+		return cimtasCode;
 	}
-	public void setCimtasLongItemNo(String cimtasLongItemNo) {
-		this.cimtasLongItemNo = cimtasLongItemNo;
+	public void setCimtasCode(String cimtasCode) {
+		this.cimtasCode = cimtasCode;
 	}
 	public String getEntryDate_f() {
 		return entryDate_f;
@@ -142,13 +142,13 @@ public class CustomsImportsAndExportsAction extends ActionBase {
 	public String queryCustomsImportsAndExports() throws UnsupportedEncodingException{	
 		String where="";
 		if (!"".equals(entryDate_f)&&entryDate_f!=null) {
-			where+=" where ntryDate >= '"+entryDate_f+"' ";
+			where+=" where entryDate >= '"+entryDate_f+"' ";
 		}		
 		if (!"".equals(entryDate_t)&&entryDate_t!=null) {
 			if (where.equals("")) {
-				where+=" where ntryDate <= '"+entryDate_t+"' ";
+				where+=" where entryDate <= '"+entryDate_t+"' ";
 			}else{
-				where+=" AND ntryDate <= '"+entryDate_t+"'  ";
+				where+=" AND entryDate <= '"+entryDate_t+"'  ";
 			}
 			
 		}		
@@ -160,11 +160,11 @@ public class CustomsImportsAndExportsAction extends ActionBase {
 			}
 			
 		}	
-		if (!"".equals(cimtasLongItemNo)&&cimtasLongItemNo!=null) {
+		if (!"".equals(cimtasCode)&&cimtasCode!=null) {
 			if (where.equals("")) {
-				where+=" where cimtasLongItemNo like '%"+cimtasLongItemNo+"%' ";
+				where+=" where cimtasCode like '%"+cimtasCode+"%' ";
 			}else{
-				where+=" AND cimtasLongItemNo like '%"+cimtasLongItemNo+"%' ";
+				where+=" AND cimtasCode like '%"+cimtasCode+"%' ";
 			}
 			
 		}
@@ -203,13 +203,13 @@ public class CustomsImportsAndExportsAction extends ActionBase {
         	List<HeadColumn> lHeadColumns=new Gson().fromJson(thead, new TypeToken<ArrayList<HeadColumn>>() {}.getType());
     		String where="";
     		if (!"".equals(entryDate_f)&&entryDate_f!=null) {
-    			where+=" where ntryDate >= '"+entryDate_f+"' ";
+    			where+=" where entryDate >= '"+entryDate_f+"' ";
     		}		
     		if (!"".equals(entryDate_t)&&entryDate_t!=null) {
     			if (where.equals("")) {
-    				where+=" where ntryDate <= '"+entryDate_t+"' ";
+    				where+=" where entryDate <= '"+entryDate_t+"' ";
     			}else{
-    				where+=" AND ntryDate <= '"+entryDate_t+"'  ";
+    				where+=" AND entryDate <= '"+entryDate_t+"'  ";
     			}
     			
     		}		
@@ -221,11 +221,11 @@ public class CustomsImportsAndExportsAction extends ActionBase {
     			}
     			
     		}	
-    		if (!"".equals(cimtasLongItemNo)&&cimtasLongItemNo!=null) {
+    		if (!"".equals(cimtasCode)&&cimtasCode!=null) {
     			if (where.equals("")) {
-    				where+=" where cimtasLongItemNo like '%"+cimtasLongItemNo+"%' ";
+    				where+=" where cimtasCode like '%"+cimtasCode+"%' ";
     			}else{
-    				where+=" AND cimtasLongItemNo like '%"+cimtasLongItemNo+"%' ";
+    				where+=" AND cimtasCode like '%"+cimtasCode+"%' ";
     			}
     			
     		}

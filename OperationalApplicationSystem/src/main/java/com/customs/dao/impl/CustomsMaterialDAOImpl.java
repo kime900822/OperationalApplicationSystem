@@ -46,7 +46,7 @@ public class CustomsMaterialDAOImpl extends DaoBase implements CustomsMaterialDA
 		Session session=this.getSessionFactory().openSession();
 		String hql="FROM CustomsMaterial "+where;
 		List list = session.createQuery(hql).list();
-		session.clear();
+		session.close();
 		return list;
 	}
 
@@ -55,7 +55,7 @@ public class CustomsMaterialDAOImpl extends DaoBase implements CustomsMaterialDA
 		Session session=this.getSessionFactory().openSession();
 		String hql="FROM CustomsMaterial "+where;
 		List list = session.createQuery(hql).setFirstResult((pageCurrent-1)*pageSize).setMaxResults(pageSize).list();
-		session.clear();
+		session.close();
 		return list;
 	}
 

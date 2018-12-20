@@ -45,10 +45,10 @@ function deleteCustomsImportsAndExports(){
             	<input type="text" name="orderNumber" value=""  size="15">
         		</td>
         		<td width="160px">
-        		<span>Cimtas Long Item No：</span>
+        		<span>Cimtas Code：</span>
         		</td>
         		<td width="180px">
-            	<input type="text" name="cimtasLongItemNo" value=""  size="15">
+            	<input type="text" name="cimtasCode" value=""  size="15">
         		</td>
 	        	<td width="100px">
         		<span>报关进料日期:</span>
