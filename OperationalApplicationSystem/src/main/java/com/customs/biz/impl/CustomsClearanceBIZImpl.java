@@ -60,6 +60,10 @@ public class CustomsClearanceBIZImpl  extends BizBase implements CustomsClearanc
 				for (CustomsClearance clearance : lClearances) {
 
 					List<CustomsMaterial> lsCustomsMaterials=customsMaterialBIZ.getByMaterialNo(clearance.getPoseLongItemNo());
+					if (lsCustomsMaterials.size()>1) {
+						logUtil.logError(CustomsClearanceHelp.title,"导入报错："+clearance.getCimtasNo()+"料号维护表存在2个相同的料号:"+clearance.getPoseLongItemNo());
+						throw new Exception("导入报错："+clearance.getCimtasNo()+"料号维护表存在2个相同的料号:"+clearance.getPoseLongItemNo());
+					}
 					if(lsCustomsMaterials.size()==0){
 						logUtil.logError(CustomsClearanceHelp.title,"导入报错："+clearance.getCimtasNo()+"料件序号未mapping到:"+clearance.getPoseLongItemNo());
 						throw new Exception("导入报错："+clearance.getCimtasNo()+"料件序号未mapping到:"+clearance.getPoseLongItemNo());
@@ -67,6 +71,9 @@ public class CustomsClearanceBIZImpl  extends BizBase implements CustomsClearanc
 					
 					if(checkMaterialNo(lsCustomsMaterials.get(0).getNo())){
 						clearance.setNo(lsCustomsMaterials.get(0).getNo());
+					}else {
+						logUtil.logError(CustomsClearanceHelp.title,"导入报错："+clearance.getCimtasNo()+"料件序号已存在:"+clearance.getPoseLongItemNo());
+						throw new Exception("导入报错："+clearance.getCimtasNo()+"料件序号已存在:"+clearance.getPoseLongItemNo());
 					}
 					
 					clearance.setNo(CommonUtil.spaceToNull(clearance.getNo()));

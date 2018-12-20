@@ -64,13 +64,18 @@ public class CustomsImportsAndExportsBIZImpl  extends BizBase implements Customs
 					}
 					
 					
-		
-					customsImportsAndExports.setNo(list.get(0).getNo());
-					customsImportsAndExports.setName(list.get(0).getMaterialName());
-					customsImportsAndExports.setDescription(list.get(0).getSpecification());
+					if (checkMaterialNo(list.get(0).getNo())) {
+						customsImportsAndExports.setNo(list.get(0).getNo());
+						customsImportsAndExports.setName(list.get(0).getMaterialName());
+						customsImportsAndExports.setDescription(list.get(0).getSpecification());
+					}else {
+						logUtil.logError(CustomsImportsAndExportsHelp.title,"导入报错："+customsImportsAndExports.getOrderNumber()+"料件序号已存在:"+customsImportsAndExports.getCimtasCode());
+						throw new Exception("导入报错："+customsImportsAndExports.getOrderNumber()+"料件序号已存在:"+customsImportsAndExports.getCimtasCode());
+					}
+					
 
 						
-					//customsImportsAndExports.setNo(CommonUtil.spaceToNull(customsImportsAndExports.getNo().trim()));
+					customsImportsAndExports.setNo(CommonUtil.spaceToNull(customsImportsAndExports.getNo().trim()));
 					customsImportsAndExports.setQuantity(CommonUtil.spaceToNull(customsImportsAndExports.getQuantity().trim()));
 					customsImportsAndExports.setUnitPrice(CommonUtil.spaceToNull(customsImportsAndExports.getUnitPrice().trim()));
 					customsImportsAndExports.setAmount(CommonUtil.spaceToNull(customsImportsAndExports.getAmount().trim()));
