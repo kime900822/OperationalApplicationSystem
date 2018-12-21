@@ -26,22 +26,35 @@ public class CustomsGeneralAction extends ActionBase{
 	CustomsGeneralBIZ customsGeneralBIZ;
 	
 	String month;
-	
+	String materialNo;
+	String jdeMaterialNo;
+	String no;
 	
 	public String getMonth() {
 		return month;
 	}
-
-
-
-
 	public void setMonth(String month) {
 		this.month = month;
 	}
 
-
-
-
+	public String getMaterialNo() {
+		return materialNo;
+	}
+	public void setMaterialNo(String materialNo) {
+		this.materialNo = materialNo;
+	}
+	public String getJdeMaterialNo() {
+		return jdeMaterialNo;
+	}
+	public void setJdeMaterialNo(String jdeMaterialNo) {
+		this.jdeMaterialNo = jdeMaterialNo;
+	}
+	public String getNo() {
+		return no;
+	}
+	public void setNo(String no) {
+		this.no = no;
+	}
 	/**
      * excel导入
      * @return
@@ -84,7 +97,31 @@ public class CustomsGeneralAction extends ActionBase{
 		if (month!=null&&!month.equals("")) {
 			where+= " where month='"+month+"' ";
 		}
-		
+		if (!"".equals(materialNo)&&materialNo!=null) {
+			if (where.equals("")) {
+				where+=" where materialNo like  '%"+materialNo+"%' ";
+			}else{
+				where+=" AND materialNo like '%"+materialNo+"%'  ";
+			}
+			
+		}	
+		if (!"".equals(jdeMaterialNo)&&jdeMaterialNo!=null) {
+			if (where.equals("")) {
+				where+=" where jdeMaterialNo like '%"+jdeMaterialNo+"%' ";
+			}else{
+				where+=" AND jdeMaterialNo like '%"+jdeMaterialNo+"%'  ";
+			}
+			
+		}
+		if (!"".equals(no)&&no!=null) {
+			if (where.equals("")) {
+				where+=" where no like '%"+no+"%' ";
+			}else{
+				where+=" AND no like '%"+no+"%'  ";
+			}
+			
+		}
+		 
 		List list  =customsGeneralBIZ.query4init(where, Integer.parseInt(pageSize),Integer.parseInt(pageCurrent));
 		int total=customsGeneralBIZ.query4init(where).size();
 		

@@ -15,6 +15,7 @@ import com.customs.dao.CustomsJDEDAO;
 import com.customs.model.CustomsJDE;
 import com.customs.model.CustomsMaterial;
 import com.customs.other.CustomsJDEHelp;
+import com.customs.other.CustomsMaterialHelp;
 import com.customs.other.CustomsProductHelp;
 import com.kime.base.BizBase;
 import com.kime.dao.CommonDAO;
@@ -24,7 +25,7 @@ import com.kime.utils.ExcelUtil;
 
 @Service
 @Transactional(readOnly=true)
-public class CUstomsJDEBIZImpl extends BizBase implements CUstomsJDEBIZ {
+public class CustomsJDEBIZImpl extends BizBase implements CUstomsJDEBIZ {
 
 	@Autowired
 	CustomsJDEDAO customsJDFDAO;
@@ -40,7 +41,10 @@ public class CUstomsJDEBIZImpl extends BizBase implements CUstomsJDEBIZ {
 				String batchNumber=getMaxBatchNumber();
 				String date=CommonUtil.getDate();
 				for (CustomsJDE customsJDE : lCustomsJDEs) {
-					
+					if (checkLotNumber(customsJDE)) {
+						logUtil.logError(CustomsJDEHelp.title,"导入报错，Lot Number重复："+customsJDE.getLotNumber());
+						throw new Exception("导入报错，Lot Number重复："+customsJDE.getLotNumber());
+					}
 					customsJDE.setTransQTY(CommonUtil.spaceToNull(customsJDE.getTransQTY()));
 					customsJDE.setExtendedCostPrice(CommonUtil.spaceToNull(customsJDE.getExtendedCostPrice()));
 					customsJDE.setDocumentNumber(CommonUtil.spaceToNull(customsJDE.getDocumentNumber()));
@@ -110,5 +114,21 @@ public class CUstomsJDEBIZImpl extends BizBase implements CUstomsJDEBIZ {
 		
 		
 	}
-
+	
+	public boolean checkLotNumber(CustomsJDE customsJDE)  throws Exception{
+		
+		try {
+			List  list = commonDAO.queryByHql(" select count(1) from CustomsJDE where materialNo='"+customsJDE.getLotNumber()+"'");
+			if (list.size()>0&&(long)list.get(0)>0) {
+				return false;
+			}else{
+				return true;
+			}
+		} catch (NumberFormatException e) {
+			e.printStackTrace();
+			throw new Exception(e.getMessage());
+		}
+		
+		
+	}
 }

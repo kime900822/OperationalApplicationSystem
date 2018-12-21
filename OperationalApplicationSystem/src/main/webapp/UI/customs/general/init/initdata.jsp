@@ -18,13 +18,37 @@
         		<td width="180px">
             	<input type="text" name="month" value="" data-toggle="datepicker" data-pattern="yyyy-MM" size="15" data-rule="month;required" placeholder="点击选择日期">
         		</td>
-        		<td colspan="6" width="860px">
+        		<td width="150px">
+        		<span>海关物料编码：</span>
+        		</td>
+        		<td width="180px">
+            	<input type="text" name="materialNo" value=""  size="15">
+        		</td>
+	        	<td width="80px">
+        		<span>JDE物料编码:</span>
+        		</td>
+        		<td width="180px">
+            	<input type="text" name="jdeMaterialNo" value="" size="15">
+        		</td>
+        		<td width="80px">
+        		<span>料件序号：</span>
+        		</td>
+        		<td width="80px">
+            	<input type="text" name="no" value="" size="15">
+         		</td>
+        	</tr>     
+        	<tr>
+        		<td colspan="8" height="10px"></td>
+        	</tr>
+        	<tr>
+        	<td colspan="8" >
 	        		<div class="btn-group">
 	                <button type="submit" class="btn-green" data-icon="search">Search</button>
 	                <button type="reset" class="btn-orange" data-icon="times">Reset</button>
 	            	</div>
         		</td>
-        	</tr>      
+        	
+        	</tr> 
         </table>
             
             

@@ -114,7 +114,7 @@ function deleteCustomsImportsAndExports(){
             <tr>
             	<th data-options="{name:'id',width:150,align:'center',finalWidth:'true',hide:'true'}">id</th>
 				<th data-options="{name:'entryDate',width:200,align:'left',finalWidth:'true'}">报关进料日期</th>
-				<th data-options="{name:'orTY',width:200,align:'left',finalWidth:'true'}">Or Ty</th>
+				<th data-options="{name:'orTy',width:200,align:'left',finalWidth:'true'}">Or Ty</th>
 				<th data-options="{name:'orderNumber',width:200,align:'left',finalWidth:'true'}">Order Number</th>
 				<th data-options="{name:'cimtasCode',width:200,align:'left',finalWidth:'true'}">Cimtas Code</th>
 				<th data-options="{name:'no',width:60,align:'left',finalWidth:'true'}">备案号</th>
