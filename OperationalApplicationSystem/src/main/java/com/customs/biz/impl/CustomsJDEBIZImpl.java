@@ -41,7 +41,7 @@ public class CustomsJDEBIZImpl extends BizBase implements CUstomsJDEBIZ {
 				String batchNumber=getMaxBatchNumber();
 				String date=CommonUtil.getDate();
 				for (CustomsJDE customsJDE : lCustomsJDEs) {
-					if (checkLotNumber(customsJDE)) {
+					if (!checkLotNumber(customsJDE)) {
 						logUtil.logError(CustomsJDEHelp.title,"导入报错，Lot Number重复："+customsJDE.getLotNumber());
 						throw new Exception("导入报错，Lot Number重复："+customsJDE.getLotNumber());
 					}
@@ -118,7 +118,7 @@ public class CustomsJDEBIZImpl extends BizBase implements CUstomsJDEBIZ {
 	public boolean checkLotNumber(CustomsJDE customsJDE)  throws Exception{
 		
 		try {
-			List  list = commonDAO.queryByHql(" select count(1) from CustomsJDE where materialNo='"+customsJDE.getLotNumber()+"'");
+			List  list = commonDAO.queryByHql(" select count(1) from CustomsJDE where lotNumber='"+customsJDE.getLotNumber()+"'");
 			if (list.size()>0&&(long)list.get(0)>0) {
 				return false;
 			}else{
