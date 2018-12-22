@@ -108,12 +108,13 @@ function deleteCustomsImportsAndExports(){
         contextMenuB: true,
         hScrollbar: true,
         importOption: {type:'dialog', options:{url:'customs/importsandexports/importsandexports-import.html', width:500, height:300, title:'Import materials'}},
-        exportOption: {type:'file', options:{url:'customs/exportCustomsImportsAndExports.action', loadingmask:true}}
+        exportOption: {type:'file', options:{url:'customs/exportCustomsImportsAndExports.action', loadingmask:true,queryForm:$.CurrentNavtab.find('#datagrid-customs-importsandexports-query')}}
     }">
         <thead>
             <tr>
             	<th data-options="{name:'id',width:150,align:'center',finalWidth:'true',hide:'true'}">id</th>
 				<th data-options="{name:'entryDate',width:200,align:'left',finalWidth:'true'}">报关进料日期</th>
+				<th data-options="{name:'entryNo',width:200,align:'left',finalWidth:'true'}">报关单号</th>
 				<th data-options="{name:'orTy',width:200,align:'left',finalWidth:'true'}">Or Ty</th>
 				<th data-options="{name:'orderNumber',width:200,align:'left',finalWidth:'true'}">Order Number</th>
 				<th data-options="{name:'cimtasCode',width:200,align:'left',finalWidth:'true'}">Cimtas Code</th>

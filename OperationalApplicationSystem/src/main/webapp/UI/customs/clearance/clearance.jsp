@@ -66,7 +66,7 @@
         contextMenuB: true,
         hScrollbar: true,
         importOption: {type:'dialog', options:{url:'customs/clearance/clearance-import.html', width:500, height:300, title:'Import materials'}},
-        exportOption: {type:'file', options:{url:'customs/exportCustomsClearance.action', loadingmask:true}}
+        exportOption: {type:'file', options:{url:'customs/exportCustomsClearance.action', loadingmask:true,queryForm:$.CurrentNavtab.find('#datagrid-customs-clearance-query')}}
     }">
         <thead>
             <tr>

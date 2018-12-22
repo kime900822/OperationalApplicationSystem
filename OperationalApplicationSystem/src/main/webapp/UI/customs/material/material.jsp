@@ -169,7 +169,7 @@ function deleteCustomsMaterial(){
         contextMenuB: true,
         hScrollbar: true,
         importOption: {type:'dialog', options:{url:'customs/material/material-import.html', width:500, height:300, title:'Import materials'}},
-        exportOption: {type:'file', options:{url:'customs/exportCustomsMaterial.action', loadingmask:true}}
+        exportOption: {type:'file', options:{url:'customs/exportCustomsMaterial.action', loadingmask:true,queryForm:$.CurrentNavtab.find('#datagrid-customs-material-query')}}
     }">
         <thead>
             <tr>

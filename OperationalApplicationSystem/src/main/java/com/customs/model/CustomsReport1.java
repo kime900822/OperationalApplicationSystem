@@ -15,6 +15,7 @@ public class CustomsReport1 {
 	String columen11;
 	String columen12;
 	String columen13;
+	String columen14;
 	public String getColumen1() {
 		return columen1;
 	}
@@ -92,6 +93,12 @@ public class CustomsReport1 {
 	}
 	public void setColumen13(String columen13) {
 		this.columen13 = columen13;
+	}
+	public String getColumen14() {
+		return columen14;
+	}
+	public void setColumen14(String columen14) {
+		this.columen14 = columen14;
 	}
 	
 	

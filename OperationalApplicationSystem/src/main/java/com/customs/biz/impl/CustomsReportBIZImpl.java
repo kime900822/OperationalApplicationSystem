@@ -1,5 +1,7 @@
 package com.customs.biz.impl;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,10 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.customs.biz.CustomsReportBIZ;
+import com.customs.model.CustomsMaterial;
 import com.customs.model.CustomsReport1;
 import com.customs.model.CustomsReport2;
 import com.kime.base.BizBase;
 import com.kime.dao.CommonDAO;
+import com.kime.model.HeadColumn;
+import com.kime.utils.ExcelUtil;
 
 @Service
 public class CustomsReportBIZImpl extends BizBase implements CustomsReportBIZ {
@@ -50,19 +55,41 @@ public class CustomsReportBIZImpl extends BizBase implements CustomsReportBIZ {
 
 	@Override
 	public List queryReport1(String where) {
-		String hql=" select B.no,A.no,'' ,A.quantityOrdered,case when B.declareUnitCode='030' then 0.03 else 0 end,'','','','','','',A.batchNumber,'' "
+		String hql=" select B.no,A.no,'1' ,A.quantityOrdered,"
+				+ " case when B.declareUnitCode='030' then 0.03 else 0 end,"
+				+ "'0',"
+				+ "'',"
+				+ "'100',"
+				+ "'3',"
+				+ "'20420701',"
+				+ "'',"
+				+ "A.batchNumber,"
+				+ "A.quantityOrdered*(1+(case when B.declareUnitCode='030' then 0.03 else 0 end))/1000, "
+				+ "'' "
 				+ " from CustomsClearance A "
 				+ " left join CustomsProduct B "
-				+ " on A.shipmentIems=B.materialNo";
+				+ " on A.shipmentIems=B.materialNo"
+				+ where;
 		return commonDAO.queryByHql(hql);
 	}
 
 	@Override
 	public List queryReport1(String where, int pageSize, int pageCurrent) {
-		String hql=" select B.no,A.no,'' ,A.quantityOrdered,case when B.declareUnitCode='030' then 0.03 else 0 end,'','','','','','',A.batchNumber,'' "
+		String hql=" select B.no,A.no,'1' ,A.quantityOrdered,"
+				+ " case when B.declareUnitCode='030' then 0.03 else 0 end,"
+				+ "'0',"
+				+ "'',"
+				+ "'100',"
+				+ "'3',"
+				+ "'20420701',"
+				+ "'',"
+				+ "A.batchNumber,"
+				+ "A.quantityOrdered*(1+(case when B.declareUnitCode='030' then 0.03 else 0 end))/1000, "
+				+ "'' "
 				+ " from CustomsClearance A "
 				+ " left join CustomsProduct B "
-				+ " on A.shipmentIems=B.materialNo";
+				+ " on A.shipmentIems=B.materialNo"
+				+ where;
 		
 		List list=commonDAO.queryByHql(hql, pageSize, pageCurrent);
 		List<CustomsReport1> lReport1s=new ArrayList<>();
@@ -81,12 +108,21 @@ public class CustomsReportBIZImpl extends BizBase implements CustomsReportBIZ {
 			customsReport1.setColumen10((String)tmp[9]);
 			customsReport1.setColumen11((String)tmp[10]);
 			customsReport1.setColumen12((String)tmp[11]);
-			customsReport1.setColumen13((String)tmp[12]);
+			customsReport1.setColumen13(String.valueOf((Double)tmp[12]));
+			customsReport1.setColumen14((String)tmp[13]);
 			lReport1s.add(customsReport1);
 		}
 		return lReport1s;
 	}
 	
-	
+	@Override
+	public ByteArrayInputStream exportData(String hql, List<HeadColumn> lHeadColumns,String title) throws Exception {
+		
+		List list  = commonDAO.queryByHql(hql);
+    	Class c = (Class) new CustomsMaterial().getClass();  
+    	ByteArrayOutputStream os = ExcelUtil.exportExcel(title, c, list, "yyy-MM-dd",lHeadColumns);
+    	byte[] fileContent = os.toByteArray();
+    	return new ByteArrayInputStream(fileContent);	
+	}
 	
 }

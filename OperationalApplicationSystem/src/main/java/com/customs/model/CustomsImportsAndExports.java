@@ -22,6 +22,8 @@ public class CustomsImportsAndExports {
 	@Column
 	String entryDate;
 	@Column
+	String entryNo;
+	@Column
 	String orTy;
 	@Column
 	String orderNumber;
@@ -68,6 +70,12 @@ public class CustomsImportsAndExports {
 	}
 	public void setEntryDate(String entryDate) {
 		this.entryDate = entryDate;
+	}
+	public String getEntryNo() {
+		return entryNo;
+	}
+	public void setEntryNo(String entryNo) {
+		this.entryNo = entryNo;
 	}
 	public String getOrTy() {
 		return orTy;

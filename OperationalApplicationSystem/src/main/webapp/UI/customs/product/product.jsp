@@ -168,7 +168,7 @@ function customsProductHandingNO(){
         paging: true,
         contextMenuB: true,
         hScrollbar: true,
-        importOption: {type:'dialog', options:{url:'customs/product/product-import.html', width:500, height:300, title:'Import Products'}},
+        importOption: {type:'dialog', options:{url:'customs/product/product-import.html', width:500, height:300, title:'Import Products',queryForm:$.CurrentNavtab.find('#datagrid-customs-product-query')}},
         exportOption: {type:'file', options:{url:'customs/exportCustomsProduct.action', loadingmask:true}}
     }">
         <thead>
