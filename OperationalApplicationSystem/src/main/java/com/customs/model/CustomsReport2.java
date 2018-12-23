@@ -6,12 +6,16 @@ public class CustomsReport2 {
 	
 	String cimtasLongItemNo;
 	
-	String quantity;
+	String newCimtasLongItemNo;
+	
+	String customsQuality;
+	
+	String JEDTransQty;
 	
 	String transQTY;
 	
 	String dvalue;
-
+	
 	public String getOrderNumber() {
 		return orderNumber;
 	}
@@ -28,12 +32,28 @@ public class CustomsReport2 {
 		this.cimtasLongItemNo = cimtasLongItemNo;
 	}
 
-	public String getQuantity() {
-		return quantity;
+	public String getNewCimtasLongItemNo() {
+		return newCimtasLongItemNo;
 	}
 
-	public void setQuantity(String quantity) {
-		this.quantity = quantity;
+	public void setNewCimtasLongItemNo(String newCimtasLongItemNo) {
+		this.newCimtasLongItemNo = newCimtasLongItemNo;
+	}
+
+	public String getCustomsQuality() {
+		return customsQuality;
+	}
+
+	public void setCustomsQuality(String customsQuality) {
+		this.customsQuality = customsQuality;
+	}
+
+	public String getJEDTransQty() {
+		return JEDTransQty;
+	}
+
+	public void setJEDTransQty(String jEDTransQty) {
+		JEDTransQty = jEDTransQty;
 	}
 
 	public String getTransQTY() {
@@ -51,6 +71,8 @@ public class CustomsReport2 {
 	public void setDvalue(String dvalue) {
 		this.dvalue = dvalue;
 	}
+
+
 	
 	
 }

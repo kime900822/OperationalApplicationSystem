@@ -25,15 +25,20 @@ public class CustomsReportBIZImpl extends BizBase implements CustomsReportBIZ {
 	
 	@Override
 	public List queryReport2(String where) {
-		String hql=" select A.orderNumber,"
+		String hql=" select A.orderNumber, "
 				+ " A.cimtasCode,"
+				+ " coalesce(C.newMaterialNo,A.cimtasCode) as cimtasCode, "
 				+ " A.quantity,"
 				+ " B.transQTY,"
-				+ " B.transQTY-A.quantity AS DValue "
+				+ " D.transQTY,"
+				+ " coalesce(D.transQTY,0)-A.quantity AS DValue "
 				+ " from CustomsImportsAndExports A "
 				+ " left join CustomsJDE B "
-				+ " on A.orderNumber=B.orderNumber"
-				+ " and A.cimtasCode=B.cimtasLongItemNo ";
+				+ " on A.cimtasCode=B.cimtasLongItemNo "
+				+ " left join CustomsMaterialMapping C on "
+				+ " C.oldMaterialNo=A.cimtasCode "
+				+ " left join CustomsJDE D "
+				+ " on coalesce(C.newMaterialNo,A.cimtasCode)=D.cimtasLongItemNo "+where;
 		return commonDAO.queryByHql(hql);
 	}
 
@@ -41,13 +46,18 @@ public class CustomsReportBIZImpl extends BizBase implements CustomsReportBIZ {
 	public List queryReport2(String where, int pageSize, int pageCurrent) {
 		String hql=" select A.orderNumber, "
 				+ " A.cimtasCode,"
+				+ " coalesce(C.newMaterialNo,A.cimtasCode) as cimtasCode, "
 				+ " A.quantity,"
 				+ " B.transQTY,"
-				+ " B.transQTY-A.quantity AS DValue "
+				+ " D.transQTY,"
+				+ " coalesce(D.transQTY,0)-A.quantity AS DValue "
 				+ " from CustomsImportsAndExports A "
 				+ " left join CustomsJDE B "
-				+ " on A.orderNumber=B.orderNumber"
-				+ " and A.cimtasCode=B.cimtasLongItemNo ";
+				+ " on A.cimtasCode=B.cimtasLongItemNo "
+				+ " left join CustomsMaterialMapping C on "
+				+ " C.oldMaterialNo=A.cimtasCode "
+				+ " left join CustomsJDE D "
+				+ " on coalesce(C.newMaterialNo,A.cimtasCode)=D.cimtasLongItemNo "+ where;
 		List list=commonDAO.queryByHql(hql, pageSize, pageCurrent);
 		List<CustomsReport2> lReport2s=new ArrayList<>();
 		for (Object object : list) {
@@ -55,9 +65,11 @@ public class CustomsReportBIZImpl extends BizBase implements CustomsReportBIZ {
 			CustomsReport2 customsReport2=new CustomsReport2();
 			customsReport2.setOrderNumber((String)tmp[0]);
 			customsReport2.setCimtasLongItemNo((String)tmp[1]);
-			customsReport2.setQuantity((String)tmp[2]);
-			customsReport2.setTransQTY((String)tmp[3]);
-			customsReport2.setDvalue((String)tmp[4]);
+			customsReport2.setNewCimtasLongItemNo((String)tmp[2]);
+			customsReport2.setCustomsQuality((String)tmp[3]);
+			customsReport2.setJEDTransQty((String)tmp[4]);
+			customsReport2.setTransQTY((String)tmp[5]);
+			customsReport2.setDvalue((String)tmp[6]);
 			lReport2s.add(customsReport2);
 		}
 		return lReport2s;

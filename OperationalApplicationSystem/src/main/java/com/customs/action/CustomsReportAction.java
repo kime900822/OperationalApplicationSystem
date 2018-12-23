@@ -27,8 +27,42 @@ public class CustomsReportAction extends ActionBase {
 	String materialNo;
 	String productNo;
 	String batchNumber;
+	String orderNumber;
+	String cimtasLongItemNo;
+	String dvalue;
 	
 	
+	public String getOrderNumber() {
+		return orderNumber;
+	}
+
+
+	public void setOrderNumber(String orderNumber) {
+		this.orderNumber = orderNumber;
+	}
+
+
+	public String getCimtasLongItemNo() {
+		return cimtasLongItemNo;
+	}
+
+
+	public void setCimtasLongItemNo(String cimtasLongItemNo) {
+		this.cimtasLongItemNo = cimtasLongItemNo;
+	}
+
+
+
+	public String getDvalue() {
+		return dvalue;
+	}
+
+
+	public void setDvalue(String dvalue) {
+		this.dvalue = dvalue;
+	}
+
+
 	public String getMaterialNo() {
 		return materialNo;
 	}
@@ -65,8 +99,22 @@ public class CustomsReportAction extends ActionBase {
 			})})
 	public String queryCustomsReport2() throws UnsupportedEncodingException{	
 		
-		List list  =customsReportBIZ.queryReport2("", Integer.parseInt(pageSize),Integer.parseInt(pageCurrent));
-		int total=customsReportBIZ.queryReport2("").size();
+		String where=" where 1=1 ";
+		if (!"".equals(materialNo)&&materialNo!=null) {
+			where+=" and A.cimtasCode = '"+materialNo+"' ";
+		}		
+		if (!"".equals(orderNumber)&&orderNumber!=null) {
+			where+=" and A.orderNumber = '"+orderNumber+"' ";
+		}	
+		if (!"".equals(cimtasLongItemNo)&&cimtasLongItemNo!=null) {
+			where+=" and coalesce(C.newMaterialNo,A.cimtasCode) = '"+cimtasLongItemNo+"' ";
+		}	
+		if (!"".equals(dvalue)&&dvalue!=null) {
+			where+=" and coalesce(D.transQTY,0)-A.quantity = "+dvalue+" ";
+		}	
+		
+		List list  =customsReportBIZ.queryReport2(where, Integer.parseInt(pageSize),Integer.parseInt(pageCurrent));
+		int total=customsReportBIZ.queryReport2(where).size();
 		
 		queryResult.setList(list);
 		queryResult.setTotalRow(total);
