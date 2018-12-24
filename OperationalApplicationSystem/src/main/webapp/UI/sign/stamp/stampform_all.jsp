@@ -215,7 +215,8 @@ function exportCheckedStampPDF(){
         contextMenuB: true,
         hScrollbar: true,
         showCheckboxcol: true,
-        filterThead:false
+        filterThead:false,
+        exportOption: {type:'file', options:{url:'exportStampExcel.action?queryType=all', loadingmask:true,queryForm:$.CurrentNavtab.find('#datagrid-stamp-all-query')}}
     }">
         <thead>
             <tr>
