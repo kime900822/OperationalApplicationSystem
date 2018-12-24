@@ -34,7 +34,30 @@
         		<td width="190px">
             	<input type="text" name="batchNumber" value=""  size="15">
         		</td>
-        		<td width="800px" colspan="6">
+        		<td width="120px">
+        		<span>料件序号：</span>
+        		</td>
+        		<td width="120px">
+            	<input type="text" name="no" value=""  size="10">
+        		</td>
+        		<td width="120px">
+        		<span>Pose Long Item Number：</span>
+        		</td>
+        		<td width="120px">
+            	<input type="text" name="poseLongItemNo" value=""  size="10">
+        		</td>
+        		<td width="120px">
+        		<span>海关出货项目：</span>
+        		</td>
+        		<td width="120px">
+            	<input type="text" name="shipmentIems" value=""  size="10">
+        		</td>
+        		</tr>
+        		<tr>
+        		<td colspan="8" height="10px"></td>
+        		</tr>
+        		<tr>
+        		<td  colspan="8">
         			<div class="btn-group">
 	                	<button type="submit" class="btn-green" data-icon="search">Search</button>
 	                	<button type="reset" class="btn-orange" data-icon="times">Reset</button>

@@ -41,6 +41,22 @@ public class CustomsClearanceAction extends ActionBase {
 	String batchNumber;
 	String no;
 	String id;
+	String poseLongItemNo;
+	String shipmentIems;
+	
+	
+	public String getPoseLongItemNo() {
+		return poseLongItemNo;
+	}
+	public void setPoseLongItemNo(String poseLongItemNo) {
+		this.poseLongItemNo = poseLongItemNo;
+	}
+	public String getShipmentIems() {
+		return shipmentIems;
+	}
+	public void setShipmentIems(String shipmentIems) {
+		this.shipmentIems = shipmentIems;
+	}
 	public String getBOMDate() {
 		return BOMDate;
 	}
@@ -116,15 +132,19 @@ public class CustomsClearanceAction extends ActionBase {
 					"inputName", "reslutJson"
 			})})
 	public String queryCustomsClearance() throws UnsupportedEncodingException{	
-		String where="";
+		String where=" where 1=1";
 		
 		if (!"".equals(batchNumber)&&batchNumber!=null) {
-			if (where.equals("")) {
-				where+=" where batchNumber like '%"+batchNumber+"%' ";
-			}else{
-				where+=" AND batchNumber like '%"+batchNumber+"%' ";
-			}
-			
+			where+=" AND batchNumber like '%"+batchNumber+"%' ";
+		}
+		if (!"".equals(no)&&no!=null) {
+			where+=" AND no = '"+no+"' ";
+		}
+		if (!"".equals(poseLongItemNo)&&poseLongItemNo!=null) {
+			where+=" AND poseLongItemNo like '%"+poseLongItemNo+"%' ";
+		}
+		if (!"".equals(shipmentIems)&&shipmentIems!=null) {
+			where+=" AND shipmentIems like '%"+shipmentIems+"%' ";
 		}
 		
 		List list  =clearanceBIZ.query(where, Integer.parseInt(pageSize),Integer.parseInt(pageCurrent));
@@ -156,14 +176,19 @@ public class CustomsClearanceAction extends ActionBase {
     public String exportCustomsClearance() {
         try {
         	List<HeadColumn> lHeadColumns=new Gson().fromJson(thead, new TypeToken<ArrayList<HeadColumn>>() {}.getType());
-    		String where="";
+        	String where=" where 1=1";
+    		
     		if (!"".equals(batchNumber)&&batchNumber!=null) {
-    			if (where.equals("")) {
-    				where+=" where batchNumber like '%"+batchNumber+"%' ";
-    			}else{
-    				where+=" AND batchNumber like '%"+batchNumber+"%' ";
-    			}
-    			
+    			where+=" AND batchNumber like '%"+batchNumber+"%' ";
+    		}
+    		if (!"".equals(no)&&no!=null) {
+    			where+=" AND no = '"+no+"' ";
+    		}
+    		if (!"".equals(poseLongItemNo)&&poseLongItemNo!=null) {
+    			where+=" AND poseLongItemNo like '%"+poseLongItemNo+"%' ";
+    		}
+    		if (!"".equals(shipmentIems)&&shipmentIems!=null) {
+    			where+=" AND shipmentIems like '%"+shipmentIems+"%' ";
     		}
     		
         	ByteArrayInputStream  is = clearanceBIZ.exportData(where,lHeadColumns);
