@@ -35,7 +35,12 @@
         		<span>数量差异:</span>
         		</td>
         		<td width="80px">
-            	<input type="text" name="dvalue" value="" size="15" data-rule="number">
+        			<select name="dvalue" data-toggle="selectpicker" data-width="80px">
+		              <option value=""></option>
+		              <option value="-1">小于0</option>
+		              <option value="0">等于0</option>
+		              <option value="1">大于0</option>
+	            	</select>
         		</td>
         	</tr>  
         	<tr>
@@ -77,7 +82,6 @@
 				<th data-options="{name:'newCimtasLongItemNo',width:160,align:'left',finalWidth:'true'}">Cimtas Long Item No</th>
 				<th data-options="{name:'customsQuality',width:120,align:'left',finalWidth:'true'}">Custom Quantity</th>
 				<th data-options="{name:'JEDTransQty',width:200,align:'left',finalWidth:'true'}">JDE Trans QTY</th>
-				<th data-options="{name:'transQTY',width:200,align:'left',finalWidth:'true'}">Trans QTY</th>
 				<th data-options="{name:'dvalue',width:200,align:'left',finalWidth:'true'}">数量差异</th>
             </tr>
         </thead>

@@ -12,8 +12,6 @@ public class CustomsReport2 {
 	
 	String JEDTransQty;
 	
-	String transQTY;
-	
 	String dvalue;
 	
 	public String getOrderNumber() {
@@ -54,14 +52,6 @@ public class CustomsReport2 {
 
 	public void setJEDTransQty(String jEDTransQty) {
 		JEDTransQty = jEDTransQty;
-	}
-
-	public String getTransQTY() {
-		return transQTY;
-	}
-
-	public void setTransQTY(String transQTY) {
-		this.transQTY = transQTY;
 	}
 
 	public String getDvalue() {

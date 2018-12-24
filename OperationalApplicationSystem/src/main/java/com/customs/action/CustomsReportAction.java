@@ -110,7 +110,13 @@ public class CustomsReportAction extends ActionBase {
 			where+=" and coalesce(C.newMaterialNo,A.cimtasCode) = '"+cimtasLongItemNo+"' ";
 		}	
 		if (!"".equals(dvalue)&&dvalue!=null) {
-			where+=" and coalesce(D.transQTY,0)-A.quantity = "+dvalue+" ";
+			if (dvalue=="0") {
+				where+=" and coalesce(D.transQTY,0)-A.quantity = 0 ";
+			}else if (dvalue=="1") {
+				where+=" and coalesce(D.transQTY,0)-A.quantity > 0 ";
+			}else {
+				where+=" and coalesce(D.transQTY,0)-A.quantity < 0 ";
+			}
 		}	
 		
 		List list  =customsReportBIZ.queryReport2(where, Integer.parseInt(pageSize),Integer.parseInt(pageCurrent));
