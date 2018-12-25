@@ -75,7 +75,7 @@ public class CustomsReportBIZImpl extends BizBase implements CustomsReportBIZ {
 	@Override
 	public List queryReport1(String where) {
 		String hql=" select B.no,A.no,'1' ,"
-				+ " ROUND(A.quantityOrdered/1000,3),"
+				+ " ROUND(A.quantityOrdered/1000.0,3),"
 				+ " case when B.declareUnitCode='030' then '0.03' else '0' end,"
 				+ "'0',"
 				+ "'',"
@@ -84,7 +84,7 @@ public class CustomsReportBIZImpl extends BizBase implements CustomsReportBIZ {
 				+ "'20420701',"
 				+ "'',"
 				+ "A.batchNumber,"
-				+ "ROUND(A.quantityOrdered*(1+(case when B.declareUnitCode='030' then 0.03 else 0 end))/1000,2), "
+				+ "ROUND(A.quantityOrdered*(1+(case when B.declareUnitCode='030' then 0.03 else 0 end))/1000.0,2), "
 				+ "'' "
 				+ " from CustomsClearance A "
 				+ " left join CustomsProduct B "
@@ -96,7 +96,7 @@ public class CustomsReportBIZImpl extends BizBase implements CustomsReportBIZ {
 	@Override
 	public List queryReport1(String where, int pageSize, int pageCurrent) {
 		String hql=" select B.no,A.no,'1' ,"
-				+ " ROUND(A.quantityOrdered/1000,3),"
+				+ " ROUND(A.quantityOrdered/1000.0,3),"
 				+ " case when B.declareUnitCode='030' then '0.03' else '0' end,"
 				+ "'0',"
 				+ "'',"
@@ -105,7 +105,7 @@ public class CustomsReportBIZImpl extends BizBase implements CustomsReportBIZ {
 				+ "'20420701',"
 				+ "'',"
 				+ "A.batchNumber,"
-				+ "ROUND(A.quantityOrdered*(1+(case when B.declareUnitCode='030' then 0.03 else 0 end))/1000,2), "
+				+ "ROUND(A.quantityOrdered*(1+(case when B.declareUnitCode='030' then 0.03 else 0 end))/1000.0,2), "
 				+ "'' "
 				+ " from CustomsClearance A "
 				+ " left join CustomsProduct B "

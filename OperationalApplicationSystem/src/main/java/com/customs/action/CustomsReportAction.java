@@ -202,8 +202,9 @@ public class CustomsReportAction extends ActionBase {
     		
     		where+=" order by A.no desc";
         	
-    		String hql=" select B.no,A.no,'1' ,A.quantityOrdered,"
-    				+ " case when B.declareUnitCode='030' then 0.03 else 0 end,"
+    		String hql=" select B.no,A.no,'1' ,"
+    				+ " ROUND(A.quantityOrdered/1000.0,3),"
+    				+ " case when B.declareUnitCode='030' then '0.03' else '0' end,"
     				+ "'0',"
     				+ "'',"
     				+ "'100',"
@@ -211,11 +212,11 @@ public class CustomsReportAction extends ActionBase {
     				+ "'20420701',"
     				+ "'',"
     				+ "A.batchNumber,"
-    				+ "A.quantityOrdered*(1+(case when B.declareUnitCode='030' then 0.03 else 0 end))/1000, "
+    				+ "ROUND(A.quantityOrdered*(1+(case when B.declareUnitCode='030' then 0.03 else 0 end))/1000.0,2), "
     				+ "'' "
     				+ " from CustomsClearance A "
     				+ " left join CustomsProduct B "
-    				+ " on A.shipmentIems=B.materialNo " 
+    				+ " on A.shipmentIems=B.materialNo"
     				+ where;
     		
     		
