@@ -13,7 +13,7 @@ public interface CustomsGeneralBIZ {
 	
 	public List<CustomsGeneral> query(String month, int pageSize, int pageCurrent) throws Exception;
 	
-	public String saveData(String month);
+	public String saveData(String month) throws Exception;
 	
 	public List<CustomsGeneralInit> query4init(String where);
 	

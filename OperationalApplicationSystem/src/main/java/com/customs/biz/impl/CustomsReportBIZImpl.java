@@ -76,7 +76,7 @@ public class CustomsReportBIZImpl extends BizBase implements CustomsReportBIZ {
 	public List queryReport1(String where) {
 		String hql=" select B.no,A.no,'1' ,"
 				+ " ROUND(A.quantityOrdered/1000.0,3),"
-				+ " case when B.declareUnitCode='030' then '0.03' else '0' end,"
+				+ " case when C.declareUnitCode='030' then '0.03' else '0' end,"
 				+ "'0',"
 				+ "'',"
 				+ "'100',"
@@ -84,11 +84,13 @@ public class CustomsReportBIZImpl extends BizBase implements CustomsReportBIZ {
 				+ "'20420701',"
 				+ "'',"
 				+ "A.batchNumber,"
-				+ "ROUND(A.quantityOrdered*(1+(case when B.declareUnitCode='030' then 0.03 else 0 end))/1000.0,2), "
+				+ "ROUND(A.quantityOrdered*(1+(case when C.declareUnitCode='030' then 0.03 else 0 end))/1000.0,2), "
 				+ "'' "
 				+ " from CustomsClearance A "
 				+ " left join CustomsProduct B "
 				+ " on A.shipmentIems=B.materialNo"
+				+ " left join CustomsMaterial C "
+				+ " on A.no=C.no "
 				+ where;
 		return commonDAO.queryByHql(hql);
 	}
@@ -97,7 +99,7 @@ public class CustomsReportBIZImpl extends BizBase implements CustomsReportBIZ {
 	public List queryReport1(String where, int pageSize, int pageCurrent) {
 		String hql=" select B.no,A.no,'1' ,"
 				+ " ROUND(A.quantityOrdered/1000.0,3),"
-				+ " case when B.declareUnitCode='030' then '0.03' else '0' end,"
+				+ " case when C.declareUnitCode='030' then '0.03' else '0' end,"
 				+ "'0',"
 				+ "'',"
 				+ "'100',"
@@ -105,11 +107,13 @@ public class CustomsReportBIZImpl extends BizBase implements CustomsReportBIZ {
 				+ "'20420701',"
 				+ "'',"
 				+ "A.batchNumber,"
-				+ "ROUND(A.quantityOrdered*(1+(case when B.declareUnitCode='030' then 0.03 else 0 end))/1000.0,2), "
+				+ "ROUND(A.quantityOrdered*(1+(case when C.declareUnitCode='030' then 0.03 else 0 end))/1000.0,2), "
 				+ "'' "
 				+ " from CustomsClearance A "
 				+ " left join CustomsProduct B "
-				+ " on A.shipmentIems=B.materialNo"
+				+ " on A.shipmentIems=B.materialNo "
+				+ " left join CustomsMaterial C "
+				+ " on A.no=C.no "
 				+ where;
 		
 		List list=commonDAO.queryByHql(hql, pageSize, pageCurrent);
