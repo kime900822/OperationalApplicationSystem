@@ -29,6 +29,8 @@ public class CustomsGeneralAction extends ActionBase{
 	String materialNo;
 	String jdeMaterialNo;
 	String no;
+	String productNo;
+	String materialName;
 	
 	public String getMonth() {
 		return month;
@@ -55,6 +57,27 @@ public class CustomsGeneralAction extends ActionBase{
 	public void setNo(String no) {
 		this.no = no;
 	}
+	public CustomsGeneralBIZ getCustomsGeneralBIZ() {
+		return customsGeneralBIZ;
+	}
+	public void setCustomsGeneralBIZ(CustomsGeneralBIZ customsGeneralBIZ) {
+		this.customsGeneralBIZ = customsGeneralBIZ;
+	}
+	public String getProductNo() {
+		return productNo;
+	}
+	public void setProductNo(String productNo) {
+		this.productNo = productNo;
+	}
+	public String getMaterialName() {
+		return materialName;
+	}
+	public void setMaterialName(String materialName) {
+		this.materialName = materialName;
+	}
+	
+	
+	
 	/**
      * excel导入
      * @return
@@ -93,33 +116,18 @@ public class CustomsGeneralAction extends ActionBase{
 			})})
 	public String queryCustomsGeneralInit() throws UnsupportedEncodingException{	
 		
-		String where="";
+		String where=" where 1=1";
 		if (month!=null&&!month.equals("")) {
-			where+= " where month='"+month+"' ";
+			where+= " and month='"+month+"' ";
 		}
 		if (!"".equals(materialNo)&&materialNo!=null) {
-			if (where.equals("")) {
-				where+=" where materialNo like  '%"+materialNo+"%' ";
-			}else{
-				where+=" AND materialNo like '%"+materialNo+"%'  ";
-			}
-			
+			where+=" AND materialNo like '%"+materialNo+"%'  ";
 		}	
 		if (!"".equals(jdeMaterialNo)&&jdeMaterialNo!=null) {
-			if (where.equals("")) {
-				where+=" where jdeMaterialNo like '%"+jdeMaterialNo+"%' ";
-			}else{
-				where+=" AND jdeMaterialNo like '%"+jdeMaterialNo+"%'  ";
-			}
-			
+			where+=" AND jdeMaterialNo like '%"+jdeMaterialNo+"%'  ";
 		}
 		if (!"".equals(no)&&no!=null) {
-			if (where.equals("")) {
-				where+=" where no like '%"+no+"%' ";
-			}else{
-				where+=" AND no like '%"+no+"%'  ";
-			}
-			
+			where+=" AND no like '%"+no+"%'  ";
 		}
 		 
 		List list  =customsGeneralBIZ.query4init(where, Integer.parseInt(pageSize),Integer.parseInt(pageCurrent));
@@ -146,10 +154,32 @@ public class CustomsGeneralAction extends ActionBase{
 			})})
 	public String queryCustomsGeneral() throws Exception{	
 		
+		
+		String where=" where 1=1";
+		if (month!=null&&!month.equals("")) {
+			where+= " and month='"+month+"' ";
+		}
+		if (!"".equals(materialNo)&&materialNo!=null) {
+			where+=" AND materialNo like '%"+materialNo+"%'  ";
+		}	
+		if (!"".equals(jdeMaterialNo)&&jdeMaterialNo!=null) {
+			where+=" AND jdeMaterialNo like '%"+jdeMaterialNo+"%'  ";
+		}
+		if (!"".equals(no)&&no!=null) {
+			where+=" AND no like '%"+no+"%'  ";
+		}
+		if (!"".equals(productNo)&&productNo!=null) {
+			where+=" AND productNo like '%"+productNo+"%'  ";
+		}
+		if (!"".equals(materialName)&&materialName!=null) {
+			where+=" AND materialName like '%"+materialName+"%'  ";
+		}
 
 		
-		List list  =customsGeneralBIZ.query(month,Integer.parseInt(pageSize),Integer.parseInt(pageCurrent));
-		int total=customsGeneralBIZ.query(month).size();
+
+		
+		List list  =customsGeneralBIZ.query(month,where,Integer.parseInt(pageSize),Integer.parseInt(pageCurrent));
+		int total=customsGeneralBIZ.query(month,where).size();
 		
 		queryResult.setList(list);
 		queryResult.setTotalRow(total);

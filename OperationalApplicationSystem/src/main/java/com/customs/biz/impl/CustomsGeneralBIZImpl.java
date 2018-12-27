@@ -37,7 +37,7 @@ public class CustomsGeneralBIZImpl  extends BizBase implements CustomsGeneralBIZ
 	CommonDAO commonDAO;
 	
 	@Override
-	public List<CustomsGeneral> query(String month) throws Exception {
+	public List<CustomsGeneral> query(String month,String where) throws Exception {
 		
 		if (month==null) {
 			return new ArrayList<>();
@@ -45,53 +45,15 @@ public class CustomsGeneralBIZImpl  extends BizBase implements CustomsGeneralBIZ
 		if (!month.equals(CommonUtil.getMonth())&&checkGeneral(month)) {
 			return customsGeneralDAO.query(" where month='"+month+"'");
 		}
-		String sql=" select total.*,  '' AS id, '' as pickingVolume,'' as warehouseVolume,'' as price,'' as amount from (                                                                                                   "
-				+" select                                                                                                                  "
-				+" substr(t1.OperationDate,1,7) AS `Month`,                                                                                "
-				+" t3.MaterialNo,                                                                                                          "
-				+" IFNULL(t5.NewMaterialNo,t4.CimtasLongItemNo) AS JdeMaterialNo,                                                          "
-				+" t1.`No`,                                                                                                                "
-				+" t3.ProductNo,                                                                                                           "
-				+" t3.MaterialName,                                                                                                        "
-				+" t3.Specification as MaterialSpecification,                                                                              "
-				+" IFNULL(t6.`value`,t3.DeclareUnitCode) as Unit,                                                                          "
-				+" 0 as EarlyNumber,                                                                                                       "
-				+" sum(t4.TransQTY) as IncomingVolume,                                                                                     "
-				+" sum(t7.QuantityIssued) as WriteOffVolume,                                                                               "
-				+" sum(t4.TransQTY)-sum(t7.QuantityIssued) as RegulatoryInventory                                                          "
-				+" FROM t_customs_importsandexports t1                                                                                     "
-				+" left join t_customs_clearance t2 on t1.`No`=t2.`No`                                                                     "
-				+" and substr(t1.OperationDate,1,7) = substr(t2.OperationDate,1,7)                                                         "
-				+" left join t_customs_material t3 on t1.`No`=t3.`No`                                                                      "
-				+" left join t_customs_jde t4 on t1.CimtasCode=t4.CimtasLongItemNo                                                   "
-				+" and substr(t1.OperationDate,1,7) = substr(t4.OperationDate,1,7)                                                         "
-				+" left join t_customs_material_mapping t5 on t4.CimtasLongItemNo=t5.OldMaterialNo                                         "
-				+" left join t_dict t6 on t6.type='CUSTOMS_UNIT' and t6.`key`=t3.DeclareUnitCode                                           "
-				+" left join t_customs_clearance t7 on IFNULL(t5.NewMaterialNo,t4.CimtasLongItemNo)=t7.PoseLongItemNo                      "
-				+" and substr(t1.OperationDate,1,7) = substr(t7.OperationDate,1,7)                                                         "
-				+" where substr(t1.OperationDate,1,7)='"+month+"'                                                                          "
-				+" and not EXISTS(                                                                                                         "
-				+" select 1 from t_customs_general_init t8 where  t8.`No`=t1.`No`        "
-				+" )                                                                                                                       "
-				+" group by                                                                                                                "
-				+" substr(t1.OperationDate,1,7) ,                                                                                          "
-				+" t3.MaterialNo,                                                                                                          "
-				+" IFNULL(t5.NewMaterialNo,t4.CimtasLongItemNo),                                                                           "
-				+" t1.`No`,                                                                                                                "
-				+" t3.ProductNo,                                                                                                           "
-				+" t3.MaterialName,                                                                                                        "
-				+" t3.Specification,                                                                                                       "
-				+" IFNULL(t6.`value`,t3.DeclareUnitCode)                                                                                   "
-				+ getEarlySQL(month)
-				+" ) total                                                                                                                 "
-				+" order by total.`No`                                                                                                     ";
+		String sql=getSQL(month);
+		
 		return commonDAO.queryBySql(sql);
 		
 		
 	}
 
 	@Override
-	public List<CustomsGeneral> query(String month, int pageSize, int pageCurrent) throws Exception {
+	public List<CustomsGeneral> query(String month,String where, int pageSize, int pageCurrent) throws Exception {
 		
 		String hql="";
 		if (month==null) {
@@ -100,46 +62,7 @@ public class CustomsGeneralBIZImpl  extends BizBase implements CustomsGeneralBIZ
 		if (!month.equals(CommonUtil.getMonth())&&checkGeneral(month)) {
 			return customsGeneralDAO.query4init(" where month='"+month+"'", pageSize, pageCurrent);
 		}
-		String sql=" select total.*, '' AS id, '' as pickingVolume,'' as warehouseVolume,'' as price,'' as amount from (                   "
-				+" select                                                                                                                  "
-				+" substr(t1.OperationDate,1,7) AS `Month`,                                                                                "
-				+" t3.MaterialNo,                                                                                                          "
-				+" IFNULL(t5.NewMaterialNo,t4.CimtasLongItemNo) AS JdeMaterialNo,                                                          "
-				+" t1.`No`,                                                                                                                "
-				+" t3.ProductNo,                                                                                                           "
-				+" t3.MaterialName,                                                                                                        "
-				+" t3.Specification as MaterialSpecification,                                                                              "
-				+" IFNULL(t6.`value`,t3.DeclareUnitCode) as Unit,                                                                          "
-				+" 0 as EarlyNumber,                                                                                                       "
-				+" sum(t4.TransQTY) as IncomingVolume,                                                                                     "
-				+" sum(t7.QuantityIssued) as WriteOffVolume,                                                                               "
-				+" sum(t4.TransQTY)-sum(t7.QuantityIssued) as RegulatoryInventory                                                          "
-				+" FROM t_customs_importsandexports t1                                                                                     "
-				+" left join t_customs_clearance t2 on t1.`No`=t2.`No`                                                                     "
-				+" and substr(t1.OperationDate,1,7) = substr(t2.OperationDate,1,7)                                                         "
-				+" left join t_customs_material t3 on t1.`No`=t3.`No`                                                                      "
-				+" left join t_customs_jde t4 on t1.CimtasCode=t4.CimtasLongItemNo                                                   "
-				+" and substr(t1.OperationDate,1,7) = substr(t4.OperationDate,1,7)                                                         "
-				+" left join t_customs_material_mapping t5 on t4.CimtasLongItemNo=t5.OldMaterialNo                                         "
-				+" left join t_dict t6 on t6.type='CUSTOMS_UNIT' and t6.`key`=t3.DeclareUnitCode                                           "
-				+" left join t_customs_clearance t7 on IFNULL(t5.NewMaterialNo,t4.CimtasLongItemNo)=t7.PoseLongItemNo                      "
-				+" and substr(t1.OperationDate,1,7) = substr(t7.OperationDate,1,7)                                                         "
-				+" where substr(t1.OperationDate,1,7)='"+month+"'                                                                          "
-				+" and not EXISTS(                                                                                                         "
-				+" select 1 from t_customs_general t8 where t8.`Month`=substr(t1.OperationDate,1,7) and t8.MaterialNo=t3.MaterialNo        "
-				+" )                                                                                                                       "
-				+" group by                                                                                                                "
-				+" substr(t1.OperationDate,1,7) ,                                                                                          "
-				+" t3.MaterialNo,                                                                                                          "
-				+" IFNULL(t5.NewMaterialNo,t4.CimtasLongItemNo),                                                                           "
-				+" t1.`No`,                                                                                                                "
-				+" t3.ProductNo,                                                                                                           "
-				+" t3.MaterialName,                                                                                                        "
-				+" t3.Specification,                                                                                                       "
-				+" IFNULL(t6.`value`,t3.DeclareUnitCode)                                                                                   "
-				+ getEarlySQL(month)
-				+" ) total                                                                                                                 "
-				+" order by total.`No`                                                                                                     ";
+		String sql=getSQL(month);
 		return dataToEntity(commonDAO.queryBySql(sql, pageSize, pageCurrent));
 		
 	}
@@ -148,46 +71,7 @@ public class CustomsGeneralBIZImpl  extends BizBase implements CustomsGeneralBIZ
 	@Override
 	@Transactional(readOnly=false,propagation=Propagation.REQUIRED,rollbackFor=Exception.class )
 	public String saveData(String month) throws Exception {
-		String sql=" select total.*, '' AS id, null as pickingVolume,null as warehouseVolume,null as price,null as amount from (         "
-				+" select                                                                                                                  "
-				+" substr(t1.OperationDate,1,7) AS `Month`,                                                                                "
-				+" t3.MaterialNo,                                                                                                          "
-				+" IFNULL(t5.NewMaterialNo,t4.CimtasLongItemNo) AS JdeMaterialNo,                                                          "
-				+" t1.`No`,                                                                                                                "
-				+" t3.ProductNo,                                                                                                           "
-				+" t3.MaterialName,                                                                                                        "
-				+" t3.Specification as MaterialSpecification,                                                                              "
-				+" IFNULL(t6.`value`,t3.DeclareUnitCode) as Unit,                                                                          "
-				+" 0 as EarlyNumber,                                                                                                       "
-				+" sum(t4.TransQTY) as IncomingVolume,                                                                                     "
-				+" sum(t7.QuantityIssued) as WriteOffVolume,                                                                               "
-				+" IFNULL(sum(t4.TransQTY),0)-IFNULL(sum(t7.QuantityIssued),0) as RegulatoryInventory                                                          "
-				+" FROM t_customs_importsandexports t1                                                                                     "
-				+" left join t_customs_clearance t2 on t1.`No`=t2.`No`                                                                     "
-				+" and substr(t1.OperationDate,1,7) = substr(t2.OperationDate,1,7)                                                         "
-				+" left join t_customs_material t3 on t1.`No`=t3.`No`                                                                      "
-				+" left join t_customs_jde t4 on t1.CimtasCode=t4.CimtasLongItemNo                                                   "
-				+" and substr(t1.OperationDate,1,7) = substr(t4.OperationDate,1,7)                                                         "
-				+" left join t_customs_material_mapping t5 on t4.CimtasLongItemNo=t5.OldMaterialNo                                         "
-				+" left join t_dict t6 on t6.type='CUSTOMS_UNIT' and t6.`key`=t3.DeclareUnitCode                                           "
-				+" left join t_customs_clearance t7 on IFNULL(t5.NewMaterialNo,t4.CimtasLongItemNo)=t7.PoseLongItemNo                      "
-				+" and substr(t1.OperationDate,1,7) = substr(t7.OperationDate,1,7)                                                         "
-				+" where substr(t1.OperationDate,1,7)='"+month+"'                                                                          "
-				+" and not EXISTS(                                                                                                         "
-				+" select 1 from t_customs_general t8 where t8.`Month`=substr(t1.OperationDate,1,7) and t8.MaterialNo=t3.MaterialNo        "
-				+" )                                                                                                                       "
-				+" group by                                                                                                                "
-				+" substr(t1.OperationDate,1,7) ,                                                                                          "
-				+" t3.MaterialNo,                                                                                                          "
-				+" IFNULL(t5.NewMaterialNo,t4.CimtasLongItemNo),                                                                           "
-				+" t1.`No`,                                                                                                                "
-				+" t3.ProductNo,                                                                                                           "
-				+" t3.MaterialName,                                                                                                        "
-				+" t3.Specification,                                                                                                       "
-				+" IFNULL(t6.`value`,t3.DeclareUnitCode)                                                                                   "
-				+ getEarlySQL(month)
-				+" ) total                                                                                                                 "
-				+" order by total.`No`                                                                                                     ";
+		String sql=getSQL(month);                                                                                           
 		
 		List<CustomsGeneral> list= dataToEntity(commonDAO.queryBySql(sql));
 		
@@ -394,4 +278,49 @@ public class CustomsGeneralBIZImpl  extends BizBase implements CustomsGeneralBIZ
 		return lGenerals;
 	}
 	
+	
+	public String getSQL(String month) throws Exception {
+		String sql=" select total.*, '' AS id, null as pickingVolume,null as warehouseVolume,null as price,null as amount from (         "
+				+" select                                                                                                                  "
+				+" substr(t1.OperationDate,1,7) AS `Month`,                                                                                "
+				+" t3.MaterialNo,                                                                                                          "
+				+" IFNULL(t5.NewMaterialNo,t1.CimtasCode) AS JdeMaterialNo,                                                          "
+				+" t1.`No`,                                                                                                                "
+				+" t3.ProductNo,                                                                                                           "
+				+" t3.MaterialName,                                                                                                        "
+				+" t3.Specification as MaterialSpecification,                                                                              "
+				+" IFNULL(t6.`value`,t3.DeclareUnitCode) as Unit,                                                                          "
+				+" 0 as EarlyNumber,                                                                                                       "
+				+" sum(t4.TransQTY) as IncomingVolume,                                                                                     "
+				+" sum(t7.QuantityIssued) as WriteOffVolume,                                                                               "
+				+" IFNULL(sum(t4.TransQTY),0)-IFNULL(sum(t7.QuantityIssued),0) as RegulatoryInventory                                                          "
+				+" FROM t_customs_importsandexports t1                                                                                     "
+				+" left join t_customs_clearance t2 on t1.`No`=t2.`No`                                                                     "
+				+" and substr(t1.OperationDate,1,7) = substr(t2.OperationDate,1,7)                                                         "
+				+" left join t_customs_material t3 on t1.`No`=t3.`No`                                                                      "
+				+" left join t_customs_jde t4 on t1.CimtasCode=t4.CimtasLongItemNo                                                   "
+				+" and substr(t1.OperationDate,1,7) = substr(t4.OperationDate,1,7)                                                         "
+				+" left join t_customs_material_mapping t5 on t4.CimtasLongItemNo=t5.OldMaterialNo                                         "
+				+" left join t_dict t6 on t6.type='CUSTOMS_UNIT' and t6.`key`=t3.DeclareUnitCode                                           "
+				+" left join t_customs_clearance t7 on IFNULL(t5.NewMaterialNo,t4.CimtasLongItemNo)=t7.PoseLongItemNo                      "
+				+" and substr(t1.OperationDate,1,7) = substr(t7.OperationDate,1,7)                                                         "
+				+" where substr(t1.OperationDate,1,7)='"+month+"'                                                                          "
+				+" and not EXISTS(                                                                                                         "
+				+" select 1 from t_customs_general t8 where t8.`Month`=substr(t1.OperationDate,1,7) and t8.MaterialNo=t3.MaterialNo        "
+				+" )                                                                                                                       "
+				+" group by                                                                                                                "
+				+" substr(t1.OperationDate,1,7) ,                                                                                          "
+				+" t3.MaterialNo,                                                                                                          "
+				+" IFNULL(t5.NewMaterialNo,t4.CimtasLongItemNo),                                                                           "
+				+" t1.`No`,                                                                                                                "
+				+" t3.ProductNo,                                                                                                           "
+				+" t3.MaterialName,                                                                                                        "
+				+" t3.Specification,                                                                                                       "
+				+" IFNULL(t6.`value`,t3.DeclareUnitCode)                                                                                   "
+				+ getEarlySQL(month)
+				+" ) total                                                                                                                 "
+				+" order by total.`No`                                                                                                     ";
+		return sql;
+		
+	}
 }

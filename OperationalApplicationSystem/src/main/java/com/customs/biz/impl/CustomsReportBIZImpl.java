@@ -75,8 +75,8 @@ public class CustomsReportBIZImpl extends BizBase implements CustomsReportBIZ {
 	@Override
 	public List queryReport1(String where) {
 		String hql=" select B.no,A.no,'1' ,"
-				+ " ROUND(A.quantityOrdered/1000.0,3),"
-				+ " case when C.declareUnitCode='030' then '0.03' else '0' end,"
+				+ " ROUND(sum(A.quantityIssued)/1000.0,3),"
+				+ " case when C.declareUnitCode='030' then '3' else '0' end,"
 				+ "'0',"
 				+ "'',"
 				+ "'100',"
@@ -84,22 +84,23 @@ public class CustomsReportBIZImpl extends BizBase implements CustomsReportBIZ {
 				+ "'20420701',"
 				+ "'',"
 				+ "A.batchNumber,"
-				+ "ROUND(A.quantityOrdered*(1+(case when C.declareUnitCode='030' then 0.03 else 0 end))/1000.0,2), "
+				+ "ROUND(sum(A.quantityIssued)*(1+(case when C.declareUnitCode='030' then 0.03 else 0 end))/1000.0,2), "
 				+ "'' "
 				+ " from CustomsClearance A "
 				+ " left join CustomsProduct B "
 				+ " on A.shipmentIems=B.materialNo"
 				+ " left join CustomsMaterial C "
 				+ " on A.no=C.no "
-				+ where;
+				+ where
+				+ " group by B.no,A.no,C.declareUnitCode,A.batchNumber order by B.no,A.no";
 		return commonDAO.queryByHql(hql);
 	}
 
 	@Override
 	public List queryReport1(String where, int pageSize, int pageCurrent) {
 		String hql=" select B.no,A.no,'1' ,"
-				+ " ROUND(A.quantityOrdered/1000.0,3),"
-				+ " case when C.declareUnitCode='030' then '0.03' else '0' end,"
+				+ " ROUND(sum(A.quantityIssued)/1000.0,3),"
+				+ " case when C.declareUnitCode='030' then '3' else '0' end,"
 				+ "'0',"
 				+ "'',"
 				+ "'100',"
@@ -107,14 +108,15 @@ public class CustomsReportBIZImpl extends BizBase implements CustomsReportBIZ {
 				+ "'20420701',"
 				+ "'',"
 				+ "A.batchNumber,"
-				+ "ROUND(A.quantityOrdered*(1+(case when C.declareUnitCode='030' then 0.03 else 0 end))/1000.0,2), "
+				+ "ROUND(sum(A.quantityIssued)*(1+(case when C.declareUnitCode='030' then 0.03 else 0 end))/1000.0,2), "
 				+ "'' "
 				+ " from CustomsClearance A "
 				+ " left join CustomsProduct B "
 				+ " on A.shipmentIems=B.materialNo "
 				+ " left join CustomsMaterial C "
 				+ " on A.no=C.no "
-				+ where;
+				+ where
+				+ " group by B.no,A.no,C.declareUnitCode,A.batchNumber order by B.no,A.no";
 		
 		List list=commonDAO.queryByHql(hql, pageSize, pageCurrent);
 		List<CustomsReport1> lReport1s=new ArrayList<>();

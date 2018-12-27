@@ -155,7 +155,6 @@ public class CustomsReportAction extends ActionBase {
 			where+=" AND A.batchNumber = '"+batchNumber+"'  ";
 		}	
 		
-		where+=" order by A.no desc";
 		
 		List list  =customsReportBIZ.queryReport1(where, Integer.parseInt(pageSize),Integer.parseInt(pageCurrent));
 		int total=customsReportBIZ.queryReport1(where).size();
@@ -200,8 +199,6 @@ public class CustomsReportAction extends ActionBase {
     			where+=" AND A.batchNumber = '"+batchNumber+"'  ";
     		}	
     		
-    		where+=" order by A.no desc";
-        	
     		String hql=" select B.no,A.no,'1' ,"
     				+ " ROUND(A.quantityOrdered/1000.0,3),"
     				+ " case when B.declareUnitCode='030' then '0.03' else '0' end,"

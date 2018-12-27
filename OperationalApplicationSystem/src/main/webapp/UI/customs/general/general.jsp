@@ -46,11 +46,46 @@ function saveCustomsGeneral(){
         		<td width="180px">
             	<input type="text" name="month" value="" id="customsGeneralMonth" data-toggle="datepicker" data-pattern="yyyy-MM" size="15" data-rule="month;required" placeholder="点击选择日期">
         		</td>
-        		<td colspan="6" width="860px">
+        		<td width="120px">
+        		<span>海关物料编码：</span>
+        		</td>
+        		<td width="180px">
+            		<input type="text" name="materialNo" value=""  size="15">
+        		</td>
+	        	<td width="100px">
+        			<span>JDE物料编码:</span>
+        		</td>
+        		<td width="120px">
+        			<input type="text" name="jdeMaterialNo" value=""  size="9">
+        		</td>
+        		<td width="100px">
+        			<span>料件序号:</span>
+        		</td>
+        		<td width="120px">
+        			<input type="text" name="no" value=""  size="9">
+        		</td>
+        	<tr>
+        		<td colspan="8" height="6px"></td>
+        	</tr>
+        	<tr>
+        		<td >
+        		<span>商品编码：</span>
+        		</td>
+        		<td>
+            	<input type="text" name="productNo" value=""  size="15">
+        		</td>
+        		<td>
+        		<span>物料名称：</span>
+        		</td>
+        		<td>
+            		<input type="text" name="materialName" value=""  size="15">
+        		</td>
+        		<td colspan="4">
 	        		<div class="btn-group">
 	                <button type="submit" class="btn-green" data-icon="search">Search</button>
 	                <button type="reset" class="btn-orange" data-icon="times">Reset</button>
 	                <button type="button" class="btn-orange" data-icon="save" onclick="saveCustomsGeneral()">锁定</button>
+	                <button type="button" class="btn-orange" data-icon="times" onclick="unCustomsGeneral()">取消锁定</button>
 	            	</div>
         		</td>
         	</tr>      

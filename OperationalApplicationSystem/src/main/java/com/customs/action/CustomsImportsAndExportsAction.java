@@ -168,6 +168,14 @@ public class CustomsImportsAndExportsAction extends ActionBase {
 			}
 			
 		}
+		if (!"".equals(no)&&no!=null) {
+			if (where.equals("")) {
+				where+=" where no like '%"+no+"%' ";
+			}else{
+				where+=" AND no like '%"+no+"%' ";
+			}
+			
+		}
 		
 		List list  =customsImportsAndExportsBIZ.query(where, Integer.parseInt(pageSize),Integer.parseInt(pageCurrent));
 		int total=customsImportsAndExportsBIZ.query(where).size();
@@ -226,6 +234,14 @@ public class CustomsImportsAndExportsAction extends ActionBase {
     				where+=" where cimtasCode like '%"+cimtasCode+"%' ";
     			}else{
     				where+=" AND cimtasCode like '%"+cimtasCode+"%' ";
+    			}
+    			
+    		}
+    		if (!"".equals(no)&&no!=null) {
+    			if (where.equals("")) {
+    				where+=" where no like '%"+no+"%' ";
+    			}else{
+    				where+=" AND no like '%"+no+"%' ";
     			}
     			
     		}

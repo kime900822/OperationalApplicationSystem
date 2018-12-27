@@ -9,9 +9,9 @@ import com.kime.model.User;
 
 
 public interface CustomsGeneralBIZ {
-	public List<CustomsGeneral> query(String month) throws Exception;
+	public List<CustomsGeneral> query(String month,String where) throws Exception;
 	
-	public List<CustomsGeneral> query(String month, int pageSize, int pageCurrent) throws Exception;
+	public List<CustomsGeneral> query(String month,String where, int pageSize, int pageCurrent) throws Exception;
 	
 	public String saveData(String month) throws Exception;
 	

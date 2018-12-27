@@ -57,13 +57,24 @@ function deleteCustomsImportsAndExports(){
             	<input type="text" name="entryDate_f"  data-nobtn="true"  value="" data-toggle="datepicker" size="9" data-rule="date">to:
             	<input type="text" name="entryDate_t"  data-nobtn="true"  value="" data-toggle="datepicker" size="9" data-rule="date">
         		</td>
-        		<td width="200px" colspan="2">
+        		<td width="100px">
+        			<span>备案号:</span>
+         		</td>
+         		<td width="100px">
+        			<input type="text" name="no" value=""  size="9">
+         		</td>
+        	</tr>  
+        	<tr>
+        		<td colspan="8" height="6px"></td>
+        	</tr>
+        	<tr>
+        		<td colspan="8">
         			<div class="btn-group">
 	                	<button type="submit" class="btn-green" data-icon="search">Search</button>
 	                	<button type="reset" class="btn-orange" data-icon="times">Reset</button>
 	            	</div>
          		</td>
-        	</tr>  
+        	</tr>
         	<tr>
         		<td colspan="8" height="6px"></td>
         	</tr>
