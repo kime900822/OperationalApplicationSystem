@@ -216,4 +216,26 @@ public class CustomsGeneralAction extends ActionBase{
 		return SUCCESS;
 
 	}
+	
+	
+	@Action(value="unCustomsGeneral",results={@org.apache.struts2.convention.annotation.Result(type="stream",
+			params={
+					"inputName", "reslutJson"
+			})})
+	public String unCustomsGeneral() throws Exception{	
+		
+
+		String r=customsGeneralBIZ.saveData(month);
+
+		if (r==null) {
+			result.setMessage("Success!");
+			result.setStatusCode("200");
+		}else{
+			result.setMessage(r);
+			result.setStatusCode("300");
+		}
+		reslutJson=new ByteArrayInputStream(new Gson().toJson(result).getBytes("UTF-8"));  
+		return SUCCESS;
+
+	}
 }

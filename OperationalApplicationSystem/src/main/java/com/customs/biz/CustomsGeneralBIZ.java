@@ -21,4 +21,6 @@ public interface CustomsGeneralBIZ {
 	
 	public void initData(User user,File file, String first, String upfileFileName, int start) throws Exception;
 
+	String deleteData(String month) throws Exception;
+
 }

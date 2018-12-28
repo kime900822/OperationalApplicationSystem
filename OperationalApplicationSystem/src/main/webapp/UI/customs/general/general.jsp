@@ -3,6 +3,17 @@
 <!DOCTYPE html>
 <script type="text/javascript">
 
+$(function(){
+	
+	
+	if('${user.uid}'=='admin'){
+		$.CurrentNavtab.find('#customs_button_unlock').show();
+	}
+	var today = new Date().formatDate('yyyy-MM');
+	$.CurrentNavtab.find('#customsGeneralMonth').val(today);
+	
+})
+
 
 function saveCustomsGeneral(){
 	var month=$.CurrentNavtab.find('#customsGeneralMonth').val();
@@ -28,6 +39,34 @@ function saveCustomsGeneral(){
 	
 	
 }
+
+
+
+function unCustomsGeneral(){
+	var month=$.CurrentNavtab.find('#customsGeneralMonth').val();
+	if(month==undefined || month==null ||month==''){
+		BJUI.alertmsg('warn', '月份不能为空！'); 
+		return false;
+	}
+	
+	BJUI.ajax('doajax', {
+	    url: 'customs/unCustomsGeneral.action',
+	    loadingmask: true,
+	    data:{month:month},	    
+	    okCallback: function(json, options) {
+            if(json.status='200'){
+            	BJUI.alertmsg('info', json.message); 
+            }else{
+            	BJUI.alertmsg('error', json.message); 
+            }
+	    }
+	})	
+	
+	
+	
+	
+}
+
 
 
 
@@ -85,7 +124,7 @@ function saveCustomsGeneral(){
 	                <button type="submit" class="btn-green" data-icon="search">Search</button>
 	                <button type="reset" class="btn-orange" data-icon="times">Reset</button>
 	                <button type="button" class="btn-orange" data-icon="save" onclick="saveCustomsGeneral()">锁定</button>
-	                <button type="button" class="btn-orange" data-icon="times" onclick="unCustomsGeneral()">取消锁定</button>
+	                <button type="button" id="customs_button_unlock" class="btn-orange" data-icon="times" style="display: none" onclick="unCustomsGeneral()">取消锁定</button>
 	            	</div>
         		</td>
         	</tr>      
@@ -128,6 +167,10 @@ function saveCustomsGeneral(){
 				<th data-options="{name:'incomingVolume',width:100,align:'left',finalWidth:'true'}">进厂量</th>
 				<th data-options="{name:'writeOffVolume',width:100,align:'left',finalWidth:'true'}">核销量</th>
 				<th data-options="{name:'regulatoryInventory',width:100,align:'left',finalWidth:'true'}">监管库存</th>
+				<th data-options="{name:'price',width:100,align:'left',finalWidth:'true'}">单价</th>
+				<th data-options="{name:'currency',width:100,align:'left',finalWidth:'true'}">单价币别</th>
+				<th data-options="{name:'amount',width:100,align:'left',finalWidth:'true'}">总金额</th>
+				<th data-options="{name:'lockMonth',width:100,align:'left',finalWidth:'true'}">锁定日期</th>
 				
             </tr>
         </thead>

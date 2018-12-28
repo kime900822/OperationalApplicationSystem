@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.stereotype.Component;
@@ -48,7 +49,12 @@ public class CustomsGeneral {
 	@Column
 	String price;
 	@Column
+	String currency;
+	@Column
 	String amount;
+	@Transient
+	String lockMonth;
+	
 	public String getId() {
 		return id;
 	}
@@ -153,8 +159,18 @@ public class CustomsGeneral {
 	public void setAmount(String amount) {
 		this.amount = amount;
 	}
-	
-	
+	public String getCurrency() {
+		return currency;
+	}
+	public void setCurrency(String currency) {
+		this.currency = currency;
+	}
+	public String getLockMonth() {
+		return lockMonth;
+	}
+	public void setLockMonth(String lockMonth) {
+		this.lockMonth = lockMonth;
+	}
 	
 	
 }
