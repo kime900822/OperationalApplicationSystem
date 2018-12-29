@@ -75,7 +75,7 @@ public class CustomsReportBIZImpl extends BizBase implements CustomsReportBIZ {
 	@Override
 	public List queryReport1(String where) {
 		String hql=" select B.no,A.no,'1' ,"
-				+ " ROUND(sum(A.quantityIssued)/1000.0,3),"
+				+ " ROUND(sum(A.quantityIssued)/1000.0*(case when C.declareUnitCode='030' then 1 else 1000.0 end),3),"
 				+ " case when C.declareUnitCode='030' then '3' else '0' end,"
 				+ "'0',"
 				+ "'',"
@@ -99,7 +99,7 @@ public class CustomsReportBIZImpl extends BizBase implements CustomsReportBIZ {
 	@Override
 	public List queryReport1(String where, int pageSize, int pageCurrent) {
 		String hql=" select B.no,A.no,'1' ,"
-				+ " ROUND(sum(A.quantityIssued)/1000.0,3),"
+				+ " ROUND(sum(A.quantityIssued)/1000.0*(case when C.declareUnitCode='030' then 1 else 1000.0 end),3),"
 				+ " case when C.declareUnitCode='030' then '3' else '0' end,"
 				+ "'0',"
 				+ "'',"

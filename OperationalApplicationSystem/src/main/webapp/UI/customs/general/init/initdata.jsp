@@ -89,6 +89,9 @@
 				<th data-options="{name:'incomingVolume',width:100,align:'left',finalWidth:'true'}">进厂量</th>
 				<th data-options="{name:'writeOffVolume',width:100,align:'left',finalWidth:'true'}">核销量</th>
 				<th data-options="{name:'regulatoryInventory',width:100,align:'left',finalWidth:'true'}">监管库存</th>
+				<th data-options="{name:'price',width:100,align:'left',finalWidth:'true'}">单价</th>
+				<th data-options="{name:'currency',width:100,align:'left',finalWidth:'true'}">币种</th>
+				<th data-options="{name:'amount',width:100,align:'left',finalWidth:'true'}">总金额</th>
 				
             </tr>
         </thead>

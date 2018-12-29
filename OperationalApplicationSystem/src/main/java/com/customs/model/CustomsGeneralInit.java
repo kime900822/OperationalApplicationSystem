@@ -41,7 +41,12 @@ public class CustomsGeneralInit {
 	String writeOffVolume;
 	@Column
 	String regulatoryInventory;
-	
+	@Column
+	String price;
+	@Column
+	String currency;
+	@Column
+	String amount;
 	
 	public String getMonth() {
 		return month;
@@ -121,6 +126,24 @@ public class CustomsGeneralInit {
 	}
 	public void setRegulatoryInventory(String regulatoryInventory) {
 		this.regulatoryInventory = regulatoryInventory;
+	}
+	public String getPrice() {
+		return price;
+	}
+	public void setPrice(String price) {
+		this.price = price;
+	}
+	public String getCurrency() {
+		return currency;
+	}
+	public void setCurrency(String currency) {
+		this.currency = currency;
+	}
+	public String getAmount() {
+		return amount;
+	}
+	public void setAmount(String amount) {
+		this.amount = amount;
 	}
 	
 	
