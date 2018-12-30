@@ -20,7 +20,6 @@
         editUrl: 'customs/materialMapping/materialMapping-edit.jsp',
         delUrl: 'customs/deleteMaterialMapping.action',
         fieldSortable: false,
-        filterThead: false,
         showCheckboxcol: true,
         linenumberAll: true,
         paging: true,

@@ -302,14 +302,14 @@ public class CustomsMaterialAction extends ActionBase{
         	
         	
     		SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");		 
-    		fileName = "CustomsProduct"+sf.format(new Date()).toString()+ ".xls";
+    		fileName = "CustomsMaterial"+sf.format(new Date()).toString()+ ".xls";
     		fileName= new String(fileName.getBytes(), "ISO8859-1");
     		//文件流
             reslutJson = is;            
-            logUtil.logInfo("导出CustomsProduct！"+fileName);
+            logUtil.logInfo("导出CustomsMaterial！"+fileName);
         }
         catch(Exception e) {
-        	logUtil.logInfo("导出CustomsProduct！"+e.getMessage());
+        	logUtil.logInfo("导出CustomsMaterial！"+e.getMessage());
             e.printStackTrace();
         }
 

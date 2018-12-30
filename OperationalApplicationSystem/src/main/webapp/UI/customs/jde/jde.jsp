@@ -70,7 +70,6 @@ function deleteCustomsJDE(){
         toolbarItem: 'refresh,|,import',
         dataUrl: 'customs/queryCustomsJDE.action',
         fieldSortable: false,
-        filterThead: false,
         linenumberAll: true,
         paging: true,
         contextMenuB: true,

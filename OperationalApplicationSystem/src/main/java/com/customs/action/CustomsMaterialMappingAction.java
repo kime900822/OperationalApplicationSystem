@@ -121,6 +121,14 @@ public class CustomsMaterialMappingAction extends ActionBase{
 			})})
 	public String queryMaterialMapping() throws UnsupportedEncodingException{	
 		
+		String where=" where 1=1";
+		if (!"".equals(oldMaterialNo)&&oldMaterialNo!=null) {
+			where+=" and oldMaterialNo like  '%"+oldMaterialNo+"%' ";
+		}	
+		if (!"".equals(newMaterialNo)&&newMaterialNo!=null) {
+			where+=" and newMaterialNo like '%"+newMaterialNo+"%' ";
+		}	
+		
 		List list  =customsMaterialMappingBIZ.query("", Integer.parseInt(pageSize),Integer.parseInt(pageCurrent));
 		int total=customsMaterialMappingBIZ.query("").size();
 		

@@ -82,6 +82,11 @@ public class CustomsGeneralBIZImpl  extends BizBase implements CustomsGeneralBIZ
 					return "数据锁定报错：已有锁定数据，请先解除锁定！";
 				}
 				for (CustomsGeneral customsGeneral : list) {
+					customsGeneral.setPickingVolume(CommonUtil.spaceToNull(customsGeneral.getPickingVolume()));
+					customsGeneral.setWarehouseVolume(CommonUtil.spaceToNull(customsGeneral.getWarehouseVolume()));
+					customsGeneral.setWriteOffVolume(CommonUtil.spaceToNull(customsGeneral.getWriteOffVolume()));
+					customsGeneral.setAmount(CommonUtil.spaceToNull(customsGeneral.getAmount()));
+					customsGeneral.setPrice(CommonUtil.spaceToNull(customsGeneral.getPrice()));
 					customsGeneralDAO.save(customsGeneral);
 				}
 				return null;
@@ -151,6 +156,8 @@ public class CustomsGeneralBIZImpl  extends BizBase implements CustomsGeneralBIZ
 					generalInit.setIncomingVolume(CommonUtil.spaceToNull(generalInit.getIncomingVolume()));
 					generalInit.setWriteOffVolume(CommonUtil.spaceToNull(generalInit.getWriteOffVolume()));
 					generalInit.setRegulatoryInventory(CommonUtil.spaceToNull(generalInit.getRegulatoryInventory()));
+					generalInit.setPrice(CommonUtil.spaceToNull(generalInit.getPrice()));
+					generalInit.setAmount(CommonUtil.spaceToNull(generalInit.getAmount()));
 					
 					customsGeneralDAO.save(generalInit);
 				}
@@ -215,14 +222,14 @@ public class CustomsGeneralBIZImpl  extends BizBase implements CustomsGeneralBIZ
 					+" t1.MaterialSpecification,                                                                                               "
 					+" t1.Unit,                                                                                                                "
 					+" t1.EarlyNumber,                                                                                                         "
-					+" sum(t3.TransQTY) as IncomingVolume,                                                                                     "
+					+" IFNULL(sum(t2.Quantity),0) as IncomingVolume,                                                                                     "
 					+" ROUND(sum(t4.quantityIssued)*(1+(case when t5.declareUnitCode='030' then 0.03 else 0 end))/1000.0,2) as WriteOffVolume,                                                                               "
-					+" t1.EarlyNumber + IFNULL(sum(t3.TransQTY),0)-IFNULL(sum(t4.QuantityIssued),0) as RegulatoryInventory,                          "
+					+" t1.EarlyNumber + IFNULL(sum(t2.Quantity),0)-IFNULL(sum(t4.QuantityIssued),0) as RegulatoryInventory,                          "
 					+ " null as pickingVolume,"
 					+ " null as warehouseVolume,"
 					+ " t1.price,"
 					+ " t1.currency,   "
-					+ " t1.amount as amount                                                         "
+					+ " t1.price * ( t1.EarlyNumber + IFNULL(sum(t2.Quantity),0)-IFNULL(sum(t4.QuantityIssued),0)) as amount                                                         "
 					+" from t_customs_general_init t1                                                                                          "
 					+" left join t_customs_importsandexports t2                                                                                "
 					+" on t1.`No`=t2.`No`       "
@@ -255,14 +262,14 @@ public class CustomsGeneralBIZImpl  extends BizBase implements CustomsGeneralBIZ
 					+" t1.MaterialSpecification,                                                                                               "
 					+" t1.Unit,                                                                                                                "
 					+" t1.EarlyNumber,                                                                                                         "
-					+" sum(t3.TransQTY) as IncomingVolume,                                                                                     "
+					+" IFNULL(sum(t2.Quantity),0) as IncomingVolume,                                                                                     "
 					+" ROUND(sum(t4.quantityIssued)*(1+(case when t5.declareUnitCode='030' then 0.03 else 0 end))/1000.0,2) as WriteOffVolume,                                                                               "
-					+" t1.EarlyNumber+IFNULL(sum(t3.TransQTY),0)-IFNULL(sum(t4.QuantityIssued),0) as RegulatoryInventory,                       "
+					+" t1.EarlyNumber+IFNULL(sum(t2.Quantity),0)-IFNULL(sum(t4.QuantityIssued),0) as RegulatoryInventory,                       "
 					+ " null as pickingVolume,"
 					+ " null as warehouseVolume,"
 					+ " t1.price, "
 					+ " t1.currency,   "
-					+ " t1.amount as amount                                                         "
+					+ " t1.price * (t1.EarlyNumber+IFNULL(sum(t2.Quantity),0)-IFNULL(sum(t4.QuantityIssued),0) ) as amount                                                         "
 					+" from CustomsGeneral t1                                                                                          "
 					+" left join t_customs_importsandexports t2                                                                                "
 					+" on t1.`No`=t2.`No` and t1.`Month`=substr(t2.OperationDate,1,7)                                                          "
@@ -353,14 +360,14 @@ public class CustomsGeneralBIZImpl  extends BizBase implements CustomsGeneralBIZ
 				+" t3.Specification as MaterialSpecification,                                                                              "
 				+" IFNULL(t6.`value`,t3.DeclareUnitCode) as Unit,                                                                          "
 				+" 0 as EarlyNumber,                                                                                                       "
-				+" sum(t4.TransQTY) as IncomingVolume,                                                                                     "
+				+" IFNULL(sum(t1.Quantity),0) as IncomingVolume,                                                                                     "
 				+" ROUND(sum(t2.quantityIssued)*(1+(case when t3.declareUnitCode='030' then 0.03 else 0 end))/1000.0,2) as WriteOffVolume,                                                                               "
-				+" IFNULL(sum(t4.TransQTY),0)-IFNULL(sum(t2.QuantityIssued),0) as RegulatoryInventory, "
+				+" IFNULL(sum(t1.Quantity),0)-IFNULL(sum(t2.QuantityIssued),0) as RegulatoryInventory, "
 				+ " null as pickingVolume,"
 				+ " null as warehouseVolume,"
 				+ " t1.unitPriceUSD as price,"
 				+ " 'USD' AS currency,   "
-				+ "t1.unitPriceUSD*(IFNULL(sum(t4.TransQTY),0)-IFNULL(sum(t2.QuantityIssued),0)) as amount                                                         "
+				+ "t1.unitPriceUSD*(IFNULL(sum(t1.Quantity),0)-IFNULL(sum(t2.QuantityIssued),0)) as amount                                                         "
 				+" FROM t_customs_importsandexports t1                                                                                     "
 				+" left join t_customs_clearance t2 on t1.`No`=t2.`No`                                                                     "
 				+" and substr(t1.EntryDate,1,7) = substr(t2.BOMDate,1,7)                                                         "

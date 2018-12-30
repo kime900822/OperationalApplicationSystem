@@ -13,6 +13,7 @@ import org.apache.struts2.convention.annotation.Action;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.customs.biz.CustomsReportBIZ;
+import com.customs.model.CustomsReport1;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.kime.base.ActionBase;
@@ -217,7 +218,7 @@ public class CustomsReportAction extends ActionBase {
     				+ where;
     		
     		
-        	ByteArrayInputStream  is = customsReportBIZ.exportData(hql,lHeadColumns,"单耗表");
+        	ByteArrayInputStream  is = customsReportBIZ.exportData(hql,lHeadColumns,"单耗表",new CustomsReport1().getClass());
         	
         	HttpServletResponse response = (HttpServletResponse)
         			ActionContext.getContext().get(org.apache.struts2.StrutsStatics.HTTP_RESPONSE);

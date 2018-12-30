@@ -57,19 +57,7 @@ public class CustomsReportBIZImpl extends BizBase implements CustomsReportBIZ {
 				+ " left join CustomsJDE D "
 				+ " on coalesce(C.newMaterialNo,A.cimtasCode)=D.cimtasLongItemNo "+ where;
 		List list=commonDAO.queryByHql(hql, pageSize, pageCurrent);
-		List<CustomsReport2> lReport2s=new ArrayList<>();
-		for (Object object : list) {
-			Object[] tmp= (Object[]) object;
-			CustomsReport2 customsReport2=new CustomsReport2();
-			customsReport2.setOrderNumber((String)tmp[0]);
-			customsReport2.setCimtasLongItemNo((String)tmp[1]);
-			customsReport2.setNewCimtasLongItemNo((String)tmp[2]);
-			customsReport2.setCustomsQuality((String)tmp[3]);
-			customsReport2.setJEDTransQty((String)tmp[4]);
-			customsReport2.setDvalue((String)tmp[5]);
-			lReport2s.add(customsReport2);
-		}
-		return lReport2s;
+		return dataToListR2(list);
 	}
 
 	@Override
@@ -84,7 +72,7 @@ public class CustomsReportBIZImpl extends BizBase implements CustomsReportBIZ {
 				+ "'20420701',"
 				+ "'',"
 				+ "A.batchNumber,"
-				+ "ROUND(sum(A.quantityIssued)*(1+(case when C.declareUnitCode='030' then 0.03 else 0 end))/1000.0,2), "
+				+ "ROUND(sum(A.quantityIssued)*(1+(case when C.declareUnitCode='030' then 0.03 else 0 end))/(case when C.declareUnitCode='030' then 1000.0 else 1.0 end),2), "
 				+ "'' "
 				+ " from CustomsClearance A "
 				+ " left join CustomsProduct B "
@@ -108,7 +96,7 @@ public class CustomsReportBIZImpl extends BizBase implements CustomsReportBIZ {
 				+ "'20420701',"
 				+ "'',"
 				+ "A.batchNumber,"
-				+ "ROUND(sum(A.quantityIssued)*(1+(case when C.declareUnitCode='030' then 0.03 else 0 end))/1000.0,2), "
+				+ "ROUND(sum(A.quantityIssued)*(1+(case when C.declareUnitCode='030' then 0.03 else 0 end))/(case when C.declareUnitCode='030' then 1000.0 else 1.0 end),2), "
 				+ "'' "
 				+ " from CustomsClearance A "
 				+ " left join CustomsProduct B "
@@ -119,6 +107,10 @@ public class CustomsReportBIZImpl extends BizBase implements CustomsReportBIZ {
 				+ " group by B.no,A.no,C.declareUnitCode,A.batchNumber order by B.no,A.no";
 		
 		List list=commonDAO.queryByHql(hql, pageSize, pageCurrent);
+		return dataToListR1(list);
+	}
+	
+	public List<CustomsReport1> dataToListR1(List list){
 		List<CustomsReport1> lReport1s=new ArrayList<>();
 		for (Object object : list) {
 			Object[] tmp= (Object[]) object;
@@ -140,14 +132,32 @@ public class CustomsReportBIZImpl extends BizBase implements CustomsReportBIZ {
 			lReport1s.add(customsReport1);
 		}
 		return lReport1s;
+		
+		
 	}
 	
+	public List<CustomsReport2> dataToListR2(List list){
+		List<CustomsReport2> lReport2s=new ArrayList<>();
+		for (Object object : list) {
+			Object[] tmp= (Object[]) object;
+			CustomsReport2 customsReport2=new CustomsReport2();
+			customsReport2.setOrderNumber((String)tmp[0]);
+			customsReport2.setCimtasLongItemNo((String)tmp[1]);
+			customsReport2.setNewCimtasLongItemNo((String)tmp[2]);
+			customsReport2.setCustomsQuality((String)tmp[3]);
+			customsReport2.setJEDTransQty((String)tmp[4]);
+			customsReport2.setDvalue((String)tmp[5]);
+			lReport2s.add(customsReport2);
+		}
+		return lReport2s;
+	}
+	
+	
 	@Override
-	public ByteArrayInputStream exportData(String hql, List<HeadColumn> lHeadColumns,String title) throws Exception {
+	public ByteArrayInputStream exportData(String hql, List<HeadColumn> lHeadColumns,String title, Class class1) throws Exception {
 		
 		List list  = commonDAO.queryByHql(hql);
-    	Class c = (Class) new CustomsMaterial().getClass();  
-    	ByteArrayOutputStream os = ExcelUtil.exportExcel(title, c, list, "yyy-MM-dd",lHeadColumns);
+    	ByteArrayOutputStream os = ExcelUtil.exportExcel(title, class1, dataToListR1(list), "yyy-MM-dd",lHeadColumns);
     	byte[] fileContent = os.toByteArray();
     	return new ByteArrayInputStream(fileContent);	
 	}

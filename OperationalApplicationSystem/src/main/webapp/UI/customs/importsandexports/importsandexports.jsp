@@ -113,7 +113,6 @@ function deleteCustomsImportsAndExports(){
         editMode: {dialog:{width:'400',height:250,title:'Edit No',mask:true}},
         editUrl: 'customs/importsandexports/importsandexports-edit.jsp',
         fieldSortable: false,
-        filterThead: false,
         linenumberAll: true,
         paging: true,
         contextMenuB: true,

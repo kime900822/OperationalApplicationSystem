@@ -16,5 +16,5 @@ public interface CustomsReportBIZ {
 	
 	public List queryReport2(String where, int pageSize, int pageCurrent);
 
-	ByteArrayInputStream exportData(String hql, List<HeadColumn> lHeadColumns,String title) throws Exception;
+	ByteArrayInputStream exportData(String hql, List<HeadColumn> lHeadColumns,String title,Class class1) throws Exception;
 }

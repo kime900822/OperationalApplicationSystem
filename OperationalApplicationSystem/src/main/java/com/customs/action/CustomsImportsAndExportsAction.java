@@ -42,8 +42,120 @@ public class CustomsImportsAndExportsAction extends ActionBase {
 	String id;
 	String no;
 	String batchNumber;
+	String entryDate;
+	String entryNo;
+	String orTy;
+	String name;
+	String description;
+	String quantity;
+	String unit;
+	String currency;
+	String unitPrice;
+	String amount;
+	String unitPriceUSD;
+	String amountUSD;
+	String netWeight;
+	String origin;
+	String operator;
+	String operationDate;
 	
 	
+	public String getEntryDate() {
+		return entryDate;
+	}
+	public void setEntryDate(String entryDate) {
+		this.entryDate = entryDate;
+	}
+	public String getEntryNo() {
+		return entryNo;
+	}
+	public void setEntryNo(String entryNo) {
+		this.entryNo = entryNo;
+	}
+	public String getOrTy() {
+		return orTy;
+	}
+	public void setOrTy(String orTy) {
+		this.orTy = orTy;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getDescription() {
+		return description;
+	}
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	public String getQuantity() {
+		return quantity;
+	}
+	public void setQuantity(String quantity) {
+		this.quantity = quantity;
+	}
+	public String getUnit() {
+		return unit;
+	}
+	public void setUnit(String unit) {
+		this.unit = unit;
+	}
+	public String getCurrency() {
+		return currency;
+	}
+	public void setCurrency(String currency) {
+		this.currency = currency;
+	}
+	public String getUnitPrice() {
+		return unitPrice;
+	}
+	public void setUnitPrice(String unitPrice) {
+		this.unitPrice = unitPrice;
+	}
+	public String getAmount() {
+		return amount;
+	}
+	public void setAmount(String amount) {
+		this.amount = amount;
+	}
+	public String getUnitPriceUSD() {
+		return unitPriceUSD;
+	}
+	public void setUnitPriceUSD(String unitPriceUSD) {
+		this.unitPriceUSD = unitPriceUSD;
+	}
+	public String getAmountUSD() {
+		return amountUSD;
+	}
+	public void setAmountUSD(String amountUSD) {
+		this.amountUSD = amountUSD;
+	}
+	public String getNetWeight() {
+		return netWeight;
+	}
+	public void setNetWeight(String netWeight) {
+		this.netWeight = netWeight;
+	}
+	public String getOrigin() {
+		return origin;
+	}
+	public void setOrigin(String origin) {
+		this.origin = origin;
+	}
+	public String getOperator() {
+		return operator;
+	}
+	public void setOperator(String operator) {
+		this.operator = operator;
+	}
+	public String getOperationDate() {
+		return operationDate;
+	}
+	public void setOperationDate(String operationDate) {
+		this.operationDate = operationDate;
+	}
 	public String getBatchNumber() {
 		return batchNumber;
 	}
@@ -140,45 +252,9 @@ public class CustomsImportsAndExportsAction extends ActionBase {
 					"inputName", "reslutJson"
 			})})
 	public String queryCustomsImportsAndExports() throws UnsupportedEncodingException{	
-		String where="";
-		if (!"".equals(entryDate_f)&&entryDate_f!=null) {
-			where+=" where entryDate >= '"+entryDate_f+"' ";
-		}		
-		if (!"".equals(entryDate_t)&&entryDate_t!=null) {
-			if (where.equals("")) {
-				where+=" where entryDate <= '"+entryDate_t+"' ";
-			}else{
-				where+=" AND entryDate <= '"+entryDate_t+"'  ";
-			}
-			
-		}		
-		if (!"".equals(orderNumber)&&orderNumber!=null) {
-			if (where.equals("")) {
-				where+=" where orderNumber like '%"+orderNumber+"%' ";
-			}else{
-				where+=" AND orderNumber like '%"+orderNumber+"%' ";
-			}
-			
-		}	
-		if (!"".equals(cimtasCode)&&cimtasCode!=null) {
-			if (where.equals("")) {
-				where+=" where cimtasCode like '%"+cimtasCode+"%' ";
-			}else{
-				where+=" AND cimtasCode like '%"+cimtasCode+"%' ";
-			}
-			
-		}
-		if (!"".equals(no)&&no!=null) {
-			if (where.equals("")) {
-				where+=" where no like '%"+no+"%' ";
-			}else{
-				where+=" AND no like '%"+no+"%' ";
-			}
-			
-		}
 		
-		List list  =customsImportsAndExportsBIZ.query(where, Integer.parseInt(pageSize),Integer.parseInt(pageCurrent));
-		int total=customsImportsAndExportsBIZ.query(where).size();
+		List list  =customsImportsAndExportsBIZ.query(getQueryWhere(), Integer.parseInt(pageSize),Integer.parseInt(pageCurrent));
+		int total=customsImportsAndExportsBIZ.query(getQueryWhere()).size();
 		
 		queryResult.setList(list);
 		queryResult.setTotalRow(total);
@@ -191,7 +267,7 @@ public class CustomsImportsAndExportsAction extends ActionBase {
 		
 		reslutJson=new ByteArrayInputStream(r.getBytes("UTF-8"));  
 		
-		logUtil.logInfo("查询进（进出口）数据，条件:"+where);
+		logUtil.logInfo("查询进（进出口）数据，条件:"+getQueryWhere());
 		return SUCCESS;
 	}
 	
@@ -209,44 +285,8 @@ public class CustomsImportsAndExportsAction extends ActionBase {
     public String exportCustomsImportsAndExports() {
         try {
         	List<HeadColumn> lHeadColumns=new Gson().fromJson(thead, new TypeToken<ArrayList<HeadColumn>>() {}.getType());
-    		String where="";
-    		if (!"".equals(entryDate_f)&&entryDate_f!=null) {
-    			where+=" where entryDate >= '"+entryDate_f+"' ";
-    		}		
-    		if (!"".equals(entryDate_t)&&entryDate_t!=null) {
-    			if (where.equals("")) {
-    				where+=" where entryDate <= '"+entryDate_t+"' ";
-    			}else{
-    				where+=" AND entryDate <= '"+entryDate_t+"'  ";
-    			}
-    			
-    		}		
-    		if (!"".equals(orderNumber)&&orderNumber!=null) {
-    			if (where.equals("")) {
-    				where+=" where orderNumber like '%"+orderNumber+"%' ";
-    			}else{
-    				where+=" AND orderNumber like '%"+orderNumber+"%' ";
-    			}
-    			
-    		}	
-    		if (!"".equals(cimtasCode)&&cimtasCode!=null) {
-    			if (where.equals("")) {
-    				where+=" where cimtasCode like '%"+cimtasCode+"%' ";
-    			}else{
-    				where+=" AND cimtasCode like '%"+cimtasCode+"%' ";
-    			}
-    			
-    		}
-    		if (!"".equals(no)&&no!=null) {
-    			if (where.equals("")) {
-    				where+=" where no like '%"+no+"%' ";
-    			}else{
-    				where+=" AND no like '%"+no+"%' ";
-    			}
-    			
-    		}
     		
-        	ByteArrayInputStream  is = customsImportsAndExportsBIZ.exportData(where,lHeadColumns);
+        	ByteArrayInputStream  is = customsImportsAndExportsBIZ.exportData(getQueryWhere(),lHeadColumns);
         	
         	HttpServletResponse response = (HttpServletResponse)
         			ActionContext.getContext().get(org.apache.struts2.StrutsStatics.HTTP_RESPONSE);
@@ -297,4 +337,79 @@ public class CustomsImportsAndExportsAction extends ActionBase {
         reslutJson=new ByteArrayInputStream(new Gson().toJson(result).getBytes("UTF-8"));  
     	return SUCCESS;
     }
+	
+	public String getQueryWhere() {
+		String where=" where 1=1 ";
+		
+		if (entryDate!=null&&!entryDate.equals("")) {
+			where+= " and entryDate like '%"+entryDate+"%' ";
+		}
+		if (entryDate_f!=null&&!entryDate_f.equals("")) {
+			where+= " and entryDate >= '"+entryDate_f+"' ";
+		}
+		if (entryDate_t!=null&&!entryDate_t.equals("")) {
+			where+= " and entryDate <= '"+entryDate_t+"' ";
+		}
+		if (entryNo!=null&&!entryNo.equals("")) {
+			where+= " and entryNo like '%"+entryNo+"%' ";
+		}
+		if (orTy!=null&&!orTy.equals("")) {
+			where+= " and orTy like '%"+orTy+"%' ";
+		}
+		if (orderNumber!=null&&!orderNumber.equals("")) {
+			where+= " and orderNumber like '%"+orderNumber+"%' ";
+		}
+		if (cimtasCode!=null&&!cimtasCode.equals("")) {
+			where+= " and cimtasCode like '%"+cimtasCode+"%' ";
+		}
+		if (no!=null&&!no.equals("")) {
+			where+= " and no like '%"+no+"%' ";
+		}
+		if (name!=null&&!name.equals("")) {
+			where+= " and name like '%"+name+"%' ";
+		}
+		if (description!=null&&!description.equals("")) {
+			where+= " and description like '%"+description+"%' ";
+		}
+		if (quantity!=null&&!quantity.equals("")) {
+			where+= " and quantity like '%"+quantity+"%' ";
+		}
+		if (unit!=null&&!unit.equals("")) {
+			where+= " and unit like '%"+unit+"%' ";
+		}
+		if (currency!=null&&!currency.equals("")) {
+			where+= " and currency like '%"+currency+"%' ";
+		}
+		if (unitPrice!=null&&!unitPrice.equals("")) {
+			where+= " and unitPrice like '%"+unitPrice+"%' ";
+		}
+		if (amount!=null&&!amount.equals("")) {
+			where+= " and amount like '%"+amount+"%' ";
+		}
+		if (unitPriceUSD!=null&&!unitPriceUSD.equals("")) {
+			where+= " and unitPriceUSD like '%"+unitPriceUSD+"%' ";
+		}
+		if (amountUSD!=null&&!amountUSD.equals("")) {
+			where+= " and amountUSD like '%"+amountUSD+"%' ";
+		}
+		if (netWeight!=null&&!netWeight.equals("")) {
+			where+= " and netWeight like '%"+netWeight+"%' ";
+		}
+		if (origin!=null&&!origin.equals("")) {
+			where+= " and origin like '%"+origin+"%' ";
+		}
+		if (operator!=null&&!operator.equals("")) {
+			where+= " and operator like '%"+operator+"%' ";
+		}
+		if (operationDate!=null&&!operationDate.equals("")) {
+			where+= " and operationDate like '%"+operationDate+"%' ";
+		}
+		if (batchNumber!=null&&!batchNumber.equals("")) {
+			where+= " and batchNumber like '%"+batchNumber+"%' ";
+		}
+		
+		
+		
+		return where;
+	}
 }
