@@ -129,8 +129,8 @@ public class CustomsMaterialMappingAction extends ActionBase{
 			where+=" and newMaterialNo like '%"+newMaterialNo+"%' ";
 		}	
 		
-		List list  =customsMaterialMappingBIZ.query("", Integer.parseInt(pageSize),Integer.parseInt(pageCurrent));
-		int total=customsMaterialMappingBIZ.query("").size();
+		List list  =customsMaterialMappingBIZ.query(where, Integer.parseInt(pageSize),Integer.parseInt(pageCurrent));
+		int total=customsMaterialMappingBIZ.query(where).size();
 		
 		queryResult.setList(list);
 		queryResult.setTotalRow(total);
