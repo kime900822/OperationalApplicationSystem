@@ -111,9 +111,9 @@ public class CustomsReportAction extends ActionBase {
 			where+=" and coalesce(C.newMaterialNo,A.cimtasCode) = '"+cimtasLongItemNo+"' ";
 		}	
 		if (!"".equals(dvalue)&&dvalue!=null) {
-			if (dvalue=="0") {
+			if (dvalue.equals("0")) {
 				where+=" and coalesce(D.transQTY,0)-A.quantity = 0 ";
-			}else if (dvalue=="1") {
+			}else if (dvalue.equals("1")) {
 				where+=" and coalesce(D.transQTY,0)-A.quantity > 0 ";
 			}else {
 				where+=" and coalesce(D.transQTY,0)-A.quantity < 0 ";
