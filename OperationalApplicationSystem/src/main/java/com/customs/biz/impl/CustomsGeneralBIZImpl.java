@@ -1,5 +1,7 @@
 package com.customs.biz.impl;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -19,11 +21,13 @@ import com.customs.biz.CustomsGeneralBIZ;
 import com.customs.dao.CustomsGeneralDAO;
 import com.customs.model.CustomsGeneral;
 import com.customs.model.CustomsGeneralInit;
+import com.customs.model.CustomsImportsAndExports;
 import com.customs.model.CustomsJDE;
 import com.customs.other.CustomsGeneralHelp;
 import com.customs.other.CustomsJDEHelp;
 import com.kime.base.BizBase;
 import com.kime.dao.CommonDAO;
+import com.kime.model.HeadColumn;
 import com.kime.model.User;
 import com.kime.utils.CommonUtil;
 import com.kime.utils.ExcelUtil;
@@ -60,13 +64,30 @@ public class CustomsGeneralBIZImpl  extends BizBase implements CustomsGeneralBIZ
 			return new ArrayList<>();
 		}
 		if (!month.equals(CommonUtil.getMonth())&&checkGeneral(month)) {
-			return customsGeneralDAO.query4init(" where month='"+month+"'", pageSize, pageCurrent);
+			return customsGeneralDAO.query(" where month='"+month+"'", pageSize, pageCurrent);
 		}
 		String sql=getSQL(month,where);
 		return dataToEntity(commonDAO.queryBySql(sql, pageSize, pageCurrent));
 		
 	}
 
+	@Override
+	public ByteArrayInputStream exportData(String month,String where, List<HeadColumn> lHeadColumns) throws Exception {
+		List list  = new ArrayList<>();
+		
+		if (!month.equals(CommonUtil.getMonth())&&checkGeneral(month)) {
+			list= dataToEntity(customsGeneralDAO.query(" where month='"+month+"'"));
+		}else {
+			String sql=getSQL(month,where);
+			list = dataToEntity(commonDAO.queryBySql(sql));
+		}
+		
+		
+    	Class c = (Class) new CustomsGeneral().getClass();  
+    	ByteArrayOutputStream os = ExcelUtil.exportExcel("CustomsGeneral", c, list, "yyy-MM-dd",lHeadColumns);
+    	byte[] fileContent = os.toByteArray();
+    	return new ByteArrayInputStream(fileContent);	
+	}
 
 	@Override
 	@Transactional(readOnly=false,propagation=Propagation.REQUIRED,rollbackFor=Exception.class )

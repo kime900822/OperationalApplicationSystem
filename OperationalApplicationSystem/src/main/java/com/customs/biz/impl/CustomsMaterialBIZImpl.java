@@ -203,7 +203,7 @@ public class CustomsMaterialBIZImpl extends BizBase implements CustomsMaterialBI
 			Date d = new Date();
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyyMM");
 			List  list = commonDAO.queryByHql(" select MAX(batchNumber) from CustomsMaterial where substr(batchNumber,2,6)='"+sdf.format(d)+"'" );
-			if (list.size()>0&&list.get(0)!=null) {
+			if (list.get(0)!=null&&list.size()>0) {
 				String max= (String)list.get(0);
 				return "B" + String.valueOf(Long.valueOf(max.replace("B", "")) + 1);
 			}else{

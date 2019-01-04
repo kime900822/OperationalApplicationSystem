@@ -28,16 +28,20 @@ public class CustomsReportBIZImpl extends BizBase implements CustomsReportBIZ {
 		String hql=" select A.orderNumber, "
 				+ " A.cimtasCode,"
 				+ " coalesce(C.newMaterialNo,A.cimtasCode) as cimtasCode, "
-				+ " A.quantity,"
-				+ " D.transQTY,"
-				+ " coalesce(D.transQTY,0)-A.quantity AS DValue "
+				+ " sum(A.quantity) AS quantity,"
+				+ " sum(D.transQTY) AS transQTY ,"
+				+ " sum(coalesce(D.transQTY,0)-A.quantity) AS DValue "
 				+ " from CustomsImportsAndExports A "
 				+ " left join CustomsJDE B "
 				+ " on A.cimtasCode=B.cimtasLongItemNo "
+				+ " and SUBSTR(A.entryDate,1,7)=SUBSTR(B.orderDate,1,7) "
 				+ " left join CustomsMaterialMapping C on "
 				+ " C.oldMaterialNo=A.cimtasCode "
 				+ " left join CustomsJDE D "
-				+ " on coalesce(C.newMaterialNo,A.cimtasCode)=D.cimtasLongItemNo "+where;
+				+ " on coalesce(C.newMaterialNo,A.cimtasCode)=D.cimtasLongItemNo "
+				+ " and SUBSTR(A.entryDate,1,7)=SUBSTR(D.orderDate,1,7) "+where
+				+ " group by A.orderNumber,A.cimtasCode,coalesce(C.newMaterialNo,A.cimtasCode) "
+				+ " order by A.orderNumber,A.cimtasCode,coalesce(C.newMaterialNo,A.cimtasCode) ";
 		return commonDAO.queryByHql(hql);
 	}
 
@@ -46,16 +50,20 @@ public class CustomsReportBIZImpl extends BizBase implements CustomsReportBIZ {
 		String hql=" select A.orderNumber, "
 				+ " A.cimtasCode,"
 				+ " coalesce(C.newMaterialNo,A.cimtasCode) as cimtasCode, "
-				+ " A.quantity,"
-				+ " D.transQTY,"
-				+ " coalesce(D.transQTY,0)-A.quantity AS DValue "
+				+ " sum(A.quantity) AS quantity,"
+				+ " sum(D.transQTY) AS transQTY,"
+				+ " sum(coalesce(D.transQTY,0)-A.quantity) AS DValue "
 				+ " from CustomsImportsAndExports A "
 				+ " left join CustomsJDE B "
 				+ " on A.cimtasCode=B.cimtasLongItemNo "
+				+ " and SUBSTR(A.entryDate,1,7)=SUBSTR(B.orderDate,1,7) "
 				+ " left join CustomsMaterialMapping C on "
 				+ " C.oldMaterialNo=A.cimtasCode "
 				+ " left join CustomsJDE D "
-				+ " on coalesce(C.newMaterialNo,A.cimtasCode)=D.cimtasLongItemNo "+ where;
+				+ " on coalesce(C.newMaterialNo,A.cimtasCode)=D.cimtasLongItemNo "
+				+ " and SUBSTR(A.entryDate,1,7)=SUBSTR(D.orderDate,1,7) "+ where
+				+ " group by A.orderNumber,A.cimtasCode,coalesce(C.newMaterialNo,A.cimtasCode) "
+				+ " order by A.orderNumber,A.cimtasCode,coalesce(C.newMaterialNo,A.cimtasCode) ";
 		List list=commonDAO.queryByHql(hql, pageSize, pageCurrent);
 		return dataToListR2(list);
 	}

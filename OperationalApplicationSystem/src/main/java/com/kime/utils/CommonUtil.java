@@ -124,7 +124,7 @@ public class CommonUtil {
      * @return
      */
     public static String spaceToNull(String tmp){
-    	if ((tmp!=null&&tmp.trim().equals(""))||tmp.trim().equals("null")) {
+    	if (tmp!=null&&((tmp.trim().equals(""))||tmp.trim().equals("null"))) {
 			return null;
 		}else {
 			return tmp;

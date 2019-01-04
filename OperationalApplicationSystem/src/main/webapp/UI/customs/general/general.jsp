@@ -73,7 +73,7 @@ function unCustomsGeneral(){
 </script>
 
 <div class="bjui-pageHeader" style="background-color:#fefefe; border-bottom:none;">
-<form data-toggle="ajaxsearch" data-options="{searchDatagrid:$.CurrentNavtab.find('#datagrid-customs-general-filter')}" id="datagrid-customs-general-init-query">
+<form data-toggle="ajaxsearch" data-options="{searchDatagrid:$.CurrentNavtab.find('#datagrid-customs-general-filter')}" id="datagrid-customs-general-query">
     <fieldset>
         <legend style="font-weight:normal;">Search：</legend>
         <div style="margin:0; padding:1px 5px 5px;">
@@ -142,15 +142,17 @@ function unCustomsGeneral(){
         height: '100%',
         gridTitle : '总表查询',
         dataType: 'jsonp',
-        showToolbar: false,
-        toolbarItem: 'refresh',
+        showToolbar: true,
+        toolbarItem: 'export',
+        toolbarItem: 'refresh,export',
         dataUrl: 'customs/queryCustomsGeneral.action',
         fieldSortable: false,
         filterThead: false,
         linenumberAll: true,
         paging: true,
         contextMenuB: true,
-        hScrollbar: true
+        hScrollbar: true,
+        exportOption: {type:'file', options:{url:'customs/exportCustomsGeneral.action', loadingmask:true,queryForm:$.CurrentNavtab.find('#datagrid-customs-general-query')}}
     }">
         <thead>
             <tr>

@@ -204,11 +204,11 @@ public class CustomsImportsAndExportsAction extends ActionBase {
 	public void setEntryDate_t(String entryDate_t) {
 		this.entryDate_t = entryDate_t;
 	}
-	@Action(value="deleteCustomsAndExportsEditNo",results={@org.apache.struts2.convention.annotation.Result(type="stream",
+	@Action(value="deleteCustomsImportsAndExports",results={@org.apache.struts2.convention.annotation.Result(type="stream",
 			params={
 					"inputName", "reslutJson"
 			})})
-	public String deleteCustomsAndExportsEditNo() throws UnsupportedEncodingException{
+	public String deleteCustomsImportsAndExports() throws UnsupportedEncodingException{
 		
 		if (!CommonUtil.isAdmin(getUser())) {
 			result.setMessage("非管理员，没有权限！");
@@ -363,7 +363,7 @@ public class CustomsImportsAndExportsAction extends ActionBase {
 			where+= " and cimtasCode like '%"+cimtasCode+"%' ";
 		}
 		if (no!=null&&!no.equals("")) {
-			where+= " and no like '%"+no+"%' ";
+			where+= " and no = '"+no+"' ";
 		}
 		if (name!=null&&!name.equals("")) {
 			where+= " and name like '%"+name+"%' ";

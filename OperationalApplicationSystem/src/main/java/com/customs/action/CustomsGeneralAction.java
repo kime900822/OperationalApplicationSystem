@@ -4,7 +4,12 @@ import java.io.ByteArrayInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.ParentPackage;
@@ -14,8 +19,11 @@ import org.springframework.stereotype.Controller;
 
 import com.customs.biz.CustomsGeneralBIZ;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.kime.base.ActionBase;
 import com.kime.infoenum.Message;
+import com.kime.model.HeadColumn;
+import com.opensymphony.xwork2.ActionContext;
 
 @Controller
 @Scope("prototype")
@@ -155,31 +163,8 @@ public class CustomsGeneralAction extends ActionBase{
 	public String queryCustomsGeneral() throws Exception{	
 		
 		
-		String where=" where 1=1";
-		if (month!=null&&!month.equals("")) {
-			where+= " and month='"+month+"' ";
-		}
-		if (!"".equals(materialNo)&&materialNo!=null) {
-			where+=" AND materialNo like '%"+materialNo+"%'  ";
-		}	
-		if (!"".equals(jdeMaterialNo)&&jdeMaterialNo!=null) {
-			where+=" AND jdeMaterialNo like '%"+jdeMaterialNo+"%'  ";
-		}
-		if (!"".equals(no)&&no!=null) {
-			where+=" AND no like '%"+no+"%'  ";
-		}
-		if (!"".equals(productNo)&&productNo!=null) {
-			where+=" AND productNo like '%"+productNo+"%'  ";
-		}
-		if (!"".equals(materialName)&&materialName!=null) {
-			where+=" AND materialName like '%"+materialName+"%'  ";
-		}
-
-		
-
-		
-		List list  =customsGeneralBIZ.query(month,where,Integer.parseInt(pageSize),Integer.parseInt(pageCurrent));
-		int total=customsGeneralBIZ.query(month,where).size();
+		List list  =customsGeneralBIZ.query(month,getQueryWhere(),Integer.parseInt(pageSize),Integer.parseInt(pageCurrent));
+		int total=customsGeneralBIZ.query(month,getQueryWhere()).size();
 		
 		queryResult.setList(list);
 		queryResult.setTotalRow(total);
@@ -237,5 +222,66 @@ public class CustomsGeneralAction extends ActionBase{
 		reslutJson=new ByteArrayInputStream(new Gson().toJson(result).getBytes("UTF-8"));  
 		return SUCCESS;
 
+	}
+	
+	
+	@Action(value="exportCustomsGeneral",results={@org.apache.struts2.convention.annotation.Result(type="stream",
+			params={
+					"inputName", "reslutJson",
+					"contentType","application/vnd.ms-excel",
+					"contentDisposition","attachment;filename=%{fileName}",
+					"bufferSize","1024"
+			})})
+    public String exportCustomsGeneral() {
+        try {
+        	List<HeadColumn> lHeadColumns=new Gson().fromJson(thead, new TypeToken<ArrayList<HeadColumn>>() {}.getType());
+    		
+        	ByteArrayInputStream  is = customsGeneralBIZ.exportData(month,getQueryWhere(),lHeadColumns);
+        	
+        	HttpServletResponse response = (HttpServletResponse)
+        			ActionContext.getContext().get(org.apache.struts2.StrutsStatics.HTTP_RESPONSE);
+        	response.setHeader("Set-Cookie", "fileDownload=true; path=/");
+        	
+        	
+    		SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");		 
+    		fileName = "ImportsAndExports"+sf.format(new Date()).toString()+ ".xls";
+    		fileName= new String(fileName.getBytes(), "ISO8859-1");
+    		//文件流
+            reslutJson = is;            
+            logUtil.logInfo("导出ImportsAndExports！"+fileName);
+        }
+        catch(Exception e) {
+        	logUtil.logInfo("导出ImportsAndExports！"+e.getMessage());
+            e.printStackTrace();
+        }
+
+        return "success";
+    }
+	
+	
+	public String getQueryWhere() {
+		String where=" where 1=1";
+		if (month!=null&&!month.equals("")) {
+			where+= " and month='"+month+"' ";
+		}
+		if (!"".equals(materialNo)&&materialNo!=null) {
+			where+=" AND materialNo like '%"+materialNo+"%'  ";
+		}	
+		if (!"".equals(jdeMaterialNo)&&jdeMaterialNo!=null) {
+			where+=" AND jdeMaterialNo like '%"+jdeMaterialNo+"%'  ";
+		}
+		if (!"".equals(no)&&no!=null) {
+			where+=" AND no like '%"+no+"%'  ";
+		}
+		if (!"".equals(productNo)&&productNo!=null) {
+			where+=" AND productNo like '%"+productNo+"%'  ";
+		}
+		if (!"".equals(materialName)&&materialName!=null) {
+			where+=" AND materialName like '%"+materialName+"%'  ";
+		}
+
+		return where;
+		
+		
 	}
 }

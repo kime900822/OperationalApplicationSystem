@@ -64,7 +64,7 @@ public class CustomsImportsAndExportsBIZImpl  extends BizBase implements Customs
 					}
 					
 					
-					if (checkMaterialNo(list.get(0).getNo())) {
+					if (checkImport(customsImportsAndExports)) {
 						customsImportsAndExports.setNo(list.get(0).getNo());
 						customsImportsAndExports.setName(list.get(0).getMaterialName());
 						customsImportsAndExports.setDescription(list.get(0).getSpecification());
@@ -151,9 +151,10 @@ public class CustomsImportsAndExportsBIZImpl  extends BizBase implements Customs
 		return (CustomsImportsAndExports) customsImportsAndExportsDAO.query(" where id='"+id+"'").get(0);
 	}
 
-	public boolean checkMaterialNo(String no) throws Exception{
+	public boolean checkImport(CustomsImportsAndExports customsImportsAndExports) throws Exception{
 		try { 
-			List  list = commonDAO.queryByHql(" select count(1) from CustomsImportsAndExports where no='"+no+"'");
+			List  list = commonDAO.queryByHql(" select count(1) from CustomsImportsAndExports where  "
+					+ " and cimtasCode='"+customsImportsAndExports.getCimtasCode()+"' amd orderNumber='"+customsImportsAndExports.getOrderNumber()+"' and entryNo='"+customsImportsAndExports.getEntryNo()+"' ");
 			if (list.size()>0&&(long)list.get(0)>0) {
 				return false;
 			}else{
