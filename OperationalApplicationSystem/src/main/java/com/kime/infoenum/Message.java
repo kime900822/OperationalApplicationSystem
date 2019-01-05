@@ -121,5 +121,6 @@ public class Message {
 	public static String PRINT_FONT=FONT_PATH+"/"+PropertiesUtil.ReadProperties(Message.SYSTEM_PROPERTIES, "PrintFont");
 	public static String FONT_ARAIL_APTH=StringUtils.class.getClassLoader().getResource("/").getPath()+"/font/ARIALUNI.TTF";
 	public static String FONT_ARAILBD_APTH=StringUtils.class.getClassLoader().getResource("/").getPath()+"/font/arialbd.ttf";
+	public static String LDAP_CONFIG=StringUtils.class.getClassLoader().getResource("/").getPath()+"/conf/ldap.properties";
 	
 }
