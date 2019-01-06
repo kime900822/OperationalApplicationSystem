@@ -62,6 +62,7 @@
 				<th data-options="{name:'did',width:100,align:'center',finalWidth:'true'}">BU ID</th>
 				<th data-options="{name:'did',width:300,align:'center',finalWidth:'true',type:'select',itemattr:{value:'did',label:'name'},items:$.getJSON('getAllDepartment.action')}">Department</th>
 				<th data-options="{name:'password',width:150,align:'center',finalWidth:'true',hide:'true'}">Password</th>
+				<th data-options="{name:'adName',width:150,align:'center',finalWidth:'true',hide:'true'}">AD NAME</th>
 				<th data-options="{name:'quitDate',width:200,align:'center',finalWidth:'true'}">QuitDate</th>
                 <th data-options="{name:'date',align:'center',width:200,type:'date',finalWidth:'true',pattern:'yyyy-MM-dd HH:mm:ss',render:function(value){return value?value.substr(0,19):value}}">Register Date</th>
             </tr>

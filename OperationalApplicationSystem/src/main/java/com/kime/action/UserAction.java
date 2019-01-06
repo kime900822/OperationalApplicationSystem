@@ -90,160 +90,107 @@ public class UserAction extends ActionBase {
 	private String email;
 	private String did;
 	private String quitDate;
-
+	private String adName;
 
 
 	public String getQuitDate() {
 		return quitDate;
 	}
-
-
 	public void setQuitDate(String quitDate) {
 		this.quitDate = quitDate;
 	}
-
-
 	public MenuBIZ getMenuBIZ() {
 		return menuBIZ;
 	}
-
-
 	public void setMenuBIZ(MenuBIZ menuBIZ) {
 		this.menuBIZ = menuBIZ;
 	}
-
-
 	public String getDid() {
 		return did;
 	}
-
-
 	public void setDid(String did) {
 		this.did = did;
 	}
-
-
 	public DepartmentBIZ getDepartmentBIZ() {
 		return departmentBIZ;
 	}
-
-
 	public void setDepartmentBIZ(DepartmentBIZ departmentBIZ) {
 		this.departmentBIZ = departmentBIZ;
 	}
-
-
 	public UserBIZ getUserBIZ() {
 		return userBIZ;
 	}
-
-
 	public void setUserBIZ(UserBIZ userBIZ) {
 		this.userBIZ = userBIZ;
 	}
-
-
 	public User getUser() {
 		return user;
 	}
-
-
 	public void setUser(User user) {
 		this.user = user;
 	}
-
-
 	public RoleBIZ getRoleBIZ() {
 		return roleBIZ;
 	}
-
-
 	public void setRoleBIZ(RoleBIZ roleBIZ) {
 		this.roleBIZ = roleBIZ;
 	}
-
-
 	public String getName() {
 		return name;
 	}
-
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
-
 	public String getPassword() {
 		return password;
 	}
-
-
 	public void setPassword(String password) {
 		this.password = password;
 	}
-
 	public String getPosition() {
 		return position;
 	}
-
-
 	public void setPosition(String position) {
 		this.position = position;
 	}
-
-
 	public String getOldpassword() {
 		return oldpassword;
 	}
-
-
 	public void setOldpassword(String oldpassword) {
 		this.oldpassword = oldpassword;
 	}
-
-
 	public String getRid() {
 		return rid;
 	}
-
-
 	public void setRid(String rid) {
 		this.rid = rid;
 	}
-
-
 	public String getUid() {
 		return uid;
 	}
-
-
 	public void setUid(String uid) {
 		this.uid = uid;
 	}
-
-
 	public String getDate() {
 		return date;
 	}
-
-
 	public void setDate(String date) {
 		this.date = date;
 	}
-
-
 	public String getEmail() {
 		return email;
 	}
-
-
 	public void setEmail(String email) {
 		this.email = email;
 	}
-
-
 	public static long getSerialversionuid() {
 		return serialVersionUID;
+	}
+	public String getAdName() {
+		return adName;
+	}
+	public void setAdName(String adName) {
+		this.adName = adName;
 	}
 
 
@@ -554,6 +501,7 @@ public class UserAction extends ActionBase {
 		user.setUid(uid);
 		user.setEmail(email);
 		user.setQuitDate(quitDate);
+		user.setAdName(adName);
 		boolean b=true;
 		String rString="";
 		try {			
@@ -862,7 +810,7 @@ public class UserAction extends ActionBase {
 	    				user.setDate(sdf.format(d1));
 	    				lUsers.add(user);
 	            }
-	            userBIZ.inportUser(lUsers);
+	            userBIZ.importUser(lUsers);
 	            wb.close();
 	            fs.close();
 	            for (User u :lUsers) {

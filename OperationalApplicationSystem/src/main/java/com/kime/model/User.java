@@ -44,6 +44,8 @@ public class User {
 	private String email;
 	@Column
 	private String quitDate;
+	@Column
+	private String adName;
 	@ManyToOne(cascade = CascadeType.REFRESH)
 	@JoinColumn(name="rid",insertable=false,updatable=false)
 	private Role role;
@@ -126,6 +128,12 @@ public class User {
 	}
 	public void setDepartment(Department department) {
 		this.department = department;
+	}
+	public String getAdName() {
+		return adName;
+	}
+	public void setAdName(String adName) {
+		this.adName = adName;
 	}
 
 

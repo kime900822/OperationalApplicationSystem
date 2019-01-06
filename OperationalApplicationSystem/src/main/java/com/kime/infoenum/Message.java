@@ -114,6 +114,9 @@ public class Message {
 	 */
 	public static String NORMAL_USER="普通用户";
 	
+	/**
+	 * 
+	 */
 	
 	public static String SYSTEM_PROPERTIES=StringUtils.class.getClassLoader().getResource("/").getPath()+"/conf/system.properties";
 	public static String MAIL_PROPERTIES=StringUtils.class.getClassLoader().getResource("/").getPath()+"/conf/mail.properties";

@@ -12,10 +12,12 @@ import org.springframework.transaction.annotation.Transactional;
 import com.kime.base.BizBase;
 import com.kime.biz.UserBIZ;
 import com.kime.dao.UserDAO;
+import com.kime.infoenum.Config;
 import com.kime.infoenum.Message;
 import com.kime.model.Role;
 import com.kime.model.User;
 import com.kime.utils.PropertiesUtil;
+import com.kime.utils.ldap.LDAPLogin;
 import com.kime.utils.mail.SendMail;
 
 @Service
@@ -34,7 +36,7 @@ public class UserBIZImpl extends BizBase implements UserBIZ {
 	}
 
 	@Override
-	public User login(String uid, String passWord) {
+	public User login(String uid, String passWord) throws Exception {
 		if (uid.equals(PropertiesUtil.ReadProperties(Message.SYSTEM_PROPERTIES, "id"))&&passWord.equals(PropertiesUtil.ReadProperties(Message.SYSTEM_PROPERTIES, "password"))) {
 			User user=new User();
 			user.setName("admin");
@@ -45,7 +47,21 @@ public class UserBIZImpl extends BizBase implements UserBIZ {
 			user.setRole(role);
 			return user;
 		}else{
-			return userDao.login(uid, passWord);
+			if (Config.ADLOGIN) {
+				String result=LDAPLogin.connect(uid, passWord);
+				if (result!=null) {
+					throw new Exception(result);
+				}else {
+					List<User> list= userDao.query(" where adName='"+uid+"'");
+					if (list.size()==0) {
+						throw new Exception(uid+"没有维护到系统对应用户");
+					}else{
+						return list.get(0);
+					}
+				}
+			}else {
+				return userDao.login(uid, passWord);
+			}
 		}
 		
 	}
@@ -53,11 +69,12 @@ public class UserBIZImpl extends BizBase implements UserBIZ {
 	@Override
 	@Transactional(readOnly=false,propagation=Propagation.REQUIRED,rollbackFor=Exception.class )
 	public String register(User user) {
-		if (checkUser(user)) {
+		String r=checkUser(user);
+		if (r==null) {
 			userDao.save(user);
 			return "1";
 		}else{
-			return "email repeat!";
+			return r;
 		}
 		
 	}
@@ -76,11 +93,12 @@ public class UserBIZImpl extends BizBase implements UserBIZ {
 	@Override
 	@Transactional(readOnly=false,propagation=Propagation.REQUIRED,rollbackFor=Exception.class )
 	public String modUser(User user) {
-		if (checkUser(user)) {
+		String r=checkUser(user);
+		if (r==null) {
 			userDao.update(user);
 			return "1";
 		}else{
-			return "email repeat!";
+			return r;
 		}
 	}
 
@@ -93,11 +111,18 @@ public class UserBIZImpl extends BizBase implements UserBIZ {
 
 	@Override
 	@Transactional(readOnly=false,propagation=Propagation.REQUIRED,rollbackFor=Exception.class )
-	public void inportUser(List<User> lUsers) {
-		for (User u : lUsers) {
-			if (checkUser(u)) {
-				userDao.save(u);
-			}		
+	public void importUser(List<User> lUsers) throws Exception {
+		try {
+			for (User u : lUsers) {
+				String r=checkUser(u);
+				if (r==null) {
+					userDao.save(u);
+				}else {
+					throw new Exception(r);
+				}		
+			}
+		} catch (Exception e) {
+			throw new Exception(e.getMessage());
 		}
 		
 	}
@@ -114,11 +139,14 @@ public class UserBIZImpl extends BizBase implements UserBIZ {
 	}
 	
 	@Override
-	public boolean checkUser(User user){
+	public String checkUser(User user){
 		if (userDao.query(" where  email='"+user.getEmail()+"' and uid<>'"+user.getUid()+"'").size()>0) {
-			return false;
+			return "Email repeat";
 		}
-		return true;
+		if (userDao.query(" where  adName='"+user.getAdName()+"' and uid<>'"+user.getUid()+"'").size()>0) {
+			return "ADName repeat";
+		}
+		return null;
 	}
 
 	

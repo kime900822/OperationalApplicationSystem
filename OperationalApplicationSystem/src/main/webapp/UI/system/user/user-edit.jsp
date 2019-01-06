@@ -53,6 +53,10 @@
                 <div class="row-input required">
                     <input type="text" name="name" value="${param.name}" data-rule="required">
                 </div>
+                 <label class="row-label">AD Name</label>
+                <div class="row-input required">
+                    <input type="text" name="adName" value="${param.adName}" data-rule="required">
+                </div>
                 <label class="row-label">Position</label>
                 <div class="row-input required">
 					<input type="text" name="position"  id="j_user_edit_Position" data-rule="required" value="${param.position}">

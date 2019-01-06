@@ -14,8 +14,9 @@ public interface UserBIZ {
 	 * @param jobnumber
 	 * @param passWord
 	 * @return
+	 * @throws Exception 
 	 */
-	public User login(String uid,String passWord);
+	public User login(String uid,String passWord) throws Exception;
 	
 	/**
 	 * 注册
@@ -42,9 +43,9 @@ public interface UserBIZ {
 	
 	public void deleteUser(User user);
 	
-	public void inportUser(List<User> lUsers);
-	
 	public String forgetPassword(User user);
 
-	public boolean checkUser(User user);
+	public String checkUser(User user);
+
+	void importUser(List<User> lUsers) throws Exception;
 }
