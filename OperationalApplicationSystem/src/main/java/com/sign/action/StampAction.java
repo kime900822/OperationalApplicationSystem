@@ -748,7 +748,9 @@ public class StampAction extends ActionBase{
 			if (!"".equals(applicantID)&&applicantID!=null) {
 				where += " AND P.applicantID like '%"+applicantID+"%' ";
 			}
-				
+			if (!"".equals(departmentOfFormFillerID)&&departmentOfFormFillerID!=null) {
+				where += " AND P.departmentOfFormFillerID like '%"+departmentOfFormFillerID+"%' ";
+			}	
 				
 
 			if ("user".equals(queryType)) {
