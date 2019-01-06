@@ -36,7 +36,7 @@
         		</td>
         		<td width="80px">
         			<select name="dvalue" data-toggle="selectpicker" data-width="80px">
-		              <option value=""></option>
+		              <option value="">ALL</option>
 		              <option value="-1">小于0</option>
 		              <option value="0">等于0</option>
 		              <option value="1">大于0</option>
