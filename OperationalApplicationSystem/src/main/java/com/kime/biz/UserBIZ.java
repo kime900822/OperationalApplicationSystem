@@ -16,7 +16,7 @@ public interface UserBIZ {
 	 * @return
 	 * @throws Exception 
 	 */
-	public User login(String uid,String passWord) throws Exception;
+	public User login(String uid,String passWord,String domain) throws Exception;
 	
 	/**
 	 * 注册
@@ -48,4 +48,5 @@ public interface UserBIZ {
 	public String checkUser(User user);
 
 	void importUser(List<User> lUsers) throws Exception;
+
 }

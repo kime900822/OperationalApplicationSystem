@@ -36,7 +36,7 @@ public class UserBIZImpl extends BizBase implements UserBIZ {
 	}
 
 	@Override
-	public User login(String uid, String passWord) throws Exception {
+	public User login(String uid, String passWord,String domain) throws Exception {
 		if (uid.equals(PropertiesUtil.ReadProperties(Message.SYSTEM_PROPERTIES, "id"))&&passWord.equals(PropertiesUtil.ReadProperties(Message.SYSTEM_PROPERTIES, "password"))) {
 			User user=new User();
 			user.setName("admin");
@@ -48,7 +48,7 @@ public class UserBIZImpl extends BizBase implements UserBIZ {
 			return user;
 		}else{
 			if (Config.ADLOGIN) {
-				String result=LDAPLogin.connect(uid, passWord);
+				String result=LDAPLogin.connect(uid+domain, passWord);
 				if (result!=null) {
 					throw new Exception(result);
 				}else {

@@ -91,8 +91,15 @@ public class UserAction extends ActionBase {
 	private String did;
 	private String quitDate;
 	private String adName;
+	private String domain;
 
 
+	public String getDomain() {
+		return domain;
+	}
+	public void setDomain(String domain) {
+		this.domain = domain;
+	}
 	public String getQuitDate() {
 		return quitDate;
 	}
@@ -219,7 +226,7 @@ public class UserAction extends ActionBase {
 			if ("".equals(uid)||"".equals(password)) {
 				err_message="Please enter your id and password";
 			}else{
-				user=userBIZ.login(uid, password);
+				user=userBIZ.login(uid, password,domain);
 				if (user==null) {
 					err_message="Id or password wrong！";
 					session.setAttribute("login_message", "User id or password error");

@@ -154,7 +154,7 @@ public class CustomsImportsAndExportsBIZImpl  extends BizBase implements Customs
 	public boolean checkImport(CustomsImportsAndExports customsImportsAndExports) throws Exception{
 		try { 
 			List  list = commonDAO.queryByHql(" select count(1) from CustomsImportsAndExports where  "
-					+ " and cimtasCode='"+customsImportsAndExports.getCimtasCode()+"' amd orderNumber='"+customsImportsAndExports.getOrderNumber()+"' and entryNo='"+customsImportsAndExports.getEntryNo()+"' ");
+					+ " cimtasCode='"+customsImportsAndExports.getCimtasCode()+"' amd orderNumber='"+customsImportsAndExports.getOrderNumber()+"' and entryNo='"+customsImportsAndExports.getEntryNo()+"' ");
 			if (list.size()>0&&(long)list.get(0)>0) {
 				return false;
 			}else{

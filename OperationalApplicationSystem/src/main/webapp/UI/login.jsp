@@ -210,6 +210,12 @@ function getPassword(){
                     <span class="input-group-addon" id="sizing-addon-user"><span class="glyphicon glyphicon-user"></span></span>
                     <input type="text" class="form-control" id="j_uid" name="uid" value=""  placeholder="ID" aria-describedby="sizing-addon-user">
                 </div>
+                <div  align="right">
+                <span> 域名</span>
+                    <select data-toggle="selectpicker"  name="domain" >
+		              <option value="@cimtasnbo.com">@cimtasnbo.com</option>
+	            	</select>
+                </div>
             </div>
             <br>
             <div class="form-group">
