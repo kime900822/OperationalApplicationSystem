@@ -25,46 +25,38 @@ public class CustomsReportBIZImpl extends BizBase implements CustomsReportBIZ {
 	
 	@Override
 	public List queryReport2(String where) {
-		String hql=" select A.orderNumber, "
+		String sql=" select T.* from (select A.orderNumber,  "
 				+ " A.cimtasCode,"
-				+ " coalesce(C.newMaterialNo,A.cimtasCode) as cimtasCode, "
+				+ " coalesce(C.newMaterialNo,A.cimtasCode) as newCimtasCode, "
 				+ " sum(A.quantity) AS quantity,"
 				+ " sum(D.transQTY) AS transQTY ,"
 				+ " sum(coalesce(D.transQTY,0)-A.quantity) AS DValue "
-				+ " from CustomsImportsAndExports A "
-				+ " left join CustomsJDE B "
-				+ " on A.cimtasCode=B.cimtasLongItemNo "
-				+ " and SUBSTR(A.entryDate,1,7)=SUBSTR(B.orderDate,1,7) "
-				+ " left join CustomsMaterialMapping C on "
+				+ " from t_customs_importsandexports A "
+				+ " left join t_customs_material_mapping C on "
 				+ " C.oldMaterialNo=A.cimtasCode "
-				+ " left join CustomsJDE D "
-				+ " on coalesce(C.newMaterialNo,A.cimtasCode)=D.cimtasLongItemNo "
-				+ " and SUBSTR(A.entryDate,1,7)=SUBSTR(D.orderDate,1,7) "+where
+				+ " left join t_customs_jde D "
+				+ " on coalesce(C.newMaterialNo,A.cimtasCode)=D.cimtasLongItemNo " 
 				+ " group by A.orderNumber,A.cimtasCode,coalesce(C.newMaterialNo,A.cimtasCode) "
-				+ " order by A.orderNumber,A.cimtasCode,coalesce(C.newMaterialNo,A.cimtasCode) ";
-		return commonDAO.queryByHql(hql);
+				+ " order by A.orderNumber,A.cimtasCode,coalesce(C.newMaterialNo,A.cimtasCode)) T "+where;
+		return commonDAO.queryBySql(sql);
 	}
 
 	@Override
 	public List queryReport2(String where, int pageSize, int pageCurrent) {
-		String hql=" select A.orderNumber, "
+		String sql=" select T.* from (select A.orderNumber,  "
 				+ " A.cimtasCode,"
-				+ " coalesce(C.newMaterialNo,A.cimtasCode) as cimtasCode, "
+				+ " coalesce(C.newMaterialNo,A.cimtasCode) as newCimtasCode, "
 				+ " sum(A.quantity) AS quantity,"
-				+ " sum(D.transQTY) AS transQTY,"
+				+ " sum(D.transQTY) AS transQTY ,"
 				+ " sum(coalesce(D.transQTY,0)-A.quantity) AS DValue "
-				+ " from CustomsImportsAndExports A "
-				+ " left join CustomsJDE B "
-				+ " on A.cimtasCode=B.cimtasLongItemNo "
-				+ " and SUBSTR(A.entryDate,1,7)=SUBSTR(B.orderDate,1,7) "
-				+ " left join CustomsMaterialMapping C on "
+				+ " from t_customs_importsandexports A "
+				+ " left join t_customs_material_mapping C on "
 				+ " C.oldMaterialNo=A.cimtasCode "
-				+ " left join CustomsJDE D "
-				+ " on coalesce(C.newMaterialNo,A.cimtasCode)=D.cimtasLongItemNo "
-				+ " and SUBSTR(A.entryDate,1,7)=SUBSTR(D.orderDate,1,7) "+ where
+				+ " left join t_customs_jde D "
+				+ " on coalesce(C.newMaterialNo,A.cimtasCode)=D.cimtasLongItemNo " 
 				+ " group by A.orderNumber,A.cimtasCode,coalesce(C.newMaterialNo,A.cimtasCode) "
-				+ " order by A.orderNumber,A.cimtasCode,coalesce(C.newMaterialNo,A.cimtasCode) ";
-		List list=commonDAO.queryByHql(hql, pageSize, pageCurrent);
+				+ " order by A.orderNumber,A.cimtasCode,coalesce(C.newMaterialNo,A.cimtasCode)) T "+where;
+		List list=commonDAO.queryBySql(sql, pageSize, pageCurrent);
 		return dataToListR2(list);
 	}
 
@@ -152,9 +144,9 @@ public class CustomsReportBIZImpl extends BizBase implements CustomsReportBIZ {
 			customsReport2.setOrderNumber((String)tmp[0]);
 			customsReport2.setCimtasLongItemNo((String)tmp[1]);
 			customsReport2.setNewCimtasLongItemNo((String)tmp[2]);
-			customsReport2.setCustomsQuality((String)tmp[3]);
-			customsReport2.setJEDTransQty((String)tmp[4]);
-			customsReport2.setDvalue((String)tmp[5]);
+			customsReport2.setCustomsQuality(String.valueOf(tmp[3]));
+			customsReport2.setJEDTransQty(String.valueOf(tmp[4]));
+			customsReport2.setDvalue(String.valueOf(tmp[5]));
 			lReport2s.add(customsReport2);
 		}
 		return lReport2s;

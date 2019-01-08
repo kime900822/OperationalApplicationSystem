@@ -102,21 +102,21 @@ public class CustomsReportAction extends ActionBase {
 		
 		String where=" where 1=1 ";
 		if (!"".equals(materialNo)&&materialNo!=null) {
-			where+=" and A.cimtasCode = '"+materialNo+"' ";
+			where+=" and t.cimtasCode = '"+materialNo+"' ";
 		}		
 		if (!"".equals(orderNumber)&&orderNumber!=null) {
-			where+=" and A.orderNumber = '"+orderNumber+"' ";
+			where+=" and t.orderNumber = '"+orderNumber+"' ";
 		}	
 		if (!"".equals(cimtasLongItemNo)&&cimtasLongItemNo!=null) {
-			where+=" and coalesce(C.newMaterialNo,A.cimtasCode) = '"+cimtasLongItemNo+"' ";
+			where+=" and t.newCimtasCode = '"+cimtasLongItemNo+"' ";
 		}	
 		if (!"".equals(dvalue)&&dvalue!=null) {
 			if (dvalue.equals("0")) {
-				where+=" and coalesce(D.transQTY,0)-A.quantity = 0 ";
+				where+=" and t.DValue = 0 ";
 			}else if (dvalue.equals("1")) {
-				where+=" and coalesce(D.transQTY,0)-A.quantity > 0 ";
+				where+=" and t.DValue > 0 ";
 			}else {
-				where+=" and coalesce(D.transQTY,0)-A.quantity < 0 ";
+				where+=" and t.DValue < 0 ";
 			}
 		}	
 		
