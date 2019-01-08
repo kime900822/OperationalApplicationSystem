@@ -213,7 +213,8 @@ function getPassword(){
                 <div  align="right">
                 <span> 域名</span>
                     <select data-toggle="selectpicker"  name="domain" >
-		              <option value="@cimtasnbo.com">@cimtasnbo.com</option>
+		              <option value="@cimtasnbo.com" selected="selected">@cimtasnbo.com</option>
+		              <option value="@enka.com">@enka.com</option>
 	            	</select>
                 </div>
             </div>
