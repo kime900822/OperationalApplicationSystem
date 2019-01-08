@@ -52,7 +52,7 @@ public class UserBIZImpl extends BizBase implements UserBIZ {
 				if (result!=null) {
 					throw new Exception(result);
 				}else {
-					List<User> list= userDao.query(" where adName='"+uid+"'");
+					List<User> list= userDao.query(" where adName='"+uid+domain+"'");
 					if (list.size()==0) {
 						throw new Exception(uid+"没有维护到系统对应用户");
 					}else{
