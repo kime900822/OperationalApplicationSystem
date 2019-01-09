@@ -41,6 +41,28 @@ public class CustomsClearanceBIZImpl  extends BizBase implements CustomsClearanc
 	
 	
 	@Override
+	@Transactional(readOnly=false,propagation=Propagation.REQUIRED,rollbackFor=Exception.class )
+	public String customsClearanceBOMDate(String where, String bomDate) {
+		
+		try {
+			List  list = commonDAO.queryByHql(" select count(1) from CustomsClearance "+ where + " and BOMDate='"+bomDate+"'" );
+			if (list.size()>0&&list.get(0)!=null) {
+				return "选择数据中存在已有BOMDate数据！";
+			}
+			
+			List<CustomsClearance> lClearances=customsCleanceDAO.query(where);
+			for (CustomsClearance customsClearance : lClearances) {
+				customsClearance.setBOMDate(bomDate);
+				customsCleanceDAO.save(customsClearance);
+			}
+			
+			return null;
+		} catch (Exception e) {
+			return e.getMessage();
+		}
+	}
+
+	@Override
 	public ByteArrayInputStream exportData(String where, List<HeadColumn> lHeadColumns) throws Exception {
 		List list  =customsCleanceDAO.query(where);
     	Class c = (Class) new CustomsClearance().getClass();  

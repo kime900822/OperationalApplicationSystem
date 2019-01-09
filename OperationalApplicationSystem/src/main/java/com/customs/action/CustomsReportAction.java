@@ -201,8 +201,8 @@ public class CustomsReportAction extends ActionBase {
     		}	
     		
     		String hql=" select B.no,A.no,'1' ,"
-    				+ " ROUND(A.quantityOrdered/1000.0,3),"
-    				+ " case when B.declareUnitCode='030' then '0.03' else '0' end,"
+    				+ " ROUND(sum(A.quantityIssued)/1000.0*(case when C.declareUnitCode='030' then 1 else 1000.0 end),3),"
+    				+ " case when C.declareUnitCode='030' then '3' else '0' end,"
     				+ "'0',"
     				+ "'',"
     				+ "'100',"
@@ -210,13 +210,15 @@ public class CustomsReportAction extends ActionBase {
     				+ "'20420701',"
     				+ "'',"
     				+ "A.batchNumber,"
-    				+ "ROUND(A.quantityOrdered*(1+(case when B.declareUnitCode='030' then 0.03 else 0 end))/1000.0,2), "
+    				+ "ROUND(sum(A.quantityIssued)*(1+(case when C.declareUnitCode='030' then 0.03 else 0 end))/(case when C.declareUnitCode='030' then 1000.0 else 1.0 end),2), "
     				+ "'' "
     				+ " from CustomsClearance A "
     				+ " left join CustomsProduct B "
     				+ " on A.shipmentIems=B.materialNo"
-    				+ where;
-    		
+    				+ " left join CustomsMaterial C "
+    				+ " on A.no=C.no "
+    				+ where
+    				+ " group by B.no,A.no,C.declareUnitCode,A.batchNumber order by B.no,A.no";
     		
         	ByteArrayInputStream  is = customsReportBIZ.exportData(hql,lHeadColumns,"单耗表",new CustomsReport1().getClass());
         	

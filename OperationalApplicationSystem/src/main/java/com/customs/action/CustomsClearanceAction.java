@@ -127,6 +127,36 @@ public class CustomsClearanceAction extends ActionBase {
 		return SUCCESS;
 	}
 	
+	@Action(value="customsClearanceBOMDate",results={@org.apache.struts2.convention.annotation.Result(type="stream",
+			params={
+					"inputName", "reslutJson"
+			})})
+	public String customsClearanceBOMDate() throws UnsupportedEncodingException{
+		String where=" where 1=1 ";
+		if (!"".equals(batchNumber)&&batchNumber!=null) {
+			where+=" AND batchNumber like '%"+batchNumber+"%' ";
+		}
+		if (!"".equals(no)&&no!=null) {
+			where+=" AND no = '"+no+"' ";
+		}
+		if (!"".equals(poseLongItemNo)&&poseLongItemNo!=null) {
+			where+=" AND poseLongItemNo like '%"+poseLongItemNo+"%' ";
+		}
+		if (!"".equals(shipmentIems)&&shipmentIems!=null) {
+			where+=" AND shipmentIems like '%"+shipmentIems+"%' ";
+		}
+		String r=clearanceBIZ.customsClearanceBOMDate(where, BOMDate);
+		if (r==null) {
+			result.setMessage("Success!");
+			result.setStatusCode("200");
+		}else{
+			result.setMessage(r);
+			result.setStatusCode("300");
+		}
+		reslutJson=new ByteArrayInputStream(new Gson().toJson(result).getBytes("UTF-8")); 
+		return SUCCESS;
+	}
+	
 	@Action(value="queryCustomsClearance",results={@org.apache.struts2.convention.annotation.Result(type="stream",
 			params={
 					"inputName", "reslutJson"

@@ -23,4 +23,6 @@ public interface CustomsClearanceBIZ {
 	public CustomsClearance getById(String id);
 	
 	public String deleteByBatchNumber(String batchNumber);
+	
+	public String customsClearanceBOMDate(String where,String bomDate);
 }
