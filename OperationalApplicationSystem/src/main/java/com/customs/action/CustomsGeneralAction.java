@@ -271,7 +271,7 @@ public class CustomsGeneralAction extends ActionBase{
 			where+=" AND jdeMaterialNo like '%"+jdeMaterialNo+"%'  ";
 		}
 		if (!"".equals(no)&&no!=null) {
-			where+=" AND no like '%"+no+"%'  ";
+			where+=" AND no = '"+no+"'  ";
 		}
 		if (!"".equals(productNo)&&productNo!=null) {
 			where+=" AND productNo like '%"+productNo+"%'  ";

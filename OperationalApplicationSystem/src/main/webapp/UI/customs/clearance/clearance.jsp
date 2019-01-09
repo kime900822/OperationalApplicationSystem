@@ -13,10 +13,11 @@
 		BJUI.ajax('doajax', {
 		    url: 'customs/customsClearanceBOMDate.action',
 		    loadingmask: true,
-		    data:{BOMDate:params.BOMDate,batchNumber:params.batchNumber,no:params.no,poseLongItemNo:params.poseLongItemNo,shipmentIems:params.shipmentIems},	    
+		    data:{BOMDate:params.BOMDate,batchNumber:params.batchNumber,no:params.no,poseLongItemNo:params.poseLongItemNo,shipmentIems:params.shipmentIems,lotSerialNumber:params.lotSerialNumber},	    
 		    okCallback: function(json, options) {
 	            if(json.status='200'){
-	            	BJUI.alertmsg('info', json.message); 
+	            	BJUI.alertmsg('info', json.message);
+	            	$.CurrentNavtab.find('#datagrid-customs-clearance-filter').data('bjui.datagrid').refresh(true);
 	            }else{
 	            	BJUI.alertmsg('error', json.message); 
 	            }
@@ -45,7 +46,7 @@
             	<input type="text" name="BOMDate"  data-nobtn="true"  value="" data-toggle="datepicker" size="9" data-rule="date">
         		</td>
         		<td colspan="6"  width="800px">
-        		<button type="button" class="btn-green" data-icon="search">生成</button>
+        		<button type="button" class="btn-green" data-icon="search" onclick="customsClearanceBOMDate();">生成</button>
         		</td>
         	</tr>      
         	<tr>
@@ -81,7 +82,13 @@
         		<td colspan="8" height="10px"></td>
         		</tr>
         		<tr>
-        		<td  colspan="8">
+        		<td width="120px">
+        		<span>Lot Serial Number：</span>
+        		</td>
+        		<td width="190px">
+            	<input type="text" name="lotSerialNumber" value=""  size="15">
+        		</td>
+        		<td  colspan="6">
         			<div class="btn-group">
 	                	<button type="submit" class="btn-green" data-icon="search">Search</button>
 	                	<button type="reset" class="btn-orange" data-icon="times">Reset</button>

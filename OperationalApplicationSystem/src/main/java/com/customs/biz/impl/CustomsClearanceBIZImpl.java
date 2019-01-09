@@ -46,14 +46,14 @@ public class CustomsClearanceBIZImpl  extends BizBase implements CustomsClearanc
 		
 		try {
 			List  list = commonDAO.queryByHql(" select count(1) from CustomsClearance "+ where + " and BOMDate='"+bomDate+"'" );
-			if (list.size()>0&&list.get(0)!=null) {
+			if ((Long)list.get(0)>0) {
 				return "选择数据中存在已有BOMDate数据！";
 			}
 			
 			List<CustomsClearance> lClearances=customsCleanceDAO.query(where);
 			for (CustomsClearance customsClearance : lClearances) {
 				customsClearance.setBOMDate(bomDate);
-				customsCleanceDAO.save(customsClearance);
+				customsCleanceDAO.update(customsClearance);
 			}
 			
 			return null;
@@ -91,14 +91,9 @@ public class CustomsClearanceBIZImpl  extends BizBase implements CustomsClearanc
 						throw new Exception("导入报错："+clearance.getCimtasNo()+"料件序号未mapping到:"+clearance.getPoseLongItemNo());
 					}
 					
-					if(checkMaterialNo(lsCustomsMaterials.get(0).getNo())){
-						clearance.setNo(lsCustomsMaterials.get(0).getNo());
-					}else {
-						logUtil.logError(CustomsClearanceHelp.title,"导入报错："+clearance.getCimtasNo()+"料件序号已存在:"+clearance.getPoseLongItemNo());
-						throw new Exception("导入报错："+clearance.getCimtasNo()+"料件序号已存在:"+clearance.getPoseLongItemNo());
-					}
+				
 					
-					clearance.setNo(CommonUtil.spaceToNull(clearance.getNo()));
+					clearance.setNo(CommonUtil.spaceToNull(lsCustomsMaterials.get(0).getNo()));
 					clearance.setDia(CommonUtil.spaceToNull(clearance.getDia()));
 					clearance.setSch(CommonUtil.spaceToNull(clearance.getSch()));
 					clearance.setQuantityOrdered(CommonUtil.spaceToNull(clearance.getQuantityOrdered()));
@@ -107,6 +102,11 @@ public class CustomsClearanceBIZImpl  extends BizBase implements CustomsClearanc
 					clearance.setOperationDate(date);
 					clearance.setOperator(user.getName());
 					clearance.setBatchNumber(batchNumber);
+					
+					if((clearance.getCimtasNo()!=null&&!clearance.getCimtasNo().equals(""))&&!checkMaterialNo(clearance)){
+						logUtil.logError(CustomsClearanceHelp.title,"导入报错："+clearance.getCimtasNo()+"料件序号已存在:"+clearance.getPoseLongItemNo());
+						throw new Exception("导入报错："+clearance.getCimtasNo()+"料件序号已存在:"+clearance.getPoseLongItemNo());
+					}
 					
 					customsCleanceDAO.save(clearance);
 				}
@@ -198,9 +198,9 @@ public class CustomsClearanceBIZImpl  extends BizBase implements CustomsClearanc
 		
 	}
 	
-	public boolean checkMaterialNo(String no) throws Exception{
+	public boolean checkMaterialNo(CustomsClearance clearance) throws Exception{
 		try { 
-			List  list = commonDAO.queryByHql(" select count(1) from CustomsClearance where no='"+no+"'");
+			List  list = commonDAO.queryByHql(" select count(1) from CustomsClearance where no='"+clearance.getNo()+"' and poseLongItemNo='"+clearance.getPoseLongItemNo()+"' and cimtasNo='"+clearance.getCimtasNo()+"' ");
 			if (list.size()>0&&(long)list.get(0)>0) {
 				return false;
 			}else{

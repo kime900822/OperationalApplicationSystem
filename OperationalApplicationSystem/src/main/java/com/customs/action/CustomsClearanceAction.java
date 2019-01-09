@@ -43,8 +43,15 @@ public class CustomsClearanceAction extends ActionBase {
 	String id;
 	String poseLongItemNo;
 	String shipmentIems;
+	String lotSerialNumber;
 	
 	
+	public String getLotSerialNumber() {
+		return lotSerialNumber;
+	}
+	public void setLotSerialNumber(String lotSerialNumber) {
+		this.lotSerialNumber = lotSerialNumber;
+	}
 	public String getPoseLongItemNo() {
 		return poseLongItemNo;
 	}
@@ -145,6 +152,11 @@ public class CustomsClearanceAction extends ActionBase {
 		if (!"".equals(shipmentIems)&&shipmentIems!=null) {
 			where+=" AND shipmentIems like '%"+shipmentIems+"%' ";
 		}
+		if (!"".equals(lotSerialNumber)&&lotSerialNumber!=null) {
+			where+=" AND lotSerialNumber like '%"+lotSerialNumber+"%' ";
+		}
+		
+		
 		String r=clearanceBIZ.customsClearanceBOMDate(where, BOMDate);
 		if (r==null) {
 			result.setMessage("Success!");
@@ -175,6 +187,9 @@ public class CustomsClearanceAction extends ActionBase {
 		}
 		if (!"".equals(shipmentIems)&&shipmentIems!=null) {
 			where+=" AND shipmentIems like '%"+shipmentIems+"%' ";
+		}
+		if (!"".equals(lotSerialNumber)&&lotSerialNumber!=null) {
+			where+=" AND lotSerialNumber like '%"+lotSerialNumber+"%' ";
 		}
 		
 		List list  =clearanceBIZ.query(where, Integer.parseInt(pageSize),Integer.parseInt(pageCurrent));
@@ -219,6 +234,9 @@ public class CustomsClearanceAction extends ActionBase {
     		}
     		if (!"".equals(shipmentIems)&&shipmentIems!=null) {
     			where+=" AND shipmentIems like '%"+shipmentIems+"%' ";
+    		}
+    		if (!"".equals(lotSerialNumber)&&lotSerialNumber!=null) {
+    			where+=" AND lotSerialNumber like '%"+lotSerialNumber+"%' ";
     		}
     		
         	ByteArrayInputStream  is = clearanceBIZ.exportData(where,lHeadColumns);
