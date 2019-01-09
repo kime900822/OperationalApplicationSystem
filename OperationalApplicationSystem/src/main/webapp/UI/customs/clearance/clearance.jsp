@@ -3,6 +3,30 @@
 <!DOCTYPE html>
 <script type="text/javascript">
 
+	function customsClearanceBOMDate(){
+		var params=$.CurrentNavtab.find('#datagrid-customs-clearance-query').serializeJson();
+		if(params.BOMDate==null||params.BOMDate==''||params.BOMDate==undefined){
+			BJUI.alertmsg('warn', 'BOM 日期不能为空！'); 
+			return false;
+		}
+		
+		BJUI.ajax('doajax', {
+		    url: 'customs/customsClearanceBOMDate.action',
+		    loadingmask: true,
+		    data:{BOMDate:params.BOMDate,batchNumber:params.batchNumber,no:params.no,poseLongItemNo:params.poseLongItemNo,shipmentIems:params.shipmentIems},	    
+		    okCallback: function(json, options) {
+	            if(json.status='200'){
+	            	BJUI.alertmsg('info', json.message); 
+	            }else{
+	            	BJUI.alertmsg('error', json.message); 
+	            }
+		    }
+		})	
+		
+		
+	}
+
+
 
 </script>
 
@@ -111,8 +135,8 @@
 				<th data-options="{name:'orTy',width:200,align:'left',finalWidth:'true'}">Or Ty</th>
 				<th data-options="{name:'orderNumber',width:200,align:'left',finalWidth:'true'}">Order Number</th>
 				<th data-options="{name:'manufacName',width:200,align:'left',finalWidth:'true'}">Manufac. Name</th>
-				<th data-options="{name:'LotSerialNumber',width:200,align:'left',finalWidth:'true'}">Lot Serial Number</th>
-				<th data-options="{name:'BatchNumber',width:200,align:'left',finalWidth:'true'}">上传批次号</th>
+				<th data-options="{name:'lotSerialNumber',width:200,align:'left',finalWidth:'true'}">Lot Serial Number</th>
+				<th data-options="{name:'batchNumber',width:200,align:'left',finalWidth:'true'}">上传批次号</th>
 				<th data-options="{name:'operator',width:200,align:'left',finalWidth:'true'}">操作员</th>
 				<th data-options="{name:'operationDate',width:200,align:'left',finalWidth:'true'}">操作日期</th>
 				<th data-options="{name:'BOMDate',width:200,align:'left',finalWidth:'true'}">BOM申报日期</th>
