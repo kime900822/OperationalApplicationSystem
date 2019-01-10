@@ -215,111 +215,6 @@ public class CustomsGeneralBIZImpl  extends BizBase implements CustomsGeneralBIZ
 		
 	}
 
-	public String getEarlySQL(String month) throws Exception {
-		boolean flag=false;
-		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM");
-		Date date=sdf.parse(month);
-		Calendar calendar = Calendar.getInstance(); 
-		calendar.setTime(date); 
-		calendar.add(Calendar.MONTH, -1);//当前时间前去一个月，即一个月前的时间    
-		date = calendar.getTime();//获取一年前的时间，或者一个月前的时间    
-		String rmonth=sdf.format(date);
-		List  list = commonDAO.queryByHql(" select count(1) from CustomsGeneral where month='"+rmonth+"'");
-		if (list.size()>0&&(long)list.get(0)>0) {
-			flag=true;
-		}else{
-			flag=false;
-		}
-		if (flag) {
-			return 	" UNION all                                                                                                                "
-					+" select                                                                                                                  "
-					+" t1.`Month`,                                                                                                             "
-					+" t1.MaterialNo,                                                                                                          "
-					+" IFNULL(t6.NewMaterialNo,t1.JdeMaterialNo) AS JdeMaterialNo,                                                                                                       "
-					+" t1.`No`,                                                                                                                "
-					+" t1.ProductNo,                                                                                                           "
-					+" t1.MaterialName,                                                                                                        "
-					+" t1.MaterialSpecification,                                                                                               "
-					+" t1.Unit,                                                                                                                "
-					+" t1.EarlyNumber,                                                                                                         "
-					+" IFNULL(sum(t2.Quantity),0) as IncomingVolume,                                                                                     "
-					+" ROUND(sum(t4.quantityIssued)*(1+(case when t5.declareUnitCode='030' then 0.03 else 0 end))/(case when t5.declareUnitCode='030' then 1000.0 else 1.0 end),2) as WriteOffVolume,                                                                               "
-					+" t1.EarlyNumber+IFNULL(sum(t2.Quantity),0)-IFNULL(sum(t4.QuantityIssued),0) as RegulatoryInventory,                       "
-					+ " null as pickingVolume,"
-					+ " null as warehouseVolume,"
-					+ " IFNULL(MAX(t2.unitPriceUSD),t1.price) as price, "
-					+ " t1.currency,   "
-					+ " t1.price * (t1.EarlyNumber+IFNULL(sum(t2.Quantity),0)-IFNULL(sum(t4.QuantityIssued),0) ) as amount               "
-					+" from CustomsGeneral t1                                                                                          "
-					+" left join t_customs_importsandexports t2                                                                                "
-					+" on t1.`No`=t2.`No` and t1.`Month`=substr(t2.EntryDate,1,7)                                                          "
-					+" left join t_customs_material_mapping t6 on t1.JdeMaterialNo=t6.OldMaterialNo                         "
-					+" left join (                                                                                                             "
-					+" select IFNULL(tt2.NewMaterialNo,tt1.CimtasLongItemNo) newMarerialNo,tt1.TransQTY,tt1.OperationDate                      "
-					+" from t_customs_jde tt1 left join t_customs_material_mapping tt2 on tt1.CimtasLongItemNo=tt2.OldMaterialNo               "
-					+" ) t3 on t3.newMarerialNo=IFNULL(t6.NewMaterialNo,t1.JdeMaterialNo)  and t1.`Month`=substr(t3.OperationDate,1,7)                                   "
-					+" left join t_customs_clearance t4 on t1.`No`=t4.`No`                                                  "
-					+" and substr(t4.BOMDate,1,7) = t1.`Month`          "
-					+" left join t_customs_material t5 on t1.`No`=t5.`No`                                                                         "
-					+" where t1.`Month` = '"+rmonth+"'                                                                                          "
-					+" group by                                                                                                                "
-					+" t1.`Month`,                                                                                                             "
-					+" t1.MaterialNo,                                                                                                          "
-					+" t1.JdeMaterialNo,                                                                                                       "
-					+" t1.`No`,                                                                                                                "
-					+" t1.ProductNo,                                                                                                           "
-					+" t1.MaterialName,                                                                                                        "
-					+" t1.MaterialSpecification,                                                                                               "
-					+" t1.Unit,                                                                                                                "
-					+" t1.EarlyNumber                                                                                                          ";
-			
-		}else {
-			
-			return 	" UNION all                                                                                                                "
-					+" select                                                                                                                  "
-					+"'"+month +"'AS `Month`,                                                                                                             "
-					+" t1.MaterialNo,                                                                                                          "
-					+" IFNULL(t6.NewMaterialNo,t1.MaterialNo) as JdeMaterialNo,                                                                                                       "
-					+" t1.`No`,                                                                                                                "
-					+" t1.ProductNo,                                                                                                           "
-					+" t1.MaterialName,                                                                                                        "
-					+" t1.MaterialSpecification,                                                                                               "
-					+" t1.Unit,                                                                                                                "
-					+" t1.EarlyNumber,                                                                                                         "
-					+" IFNULL(sum(t2.Quantity),0) as IncomingVolume,                                                                                     "
-					+" ROUND(sum(t4.quantityIssued)*(1+(case when t5.declareUnitCode='030' then 0.03 else 0 end))/(case when t5.declareUnitCode='030' then 1000.0 else 1.0 end),2) as WriteOffVolume,                                                                               "
-					+" t1.EarlyNumber + IFNULL(sum(t2.Quantity),0)-IFNULL(sum(t4.QuantityIssued),0) as RegulatoryInventory,                          "
-					+ " null as pickingVolume,"
-					+ " null as warehouseVolume,"
-					+ " IFNULL(MAX(t2.unitPriceUSD),t1.price) price,"
-					+ " t1.currency,   "
-					+ " t1.price * ( t1.EarlyNumber + IFNULL(sum(t2.Quantity),0)-IFNULL(sum(t4.QuantityIssued),0)) as amount                                                         "
-					+" from t_customs_general_init t1                                                                                          "
-					+" left join t_customs_importsandexports t2                                                                                "
-					+" on t1.`No`=t2.`No`  and   substr(t2.EntryDate,1,7)='"+month+"'       "
-					+" left join t_customs_material_mapping t6 on t1.MaterialNo=t6.OldMaterialNo                         "
-					+" left join (                                                                                                             "
-					+" select IFNULL(tt2.NewMaterialNo,tt1.CimtasLongItemNo) newMarerialNo,tt1.TransQTY,tt1.OperationDate                    "
-					+" from t_customs_jde tt1 left join t_customs_material_mapping tt2 on tt1.CimtasLongItemNo=tt2.OldMaterialNo               "
-					+" ) t3 on t3.newMarerialNo=IFNULL(t6.NewMaterialNo,t1.JdeMaterialNo) and substr(t3.OperationDate,1,7)='"+month+"'                                "
-					+" left join t_customs_clearance t4 on t1.`No`=t4.`No` and substr(t4.BOMDate,1,7) = '"+month+"' "
-					+" left join t_customs_material t5 on t1.`No`=t5.`No`                                                  "
-					//+" where t1.`Month` = '"+month+"'                                                                                          "
-					+" group by                                                                                                                "
-					+" t1.MaterialNo,                                                                                                          "
-					+" t1.JdeMaterialNo,                                                                                                       "
-					+" t1.`No`,                                                                                                                "
-					+" t1.ProductNo,                                                                                                           "
-					+" t1.MaterialName,                                                                                                        "
-					+" t1.MaterialSpecification,                                                                                               "
-					+" t1.Unit,                                                                                                                "
-					+" t1.EarlyNumber                                                                                                          ";
-		}
-		
-		
-		
-	}
-	
 	
 	public List<CustomsGeneral> dataToEntity(List list) throws Exception {
 		List<CustomsGeneral> lGenerals=new ArrayList<>();
@@ -370,6 +265,110 @@ public class CustomsGeneralBIZImpl  extends BizBase implements CustomsGeneralBIZ
 	}
 	
 	public String getSQL(String month,String where) throws Exception {
+		boolean flag=false;
+		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM");
+		Date date=sdf.parse(month);
+		Calendar calendar = Calendar.getInstance(); 
+		calendar.setTime(date); 
+		calendar.add(Calendar.MONTH, -1);//当前时间前去一个月，即一个月前的时间    
+		date = calendar.getTime();//获取一年前的时间，或者一个月前的时间    
+		String rmonth=sdf.format(date);
+		List  list = commonDAO.queryByHql(" select count(1) from CustomsGeneral where month='"+rmonth+"'");
+		if (list.size()>0&&(long)list.get(0)>0) {
+			flag=true;
+		}else{
+			flag=false;
+		}
+		String earlySQL="";
+		String earlyTable="";
+		if (flag) {
+			earlySQL= 	" UNION all                                                                                                                "
+					+" select                                                                                                                  "
+					+" t1.`Month`,                                                                                                             "
+					+" t1.MaterialNo,                                                                                                          "
+					+" IFNULL(t6.NewMaterialNo,t1.JdeMaterialNo) AS JdeMaterialNo,                                                                                                       "
+					+" t1.`No`,                                                                                                                "
+					+" t1.ProductNo,                                                                                                           "
+					+" t1.MaterialName,                                                                                                        "
+					+" t1.MaterialSpecification,                                                                                               "
+					+" t1.Unit,                                                                                                                "
+					+" t1.EarlyNumber,                                                                                                         "
+					+" IFNULL(sum(t2.Quantity),0) as IncomingVolume,                                                                                     "
+					+" ROUND(sum(t4.quantityIssued)*(1+(case when t5.declareUnitCode='030' then 0.03 else 0 end))/(case when t5.declareUnitCode='030' then 1000.0 else 1.0 end),2) as WriteOffVolume,                                                                               "
+					+" t1.EarlyNumber+IFNULL(sum(t2.Quantity),0)-IFNULL(sum(t4.QuantityIssued),0) as RegulatoryInventory,                       "
+					+ " null as pickingVolume,"
+					+ " null as warehouseVolume,"
+					+ " IFNULL(MAX(t2.unitPriceUSD),t1.price) as price, "
+					+ " t1.currency,   "
+					+ " t1.price * (t1.EarlyNumber+IFNULL(sum(t2.Quantity),0)-IFNULL(sum(t4.QuantityIssued),0) ) as amount               "
+					+" from CustomsGeneral t1                                                                                          "
+					+" left join t_customs_importsandexports t2                                                                                "
+					+" on t1.`No`=t2.`No` and t1.`Month`=substr(t2.EntryDate,1,7)                                                          "
+					+" left join t_customs_material_mapping t6 on t1.JdeMaterialNo=t6.OldMaterialNo                         "
+					+" left join (                                                                                                             "
+					+" select IFNULL(tt2.NewMaterialNo,tt1.CimtasLongItemNo) newMarerialNo,tt1.TransQTY,tt1.OperationDate                      "
+					+" from t_customs_jde tt1 left join t_customs_material_mapping tt2 on tt1.CimtasLongItemNo=tt2.OldMaterialNo               "
+					+" ) t3 on t3.newMarerialNo=IFNULL(t6.NewMaterialNo,t1.JdeMaterialNo)  and t1.`Month`=substr(t3.OperationDate,1,7)                                   "
+					+" left join t_customs_clearance t4 on t1.`No`=t4.`No`                                                  "
+					+" and substr(t4.BOMDate,1,7) = t1.`Month`          "
+					+" left join t_customs_material t5 on t1.`No`=t5.`No`                                                                         "
+					+" where t1.`Month` = '"+rmonth+"'                                                                                          "
+					+" group by                                                                                                                "
+					+" t1.`Month`,                                                                                                             "
+					+" t1.MaterialNo,                                                                                                          "
+					+" t1.JdeMaterialNo,                                                                                                       "
+					+" t1.`No`,                                                                                                                "
+					+" t1.ProductNo,                                                                                                           "
+					+" t1.MaterialName,                                                                                                        "
+					+" t1.MaterialSpecification,                                                                                               "
+					+" t1.Unit,                                                                                                                "
+					+" t1.EarlyNumber                                                                                                          ";
+			earlyTable=" select 1 from t_customs_general t8 where t8.`Month`=substr(t1.EntryDate,1,7) and t8.`No`=t1.`No` ";
+		}else {
+			
+			earlySQL= 	" UNION all                                                                                                                "
+					+" select                                                                                                                  "
+					+"'"+month +"'AS `Month`,                                                                                                             "
+					+" t1.MaterialNo,                                                                                                          "
+					+" IFNULL(t6.NewMaterialNo,t1.MaterialNo) as JdeMaterialNo,                                                                                                       "
+					+" t1.`No`,                                                                                                                "
+					+" t1.ProductNo,                                                                                                           "
+					+" t1.MaterialName,                                                                                                        "
+					+" t1.MaterialSpecification,                                                                                               "
+					+" t1.Unit,                                                                                                                "
+					+" t1.EarlyNumber,                                                                                                         "
+					+" IFNULL(sum(t2.Quantity),0) as IncomingVolume,                                                                                     "
+					+" ROUND(sum(t4.quantityIssued)*(1+(case when t5.declareUnitCode='030' then 0.03 else 0 end))/(case when t5.declareUnitCode='030' then 1000.0 else 1.0 end),2) as WriteOffVolume,                                                                               "
+					+" t1.EarlyNumber + IFNULL(sum(t2.Quantity),0)-IFNULL(sum(t4.QuantityIssued),0) as RegulatoryInventory,                          "
+					+ " null as pickingVolume,"
+					+ " null as warehouseVolume,"
+					+ " IFNULL(MAX(t2.unitPriceUSD),t1.price) price,"
+					+ " t1.currency,   "
+					+ " t1.price * ( t1.EarlyNumber + IFNULL(sum(t2.Quantity),0)-IFNULL(sum(t4.QuantityIssued),0)) as amount                                                         "
+					+" from t_customs_general_init t1                                                                                          "
+					+" left join t_customs_importsandexports t2                                                                                "
+					+" on t1.`No`=t2.`No`  and   substr(t2.EntryDate,1,7)='"+month+"'       "
+					+" left join t_customs_material_mapping t6 on t1.MaterialNo=t6.OldMaterialNo                         "
+					+" left join (                                                                                                             "
+					+" select IFNULL(tt2.NewMaterialNo,tt1.CimtasLongItemNo) newMarerialNo,tt1.TransQTY,tt1.OperationDate                    "
+					+" from t_customs_jde tt1 left join t_customs_material_mapping tt2 on tt1.CimtasLongItemNo=tt2.OldMaterialNo               "
+					+" ) t3 on t3.newMarerialNo=IFNULL(t6.NewMaterialNo,t1.JdeMaterialNo) and substr(t3.OperationDate,1,7)='"+month+"'                                "
+					+" left join t_customs_clearance t4 on t1.`No`=t4.`No` and substr(t4.BOMDate,1,7) = '"+month+"' "
+					+" left join t_customs_material t5 on t1.`No`=t5.`No`                                                  "
+					//+" where t1.`Month` = '"+month+"'                                                                                          "
+					+" group by                                                                                                                "
+					+" t1.MaterialNo,                                                                                                          "
+					+" t1.JdeMaterialNo,                                                                                                       "
+					+" t1.`No`,                                                                                                                "
+					+" t1.ProductNo,                                                                                                           "
+					+" t1.MaterialName,                                                                                                        "
+					+" t1.MaterialSpecification,                                                                                               "
+					+" t1.Unit,                                                                                                                "
+					+" t1.EarlyNumber                                                                                                          ";
+			earlyTable=" select 1 from t_customs_general_init t8 where  t8.`No`=t1.`No`";
+		
+		}
+		
 		
 		String sql=" select total.* from (         "
 				+" select                                                                                                                  "
@@ -401,7 +400,7 @@ public class CustomsGeneralBIZImpl  extends BizBase implements CustomsGeneralBIZ
 				+" left join t_dict t6 on t6.type='CUSTOMS_UNIT' and t6.`key`=t3.DeclareUnitCode                                           "
 				+" where substr(t1.EntryDate,1,7)='"+month+"'                                                                          "
 				+" and not EXISTS(                                                                                                         "
-				+" select 1 from t_customs_general t8 where t8.`Month`=substr(t1.EntryDate,1,7) and t8.`No`=t1.`No`        "
+				+ earlyTable
 				+" )                                                                                                                       "
 				+" group by                                                                                                                "
 				+" substr(t1.EntryDate,1,7) ,                                                                                          "
@@ -412,7 +411,7 @@ public class CustomsGeneralBIZImpl  extends BizBase implements CustomsGeneralBIZ
 				+" t3.MaterialName,                                                                                                        "
 				+" t3.Specification,                                                                                                       "
 				+" IFNULL(t6.`value`,t3.DeclareUnitCode)                                                                                   "
-				+ getEarlySQL(month)
+				+ earlySQL
 				+" ) total                                                                                                                 "
 				+ where
 				+" order by total.`No`                                                                                                     ";

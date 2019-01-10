@@ -200,7 +200,7 @@ public class CustomsClearanceBIZImpl  extends BizBase implements CustomsClearanc
 	
 	public boolean checkMaterialNo(CustomsClearance clearance) throws Exception{
 		try { 
-			List  list = commonDAO.queryByHql(" select count(1) from CustomsClearance where no='"+clearance.getNo()+"' and poseLongItemNo='"+clearance.getPoseLongItemNo()+"' and cimtasNo='"+clearance.getCimtasNo()+"' ");
+			List  list = commonDAO.queryByHql(" select count(1) from CustomsClearance where no='"+clearance.getNo()+"' and poseLongItemNo='"+clearance.getPoseLongItemNo()+"' and cimtasNo='"+clearance.getCimtasNo()+"' and longProjectNo='"+clearance.getLongProjectNo()+"'");
 			if (list.size()>0&&(long)list.get(0)>0) {
 				return false;
 			}else{
