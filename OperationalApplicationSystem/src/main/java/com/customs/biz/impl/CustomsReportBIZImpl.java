@@ -2,6 +2,7 @@ package com.customs.biz.impl;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,100 +24,26 @@ public class CustomsReportBIZImpl extends BizBase implements CustomsReportBIZ {
 	@Autowired
 	CommonDAO commonDAO;
 	
+
 	@Override
-	public List queryReport2(String where) {
-		String sql=" select T.* from (select A.orderNumber,  "
-				+ " A.cimtasCode,"
-				+ " coalesce(C.newMaterialNo,A.cimtasCode) as newCimtasCode, "
-				+ " sum(A.quantity) AS quantity,"
-				+ " sum(D.transQTY) AS transQTY ,"
-				+ " sum(coalesce(D.transQTY,0)-A.quantity) AS DValue "
-				+ " from t_customs_importsandexports A "
-				+ " left join t_customs_material_mapping C on "
-				+ " C.oldMaterialNo=A.cimtasCode "
-				+ " left join t_customs_jde D "
-				+ " on coalesce(C.newMaterialNo,A.cimtasCode)=D.cimtasLongItemNo " 
-				+ " group by A.orderNumber,A.cimtasCode,coalesce(C.newMaterialNo,A.cimtasCode) "
-				+ " order by A.orderNumber,A.cimtasCode,coalesce(C.newMaterialNo,A.cimtasCode)) T "+where;
+	public List queryReport(String sql) {
 		return commonDAO.queryBySql(sql);
 	}
 
 	@Override
-	public List queryReport2(String where, int pageSize, int pageCurrent) {
-		String sql=" select T.* from (select A.orderNumber,  "
-				+ " A.cimtasCode,"
-				+ " coalesce(C.newMaterialNo,A.cimtasCode) as newCimtasCode, "
-				+ " sum(A.quantity) AS quantity,"
-				+ " sum(D.transQTY) AS transQTY ,"
-				+ " sum(coalesce(D.transQTY,0)-A.quantity) AS DValue "
-				+ " from t_customs_importsandexports A "
-				+ " left join t_customs_material_mapping C on "
-				+ " C.oldMaterialNo=A.cimtasCode "
-				+ " left join t_customs_jde D "
-				+ " on coalesce(C.newMaterialNo,A.cimtasCode)=D.cimtasLongItemNo " 
-				+ " group by A.orderNumber,A.cimtasCode,coalesce(C.newMaterialNo,A.cimtasCode) "
-				+ " order by A.orderNumber,A.cimtasCode,coalesce(C.newMaterialNo,A.cimtasCode)) T "+where;
+	public List queryReport(String sql, int pageSize, int pageCurrent,String method) throws Exception {
 		List list=commonDAO.queryBySql(sql, pageSize, pageCurrent);
-		return dataToListR2(list);
-	}
-
-	@Override
-	public List queryReport1(String where) {
-		String hql=" select B.no,A.no,'1' ,"
-				+ " ROUND(sum(A.quantityIssued)/1000.0*(case when C.declareUnitCode='030' then 1 else 1000.0 end),3),"
-				+ " case when C.declareUnitCode='030' then '3' else '0' end,"
-				+ "'0',"
-				+ "'',"
-				+ "'100',"
-				+ "'3',"
-				+ "'20420701',"
-				+ "'',"
-				+ "A.batchNumber,"
-				+ "ROUND(sum(A.quantityIssued)*(1+(case when C.declareUnitCode='030' then 0.03 else 0 end))/(case when C.declareUnitCode='030' then 1000.0 else 1.0 end),2), "
-				+ "'' "
-				+ " from CustomsClearance A "
-				+ " left join CustomsProduct B "
-				+ " on A.shipmentIems=B.materialNo"
-				+ " left join CustomsMaterial C "
-				+ " on A.no=C.no "
-				+ where
-				+ " group by B.no,A.no,C.declareUnitCode,A.batchNumber order by B.no,A.no";
-		return commonDAO.queryByHql(hql);
-	}
-
-	@Override
-	public List queryReport1(String where, int pageSize, int pageCurrent) {
-		String hql=" select B.no,A.no,'1' ,"
-				+ " ROUND(sum(A.quantityIssued)/1000.0*(case when C.declareUnitCode='030' then 1 else 1000.0 end),3),"
-				+ " case when C.declareUnitCode='030' then '3' else '0' end,"
-				+ "'0',"
-				+ "'',"
-				+ "'100',"
-				+ "'3',"
-				+ "'20420701',"
-				+ "'',"
-				+ "A.batchNumber,"
-				+ "ROUND(sum(A.quantityIssued)*(1+(case when C.declareUnitCode='030' then 0.03 else 0 end))/(case when C.declareUnitCode='030' then 1000.0 else 1.0 end),2), "
-				+ "'' "
-				+ " from CustomsClearance A "
-				+ " left join CustomsProduct B "
-				+ " on A.shipmentIems=B.materialNo "
-				+ " left join CustomsMaterial C "
-				+ " on A.no=C.no "
-				+ where
-				+ " group by B.no,A.no,C.declareUnitCode,A.batchNumber order by B.no,A.no";
-		
-		List list=commonDAO.queryByHql(hql, pageSize, pageCurrent);
-		return dataToListR1(list);
+        Method getMethod = this.getClass().getMethod(method, List.class);
+		return (List) getMethod.invoke(this.getClass(), list);
 	}
 	
-	public List<CustomsReport1> dataToListR1(List list){
+	public static List<CustomsReport1> dataToListR1(List list){
 		List<CustomsReport1> lReport1s=new ArrayList<>();
 		for (Object object : list) {
 			Object[] tmp= (Object[]) object;
 			CustomsReport1 customsReport1=new CustomsReport1();
-			customsReport1.setColumen1((String)tmp[0]);
-			customsReport1.setColumen2((String)tmp[1]);
+			customsReport1.setColumen1(String.valueOf(tmp[0]));
+			customsReport1.setColumen2(String.valueOf(tmp[1]));
 			customsReport1.setColumen3((String)tmp[2]);
 			customsReport1.setColumen4(String.valueOf(tmp[3]));
 			customsReport1.setColumen5((String)tmp[4]);
@@ -136,7 +63,7 @@ public class CustomsReportBIZImpl extends BizBase implements CustomsReportBIZ {
 		
 	}
 	
-	public List<CustomsReport2> dataToListR2(List list){
+	public static List<CustomsReport2> dataToListR2(List list){
 		List<CustomsReport2> lReport2s=new ArrayList<>();
 		for (Object object : list) {
 			Object[] tmp= (Object[]) object;
@@ -154,9 +81,9 @@ public class CustomsReportBIZImpl extends BizBase implements CustomsReportBIZ {
 	
 	
 	@Override
-	public ByteArrayInputStream exportData(String hql, List<HeadColumn> lHeadColumns,String title, Class class1) throws Exception {
+	public ByteArrayInputStream exportData(String sql, List<HeadColumn> lHeadColumns,String title, Class class1) throws Exception {
 		
-		List list  = commonDAO.queryByHql(hql);
+		List list  = commonDAO.queryBySql(sql);
     	ByteArrayOutputStream os = ExcelUtil.exportExcel(title, class1, dataToListR1(list), "yyy-MM-dd",lHeadColumns);
     	byte[] fileContent = os.toByteArray();
     	return new ByteArrayInputStream(fileContent);	
