@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.struts2.convention.annotation.Action;
@@ -37,15 +38,127 @@ public class CustomsClearanceAction extends ActionBase {
 	@Autowired
 	CustomsClearanceBIZ clearanceBIZ;
 	
-	String BOMDate;
-	String batchNumber;
-	String no;
 	String id;
-	String poseLongItemNo;
+	String no;
+	String deliveryDate;
 	String shipmentIems;
+	String longProjectNo;
+	String cimtasNo;
+	String poseLongItemNo;
+	String oldItemNo;
+	String materialDescription;
+	String dia;
+	String sch;
+	String quantityOrdered;
+	String quantityIssued;
+	String weight;
+	String scn;
+	String orTy;
+	String orderNumber;
+	String manufacName;
 	String lotSerialNumber;
+	String batchNumber;
+	String operator;
+	String operationDate;
+	String BOMDate;
 	
 	
+	public String getDeliveryDate() {
+		return deliveryDate;
+	}
+	public void setDeliveryDate(String deliveryDate) {
+		this.deliveryDate = deliveryDate;
+	}
+	public String getLongProjectNo() {
+		return longProjectNo;
+	}
+	public void setLongProjectNo(String longProjectNo) {
+		this.longProjectNo = longProjectNo;
+	}
+	public String getCimtasNo() {
+		return cimtasNo;
+	}
+	public void setCimtasNo(String cimtasNo) {
+		this.cimtasNo = cimtasNo;
+	}
+	public String getOldItemNo() {
+		return oldItemNo;
+	}
+	public void setOldItemNo(String oldItemNo) {
+		this.oldItemNo = oldItemNo;
+	}
+	public String getMaterialDescription() {
+		return materialDescription;
+	}
+	public void setMaterialDescription(String materialDescription) {
+		this.materialDescription = materialDescription;
+	}
+	public String getDia() {
+		return dia;
+	}
+	public void setDia(String dia) {
+		this.dia = dia;
+	}
+	public String getSch() {
+		return sch;
+	}
+	public void setSch(String sch) {
+		this.sch = sch;
+	}
+	public String getQuantityOrdered() {
+		return quantityOrdered;
+	}
+	public void setQuantityOrdered(String quantityOrdered) {
+		this.quantityOrdered = quantityOrdered;
+	}
+	public String getQuantityIssued() {
+		return quantityIssued;
+	}
+	public void setQuantityIssued(String quantityIssued) {
+		this.quantityIssued = quantityIssued;
+	}
+	public String getWeight() {
+		return weight;
+	}
+	public void setWeight(String weight) {
+		this.weight = weight;
+	}
+	public String getScn() {
+		return scn;
+	}
+	public void setScn(String scn) {
+		this.scn = scn;
+	}
+	public String getOrTy() {
+		return orTy;
+	}
+	public void setOrTy(String orTy) {
+		this.orTy = orTy;
+	}
+	public String getOrderNumber() {
+		return orderNumber;
+	}
+	public void setOrderNumber(String orderNumber) {
+		this.orderNumber = orderNumber;
+	}
+	public String getManufacName() {
+		return manufacName;
+	}
+	public void setManufacName(String manufacName) {
+		this.manufacName = manufacName;
+	}
+	public String getOperator() {
+		return operator;
+	}
+	public void setOperator(String operator) {
+		this.operator = operator;
+	}
+	public String getOperationDate() {
+		return operationDate;
+	}
+	public void setOperationDate(String operationDate) {
+		this.operationDate = operationDate;
+	}
 	public String getLotSerialNumber() {
 		return lotSerialNumber;
 	}
@@ -139,25 +252,8 @@ public class CustomsClearanceAction extends ActionBase {
 					"inputName", "reslutJson"
 			})})
 	public String customsClearanceBOMDate() throws UnsupportedEncodingException{
-		String where=" where 1=1 ";
-		if (!"".equals(batchNumber)&&batchNumber!=null) {
-			where+=" AND batchNumber like '%"+batchNumber+"%' ";
-		}
-		if (!"".equals(no)&&no!=null) {
-			where+=" AND no = '"+no+"' ";
-		}
-		if (!"".equals(poseLongItemNo)&&poseLongItemNo!=null) {
-			where+=" AND poseLongItemNo like '%"+poseLongItemNo+"%' ";
-		}
-		if (!"".equals(shipmentIems)&&shipmentIems!=null) {
-			where+=" AND shipmentIems like '%"+shipmentIems+"%' ";
-		}
-		if (!"".equals(lotSerialNumber)&&lotSerialNumber!=null) {
-			where+=" AND lotSerialNumber like '%"+lotSerialNumber+"%' ";
-		}
 		
-		
-		String r=clearanceBIZ.customsClearanceBOMDate(where, BOMDate);
+		String r=clearanceBIZ.customsClearanceBOMDate(getQueryWhere(), BOMDate);
 		if (r==null) {
 			result.setMessage("Success!");
 			result.setStatusCode("200");
@@ -174,26 +270,9 @@ public class CustomsClearanceAction extends ActionBase {
 					"inputName", "reslutJson"
 			})})
 	public String queryCustomsClearance() throws UnsupportedEncodingException{	
-		String where=" where 1=1";
-		
-		if (!"".equals(batchNumber)&&batchNumber!=null) {
-			where+=" AND batchNumber like '%"+batchNumber+"%' ";
-		}
-		if (!"".equals(no)&&no!=null) {
-			where+=" AND no = '"+no+"' ";
-		}
-		if (!"".equals(poseLongItemNo)&&poseLongItemNo!=null) {
-			where+=" AND poseLongItemNo like '%"+poseLongItemNo+"%' ";
-		}
-		if (!"".equals(shipmentIems)&&shipmentIems!=null) {
-			where+=" AND shipmentIems like '%"+shipmentIems+"%' ";
-		}
-		if (!"".equals(lotSerialNumber)&&lotSerialNumber!=null) {
-			where+=" AND lotSerialNumber like '%"+lotSerialNumber+"%' ";
-		}
-		
-		List list  =clearanceBIZ.query(where, Integer.parseInt(pageSize),Integer.parseInt(pageCurrent));
-		int total=clearanceBIZ.query(where).size();
+
+		List list  =clearanceBIZ.query(getQueryWhere(), Integer.parseInt(pageSize),Integer.parseInt(pageCurrent));
+		int total=clearanceBIZ.query(getQueryWhere()).size();
 		
 		queryResult.setList(list);
 		queryResult.setTotalRow(total);
@@ -206,7 +285,7 @@ public class CustomsClearanceAction extends ActionBase {
 		
 		reslutJson=new ByteArrayInputStream(r.getBytes("UTF-8"));  
 		
-		logUtil.logInfo("查询进（进出口）数据，条件:"+where);
+		logUtil.logInfo("查询进（进出口）数据，条件:"+getQueryWhere());
 		return SUCCESS;
 	}
 	
@@ -221,25 +300,8 @@ public class CustomsClearanceAction extends ActionBase {
     public String exportCustomsClearance() {
         try {
         	List<HeadColumn> lHeadColumns=new Gson().fromJson(thead, new TypeToken<ArrayList<HeadColumn>>() {}.getType());
-        	String where=" where 1=1";
     		
-    		if (!"".equals(batchNumber)&&batchNumber!=null) {
-    			where+=" AND batchNumber like '%"+batchNumber+"%' ";
-    		}
-    		if (!"".equals(no)&&no!=null) {
-    			where+=" AND no = '"+no+"' ";
-    		}
-    		if (!"".equals(poseLongItemNo)&&poseLongItemNo!=null) {
-    			where+=" AND poseLongItemNo like '%"+poseLongItemNo+"%' ";
-    		}
-    		if (!"".equals(shipmentIems)&&shipmentIems!=null) {
-    			where+=" AND shipmentIems like '%"+shipmentIems+"%' ";
-    		}
-    		if (!"".equals(lotSerialNumber)&&lotSerialNumber!=null) {
-    			where+=" AND lotSerialNumber like '%"+lotSerialNumber+"%' ";
-    		}
-    		
-        	ByteArrayInputStream  is = clearanceBIZ.exportData(where,lHeadColumns);
+        	ByteArrayInputStream  is = clearanceBIZ.exportData(getQueryWhere(),lHeadColumns);
         	
         	HttpServletResponse response = (HttpServletResponse)
         			ActionContext.getContext().get(org.apache.struts2.StrutsStatics.HTTP_RESPONSE);
@@ -289,5 +351,80 @@ public class CustomsClearanceAction extends ActionBase {
         reslutJson=new ByteArrayInputStream(new Gson().toJson(result).getBytes("UTF-8"));  
     	return SUCCESS;
     }
+	
+	
+	public String getQueryWhere() {
+		
+		String where =" where 1=1 ";
+		if (no!=null&&!no.equals("")) {
+			where+= " and no like '%"+no+"%' ";
+		}
+		if (deliveryDate!=null&&!deliveryDate.equals("")) {
+			where+= " and deliveryDate like '%"+deliveryDate+"%' ";
+		}
+		if (shipmentIems!=null&&!shipmentIems.equals("")) {
+			where+= " and shipmentIems like '%"+shipmentIems+"%' ";
+		}
+		if (longProjectNo!=null&&!longProjectNo.equals("")) {
+			where+= " and longProjectNo like '%"+longProjectNo+"%' ";
+		}
+		if (cimtasNo!=null&&!cimtasNo.equals("")) {
+			where+= " and cimtasNo like '%"+cimtasNo+"%' ";
+		}
+		if (poseLongItemNo!=null&&!poseLongItemNo.equals("")) {
+			where+= " and poseLongItemNo like '%"+poseLongItemNo+"%' ";
+		}
+		if (oldItemNo!=null&&!oldItemNo.equals("")) {
+			where+= " and oldItemNo like '%"+oldItemNo+"%' ";
+		}
+		if (materialDescription!=null&&!materialDescription.equals("")) {
+			where+= " and materialDescription like '%"+materialDescription+"%' ";
+		}
+		if (dia!=null&&!dia.equals("")) {
+			where+= " and dia like '%"+dia+"%' ";
+		}
+		if (sch!=null&&!sch.equals("")) {
+			where+= " and sch like '%"+sch+"%' ";
+		}
+		if (quantityOrdered!=null&&!quantityOrdered.equals("")) {
+			where+= " and quantityOrdered like '%"+quantityOrdered+"%' ";
+		}
+		if (quantityIssued!=null&&!quantityIssued.equals("")) {
+			where+= " and quantityIssued like '%"+quantityIssued+"%' ";
+		}
+		if (weight!=null&&!weight.equals("")) {
+			where+= " and weight like '%"+weight+"%' ";
+		}
+		if (scn!=null&&!scn.equals("")) {
+			where+= " and scn like '%"+scn+"%' ";
+		}
+		if (orTy!=null&&!orTy.equals("")) {
+			where+= " and orTy like '%"+orTy+"%' ";
+		}
+		if (orderNumber!=null&&!orderNumber.equals("")) {
+			where+= " and orderNumber like '%"+orderNumber+"%' ";
+		}
+		if (manufacName!=null&&!manufacName.equals("")) {
+			where+= " and manufacName like '%"+manufacName+"%' ";
+		}
+		if (lotSerialNumber!=null&&!lotSerialNumber.equals("")) {
+			where+= " and lotSerialNumber like '%"+lotSerialNumber+"%' ";
+		}
+		if (batchNumber!=null&&!batchNumber.equals("")) {
+			where+= " and batchNumber like '%"+batchNumber+"%' ";
+		}
+		if (operator!=null&&!operator.equals("")) {
+			where+= " and operator like '%"+operator+"%' ";
+		}
+		if (operationDate!=null&&!operationDate.equals("")) {
+			where+= " and operationDate like '%"+operationDate+"%' ";
+		}
+		if (BOMDate!=null&&!BOMDate.equals("")) {
+			where+= " and BOMDate like '%"+BOMDate+"%' ";
+		}
+		where += " order by operationDate desc";
+		return where;
+		
+	}
 	
 }

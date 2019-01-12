@@ -383,7 +383,7 @@ public class CustomsJDEAction extends ActionBase {
 		if (businessUnit!=null&&!businessUnit.equals("")) {
 			where+= " and businessUnit like '%"+businessUnit+"%' ";
 		}
-		
+		where += " order by operationDate desc";
 		
 		return where;
 	}

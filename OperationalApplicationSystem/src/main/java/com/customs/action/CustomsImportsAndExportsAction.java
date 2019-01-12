@@ -407,7 +407,7 @@ public class CustomsImportsAndExportsAction extends ActionBase {
 		if (batchNumber!=null&&!batchNumber.equals("")) {
 			where+= " and batchNumber like '%"+batchNumber+"%' ";
 		}
-		
+		where +=" order by operationDate desc";
 		
 		
 		return where;
