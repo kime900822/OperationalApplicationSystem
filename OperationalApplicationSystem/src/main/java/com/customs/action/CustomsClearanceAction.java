@@ -357,19 +357,19 @@ public class CustomsClearanceAction extends ActionBase {
 		
 		String where =" where 1=1 ";
 		if (no!=null&&!no.equals("")) {
-			where+= " and no like '%"+no+"%' ";
+			where+= " and no = '"+no+"' ";
 		}
 		if (deliveryDate!=null&&!deliveryDate.equals("")) {
 			where+= " and deliveryDate like '%"+deliveryDate+"%' ";
 		}
 		if (shipmentIems!=null&&!shipmentIems.equals("")) {
-			where+= " and shipmentIems like '%"+shipmentIems+"%' ";
+			where+= " and shipmentIems = '"+shipmentIems+"' ";
 		}
 		if (longProjectNo!=null&&!longProjectNo.equals("")) {
-			where+= " and longProjectNo like '%"+longProjectNo+"%' ";
+			where+= " and longProjectNo = '"+longProjectNo+"' ";
 		}
 		if (cimtasNo!=null&&!cimtasNo.equals("")) {
-			where+= " and cimtasNo like '%"+cimtasNo+"%' ";
+			where+= " and cimtasNo = '"+cimtasNo+"' ";
 		}
 		if (poseLongItemNo!=null&&!poseLongItemNo.equals("")) {
 			where+= " and poseLongItemNo like '%"+poseLongItemNo+"%' ";

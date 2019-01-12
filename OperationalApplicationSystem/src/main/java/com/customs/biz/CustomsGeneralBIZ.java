@@ -26,5 +26,7 @@ public interface CustomsGeneralBIZ {
 	String deleteData(String month) throws Exception;
 
 	ByteArrayInputStream exportData(String month, String where, List<HeadColumn> lHeadColumns) throws Exception;
+	
+	String getSQL(String month,String where) throws Exception;
 
 }

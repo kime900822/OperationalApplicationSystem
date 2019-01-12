@@ -264,6 +264,7 @@ public class CustomsGeneralBIZImpl  extends BizBase implements CustomsGeneralBIZ
 		
 	}
 	
+	@Override
 	public String getSQL(String month,String where) throws Exception {
 		boolean flag=false;
 		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM");
@@ -302,7 +303,7 @@ public class CustomsGeneralBIZImpl  extends BizBase implements CustomsGeneralBIZ
 					+ " null as warehouseVolume,"
 					+ " IFNULL(MAX(t2.unitPriceUSD),t1.price) as price, "
 					+ " t1.currency,   "
-					+ " IFNULL(MAX(t2.unitPriceUSD),t1.price) * (t1.EarlyNumber+IFNULL(sum(t2.Quantity),0)-IFNULL(sum(t4.quantityIssued)*(1+(case when t5.declareUnitCode='030' then 0.03 else 0 end))/(case when t5.declareUnitCode='030' then 1000.0 else 1.0 end),0)) as amount               "
+					+ " round(IFNULL(MAX(t2.unitPriceUSD),t1.price) * (t1.EarlyNumber+IFNULL(sum(t2.Quantity),0)-IFNULL(sum(t4.quantityIssued)*(1+(case when t5.declareUnitCode='030' then 0.03 else 0 end))/(case when t5.declareUnitCode='030' then 1000.0 else 1.0 end),0)),2) as amount               "
 					+" from CustomsGeneral t1                                                                                          "
 					+" left join t_customs_importsandexports t2                                                                                "
 					+" on t1.`No`=t2.`No` and t1.`Month`=substr(t2.EntryDate,1,7)                                                          "
@@ -348,7 +349,7 @@ public class CustomsGeneralBIZImpl  extends BizBase implements CustomsGeneralBIZ
 					+ " null as warehouseVolume,"
 					+ " IFNULL(MAX(t2.unitPriceUSD),t1.price) price,"
 					+ " t1.currency,   "
-					+ " IFNULL(MAX(t2.unitPriceUSD),t1.price) * (t1.EarlyNumber + IFNULL(sum(t2.Quantity),0)-IFNULL(sum(t4.quantityIssued)*(1+(case when t5.declareUnitCode='030' then 0.03 else 0 end))/(case when t5.declareUnitCode='030' then 1000.0 else 1.0 end),0)) as amount                                                         "
+					+ " round(IFNULL(MAX(t2.unitPriceUSD),t1.price) * (t1.EarlyNumber + IFNULL(sum(t2.Quantity),0)-IFNULL(sum(t4.quantityIssued)*(1+(case when t5.declareUnitCode='030' then 0.03 else 0 end))/(case when t5.declareUnitCode='030' then 1000.0 else 1.0 end),0)),2) as amount                                                         "
 					+" from t_customs_general_init t1                                                                                          "
 					+" left join t_customs_importsandexports t2                                                                                "
 					+" on t1.`No`=t2.`No`  and   substr(t2.EntryDate,1,7)='"+month+"'       "
@@ -394,7 +395,7 @@ public class CustomsGeneralBIZImpl  extends BizBase implements CustomsGeneralBIZ
 				+ " null as warehouseVolume,"
 				+ " t1.unitPriceUSD as price,"
 				+ " 'USD' AS currency,   "
-				+ "t1.unitPriceUSD*(IFNULL(sum(t1.Quantity),0)-IFNULL(sum(t2.quantityIssued)*(1+(case when t3.declareUnitCode='030' then 0.03 else 0 end))/(case when t3.declareUnitCode='030' then 1000.0 else 1.0 end),0)) as amount                                                         "
+				+ "round(t1.unitPriceUSD*(IFNULL(sum(t1.Quantity),0)-IFNULL(sum(t2.quantityIssued)*(1+(case when t3.declareUnitCode='030' then 0.03 else 0 end))/(case when t3.declareUnitCode='030' then 1000.0 else 1.0 end),0)),2) as amount                                                         "
 				+" FROM t_customs_importsandexports t1                                                                                     "
 				+" left join t_customs_clearance t2 on t1.`No`=t2.`No`                                                                     "
 				+" and substr(t1.EntryDate,1,7) = substr(t2.BOMDate,1,7)                                                         "

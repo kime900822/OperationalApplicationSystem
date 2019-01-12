@@ -12,18 +12,23 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.struts2.convention.annotation.Action;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.customs.biz.CustomsGeneralBIZ;
 import com.customs.biz.CustomsReportBIZ;
 import com.customs.model.CustomsReport1;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.kime.base.ActionBase;
 import com.kime.model.HeadColumn;
+import com.kime.utils.CommonUtil;
 import com.opensymphony.xwork2.ActionContext;
 
 public class CustomsReportAction extends ActionBase {
 
 	@Autowired
 	CustomsReportBIZ customsReportBIZ;
+	@Autowired
+	CustomsGeneralBIZ customsGeneralBIZ;
+	
 	
 	String materialNo;
 	String productNo;
@@ -230,7 +235,7 @@ public class CustomsReportAction extends ActionBase {
 		return sql;
 	}
 	
-	public String getReport1SQl() {
+	public String getReport1SQl() throws Exception {
 		
        	String where=" where 1=1 ";
     		if (!"".equals(materialNo)&&materialNo!=null) {
@@ -255,7 +260,7 @@ public class CustomsReportAction extends ActionBase {
     				+ "A.batchNumber AS  columen12,"
     				+ "case when C.declareUnitCode='030' then FORMAT(ROUND(sum(A.quantityIssued)*(1+(case when C.declareUnitCode='030' then 0.03 else 0 end))/(case when C.declareUnitCode='030' then 1000.0 else 1.0 end),4),4) "
     				+ " else FORMAT(ROUND(sum(A.quantityIssued)*(1+(case when C.declareUnitCode='030' then 0.03 else 0 end))/(case when C.declareUnitCode='030' then 1000.0 else 1.0 end),2),2) END AS columen13,"
-    				+ " '' as columen14"
+    				+ " (select total.RegulatoryInventory from ("+customsGeneralBIZ.getSQL(CommonUtil.getMonth(), "")+") total where total.`no`=A.`no`) as columen14"
     				+ " from t_customs_clearance A "
     				+ " left join t_customs_product B "
     				+ " on A.shipmentIems=B.materialNo"
