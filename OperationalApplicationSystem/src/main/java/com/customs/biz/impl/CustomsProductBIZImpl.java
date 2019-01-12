@@ -108,7 +108,15 @@ public class CustomsProductBIZImpl extends BizBase implements CustomsProductBIZ{
 				String date=CommonUtil.getDate();
 				for (CustomsProduct customsProduct : lCustomsProducts) {
 					customsProduct.setBatchNumber(batchNumber);
-					customsProduct.setNo(String.valueOf(max++));
+					if(customsProduct.getNo()==null||customsProduct.getNo().equals("")||
+							(!customsProduct.getNo().equals("99991")
+									&&!customsProduct.getNo().equals("99992")
+									&&!customsProduct.getNo().equals("99993")
+									&&!customsProduct.getNo().equals("99994")
+									&&!customsProduct.getNo().equals("99995")))
+					{
+						customsProduct.setNo(String.valueOf(max++));
+					}
 					customsProduct.setUploadDate(date);
 					customsProduct.setUploadOperator(user.getUid());
 					
