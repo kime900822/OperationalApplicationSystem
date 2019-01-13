@@ -64,7 +64,7 @@
         gridTitle : '期初数据导入',
         dataType: 'jsonp',
         showToolbar: true,
-        toolbarItem: 'refresh,|,import',
+        toolbarItem: 'refresh,|,import,export',
         dataUrl: 'customs/queryCustomsGeneralInit.action',
         fieldSortable: false,
         filterThead: false,
@@ -72,7 +72,8 @@
         paging: true,
         contextMenuB: true,
         hScrollbar: true,
-        importOption: {type:'dialog', options:{url:'customs/general/init/initdata-import.html', width:500, height:300, title:'Import materials'}}
+        importOption: {type:'dialog', options:{url:'customs/general/init/initdata-import.html', width:500, height:300, title:'Import materials'},
+        exportOption: {type:'file', options:{url:'customs/exportCustomsGeneralInit.action', loadingmask:true,queryForm:$.CurrentNavtab.find('#datagrid-customs-general-init-query')}}
     }">
         <thead>
             <tr>

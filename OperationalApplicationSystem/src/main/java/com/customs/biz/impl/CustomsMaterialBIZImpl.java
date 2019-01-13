@@ -154,6 +154,10 @@ public class CustomsMaterialBIZImpl extends BizBase implements CustomsMaterialBI
 		return customsMaterialDAO.query(" where materialNo='"+materialNo+"'");
 	}
 
+	@Override
+	public List getByNewMaterialNo(String materialNo) {
+		return customsMaterialDAO.query(" where materialNo=IFNULL((select newMaterialNo from CustomsMaterialMapping where oldMaterialNo='"+materialNo+"'),'"+materialNo+"') ");         
+	}
 	
 	@Override
 	public CustomsMaterial getByNo(String no) {

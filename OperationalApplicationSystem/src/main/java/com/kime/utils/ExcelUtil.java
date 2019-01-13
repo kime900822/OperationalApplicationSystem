@@ -380,7 +380,7 @@ public static <T>ByteArrayOutputStream  exportExcel(String title, Class class1, 
                 Object value = getMethod.invoke(t, new Object[] {});
                 // 判断值的类型后进行强制类型转换
                 String textValue = null;
-                if (value==null) {
+                if (value==null||value.equals("null")) {
                     value="";
                 }
                 if (value instanceof Boolean) {

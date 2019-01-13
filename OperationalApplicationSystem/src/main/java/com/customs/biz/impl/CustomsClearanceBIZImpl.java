@@ -81,7 +81,7 @@ public class CustomsClearanceBIZImpl  extends BizBase implements CustomsClearanc
 			if (lClearances.size()>0) {
 				for (CustomsClearance clearance : lClearances) {
 
-					List<CustomsMaterial> lsCustomsMaterials=customsMaterialBIZ.getByMaterialNo(clearance.getPoseLongItemNo());
+					List<CustomsMaterial> lsCustomsMaterials=customsMaterialBIZ.getByNewMaterialNo(clearance.getPoseLongItemNo());
 					if (lsCustomsMaterials.size()>1) {
 						logUtil.logError(CustomsClearanceHelp.title,"导入报错："+clearance.getCimtasNo()+"料号维护表存在2个相同的料号:"+clearance.getPoseLongItemNo());
 						throw new Exception("导入报错："+clearance.getCimtasNo()+"料号维护表存在2个相同的料号:"+clearance.getPoseLongItemNo());

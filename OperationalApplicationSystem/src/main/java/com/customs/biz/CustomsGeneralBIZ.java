@@ -27,6 +27,8 @@ public interface CustomsGeneralBIZ {
 
 	ByteArrayInputStream exportData(String month, String where, List<HeadColumn> lHeadColumns) throws Exception;
 	
+	ByteArrayInputStream exportData4Init(List list, List<HeadColumn> lHeadColumns) throws Exception;
+	
 	String getSQL(String month,String where) throws Exception;
 
 }

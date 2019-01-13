@@ -88,6 +88,17 @@ public class CustomsGeneralBIZImpl  extends BizBase implements CustomsGeneralBIZ
     	byte[] fileContent = os.toByteArray();
     	return new ByteArrayInputStream(fileContent);	
 	}
+	
+	
+	
+
+	@Override
+	public ByteArrayInputStream exportData4Init(List list, List<HeadColumn> lHeadColumns) throws Exception {
+		Class c = (Class) new CustomsGeneralInit().getClass();  
+    	ByteArrayOutputStream os = ExcelUtil.exportExcel("CustomsGeneralInit", c, list, "yyy-MM-dd",lHeadColumns);
+    	byte[] fileContent = os.toByteArray();
+    	return new ByteArrayInputStream(fileContent);	
+	}
 
 	@Override
 	@Transactional(readOnly=false,propagation=Propagation.REQUIRED,rollbackFor=Exception.class )
@@ -294,16 +305,14 @@ public class CustomsGeneralBIZImpl  extends BizBase implements CustomsGeneralBIZ
 					+" t1.MaterialSpecification,                                                                                               "
 					+" t1.Unit,                                                                                                                "
 					+" CASE when t1.Unit='米' then FORMAT(t1.EarlyNumber,4) else FORMAT(t1.EarlyNumber,2) END AS EarlyNumber,          "
-					+" CASE when t1.Unit='米' then FORMAT(IFNULL(sum(t2.Quantity),0),4) else FORMAT(IFNULL(sum(t2.Quantity),0),2) end as IncomingVolume,                 "
+					+" t2.ID,"
+					+" t2.Quantity,        "
 					+" CASE when t1.Unit='米' then FORMAT(ROUND(sum(t4.quantityIssued)*(1+(case when t5.declareUnitCode='030' then 0.03 else 0 end))/(case when t5.declareUnitCode='030' then 1000.0 else 1.0 end),4),4) "
-					+" else FORMAT(ROUND(sum(t4.quantityIssued)*(1+(case when t5.declareUnitCode='030' then 0.03 else 0 end))/(case when t5.declareUnitCode='030' then 1000.0 else 1.0 end),2),2) end as WriteOffVolume,                                                                               "
-					+" CASE when t1.Unit='米' then FORMAT(t1.EarlyNumber+IFNULL(sum(t2.Quantity),0)-IFNULL(sum(t4.quantityIssued)*(1+(case when t5.declareUnitCode='030' then 0.03 else 0 end))/(case when t5.declareUnitCode='030' then 1000.0 else 1.0 end),0),4)"
-					+" else FORMAT(t1.EarlyNumber+IFNULL(sum(t2.Quantity),0)-IFNULL(sum(t4.quantityIssued)*(1+(case when t5.declareUnitCode='030' then 0.03 else 0 end))/(case when t5.declareUnitCode='030' then 1000.0 else 1.0 end),0),2) as RegulatoryInventory,                       "
+					+" else FORMAT(ROUND(sum(t4.quantityIssued)*(1+(case when t5.declareUnitCode='030' then 0.03 else 0 end))/(case when t5.declareUnitCode='030' then 1000.0 else 1.0 end),2),2) end as WriteOffVolume,  "
 					+ " null as pickingVolume,"
 					+ " null as warehouseVolume,"
 					+ " IFNULL(MAX(t2.unitPriceUSD),t1.price) as price, "
-					+ " t1.currency,   "
-					+ " round(IFNULL(MAX(t2.unitPriceUSD),t1.price) * (t1.EarlyNumber+IFNULL(sum(t2.Quantity),0)-IFNULL(sum(t4.quantityIssued)*(1+(case when t5.declareUnitCode='030' then 0.03 else 0 end))/(case when t5.declareUnitCode='030' then 1000.0 else 1.0 end),0)),2) as amount               "
+					+ " t1.currency  "
 					+" from CustomsGeneral t1                                                                                          "
 					+" left join t_customs_importsandexports t2                                                                                "
 					+" on t1.`No`=t2.`No` and t1.`Month`=substr(t2.EntryDate,1,7)                                                          "
@@ -325,7 +334,8 @@ public class CustomsGeneralBIZImpl  extends BizBase implements CustomsGeneralBIZ
 					+" t1.MaterialName,                                                                                                        "
 					+" t1.MaterialSpecification,                                                                                               "
 					+" t1.Unit,                                                                                                                "
-					+" t1.EarlyNumber                                                                                                          ";
+					+" t1.EarlyNumber, "
+					+ "T2.Id,T2.Quantity                                                                                                         ";
 			earlyTable=" select 1 from t_customs_general t8 where t8.`Month`=substr(t1.EntryDate,1,7) and t8.`No`=t1.`No` ";
 		}else {
 			
@@ -340,16 +350,14 @@ public class CustomsGeneralBIZImpl  extends BizBase implements CustomsGeneralBIZ
 					+" t1.MaterialSpecification,                                                                                               "
 					+" t1.Unit,                                                                                                                "
 					+" CASE when t1.Unit='米' then FORMAT(t1.EarlyNumber,4) else FORMAT(t1.EarlyNumber,2) END AS EarlyNumber,          "
-					+" CASE when t1.Unit='米' then FORMAT(IFNULL(sum(t2.Quantity),0),4) else FORMAT(IFNULL(sum(t2.Quantity),0),2) end as IncomingVolume,                                                                                     "
+					+" t2.ID ,   "
+					+" t2.Quantity,                                                                                "
 					+" CASE when t1.Unit='米' then FORMAT(ROUND(sum(t4.quantityIssued)*(1+(case when t5.declareUnitCode='030' then 0.03 else 0 end))/(case when t5.declareUnitCode='030' then 1000.0 else 1.0 end),4),4) "
 					+" else FORMAT(ROUND(sum(t4.quantityIssued)*(1+(case when t5.declareUnitCode='030' then 0.03 else 0 end))/(case when t5.declareUnitCode='030' then 1000.0 else 1.0 end),2),2) end as WriteOffVolume,                                                                               "
-					+" CASE when t1.Unit='米' then FORMAT(t1.EarlyNumber + IFNULL(sum(t2.Quantity),0)-IFNULL(sum(t4.quantityIssued)*(1+(case when t5.declareUnitCode='030' then 0.03 else 0 end))/(case when t5.declareUnitCode='030' then 1000.0 else 1.0 end),0),4)"
-					+" else FORMAT(t1.EarlyNumber + IFNULL(sum(t2.Quantity),0)-IFNULL(sum(t4.quantityIssued)*(1+(case when t5.declareUnitCode='030' then 0.03 else 0 end))/(case when t5.declareUnitCode='030' then 1000.0 else 1.0 end),0),2) end as RegulatoryInventory,                          "
 					+ " null as pickingVolume,"
 					+ " null as warehouseVolume,"
 					+ " IFNULL(MAX(t2.unitPriceUSD),t1.price) price,"
-					+ " t1.currency,   "
-					+ " round(IFNULL(MAX(t2.unitPriceUSD),t1.price) * (t1.EarlyNumber + IFNULL(sum(t2.Quantity),0)-IFNULL(sum(t4.quantityIssued)*(1+(case when t5.declareUnitCode='030' then 0.03 else 0 end))/(case when t5.declareUnitCode='030' then 1000.0 else 1.0 end),0)),2) as amount                                                         "
+					+ " t1.currency   "
 					+" from t_customs_general_init t1                                                                                          "
 					+" left join t_customs_importsandexports t2                                                                                "
 					+" on t1.`No`=t2.`No`  and   substr(t2.EntryDate,1,7)='"+month+"'       "
@@ -369,13 +377,45 @@ public class CustomsGeneralBIZImpl  extends BizBase implements CustomsGeneralBIZ
 					+" t1.MaterialName,                                                                                                        "
 					+" t1.MaterialSpecification,                                                                                               "
 					+" t1.Unit,                                                                                                                "
-					+" t1.EarlyNumber                                                                                                          ";
+					+" t1.EarlyNumber,      "
+					+ "T2.Id,T2.Quantity                                                                                                    ";
 			earlyTable=" select 1 from t_customs_general_init t8 where  t8.`No`=t1.`No`";
 		
 		}
 		
 		
-		String sql=" select total.* from (         "
+		String sql=" select total.total.`Month`,"
+				+ "total.MaterialNo,"
+				+ "total.JdeMaterialNo,"
+				+ "total.`No`,"
+				+ "total.ProductNo,"
+				+ "total.MaterialName,"
+				+ "total.MaterialSpecification,"
+				+ "total.Unit,"
+				+ "total.EarlyNumber,"
+				+ "CASE " 
+				+ "when total.Unit='米' then FORMAT(IFNULL(sum(total.Quantity)," 
+				+ " 0)," 
+				+ " 4) " 
+				+ " else FORMAT(IFNULL(sum(total.Quantity)," 
+				+ " 0)," 
+				+ " 2) " 
+				+ " end as IncomingVolume,"
+				+ " total.WriteOffVolume,"
+				+ "CASE "  
+				+ "when total.Unit='米' then FORMAT(total.EarlyNumber + IFNULL(sum(total.Quantity)," 
+				+ " 0)-total.WriteOffVolume," 
+				+ " 4) " 
+				+ " else FORMAT(total.EarlyNumber + IFNULL(sum(total.Quantity)," 
+				+ " 0)-total.WriteOffVolume," 
+				+ " 2) " 
+				+ " end as RegulatoryInventory,"
+				+ "total.pickingVolume,"
+				+ "total.warehouseVolume,"
+				+ "total.price,"
+				+ "total.currency,"
+				+ "round(total.price*(total.EarlyNumber + IFNULL(sum(total.Quantity),0)-total.WriteOffVolume),2) AS amount"
+				+ " from (         "
 				+" select                                                                                                                  "
 				+" substr(t1.EntryDate,1,7) AS `Month`,                                                                                "
 				+" t3.MaterialNo,                                                                                                          "
@@ -386,16 +426,14 @@ public class CustomsGeneralBIZImpl  extends BizBase implements CustomsGeneralBIZ
 				+" t3.Specification as MaterialSpecification,                                                                              "
 				+" IFNULL(t6.`value`,t3.DeclareUnitCode) as Unit,                                                                          "
 				+" CASE When t6.`value`='米' or t3.declareUnitCode='030' then FORMAT(0,4) else FORMAT(0,2) end as EarlyNumber,                                                                                                       "
-				+" CASE When t6.`value`='米' or t3.declareUnitCode='030' then FORMAT(IFNULL(sum(t1.Quantity),0),4) else FORMAT(IFNULL(sum(t1.Quantity),0),2) END as IncomingVolume,                                                                                     "
+				+" t1.Id,"
+				+" t1.Quantity ,"
 				+" CASE When t6.`value`='米' or t3.declareUnitCode='030' then FORMAT(ROUND(sum(t2.quantityIssued)*(1+(case when t3.declareUnitCode='030' then 0.03 else 0 end))/(case when t3.declareUnitCode='030' then 1000.0 else 1.0 end),4),4) "
 				+" else FORMAT(ROUND(sum(t2.quantityIssued)*(1+(case when t3.declareUnitCode='030' then 0.03 else 0 end))/(case when t3.declareUnitCode='030' then 1000.0 else 1.0 end),2),2) end as WriteOffVolume,                                                                               "
-				+" CASE When t6.`value`='米' or t3.declareUnitCode='030' then FORMAT(IFNULL(sum(t1.Quantity),0)-IFNULL(sum(t2.quantityIssued)*(1+(case when t3.declareUnitCode='030' then 0.03 else 0 end))/(case when t3.declareUnitCode='030' then 1000.0 else 1.0 end),0),4) "
-				+ " else FORMAT(IFNULL(sum(t1.Quantity),0)-IFNULL(sum(t2.quantityIssued)*(1+(case when t3.declareUnitCode='030' then 0.03 else 0 end))/(case when t3.declareUnitCode='030' then 1000.0 else 1.0 end),0),2) end as RegulatoryInventory, "
 				+ " null as pickingVolume,"
 				+ " null as warehouseVolume,"
 				+ " t1.unitPriceUSD as price,"
-				+ " 'USD' AS currency,   "
-				+ "round(t1.unitPriceUSD*(IFNULL(sum(t1.Quantity),0)-IFNULL(sum(t2.quantityIssued)*(1+(case when t3.declareUnitCode='030' then 0.03 else 0 end))/(case when t3.declareUnitCode='030' then 1000.0 else 1.0 end),0)),2) as amount                                                         "
+				+ " 'USD' AS currency   "
 				+" FROM t_customs_importsandexports t1                                                                                     "
 				+" left join t_customs_clearance t2 on t1.`No`=t2.`No`                                                                     "
 				+" and substr(t1.EntryDate,1,7) = substr(t2.BOMDate,1,7)                                                         "
@@ -417,10 +455,27 @@ public class CustomsGeneralBIZImpl  extends BizBase implements CustomsGeneralBIZ
 				+" t3.ProductNo,                                                                                                           "
 				+" t3.MaterialName,                                                                                                        "
 				+" t3.Specification,                                                                                                       "
-				+" IFNULL(t6.`value`,t3.DeclareUnitCode)                                                                                   "
+				+" IFNULL(t6.`value`,t3.DeclareUnitCode) ,"
+				+ "t1.Id, "
+				+ "t1.Quantity    "
 				+ earlySQL
 				+" ) total                                                                                                                 "
 				+ where
+				+" group by " 
+				+"total.`Month`," 
+				+"total.MaterialNo," 
+				+"total.JdeMaterialNo," 
+				+"total.`No`," 
+				+"total.ProductNo," 
+				+"total.MaterialName," 
+				+"total.MaterialSpecification," 
+				+"total.Unit," 
+				+"total.EarlyNumber," 
+				+"total.WriteOffVolume," 
+				+"total.pickingVolume," 
+				+"total.warehouseVolume," 
+				+"total.price," 
+				+"total.currency "
 				+" order by total.`No`                                                                                                     ";
 		return sql;
 		

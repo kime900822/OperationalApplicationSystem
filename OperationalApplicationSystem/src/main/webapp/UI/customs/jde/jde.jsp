@@ -67,14 +67,15 @@ function deleteCustomsJDE(){
         gridTitle : 'JDE Import',
         dataType: 'jsonp',
         showToolbar: true,
-        toolbarItem: 'refresh,|,import',
+        toolbarItem: 'refresh,|,import,export',
         dataUrl: 'customs/queryCustomsJDE.action',
         fieldSortable: false,
         linenumberAll: true,
         paging: true,
         contextMenuB: true,
         hScrollbar: true,
-        importOption: {type:'dialog', options:{url:'customs/jde/jde-import.html', width:500, height:300, title:'Import JDE'}}
+        importOption: {type:'dialog', options:{url:'customs/jde/jde-import.html', width:500, height:300, title:'Import JDE'}},
+        exportOption: {type:'file', options:{url:'customs/exportCustomsJDE.action', loadingmask:true}}
     }">
         <thead>
             <tr>

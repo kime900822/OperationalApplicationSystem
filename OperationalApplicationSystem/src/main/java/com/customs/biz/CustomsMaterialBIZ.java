@@ -27,4 +27,6 @@ public interface CustomsMaterialBIZ {
 	public List getByMaterialNo(String materialNo);
 	
 	public CustomsMaterial getByNo(String no);
+
+	List getByNewMaterialNo(String materialNo);
 }

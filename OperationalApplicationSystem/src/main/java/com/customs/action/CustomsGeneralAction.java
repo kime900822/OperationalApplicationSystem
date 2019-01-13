@@ -155,6 +155,54 @@ public class CustomsGeneralAction extends ActionBase{
 		return SUCCESS;
 	}
 	
+	@Action(value="exportCustomsGeneralInit",results={@org.apache.struts2.convention.annotation.Result(type="stream",
+			params={
+					"inputName", "reslutJson",
+					"contentType","application/vnd.ms-excel",
+					"contentDisposition","attachment;filename=%{fileName}",
+					"bufferSize","1024"
+			})})
+    public String exportCustomsGeneralInit() {
+        try {
+        	List<HeadColumn> lHeadColumns=new Gson().fromJson(thead, new TypeToken<ArrayList<HeadColumn>>() {}.getType());
+        	
+    		String where=" where 1=1";
+    		if (month!=null&&!month.equals("")) {
+    			where+= " and month='"+month+"' ";
+    		}
+    		if (!"".equals(materialNo)&&materialNo!=null) {
+    			where+=" AND materialNo like '%"+materialNo+"%'  ";
+    		}	
+    		if (!"".equals(jdeMaterialNo)&&jdeMaterialNo!=null) {
+    			where+=" AND jdeMaterialNo like '%"+jdeMaterialNo+"%'  ";
+    		}
+    		if (!"".equals(no)&&no!=null) {
+    			where+=" AND no ='"+no+"'  ";
+    		}
+    		 
+    		List list=customsGeneralBIZ.query4init(where);
+    		
+        	ByteArrayInputStream  is = customsGeneralBIZ.exportData4Init(list,lHeadColumns);
+        	
+        	HttpServletResponse response = (HttpServletResponse)
+        			ActionContext.getContext().get(org.apache.struts2.StrutsStatics.HTTP_RESPONSE);
+        	response.setHeader("Set-Cookie", "fileDownload=true; path=/");
+        	
+        	
+    		SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");		 
+    		fileName = "CustomsGeneralInit"+sf.format(new Date()).toString()+ ".xls";
+    		fileName= new String(fileName.getBytes(), "ISO8859-1");
+    		//文件流
+            reslutJson = is;            
+            logUtil.logInfo("导出CustomsGeneralInit！"+fileName);
+        }
+        catch(Exception e) {
+        	logUtil.logInfo("导出CustomsGeneralInit！"+e.getMessage());
+            e.printStackTrace();
+        }
+
+        return "success";
+    }
 	
 	@Action(value="queryCustomsGeneral",results={@org.apache.struts2.convention.annotation.Result(type="stream",
 			params={

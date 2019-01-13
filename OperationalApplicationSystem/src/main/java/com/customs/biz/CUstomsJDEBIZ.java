@@ -1,9 +1,11 @@
 package com.customs.biz;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.util.List;
 
 import com.customs.model.CustomsMaterial;
+import com.kime.model.HeadColumn;
 import com.kime.model.User;
 
 public interface CUstomsJDEBIZ {
@@ -15,4 +17,6 @@ public interface CUstomsJDEBIZ {
 	public List<CustomsMaterial> query(String where, int pageSize, int pageCurrent);
 	
 	public String deleteByBatchNumber(String batchNumber);
+
+	ByteArrayInputStream exportData(String where, List<HeadColumn> lHeadColumns) throws Exception;
 }

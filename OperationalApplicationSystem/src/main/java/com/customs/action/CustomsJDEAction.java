@@ -4,9 +4,13 @@ import java.io.ByteArrayInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Column;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.ParentPackage;
@@ -15,10 +19,14 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
 import com.customs.biz.CUstomsJDEBIZ;
+import com.customs.other.CustomsClearanceHelp;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.kime.base.ActionBase;
 import com.kime.infoenum.Message;
+import com.kime.model.HeadColumn;
 import com.kime.utils.CommonUtil;
+import com.opensymphony.xwork2.ActionContext;
 
 @Controller
 @Scope("prototype")
@@ -296,7 +304,38 @@ public class CustomsJDEAction extends ActionBase {
     	return SUCCESS;
     }
 	
-	
+	@Action(value="exportCustomsJDE",results={@org.apache.struts2.convention.annotation.Result(type="stream",
+			params={
+					"inputName", "reslutJson",
+					"contentType","application/vnd.ms-excel",
+					"contentDisposition","attachment;filename=%{fileName}",
+					"bufferSize","1024"
+			})})
+    public String exportCustomsJDE() {
+        try {
+        	List<HeadColumn> lHeadColumns=new Gson().fromJson(thead, new TypeToken<ArrayList<HeadColumn>>() {}.getType());
+    		
+        	ByteArrayInputStream  is = customsJDEBIZ.exportData(getQueryWhere(),lHeadColumns);
+        	
+        	HttpServletResponse response = (HttpServletResponse)
+        			ActionContext.getContext().get(org.apache.struts2.StrutsStatics.HTTP_RESPONSE);
+        	response.setHeader("Set-Cookie", "fileDownload=true; path=/");
+        	
+        	
+    		SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");		 
+    		fileName = "CustomsJDE"+sf.format(new Date()).toString()+ ".xls";
+    		fileName= new String(fileName.getBytes(), "ISO8859-1");
+    		//文件流
+            reslutJson = is;            
+            logUtil.logInfo(CustomsClearanceHelp.title,"导出CustomsJDE！"+fileName);
+        }
+        catch(Exception e) {
+        	logUtil.logInfo(CustomsClearanceHelp.title,"导出CustomsJDE！"+e.getMessage());
+            e.printStackTrace();
+        }
+
+        return "success";
+    }
 	String getQueryWhere() {
 		String where =" where 1=1 ";
 		if (businessUnit!=null&&!businessUnit.equals("")) {

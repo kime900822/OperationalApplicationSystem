@@ -1,5 +1,7 @@
 package com.customs.biz.impl;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -12,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.customs.biz.CUstomsJDEBIZ;
 import com.customs.dao.CustomsJDEDAO;
+import com.customs.model.CustomsClearance;
 import com.customs.model.CustomsJDE;
 import com.customs.model.CustomsMaterial;
 import com.customs.other.CustomsJDEHelp;
@@ -19,6 +22,7 @@ import com.customs.other.CustomsMaterialHelp;
 import com.customs.other.CustomsProductHelp;
 import com.kime.base.BizBase;
 import com.kime.dao.CommonDAO;
+import com.kime.model.HeadColumn;
 import com.kime.model.User;
 import com.kime.utils.CommonUtil;
 import com.kime.utils.ExcelUtil;
@@ -28,7 +32,7 @@ import com.kime.utils.ExcelUtil;
 public class CustomsJDEBIZImpl extends BizBase implements CUstomsJDEBIZ {
 
 	@Autowired
-	CustomsJDEDAO customsJDFDAO;
+	CustomsJDEDAO customsJDEDAO;
 	@Autowired
 	CommonDAO commonDAO;
 	
@@ -52,7 +56,7 @@ public class CustomsJDEBIZImpl extends BizBase implements CUstomsJDEBIZ {
 					customsJDE.setPurchaseOrderLineNumber(CommonUtil.spaceToNull(customsJDE.getPurchaseOrderLineNumber()));
 					customsJDE.setOperationDate(date);
 					customsJDE.setBatchNumber(batchNumber);
-					customsJDFDAO.save(customsJDE);
+					customsJDEDAO.save(customsJDE);
 				}
 				
 			}else{
@@ -67,15 +71,24 @@ public class CustomsJDEBIZImpl extends BizBase implements CUstomsJDEBIZ {
 		}
 		
 	}
+	
+	@Override
+	public ByteArrayInputStream exportData(String where, List<HeadColumn> lHeadColumns) throws Exception {
+		List list  =customsJDEDAO.query(where);
+    	Class c = (Class) new CustomsJDE().getClass();  
+    	ByteArrayOutputStream os = ExcelUtil.exportExcel("CustomsJDE", c, list, "yyy-MM-dd",lHeadColumns);
+    	byte[] fileContent = os.toByteArray();
+    	return new ByteArrayInputStream(fileContent);	
+	}
 
 	@Override
 	public List<CustomsMaterial> query(String where) {
-		return customsJDFDAO.query(where);
+		return customsJDEDAO.query(where);
 	}
 
 	@Override
 	public List<CustomsMaterial> query(String where, int pageSize, int pageCurrent) {
-		return customsJDFDAO.query(where, pageSize, pageCurrent);
+		return customsJDEDAO.query(where, pageSize, pageCurrent);
 	}
 
 	@Override

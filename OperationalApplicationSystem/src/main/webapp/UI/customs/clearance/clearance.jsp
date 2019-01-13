@@ -49,7 +49,7 @@
         		<button type="button" class="btn-green" data-icon="search" onclick="customsClearanceBOMDate();">生成</button>
         		</td>
         	</tr>      
-        	<tr>
+  <!--       	<tr>
         		<td colspan="8" height="10px"></td>
         	</tr>
         	<tr>
@@ -95,7 +95,7 @@
 	                	<button type="button" class="btn-orange" data-icon="times">Delete</button>
 	            	</div>
          		</td>
-        	</tr>
+        	</tr> -->
         </table>
             
         </div>
@@ -109,7 +109,7 @@
         gridTitle : 'Customs Clearance Import',
         dataType: 'jsonp',
         showToolbar: true,
-        toolbarItem: 'edit,refresh,|,import,export',
+        toolbarItem: 'refresh,|,import,export',
         dataUrl: 'customs/queryCustomsClearance.action',
         editMode: {dialog:{width:'400',height:250,title:'Edit No',mask:true}},
         editUrl: 'customs/clearance/clearance-edit.jsp',
