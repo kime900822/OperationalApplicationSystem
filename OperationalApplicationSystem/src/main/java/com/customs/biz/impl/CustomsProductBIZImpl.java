@@ -157,7 +157,7 @@ public class CustomsProductBIZImpl extends BizBase implements CustomsProductBIZ{
 
 	public int getMaxNO() throws Exception{
 		try {
-			List  list = commonDAO.queryByHql(" select MAX(no) from CustomsProduct");
+			List  list = commonDAO.queryByHql(" select MAX(no) from CustomsProduct where no not in ('99991','99992','99993','99994','99995')");
 			if (list.size()>0&&list.get(0)!=null) {
 				return Integer.parseInt((String)list.get(0))+1;
 			}else{

@@ -156,7 +156,7 @@ public class CustomsMaterialBIZImpl extends BizBase implements CustomsMaterialBI
 
 	@Override
 	public List getByNewMaterialNo(String materialNo) {
-		return customsMaterialDAO.query(" where materialNo=IFNULL((select newMaterialNo from CustomsMaterialMapping where oldMaterialNo='"+materialNo+"'),'"+materialNo+"') ");         
+		return customsMaterialDAO.query(" where materialNo=IFNULL((select newMaterialNo from CustomsMaterialMapping where oldMaterialNo='"+materialNo+"' and oldMaterialNo not like'%Lynn'),'"+materialNo+"') ");         
 	}
 	
 	@Override

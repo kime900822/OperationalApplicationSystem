@@ -72,7 +72,7 @@
         paging: true,
         contextMenuB: true,
         hScrollbar: true,
-        importOption: {type:'dialog', options:{url:'customs/general/init/initdata-import.html', width:500, height:300, title:'Import materials'},
+        importOption: {type:'dialog', options:{url:'customs/general/init/initdata-import.html', width:500, height:300, title:'Import materials'}},
         exportOption: {type:'file', options:{url:'customs/exportCustomsGeneralInit.action', loadingmask:true,queryForm:$.CurrentNavtab.find('#datagrid-customs-general-init-query')}}
     }">
         <thead>
