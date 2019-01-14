@@ -43,7 +43,7 @@
         		<span>BOM申请日期：</span>
         		</td>
         		<td width="190px">
-            	<input type="text" name="BOMDate"  data-nobtn="true"  value="" data-toggle="datepicker" size="9" data-rule="date">
+            	<input type="text" name="newBOMDate"  data-nobtn="true"  value="" data-toggle="datepicker" size="9" data-rule="date">
         		</td>
         		<td colspan="6"  width="800px">
         		<button type="button" class="btn-green" data-icon="search" onclick="customsClearanceBOMDate();">生成</button>

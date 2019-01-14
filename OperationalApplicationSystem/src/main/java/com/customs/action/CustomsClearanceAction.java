@@ -61,8 +61,16 @@ public class CustomsClearanceAction extends ActionBase {
 	String operator;
 	String operationDate;
 	String BOMDate;
+	String newBOMDate;
 	
 	
+	
+	public String getNewBOMDate() {
+		return newBOMDate;
+	}
+	public void setNewBOMDate(String newBOMDate) {
+		this.newBOMDate = newBOMDate;
+	}
 	public String getDeliveryDate() {
 		return deliveryDate;
 	}
@@ -253,7 +261,7 @@ public class CustomsClearanceAction extends ActionBase {
 			})})
 	public String customsClearanceBOMDate() throws UnsupportedEncodingException{
 		
-		String r=clearanceBIZ.customsClearanceBOMDate(getQueryWhere(), BOMDate);
+		String r=clearanceBIZ.customsClearanceBOMDate(getQueryWhere(), newBOMDate);
 		if (r==null) {
 			result.setMessage("Success!");
 			result.setStatusCode("200");
@@ -421,6 +429,9 @@ public class CustomsClearanceAction extends ActionBase {
 		}
 		if (BOMDate!=null&&!BOMDate.equals("")) {
 			where+= " and BOMDate like '%"+BOMDate+"%' ";
+		}
+		if (newBOMDate!=null&&!newBOMDate.equals("")) {
+			where+= " and BOMDate = '"+newBOMDate+"' ";
 		}
 		where += " order by operationDate desc";
 		return where;

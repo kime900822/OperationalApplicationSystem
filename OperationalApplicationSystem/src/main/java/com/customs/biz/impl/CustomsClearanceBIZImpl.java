@@ -45,7 +45,7 @@ public class CustomsClearanceBIZImpl  extends BizBase implements CustomsClearanc
 	public String customsClearanceBOMDate(String where, String bomDate) {
 		
 		try {
-			List  list = commonDAO.queryByHql(" select count(1) from CustomsClearance "+ where + " and BOMDate='"+bomDate+"'" );
+			List  list = commonDAO.queryByHql(" select count(1) from CustomsClearance "+ where  );
 			if ((Long)list.get(0)>0) {
 				return "选择数据中存在已有BOMDate数据！";
 			}
