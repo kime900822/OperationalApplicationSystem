@@ -4,16 +4,18 @@
 <script type="text/javascript">
 
 	function customsClearanceBOMDate(){
-		var params=$.CurrentNavtab.find('#datagrid-customs-clearance-query').serializeJson();
-		if(params.BOMDate==null||params.BOMDate==''||params.BOMDate==undefined){
+		var params=$.CurrentNavtab.find('#datagrid-customs-clearance-filter').data('bjui.datagrid').tools.getRemoteFilterData(true);
+		var newBOMDate=$.CurrentNavtab.find('#customsClearanceNewBOMDate').val();
+		if(newBOMDate==null||newBOMDate==''||newBOMDate==undefined){
 			BJUI.alertmsg('warn', 'BOM 日期不能为空！'); 
 			return false;
 		}
+		params['newBOMDate']=newBOMDate;
 		
 		BJUI.ajax('doajax', {
 		    url: 'customs/customsClearanceBOMDate.action',
 		    loadingmask: true,
-		    data:{BOMDate:params.BOMDate,batchNumber:params.batchNumber,no:params.no,poseLongItemNo:params.poseLongItemNo,shipmentIems:params.shipmentIems,lotSerialNumber:params.lotSerialNumber},	    
+		    data:params,	    
 		    okCallback: function(json, options) {
 	            if(json.status='200'){
 	            	BJUI.alertmsg('info', json.message);
@@ -28,6 +30,31 @@
 	}
 
 
+	function deleteCustomsClearance(){
+		var batchNumber=$.CurrentNavtab.find('#customsClearanceBatchNumber').val();
+		if(batchNumber==undefined || batchNumber==null ||batchNumber==''){
+			BJUI.alertmsg('warn', '上传批次号不能为空！'); 
+			return false;
+		}
+		
+		BJUI.ajax('doajax', {
+		    url: 'customs/deleteCustomsClearance.action',
+		    loadingmask: true,
+		    data:{batchNumber:batchNumber},	    
+		    okCallback: function(json, options) {
+	            if(json.status='200'){
+	            	BJUI.alertmsg('info', json.message); 
+	            	$.CurrentNavtab.find('#datagrid-customs-jde-filter').data('bjui.datagrid').refresh(true);
+	            }else{
+	            	BJUI.alertmsg('error', json.message); 
+	            }
+		    }
+		})	
+		
+		
+		
+	}
+
 
 </script>
 
@@ -40,15 +67,30 @@
         <table	>
         	<tr>
         		<td width="120px">
-        		<span>BOM申请日期：</span>
+        		<span>BOM申报日期：</span>
         		</td>
         		<td width="190px">
-            	<input type="text" name="newBOMDate"  data-nobtn="true"  value="" data-toggle="datepicker" size="9" data-rule="date">
+            	<input type="text" name="newBOMDate" id="customsClearanceNewBOMDate"  data-nobtn="true"  value="" data-toggle="datepicker" size="9" data-rule="date">
         		</td>
         		<td colspan="6"  width="800px">
         		<button type="button" class="btn-green" data-icon="search" onclick="customsClearanceBOMDate();">生成</button>
         		</td>
-        	</tr>      
+        	</tr>   
+        	<tr>
+        		<td colspan="8" height="10px"></td>
+        	</tr>   
+        	<tr>
+        		<td>
+        		<span>上传批次号：</span>
+        		</td>
+        		<td>
+            	<input type="text" name="batchNumber" id="customsClearanceBatchNumber" value="" size="15">
+        		</td>
+        		<td colspan="6" >
+        		 	<button type="button" class="btn-red" data-icon="times" onclick="deleteCustomsClearance();">Delete</button>
+        		</td>
+        	
+        	</tr>  
   <!--       	<tr>
         		<td colspan="8" height="10px"></td>
         	</tr>

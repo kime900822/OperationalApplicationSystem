@@ -3,6 +3,7 @@ package com.customs.biz.impl;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -106,7 +107,14 @@ public class CustomsImportsAndExportsBIZImpl  extends BizBase implements Customs
 
 	@Override
 	public ByteArrayInputStream exportData(String where, List<HeadColumn> lHeadColumns) throws Exception {
-		List list  =customsImportsAndExportsDAO.query(where);
+		List<CustomsImportsAndExports> list  =customsImportsAndExportsDAO.query(where);
+		
+		for (CustomsImportsAndExports customsImportsAndExports : list) {
+			if (customsImportsAndExports.getUnit().equals("米")&&customsImportsAndExports.getQuantity()!=null) {
+				customsImportsAndExports.setQuantity(new DecimalFormat("#.0000").format(Double.valueOf(customsImportsAndExports.getQuantity())));
+			}
+		}
+		
     	Class c = (Class) new CustomsImportsAndExports().getClass();  
     	ByteArrayOutputStream os = ExcelUtil.exportExcel("CustomsImportsAndExports", c, list, "yyy-MM-dd",lHeadColumns);
     	byte[] fileContent = os.toByteArray();

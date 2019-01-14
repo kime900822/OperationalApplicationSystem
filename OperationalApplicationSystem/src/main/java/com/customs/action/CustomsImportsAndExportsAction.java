@@ -4,6 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -253,8 +254,13 @@ public class CustomsImportsAndExportsAction extends ActionBase {
 			})})
 	public String queryCustomsImportsAndExports() throws UnsupportedEncodingException{	
 		
-		List list  =customsImportsAndExportsBIZ.query(getQueryWhere(), Integer.parseInt(pageSize),Integer.parseInt(pageCurrent));
+		List<CustomsImportsAndExports> list  =customsImportsAndExportsBIZ.query(getQueryWhere(), Integer.parseInt(pageSize),Integer.parseInt(pageCurrent));
 		int total=customsImportsAndExportsBIZ.query(getQueryWhere()).size();
+		for (CustomsImportsAndExports customsImportsAndExports : list) {
+			if (customsImportsAndExports.getUnit().equals("米")&&customsImportsAndExports.getQuantity()!=null) {
+				customsImportsAndExports.setQuantity(new DecimalFormat("#.0000").format(Double.valueOf(customsImportsAndExports.getQuantity())));
+			}
+		}
 		
 		queryResult.setList(list);
 		queryResult.setTotalRow(total);

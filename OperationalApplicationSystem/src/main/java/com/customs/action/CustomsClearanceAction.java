@@ -361,6 +361,31 @@ public class CustomsClearanceAction extends ActionBase {
     }
 	
 	
+	@Action(value="deleteCustomsClearanc",results={@org.apache.struts2.convention.annotation.Result(type="stream",
+			params={
+					"inputName", "reslutJson"
+			})})
+	public String deleteCustomsClearanc() throws UnsupportedEncodingException {
+		
+		if (!CommonUtil.isAdmin(getUser())) {
+			result.setMessage("非管理员，没有权限！");
+			result.setStatusCode("300");
+		}else{
+			String r=clearanceBIZ.deleteByBatchNumber(batchNumber);
+			if (r==null) {
+				result.setMessage("Success!");
+				result.setStatusCode("200");
+			}else{
+				result.setMessage(r);
+				result.setStatusCode("300");
+			}
+		}
+		
+		reslutJson=new ByteArrayInputStream(new Gson().toJson(result).getBytes("UTF-8"));  
+		return SUCCESS;
+	}
+
+	
 	public String getQueryWhere() {
 		
 		String where =" where 1=1 ";
@@ -430,10 +455,7 @@ public class CustomsClearanceAction extends ActionBase {
 		if (BOMDate!=null&&!BOMDate.equals("")) {
 			where+= " and BOMDate like '%"+BOMDate+"%' ";
 		}
-		if (newBOMDate!=null&&!newBOMDate.equals("")) {
-			where+= " and BOMDate = '"+newBOMDate+"' ";
-		}
-		where += " order by operationDate desc";
+		
 		return where;
 		
 	}

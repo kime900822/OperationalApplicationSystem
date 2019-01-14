@@ -3,7 +3,24 @@
 <!DOCTYPE html>
 <script type="text/javascript">
 
+$(function(){
+	init();
+})
 
+function init(){
+	var tbody=$.CurrentNavtab.find('#datagrid-customs-report1-filter').children().eq(1).children();
+	tbody.forEach(function(i,index){
+		alert(i)
+		var num=parseFloat(i.children().eq(14).children().html());
+		if(num>0){
+			i.attr('style','background-color:red');			
+		}else if(num>0 && num <1){
+			i.attr('style','background-color:yellow');		
+		}
+	})
+	
+	
+}
 
 </script>
 <div class="bjui-pageHeader" style="background-color:#fefefe; border-bottom:none;">

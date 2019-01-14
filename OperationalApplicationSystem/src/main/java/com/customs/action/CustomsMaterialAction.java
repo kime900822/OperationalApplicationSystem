@@ -36,8 +36,7 @@ public class CustomsMaterialAction extends ActionBase{
 	@Autowired
 	CustomsMaterialBIZ customsMaterialBIZ;
 	
-	String no_f;
-	String no_t;
+	String no;
 	String materialNo;
 	String materialName;
 	String productNo;
@@ -51,17 +50,11 @@ public class CustomsMaterialAction extends ActionBase{
 	public void setMaterialName(String materialName) {
 		this.materialName = materialName;
 	}
-	public String getNo_f() {
-		return no_f;
+	public String getNo() {
+		return no;
 	}
-	public void setNo_f(String no_f) {
-		this.no_f = no_f;
-	}
-	public String getNo_t() {
-		return no_t;
-	}
-	public void setNo_t(String no_t) {
-		this.no_t = no_t;
+	public void setNo(String no) {
+		this.no = no;
 	}
 	public String getMaterialNo() {
 		return materialNo;
@@ -154,17 +147,9 @@ public class CustomsMaterialAction extends ActionBase{
 			})})
 	public String queryCustomsMaterial() throws UnsupportedEncodingException{	
 		String where="";
-		if (!"".equals(no_f)&&no_f!=null) {
-			where+=" where no >= '"+no_f+"' ";
-		}		
-		if (!"".equals(no_t)&&no_t!=null) {
-			if (where.equals("")) {
-				where+=" where no <= '"+no_t+"' ";
-			}else{
-				where+=" AND no <= '"+no_t+"'  ";
-			}
-			
-		}		
+		if (!"".equals(no)&&no!=null) {
+			where+=" where no = '"+no+"' ";
+		}			
 		if (!"".equals(materialNo)&&materialNo!=null) {
 			if (where.equals("")) {
 				where+=" where materialNo like '%"+materialNo+"%' ";
@@ -240,17 +225,9 @@ public class CustomsMaterialAction extends ActionBase{
         try {
         	List<HeadColumn> lHeadColumns=new Gson().fromJson(thead, new TypeToken<ArrayList<HeadColumn>>() {}.getType());
     		String where="";
-    		if (!"".equals(no_f)&&no_f!=null) {
-    			where+=" where no >= '"+no_f+"' ";
-    		}		
-    		if (!"".equals(no_t)&&no_t!=null) {
-    			if (where.equals("")) {
-    				where+=" where no <= '"+no_t+"' ";
-    			}else{
-    				where+=" AND no <= '"+no_t+"'  ";
-    			}
-    			
-    		}		
+    		if (!"".equals(no)&&no!=null) {
+    			where+=" where no = '"+no+"' ";
+    		}			
     		if (!"".equals(materialNo)&&materialNo!=null) {
     			if (where.equals("")) {
     				where+=" where materialNo like '%"+materialNo+"%' ";

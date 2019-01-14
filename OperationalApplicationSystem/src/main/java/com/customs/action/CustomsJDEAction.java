@@ -225,6 +225,9 @@ public class CustomsJDEAction extends ActionBase {
 	public void setOperationDate(String operationDate) {
 		this.operationDate = operationDate;
 	}
+	
+	
+	
 	@Action(value="deleteCustomsJDE",results={@org.apache.struts2.convention.annotation.Result(type="stream",
 			params={
 					"inputName", "reslutJson"
