@@ -4,7 +4,7 @@
 <script type="text/javascript">
 
 $(function(){
-	init();
+	//init();
 })
 
 function init(){
