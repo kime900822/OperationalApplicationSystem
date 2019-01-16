@@ -292,14 +292,14 @@ public class CustomsGeneralAction extends ActionBase{
         	
         	
     		SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");		 
-    		fileName = "ImportsAndExports"+sf.format(new Date()).toString()+ ".xls";
+    		fileName = "CustomsGeneral"+sf.format(new Date()).toString()+ ".xls";
     		fileName= new String(fileName.getBytes(), "ISO8859-1");
     		//文件流
             reslutJson = is;            
-            logUtil.logInfo("导出ImportsAndExports！"+fileName);
+            logUtil.logInfo("导出CustomsGeneral！"+fileName);
         }
         catch(Exception e) {
-        	logUtil.logInfo("导出ImportsAndExports！"+e.getMessage());
+        	logUtil.logInfo("导出CustomsGeneral！"+e.getMessage());
             e.printStackTrace();
         }
 

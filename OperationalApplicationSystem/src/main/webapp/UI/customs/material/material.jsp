@@ -90,7 +90,7 @@ function deleteCustomsMaterial(){
         		<span>序号：</span>
         		</td>
         		<td width="220px">
-            	<input type="text" name="no"  value="" size="15" data-rule="number">to:
+            	<input type="text" name="no"  value="" size="15" data-rule="number">
         		</td>
         		<td width="150px">
         		<span>料号：</span>

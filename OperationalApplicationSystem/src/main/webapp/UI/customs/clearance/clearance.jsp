@@ -38,13 +38,13 @@
 		}
 		
 		BJUI.ajax('doajax', {
-		    url: 'customs/deleteCustomsClearance.action',
+		    url: 'customs/deleteCustomsClearanceByBatchNumber.action',
 		    loadingmask: true,
 		    data:{batchNumber:batchNumber},	    
 		    okCallback: function(json, options) {
 	            if(json.status='200'){
 	            	BJUI.alertmsg('info', json.message); 
-	            	$.CurrentNavtab.find('#datagrid-customs-jde-filter').data('bjui.datagrid').refresh(true);
+	            	$.CurrentNavtab.find('#datagrid-customs-clearance-filter').data('bjui.datagrid').refresh(true);
 	            }else{
 	            	BJUI.alertmsg('error', json.message); 
 	            }
