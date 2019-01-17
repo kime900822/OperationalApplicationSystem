@@ -299,7 +299,7 @@ public class CustomsGeneralBIZImpl  extends BizBase implements CustomsGeneralBIZ
 		if (flag) {
 			earlySQL= 	" UNION all                                                                                                                "
 					+" select                                                                                                                  "
-					+" t1.`Month`,                                                                                                             "
+					+"'"+month+"' AS `Month`,                                                                                                             "
 					+" t1.MaterialNo,                                                                                                          "
 					+" IFNULL(t6.NewMaterialNo,t1.JdeMaterialNo) AS JdeMaterialNo,                                                                                                       "
 					+" t1.`No`,                                                                                                                "
@@ -326,18 +326,17 @@ public class CustomsGeneralBIZImpl  extends BizBase implements CustomsGeneralBIZ
 					+ " null as pickingVolume,"
 					+ " null as warehouseVolume,"
 					+ " IFNULL(MAX(t2.unitPriceUSD),t1.price) as price, "
-					+ " t1.currency,  "
-					+ " t7.`no` AS prodectNo   "
-					+" from CustomsGeneral t1                                                                                          "
+					+ " t1.currency  "
+					+" from t_customs_general t1                                                                                          "
 					+" left join t_customs_importsandexports t2                                                                                "
-					+" on t1.`No`=t2.`No` and t1.`Month`=substr(t2.EntryDate,1,7)                                                          "
+					+" on t1.`No`=t2.`No` and substr(t2.EntryDate,1,7)='"+month+"' "
 					+" left join t_customs_material_mapping t6 on t1.JdeMaterialNo=t6.OldMaterialNo                         "
 					+" left join (                                                                                                             "
 					+" select IFNULL(tt2.NewMaterialNo,tt1.CimtasLongItemNo) NewMaterialNo,tt1.TransQTY,tt1.OperationDate                      "
 					+" from t_customs_jde tt1 left join t_customs_material_mapping tt2 on tt1.CimtasLongItemNo=tt2.OldMaterialNo               "
-					+" ) t3 on t3.NewMaterialNo=IFNULL(t6.NewMaterialNo,t1.JdeMaterialNo)  and t1.`Month`=substr(t3.OperationDate,1,7)                                   "
+					+" ) t3 on t3.NewMaterialNo=IFNULL(t6.NewMaterialNo,t1.JdeMaterialNo)  and substr(t3.OperationDate,1,7)='"+month+"' "
 					+" left join t_customs_clearance t4 on t1.`No`=t4.`No`                                                  "
-					+" and substr(t4.BOMDate,1,7) = t1.`Month`          "
+					+" and substr(t4.BOMDate,1,7)='"+month+"' "
 					+" left join t_customs_material t5 on t1.`No`=t5.`No`                                                                         "
 					+" left join t_customs_product t7 " 
 					+" on t4.shipmentIems=t7.materialNo "
@@ -352,8 +351,7 @@ public class CustomsGeneralBIZImpl  extends BizBase implements CustomsGeneralBIZ
 					+" t1.MaterialSpecification,                                                                                               "
 					+" t1.Unit,                                                                                                                "
 					+" t1.EarlyNumber, "
-					+ "T2.Id,T2.Quantity ,"
-					+ "7.`no`                                                                                                        ";
+					+ "T2.Id,T2.Quantity                                                                                                    ";
 			earlyTable=" select 1 from t_customs_general t8 where t8.`Month`=substr(t1.EntryDate,1,7) and t8.`No`=t1.`No` ";
 		}else {
 			
