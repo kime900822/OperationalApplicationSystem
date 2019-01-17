@@ -228,7 +228,8 @@ public class CustomsReportAction extends ActionBase {
 				+ " left join t_customs_material_mapping C on "
 				+ " C.oldMaterialNo=A.cimtasCode "
 				+ " left join t_customs_jde D "
-				+ " on coalesce(C.newMaterialNo,A.cimtasCode)=D.cimtasLongItemNo " 
+				+ " on coalesce(C.newMaterialNo,A.cimtasCode)=D.cimtasLongItemNo "
+				+ " and A.orderNumber=D.orderNumber " 
 				+ " group by A.orderNumber,A.cimtasCode,coalesce(C.newMaterialNo,A.cimtasCode) "
 				+ " order by A.orderNumber,A.cimtasCode,coalesce(C.newMaterialNo,A.cimtasCode)) T "+where;
 		
@@ -282,8 +283,8 @@ public class CustomsReportAction extends ActionBase {
     				+ "'20420701' AS columen10 ,"
     				+ "'' AS columen11,"
     				+ "A.batchNumber AS  columen12,"
-    				+ "case when C.declareUnitCode='030' "
-    				+ " and A.PoseLongItemNo not like 'FREE0%'"
+    				+ "case when C.declareUnitCode='030' then "
+    				+ " case when  A.PoseLongItemNo not like 'FREE0%'"
     				+ " and A.PoseLongItemNo not like 'FREE1%'"
     				+ " and A.PoseLongItemNo not like 'FREE2%'"
     				+ " and A.PoseLongItemNo not like 'FREE3%'"
@@ -295,6 +296,7 @@ public class CustomsReportAction extends ActionBase {
     				+ " and A.PoseLongItemNo not like 'FREE9%'"
     				+ " and B.`no` not in ('99991','99992','99993','99994','99995')"
     				+ " then FORMAT(ROUND(sum(A.quantityIssued)*1.03/1000.0,4),4) "
+    				+ " else FORMAT(sum(A.quantityIssued),4) end  "
     				+ " else FORMAT(ROUND(sum(A.quantityIssued),2),2) END AS columen13,"
     				+ " (select total.RegulatoryInventory from ("+customsGeneralBIZ.getSQL(CommonUtil.getMonth(), "")+") total where total.`no`=A.`no`) as columen14"
     				+ " from t_customs_clearance A "
