@@ -48,7 +48,7 @@ public class CustomsGeneralBIZImpl  extends BizBase implements CustomsGeneralBIZ
 			return new ArrayList<>();
 		}
 		if (!month.equals(CommonUtil.getMonth())&&checkGeneral(month)) {
-			return customsGeneralDAO.query(" where month='"+month+"'");
+			return customsGeneralDAO.query(where);
 		}
 		String sql=getSQL(month,where);
 		
@@ -64,7 +64,7 @@ public class CustomsGeneralBIZImpl  extends BizBase implements CustomsGeneralBIZ
 			return new ArrayList<>();
 		}
 		if (!month.equals(CommonUtil.getMonth())&&checkGeneral(month)) {
-			return customsGeneralDAO.query(" where month='"+month+"'", pageSize, pageCurrent);
+			return customsGeneralDAO.query(where, pageSize, pageCurrent);
 		}
 		String sql=getSQL(month,where);
 		return dataToEntity(commonDAO.queryBySql(sql, pageSize, pageCurrent));
@@ -331,10 +331,6 @@ public class CustomsGeneralBIZImpl  extends BizBase implements CustomsGeneralBIZ
 					+" left join t_customs_importsandexports t2                                                                                "
 					+" on t1.`No`=t2.`No` and substr(t2.EntryDate,1,7)='"+month+"' "
 					+" left join t_customs_material_mapping t6 on t1.JdeMaterialNo=t6.OldMaterialNo                         "
-					+" left join (                                                                                                             "
-					+" select IFNULL(tt2.NewMaterialNo,tt1.CimtasLongItemNo) NewMaterialNo,tt1.TransQTY,tt1.OperationDate                      "
-					+" from t_customs_jde tt1 left join t_customs_material_mapping tt2 on tt1.CimtasLongItemNo=tt2.OldMaterialNo               "
-					+" ) t3 on t3.NewMaterialNo=IFNULL(t6.NewMaterialNo,t1.JdeMaterialNo)  and substr(t3.OperationDate,1,7)='"+month+"' "
 					+" left join t_customs_clearance t4 on t1.`No`=t4.`No`                                                  "
 					+" and substr(t4.BOMDate,1,7)='"+month+"' "
 					+" left join t_customs_material t5 on t1.`No`=t5.`No`                                                                         "
@@ -352,7 +348,7 @@ public class CustomsGeneralBIZImpl  extends BizBase implements CustomsGeneralBIZ
 					+" t1.Unit,                                                                                                                "
 					+" t1.EarlyNumber, "
 					+ "T2.Id,T2.Quantity                                                                                                    ";
-			earlyTable=" select 1 from t_customs_general t8 where t8.`Month`=substr(t1.EntryDate,1,7) and t8.`No`=t1.`No` ";
+			earlyTable=" select 1 from t_customs_general t8 where t8.`Month`='"+rmonth+"' and t8.`No`=t1.`No` ";
 		}else {
 			
 			earlySQL= 	" UNION all                                                                                                                "
@@ -389,10 +385,6 @@ public class CustomsGeneralBIZImpl  extends BizBase implements CustomsGeneralBIZ
 					+" left join t_customs_importsandexports t2                                                                                "
 					+" on t1.`No`=t2.`No`  and   substr(t2.EntryDate,1,7)='"+month+"'       "
 					+" left join t_customs_material_mapping t6 on t1.MaterialNo=t6.OldMaterialNo                         "
-					+" left join (                                                                                                             "
-					+" select IFNULL(tt2.NewMaterialNo,tt1.CimtasLongItemNo) NewMaterialNo,tt1.TransQTY,tt1.OperationDate                    "
-					+" from t_customs_jde tt1 left join t_customs_material_mapping tt2 on tt1.CimtasLongItemNo=tt2.OldMaterialNo               "
-					+" ) t3 on t3.NewMaterialNo=IFNULL(t6.NewMaterialNo,t1.JdeMaterialNo) and substr(t3.OperationDate,1,7)='"+month+"'                                "
 					+" left join t_customs_clearance t4 on t1.`No`=t4.`No` and substr(t4.BOMDate,1,7) = '"+month+"' "
 					+" left join t_customs_material t5 on t1.`No`=t5.`No`                                                  "
 					+" left join t_customs_product t7 " 
@@ -439,7 +431,7 @@ public class CustomsGeneralBIZImpl  extends BizBase implements CustomsGeneralBIZ
 				+" select                                                                                                                  "
 				+" substr(t1.EntryDate,1,7) AS `Month`,                                                                                "
 				+" t3.MaterialNo,                                                                                                          "
-				+" IFNULL(t4.NewMaterialNo,t1.CimtasCode) AS JdeMaterialNo,                                                          "
+				+" IFNULL(t4.NewMaterialNo,t3.MaterialNo) AS JdeMaterialNo,                                                          "
 				+" t1.`No`,                                                                                                                "
 				+" t3.ProductNo,                                                                                                           "
 				+" t3.MaterialName,                                                                                                        "
@@ -469,10 +461,7 @@ public class CustomsGeneralBIZImpl  extends BizBase implements CustomsGeneralBIZ
 				+" left join t_customs_clearance t2 on t1.`No`=t2.`No`                                                                     "
 				+" and substr(t1.EntryDate,1,7) = substr(t2.BOMDate,1,7)                                                         "
 				+" left join t_customs_material t3 on t1.`No`=t3.`No`                                                                      "
-				+" left join (                                                                                                             "
-				+" select IFNULL(tt2.NewMaterialNo,tt1.CimtasLongItemNo) as NewMaterialNo,tt1.TransQTY,tt1.OperationDate                      "
-				+" from t_customs_jde tt1 left join t_customs_material_mapping tt2 on tt1.CimtasLongItemNo=tt2.OldMaterialNo               "
-				+" ) t4 on t4.NewMaterialNo=t1.CimtasCode and substr(t1.EntryDate,1,7)=substr(t4.OperationDate,1,7)                                   "
+				+" left join t_customs_material_mapping t4 on t4.oldMaterialNo=t3.MaterialNo                  "
 				+" left join t_dict t6 on t6.type='CUSTOMS_UNIT' and t6.`key`=t3.DeclareUnitCode                                          "
 				+" left join t_customs_product t8 " 
 				+" on t2.shipmentIems=t8.materialNo "
