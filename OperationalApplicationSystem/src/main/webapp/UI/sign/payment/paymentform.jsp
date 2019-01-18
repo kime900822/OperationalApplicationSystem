@@ -1466,17 +1466,16 @@ function showVisitForm(){
             group: '',
             include: 'supplierCode,beneficiary:name,beneficiaryE:ename,beneficiaryAccountNO:accno,beneficiaryAccountBank:accbank,oversea:oversea',
             dialogOptions: {title:'查找供应商代码/收款人'},
-            empty:false,
+            empty:true,
             gridOptions: {
-                local: 'local',
                 dataUrl: 'getBeneficiaryForSearch.action',
                 columns: [
-                    {name:'supplierCode', label:'SupplierCode', width:100},
+                    {name:'supplierCode', label:'SupplierCode', width:100,quickfilter:false},
                     {name:'name',width:200,label:'Name'},
                     {name:'ename',width:200,label:'EName'},
-                    {name:'accno',width:300,label:'AccNO'},
-                    {name:'accbank',width:300,label:'AccBank'},
-                    {name:'oversea',width:100,label:'Oversea'}
+                    {name:'accno',width:300,label:'AccNO',quickfilter:false},
+                    {name:'accbank',width:300,label:'AccBank',quickfilter:false},
+                    {name:'oversea',width:100,label:'Oversea',quickfilter:false}
                 ]
             }
         }" placeholder="点放大镜按钮查找" data-rule="required" >

@@ -159,6 +159,7 @@ public class BeneficiaryAction extends ActionBase {
 			}
 			
 		}
+
 		List list  =beneficiaryBIZ.queryBeneficiary(where, Integer.parseInt(pageSize),Integer.parseInt(pageCurrent));
 		int total=beneficiaryBIZ.queryBeneficiary(where).size();
 		
@@ -184,8 +185,64 @@ public class BeneficiaryAction extends ActionBase {
 			})})
 	public String getBeneficiaryForSearch() throws UnsupportedEncodingException{	
 
-		List list  =beneficiaryBIZ.queryBeneficiary("");
-		reslutJson=new ByteArrayInputStream(new Gson().toJson(list).getBytes("UTF-8"));  
+		String where="";
+//		if (!"".equals(accno)&&accno!=null&&accno.length()>5) {
+//			where+=" where accno like '%"+accno+"' ";
+//		}	
+		if (!"".equals(ename)&&ename!=null&&ename.length()>4) {
+			if (where.equals("")) {
+				where+=" where ename like '%"+ename+"%' ";
+			}else{
+				where+=" AND ename like '%"+ename+"%' ";
+			}
+			
+		}	
+		if (!"".equals(name)&&name!=null&&name.length()>4) {
+			if (where.equals("")) {
+				where+=" where name like '%"+name+"%' ";
+			}else{
+				where+=" AND name like '%"+name+"%' ";
+			}
+			
+		}
+//		if (!"".equals(accbank)&&accbank!=null&&accbank.length()>2) {
+//			if (where.equals("")) {
+//				where+=" where accbank like '%"+accbank+"%' ";
+//			}else{
+//				where+=" AND accbank like '%"+accbank+"%' ";
+//			}
+//			
+//		}
+//		if (!"".equals(supplierCode)&&supplierCode!=null&&supplierCode.length()>2) {
+//			if (where.equals("")) {
+//				where+=" where supplierCode like '%"+supplierCode+"%' ";
+//			}else{
+//				where+=" AND supplierCode like '%"+supplierCode+"%' ";
+//			}
+//			
+//		}
+		
+		if (where.equals("")) {
+			where+=" where 1=2";
+		}
+		
+		List list  =beneficiaryBIZ.queryBeneficiary(where, Integer.parseInt(pageSize),Integer.parseInt(pageCurrent));
+		int total=beneficiaryBIZ.queryBeneficiary(where).size();
+		
+		queryResult.setList(list);
+		queryResult.setTotalRow(total);
+		queryResult.setFirstPage(Integer.parseInt(pageCurrent)==1?true:false);
+		queryResult.setPageNumber(Integer.parseInt(pageCurrent));
+		queryResult.setLastPage(total/Integer.parseInt(pageSize) +1==Integer.parseInt(pageCurrent)&&Integer.parseInt(pageCurrent)!=1?true:false);
+		queryResult.setTotalPage(total/Integer.parseInt(pageSize) +1);
+		queryResult.setPageSize(Integer.parseInt(pageSize));
+		if (where.equals(" where 1=2")&&((!"".equals(ename)&&ename!=null)||(!"".equals(name)&&name!=null))) {
+			result.setMessage("需输入五个以上关键字  At least more than five words can search");
+			result.setStatusCode("300");
+			reslutJson=new ByteArrayInputStream(new Gson().toJson(result).getBytes("UTF-8"));  
+		}else{
+			reslutJson=new ByteArrayInputStream(new Gson().toJson(queryResult).getBytes("UTF-8"));  
+		}
 		
 		logUtil.logInfo("查询收款人信息，条件:"+"");
 		return SUCCESS;
