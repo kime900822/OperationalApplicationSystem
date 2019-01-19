@@ -258,7 +258,7 @@ public class CustomsGeneralAction extends ActionBase{
 	public String unCustomsGeneral() throws Exception{	
 		
 
-		String r=customsGeneralBIZ.saveData(month);
+		String r=customsGeneralBIZ.deleteData(month);
 
 		if (r==null) {
 			result.setMessage("Success!");
