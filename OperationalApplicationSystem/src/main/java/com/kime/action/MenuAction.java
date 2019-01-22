@@ -125,7 +125,12 @@ public class MenuAction extends ActionBase {
 		
 		HttpServletRequest request=ServletActionContext.getRequest();
 		HttpSession session=request.getSession();
-		reslutJson=new ByteArrayInputStream(session.getAttribute(id).toString().getBytes("UTF-8")); 
+		Object menu=session.getAttribute(id);
+		if (menu!=null) {
+			reslutJson=new ByteArrayInputStream(menu.toString().getBytes("UTF-8")); 
+		}else {
+			reslutJson=new ByteArrayInputStream("[]".getBytes("UTF-8")); 
+		}
 		
 		return SUCCESS;
 	}

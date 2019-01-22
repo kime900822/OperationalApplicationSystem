@@ -133,6 +133,7 @@ $(function() {
     
     
     $('#stampTemp').zoomify();
+    showMenuImage();
 })
 
 
@@ -169,6 +170,50 @@ function bjui_index_exchange() {
 
 function showStampImage(id){ $('#'+id).show(400)}
 function hideStampImage(id){ $('#'+id).hide(400)}
+
+function showMenuImage(){
+	
+	BJUI.ajax('doajax', {
+	    url: 'getChildMenu.action',
+	    data:{id:'40289f81605e86cf01605e87be510001'},
+	    loadingmask: false,
+	    okCallback: function(json, options) {
+           if(json!=''){
+        	   $.CurrentNavtab.find("#menu_image_payment").show();
+           }else{
+        	   $.CurrentNavtab.find("#menu_image_payment").hide(); 
+           }
+	    }
+	});
+	BJUI.ajax('doajax', {
+	    url: 'getChildMenu.action',
+	    data:{id:'40284c816243ad5b016243b365bd0005'},
+	    loadingmask: false,
+	    okCallback: function(json, options) {
+           if(json!=''){
+        	   $.CurrentNavtab.find("#menu_image_stamp").show();
+           }else{
+        	   $.CurrentNavtab.find("#menu_image_stamp").hide(); 
+           }
+	    }
+	});
+	BJUI.ajax('doajax', {
+	    url: 'getChildMenu.action',
+	    data:{id:'8aa50182676f809901676f9050060000'},
+	    loadingmask: false,
+	    okCallback: function(json, options) {
+           if(json!=''){
+        	   $.CurrentNavtab.find("#menu_image_custom").show();
+           }else{
+        	   $.CurrentNavtab.find("#menu_image_custom").hide(); 
+           }
+	    }
+	});
+	
+	
+	
+	
+}
 
 </script>
 <!-- highlight && ZeroClipboard -->
@@ -268,11 +313,14 @@ function hideStampImage(id){ $('#'+id).hide(400)}
                     <div class="navtabPage unitBox">
                         <div class="bjui-pageContent" style="position:absolute;width:100%;height:100%;z-index:-1;background-image:url(images/loginbg_05.jpg);background-attachment: fixed;background-repeat: no-repeat;background-size: cover;">
                         	<br><br>
-                        	<div style="position:absolute; left: 100px; top:50px">
+                        	<div style="position:absolute; left: 100px; top:50px" id="menu_image_payment">
                         		<a href="getChildMenu.action?id=40289f81605e86cf01605e87be510001" data-toggle="sidenav" data-id-key="targetid" onclick="hideStampImage('showStampExplain')"><img src="images/menu/payment.png" height="60"></a>
                         	</div>
-                        	<div style="position:absolute; left: 100px; top:130px">
+                        	<div style="position:absolute; left: 100px; top:130px" id="menu_image_stamp">
                         		<a href="getChildMenu.action?id=40284c816243ad5b016243b365bd0005" data-toggle="sidenav" data-id-key="targetid" onclick="showStampImage('showStampExplain')"><img src="images/menu/stamp.png" height="60"></a>
+                        	</div>
+                        	<div style="position:absolute; left: 100px; top:210px" id="menu_image_custom">
+                        		<a href="getChildMenu.action?id=8aa50182676f809901676f9050060000" data-toggle="sidenav" data-id-key="targetid" onclick="hideStampImage('showStampExplain')"><img src="images/menu/custom.png" height="60"></a>
                         	</div>
                         	
                         	<div id="showStampExplain" class="highlight" style="display:none;position:absolute; left:500px;top:50px;width:400px">
