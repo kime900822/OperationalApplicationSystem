@@ -221,6 +221,11 @@ public class CustomsProductBIZImpl extends BizBase implements CustomsProductBIZ{
 		return null;
 
 	}
+
+	@Override
+	public List<CustomsProduct> getByMaterialNo(String materialNo) {
+		return customsProductDAO.query(" where materialNo='"+materialNo+"'");
+	}
 	
 	
 	

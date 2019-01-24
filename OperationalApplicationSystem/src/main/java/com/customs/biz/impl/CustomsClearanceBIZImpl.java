@@ -14,10 +14,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.customs.biz.CustomsClearanceBIZ;
 import com.customs.biz.CustomsMaterialBIZ;
+import com.customs.biz.CustomsProductBIZ;
 import com.customs.dao.CustomsClearanceDAO;
 import com.customs.model.CustomsClearance;
 import com.customs.model.CustomsImportsAndExports;
 import com.customs.model.CustomsMaterial;
+import com.customs.model.CustomsProduct;
 import com.customs.other.CustomsClearanceHelp;
 import com.customs.other.CustomsImportsAndExportsHelp;
 import com.kime.base.BizBase;
@@ -37,7 +39,8 @@ public class CustomsClearanceBIZImpl  extends BizBase implements CustomsClearanc
 	CustomsMaterialBIZ customsMaterialBIZ;
 	@Autowired
 	CommonDAO commonDAO;
-	
+	@Autowired
+	CustomsProductBIZ customsProductBIZ;
 	
 	
 	@Override
@@ -91,6 +94,11 @@ public class CustomsClearanceBIZImpl  extends BizBase implements CustomsClearanc
 						throw new Exception("导入报错："+clearance.getCimtasNo()+"料件序号未mapping到:"+clearance.getPoseLongItemNo());
 					}
 					
+					List<CustomsProduct> lCustomsProducts=customsProductBIZ.getByMaterialNo(clearance.getShipmentIems());
+					if (lCustomsProducts.size()==0) {
+						logUtil.logError(CustomsClearanceHelp.title,"导入报错："+clearance.getShipmentIems()+"未mapping到对应成品数据");
+						throw new Exception("导入报错："+clearance.getShipmentIems()+"未mapping到对应成品数据");
+					}
 				
 					
 					clearance.setNo(CommonUtil.spaceToNull(lsCustomsMaterials.get(0).getNo()));
