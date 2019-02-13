@@ -76,7 +76,7 @@ public class CustomsGeneralBIZImpl  extends BizBase implements CustomsGeneralBIZ
 		List list  = new ArrayList<>();
 		
 		if (!month.equals(CommonUtil.getMonth())&&checkGeneral(month)) {
-			list= dataToEntity(customsGeneralDAO.query(" where month='"+month+"'"));
+			list= customsGeneralDAO.query(" where month='"+month+"'");
 		}else {
 			String sql=getSQL(month,where);
 			list = dataToEntity(commonDAO.queryBySql(sql));
