@@ -232,7 +232,7 @@ function exportCheckedStampPDF(){
 				<th data-options="{name:'chopObject',width:200,align:'center',finalWidth:'true' }">Chop Object</th>
 				<th data-options="{name:'documentType',width:200,align:'center',finalWidth:'true',type:'select',itemattr:{value:'id',label:'value'},items:$.getJSON('getCheckType4Select.action')}">Document Type</th>
 				<th data-options="{name:'stampType',width:180,align:'left',finalWidth:'true'}">Stamp Type</th>
-				<th data-options="{name:'urgent',width:80,align:'center',finalWidth:'true',type:'select', items:datagrid_urgent}">Urgent</th>
+				<th data-options="{name:'urgent',width:80,align:'center',finalWidth:'true',render:function(value){return String(value)=='1'?'Y':'N'}}">Urgent</th>
 				<th data-options="{name:'usageDescription',width:300,align:'left',finalWidth:'true'}">Usage Description</th>            
 			</tr>
         </thead>

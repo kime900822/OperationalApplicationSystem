@@ -59,7 +59,9 @@ function paymentVisitCheckSave(o){
 		err+=' RMB must be greater than 3000 !<br>'
 	}
 	
-	
+	if(o.employees.length==0){
+		err+=' employee can`t empty !<br>'
+	}
 	
 	return err;
 	

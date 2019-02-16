@@ -1395,6 +1395,7 @@ public class PaymentAction extends ActionBase {
 			lColumns.add(new HeadColumn("amountInFigures", "80", "right", "Total Amount"));
 			lColumns.add(new HeadColumn("usageDescription", "400", "right", "Usage Description"));
 			lColumns.add(new HeadColumn("amount", "80", "right", "PO Amount"));
+			lColumns.add(new HeadColumn("currency", "80", "right", "Currency"));
 			lColumns.add(new HeadColumn("supplierCode", "80", "right", "Supplier Code"));
 			lColumns.add(new HeadColumn("beneficiaryE", "300", "right", "Ename"));
 
