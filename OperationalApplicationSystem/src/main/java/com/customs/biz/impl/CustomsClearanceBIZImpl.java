@@ -179,12 +179,23 @@ public class CustomsClearanceBIZImpl  extends BizBase implements CustomsClearanc
 		for (CustomsClearance customsClearance : lClearances) {
 			
 			if (customsClearance.getBOMDate()==null||customsClearance.getBOMDate().equals("")) {
-				return "此批次号已经进行BOM日期申报，不能删除！";
+				return customsClearance.getCimtasNo()+"此批次号已经进行BOM日期申报，不能删除！";
 			}
 			customsCleanceDAO.delete(customsClearance);
 		}
 		return null;
 		
+	}
+	
+	
+
+	@Override
+	public Boolean checkHasBOMDate(String batchNumber) {
+		List<CustomsClearance> lClearances=customsCleanceDAO.query(" where batchNumber='"+batchNumber+"' and BOMDate =''");
+		if (lClearances.size()>0) {
+			return true;
+		}
+		return false;
 	}
 
 	public String getMaxBatchNumber() throws Exception{

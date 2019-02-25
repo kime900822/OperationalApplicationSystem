@@ -25,4 +25,6 @@ public interface CustomsClearanceBIZ {
 	public String deleteByBatchNumber(String batchNumber);
 	
 	public String customsClearanceBOMDate(String where,String bomDate);
+	
+	public Boolean checkHasBOMDate(String batchNumber);
 }

@@ -215,7 +215,7 @@ public class CustomsClearanceAction extends ActionBase {
 					"inputName", "reslutJson"
 			})})
 	public String deleteCustomsClearanceByBatchNumber() throws UnsupportedEncodingException{
-		if (!CommonUtil.isAdmin(getUser())) {
+		if (!CommonUtil.isAdmin(getUser())&&clearanceBIZ.checkHasBOMDate(batchNumber)) {
 			result.setMessage("非管理员，没有权限！");
 			result.setStatusCode("300");
 			reslutJson=new ByteArrayInputStream(new Gson().toJson(result).getBytes("UTF-8"));

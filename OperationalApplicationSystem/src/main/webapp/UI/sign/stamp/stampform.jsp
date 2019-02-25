@@ -355,6 +355,7 @@ function showButtonStamp(state){
 			$.CurrentNavtab.find('#j_stamp_projectResponsible').attr('disabled','disabled');
 		}
 		 $.CurrentNavtab.find('#stamp-delete').show();
+		 $.CurrentNavtab.find('#j_stamp_delete').show();
 	}else if(state.indexOf('Approval')>0){		
 		 $.CurrentNavtab.find('#stamp-save').hide();
 		 $.CurrentNavtab.find('#stamp-submit').hide();
@@ -665,11 +666,14 @@ function setProjectResponsible(){
 					<td>
 						<input type="checkbox" name="urgent"  data-toggle="icheck" value='1' id="j_stamp_urgent" data-label="">
 					</td>
+					<td colspan="2"></td>
+				</tr>
+				<tr>
 					<td>
 						Urgent Reason:<br>申请急件原因:
 					</td>
 					<td colspan="3">
-						<input type="text" name="urgentReason" value="" id="j_stamp_urgentReason" size="19"  />
+						<textarea cols="80" rows="3" id="j_stamp_urgentReason"  name="urgentReason" data-toggle="autoheight"></textarea>
 					</td>
 				</tr>
 				<tr>
