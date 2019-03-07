@@ -191,7 +191,7 @@ public class CustomsClearanceBIZImpl  extends BizBase implements CustomsClearanc
 
 	@Override
 	public Boolean checkHasBOMDate(String batchNumber) {
-		List<CustomsClearance> lClearances=customsCleanceDAO.query(" where batchNumber='"+batchNumber+"' and BOMDate =''");
+		List<CustomsClearance> lClearances=customsCleanceDAO.query(" where batchNumber='"+batchNumber+"' and BOMDate !=''");
 		if (lClearances.size()>0) {
 			return true;
 		}
