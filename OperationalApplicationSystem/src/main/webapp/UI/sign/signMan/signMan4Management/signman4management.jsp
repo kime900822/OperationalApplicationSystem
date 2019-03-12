@@ -14,7 +14,7 @@
         toolbarItem: 'add,edit,del',
         dataUrl: 'getSignMan4Management.action',
         dataType: 'jsonp',
-        editMode: {dialog:{width:'800',height:200,title:'Edit SignMan4Manager',mask:true}},
+        editMode: {dialog:{width:'800',height:300,title:'Edit SignMan4Manager',mask:true}},
         delUrl:'deleteDict.action',
         editUrl: 'sign/signMan/signMan4Management/signman4management-edit.jsp',
         paging: {pageSize:30, pageCurrent:1},
@@ -32,6 +32,8 @@
 				<th data-options="{name:'keyExplain',width:200,align:'center',finalWidth:'true'}">ManagerName</th>
 				<th data-options="{name:'value',width:150,align:'center',finalWidth:'true'}">SignID</th>
 				<th data-options="{name:'valueExplain',width:150,align:'center',finalWidth:'true'}">SignName</th>
+				<th data-options="{name:'tmp1',width:150,align:'center',finalWidth:'true'}">SignID2</th>
+				<th data-options="{name:'tmp2',width:150,align:'center',finalWidth:'true'}">SignName2</th>
             </tr>
         </thead>
     </table>

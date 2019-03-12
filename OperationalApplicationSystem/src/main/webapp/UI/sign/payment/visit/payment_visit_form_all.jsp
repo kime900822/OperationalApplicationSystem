@@ -14,7 +14,7 @@ function datagrid_tree_operation() {
 
 </script>
 <div class="bjui-pageHeader" style="background-color:#fefefe; border-bottom:none;">
-<form data-toggle="ajaxsearch" data-options="{searchDatagrid:$.CurrentNavtab.find('#datagrid-payment-admin-filter')}" id="datagrid-payment-admin-query">
+<form data-toggle="ajaxsearch" data-options="{searchDatagrid:$.CurrentNavtab.find('#datagrid-payment-all-filter')}" id="datagrid-payment-all-query">
     <fieldset>
         <legend style="font-weight:normal;">Search：</legend>
         <div style="margin:0; padding:1px 5px 5px;">
@@ -31,7 +31,7 @@ function datagrid_tree_operation() {
         		<span>ReferenceNO：</span>
         		</td>
         		<td width="180px">
-            	<input type="text" name="referenceN0" value=""  size="15">
+            	<input type="text" name="referenceNo" value=""  size="15">
         		</td>
         		<td>
         		<span>Cimtas ID：</span>
@@ -78,7 +78,7 @@ function datagrid_tree_operation() {
 </form>
 </div>
 <div class="bjui-pageContent" id="div-user">
-    <table class="table table-bordered" id="datagrid-payment-admin-filter" data-toggle="datagrid" data-options="{
+    <table class="table table-bordered" id="datagrid-payment-all-filter" data-toggle="datagrid" data-options="{
         height: '100%',
         gridTitle : 'Payment_Visit management',
         dataUrl: 'getPaymentVisit.action?queryType=all',
@@ -92,7 +92,7 @@ function datagrid_tree_operation() {
         contextMenuB: true,
         hScrollbar: true,
         filterThead:false,
-        exportOption: {type:'file', options:{url:'exportPaymentExcel.action?queryType=admin', loadingmask:true,queryForm:$.CurrentNavtab.find('#datagrid-payment-admin-query')}}
+        exportOption: {type:'file', options:{url:'exportPaymentExcel.action?queryType=admin', loadingmask:true,queryForm:$.CurrentNavtab.find('#datagrid-payment-all-query')}}
     }">
         <thead>
             <tr>

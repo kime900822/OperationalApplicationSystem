@@ -224,7 +224,7 @@ public class CustomsClearanceAction extends ActionBase {
 			if (r==null) {
 				result.setMessage("Success!");
 				result.setStatusCode("200");
-				reslutJson=new ByteArrayInputStream((callback+"("+new Gson().toJson(null)+")").getBytes()); 
+				reslutJson=new ByteArrayInputStream(new Gson().toJson(result).getBytes("UTF-8")); 
 			}else{
 				result.setMessage(r);
 				result.setStatusCode("300");

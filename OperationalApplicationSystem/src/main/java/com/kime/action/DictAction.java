@@ -45,7 +45,8 @@ public class DictAction extends ActionBase{
 	protected String keyExplain;
 	protected String valueExplain;
 	protected String id;
-	
+	protected String tmp1;
+	protected String tmp2;
 	
 	public DictBIZ getDictBIZ() {
 		return dictBIZ;
@@ -129,6 +130,24 @@ public class DictAction extends ActionBase{
 		this.valueName = valueName;
 	}
 
+	public String getTmp1() {
+		return tmp1;
+	}
+
+	public void setTmp1(String tmp1) {
+		this.tmp1 = tmp1;
+	}
+
+	public String getTmp2() {
+		return tmp2;
+	}
+
+	public void setTmp2(String tmp2) {
+		this.tmp2 = tmp2;
+	}
+
+	
+	
 	@Action(value="getALLSign",results={@org.apache.struts2.convention.annotation.Result(type="stream",
 			params={
 					"inputName", "reslutJson"
@@ -340,6 +359,8 @@ public class DictAction extends ActionBase{
 		dict.setValue(value);
 		dict.setKeyExplain(keyExplain);
 		dict.setValueExplain(valueExplain);
+		dict.setTmp1(tmp1);
+		dict.setTmp2(tmp2);
 		dict.setId(id);
 		boolean t=true;
 		try {

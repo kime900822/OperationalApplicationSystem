@@ -39,8 +39,35 @@ public class DepartmentAction extends ActionBase {
 	private String name;
 	private String uid;
 	private String uname;
+	private String uid2;
+	private String uname2;
 	private String addFlag;
 	
+	
+	public String getUid() {
+		return uid;
+	}
+	public void setUid(String uid) {
+		this.uid = uid;
+	}
+	public String getUname() {
+		return uname;
+	}
+	public void setUname(String uname) {
+		this.uname = uname;
+	}
+	public String getUid2() {
+		return uid2;
+	}
+	public void setUid2(String uid2) {
+		this.uid2 = uid2;
+	}
+	public String getUname2() {
+		return uname2;
+	}
+	public void setUname2(String uname2) {
+		this.uname2 = uname2;
+	}
 	public DepartmentBIZ getDepartmentBIZ() {
 		return departmentBIZ;
 	}

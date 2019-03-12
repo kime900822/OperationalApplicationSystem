@@ -37,6 +37,24 @@
 			})
 			
 		}		
+		
+		function getUnameOfSign2(){
+			var id=$.CurrentDialog.find('#j_signman4manager_edit_signid2').val();
+			BJUI.ajax('doajax', {
+			    url: 'getUserByID.action',
+			    loadingmask: true,
+			    data:{uid:id},
+			    okCallback: function(json, options) {
+			    	if(json.length>0){
+			    		$.CurrentDialog.find('#j_signman4manager_edit_signname2').val(json[0].name); 
+			    	}                         
+			    	else{
+			    		BJUI.alertmsg('error','userid不存在'); 
+			    	}
+			    }
+			})
+			
+		}	
 
 
 </script> 
@@ -64,6 +82,14 @@
                 <label class="row-label">SignName</label>
                 <div class="row-input required">
                     <input type="text" name="valueExplain"  id="j_signman4manager_edit_signname" value="${param.valueExplain}" data-rule="required" readonly="">
+                </div>
+                 <label class="row-label">SignID2</label>
+                <div class="row-input required">
+                    <input type="text" name="tmp1" id="j_signman4manager_edit_signid2" value="${param.tmp1}" data-rule="required" onchange="getUnameOfSign2()">
+                </div>
+                <label class="row-label">SignName2</label>
+                <div class="row-input required">
+                    <input type="text" name="tmp2"  id="j_signman4manager_edit_signname2" value="${param.tmp2}" data-rule="required" readonly="">
                 </div>
             </div>
         </form>

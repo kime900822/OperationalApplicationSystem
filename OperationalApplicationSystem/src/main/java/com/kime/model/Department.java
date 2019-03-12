@@ -24,6 +24,10 @@ public class Department {
 	private String uid;
 	@Column
 	private String uname;
+	@Column
+	private String uid2;
+	@Column
+	private String uname2;
 	@Transient
 	private String addFlag;
 	
@@ -56,6 +60,18 @@ public class Department {
 	}
 	public void setUname(String uname) {
 		this.uname = uname;
+	}
+	public String getUid2() {
+		return uid2;
+	}
+	public void setUid2(String uid2) {
+		this.uid2 = uid2;
+	}
+	public String getUname2() {
+		return uname2;
+	}
+	public void setUname2(String uname2) {
+		this.uname2 = uname2;
 	}
 
 	

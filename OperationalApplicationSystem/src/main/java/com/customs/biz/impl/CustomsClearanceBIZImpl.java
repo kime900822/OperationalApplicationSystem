@@ -178,7 +178,7 @@ public class CustomsClearanceBIZImpl  extends BizBase implements CustomsClearanc
 		}
 		for (CustomsClearance customsClearance : lClearances) {
 			
-			if (customsClearance.getBOMDate()==null||customsClearance.getBOMDate().equals("")) {
+			if (customsClearance.getBOMDate()!=null&&!customsClearance.getBOMDate().equals("")) {
 				return customsClearance.getCimtasNo()+"此批次号已经进行BOM日期申报，不能删除！";
 			}
 			customsCleanceDAO.delete(customsClearance);
