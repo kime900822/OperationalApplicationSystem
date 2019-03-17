@@ -127,6 +127,32 @@ public class PaymentBIZImpl extends BizBase implements PaymentBIZ {
 	@Transactional(readOnly=false,propagation=Propagation.REQUIRED,rollbackFor=Exception.class )
 	public void approvePayment(Payment payment) throws Exception {
 		try {
+			List<User> lUsers=userDAO.queryByHql(" select U from User U,SignMan S where U.uid=S.uid2 AND S.did='"+payment.getDepartmentID()+"'");
+			if (lUsers.size()>0) {
+				if (!lUsers.get(0).getUid().equals(payment.getUID())) {
+					payment.setDeptManager2ID(lUsers.get(0).getUid());
+					paymentDAO.update(payment);
+					//SendMail.SendMail(lUsers.get(0).getEmail(), "Payment application system inform", "Dear sir,<br><br> You have got a payment approval request from <u><b>\""+payment.getUName()+"\"</b></u> . <br><br>Approval Website:<a href='"+PropertiesUtil.ReadProperties(Message.SYSTEM_PROPERTIES, "website")+"'>Analysis</a>");	
+					SendMail.SendMail(lUsers.get(0).getEmail(), PropertiesUtil.ReadProperties(Message.MAIL_PROPERTIES, "mailTitleOfSubmit"), MessageFormat.format(PropertiesUtil.ReadProperties(Message.MAIL_PROPERTIES, "mailContentOfSubmit"),payment.getUName(),TypeChangeUtil.formatMoney(payment.getAmountInFigures(), 2, payment.getCurrency_1()),PropertiesUtil.ReadProperties(Message.SYSTEM_PROPERTIES, "website")));	
+
+				}else{
+					throw new Exception("对应特殊签核人员未维护，提交审批失败");
+				}
+			}else{
+				throw new Exception("对应签核人员信息不存在，提交审批失败");
+			}
+			
+		} catch (Exception e) {
+			logUtil.logInfo(e.getMessage());
+			e.printStackTrace();
+			throw new Exception(e.getMessage());
+		}
+	}
+	
+	@Override
+	@Transactional(readOnly=false,propagation=Propagation.REQUIRED,rollbackFor=Exception.class )
+	public void approvePayment2(Payment payment) throws Exception {
+		try {
 			List<Dict> lDicts=dictDAO.query(" where key='"+payment.getPaymentSubject()+"'");
 			if (!lDicts.get(0).getValue().equals("")&&lDicts.get(0).getValue()!=null) {
 				payment.setDocumentAuditID(lDicts.get(0).getValue());

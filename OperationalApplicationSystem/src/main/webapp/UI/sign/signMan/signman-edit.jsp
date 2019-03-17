@@ -32,6 +32,25 @@
 		})
 
 		function getUname(){
+			var id=$.CurrentDialog.find('#j_signman_edit_uid2').val();
+			BJUI.ajax('doajax', {
+			    url: 'getUserByID.action',
+			    loadingmask: true,
+			    data:{uid:id},
+			    okCallback: function(json, options) {
+			    	if(json.length>0){
+			    		$.CurrentDialog.find('#j_signman_edit_uname2').val(json[0].name); 
+			    	}                         
+			    	else{
+			    		BJUI.alertmsg('error','userid不存在'); 
+			    	}
+			    }
+			})
+			
+		}
+		
+		
+		function getUname2(){
 			var id=$.CurrentDialog.find('#j_signman_edit_uid').val();
 			BJUI.ajax('doajax', {
 			    url: 'getUserByID.action',
@@ -48,9 +67,6 @@
 			})
 			
 		}
-		
-		
-
 
 </script> 
     
@@ -76,6 +92,14 @@
                 <label class="row-label">Name</label>
                 <div class="row-input required">
                     <input type="text" name="uname" id="j_signman_edit_uname" value="${param.uname}" data-rule="required" readonly="">
+                </div>
+                <label class="row-label">UserID2</label>
+                <div class="row-input required">
+                    <input type="text" name="uid2" id="j_signman_edit_uid2" value="${param.uid2}" data-rule="required" onchange="getUname2()">
+                </div>
+                <label class="row-label">Name2</label>
+                <div class="row-input required">
+                    <input type="text" name="uname2" id="j_signman_edit_uname2" value="${param.uname2}" data-rule="required" readonly="">
                 </div>
                 <label class="row-label">DepartmentID</label>
                 <div class="row-input required">

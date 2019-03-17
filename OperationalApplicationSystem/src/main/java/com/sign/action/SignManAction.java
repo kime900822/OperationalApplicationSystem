@@ -30,6 +30,9 @@ public class SignManAction extends ActionBase {
 	
 	private String sid;	
 	private String uid;
+	private String uid2;
+	private String uname;
+	private String uname2;
 	private String type;
 	private String did;
 	public SignManBIZ getSignManBIZ() {
@@ -62,8 +65,24 @@ public class SignManAction extends ActionBase {
 	public void setDid(String did) {
 		this.did = did;
 	}
-	
-	
+	public String getUid2() {
+		return uid2;
+	}
+	public void setUid2(String uid2) {
+		this.uid2 = uid2;
+	}
+	public String getUname() {
+		return uname;
+	}
+	public void setUname(String uname) {
+		this.uname = uname;
+	}
+	public String getUname2() {
+		return uname2;
+	}
+	public void setUname2(String uname2) {
+		this.uname2 = uname2;
+	}
 	@Action(value="editSignMan",results={@org.apache.struts2.convention.annotation.Result(type="stream",
 			params={
 					"inputName", "reslutJson"
@@ -80,6 +99,9 @@ public class SignManAction extends ActionBase {
 		}
 		signMan.setType(type);
 		signMan.setUid(uid);
+		signMan.setUid2(uid2);
+		signMan.setUname(uname);
+		signMan.setUname2(uname2);
 
 		try {
 			if (sid == null || "".equals(sid)) {
@@ -111,7 +133,7 @@ public class SignManAction extends ActionBase {
 		
 		if (t) {
 			signMan = signManBIZ.getSianMan(" where sid='" + signMan.getSid() + "'").get(0);
-			signMan.setUname(signMan.getUser().getName());
+			signMan.setUname(signMan.getUname());
 			signMan.setDname(signMan.getDepartment().getName());
 
 			String r = callback + "(" + new Gson().toJson(signMan) + ")";
@@ -142,7 +164,7 @@ public class SignManAction extends ActionBase {
 		
 		for (SignMan object : list) {
 			object.setDname(object.getDepartment().getName());
-			object.setUname(object.getUser().getName());
+			object.setUname(object.getUname());
 		}
 		
 		queryResult.setList(list);

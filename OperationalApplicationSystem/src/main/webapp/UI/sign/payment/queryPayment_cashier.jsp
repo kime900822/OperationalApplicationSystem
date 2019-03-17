@@ -269,6 +269,7 @@ function mailInformPayment(){
 	              <option value="" >all</option>
 	              <option value="0">Submit Required</option>
 	              <option value="1">Manager Approval</option>
+	              <option value="9">Manager2 Approval</option>
 	              <option value="2">Audit Approval</option>
 	              <option value="3">Audit Rejected</option>
 	              <option value="4">Finance Approval</option>

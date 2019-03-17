@@ -63,4 +63,6 @@ public interface PaymentBIZ {
 	List getPaidWeek(String where, Integer pageSize, Integer pageCurrent);
 
 	void paidPayment(List<Payment> list) throws Exception;
+
+	void approvePayment2(Payment payment) throws Exception;
 }

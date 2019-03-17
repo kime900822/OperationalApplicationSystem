@@ -34,9 +34,6 @@ public class SignMan {
 	private String type;
 	@Column
 	private String uid;
-	@ManyToOne(cascade = CascadeType.REFRESH)
-	@JoinColumn(name="uid",insertable=false,updatable=false)
-	private User user;
 	@Column
 	private String did;
 	@ManyToOne(cascade = CascadeType.REFRESH)
@@ -44,10 +41,12 @@ public class SignMan {
 	private Department department;
 	@Transient
 	private String dname;
-	@Transient
+	@Column
 	private String uname;
-	
-	
+	@Column
+	private String uid2;
+	@Column
+	private String uname2;
 	
 	public void setDname(String dname) {
 		this.dname = dname;
@@ -57,9 +56,6 @@ public class SignMan {
 	}
 	public String getDname() {
 		return department.getName();
-	}
-	public String getUname() {
-		return user.getName();
 	}
 
 	public String getSid() {
@@ -80,12 +76,6 @@ public class SignMan {
 	public void setUid(String uid) {
 		this.uid = uid;
 	}
-	public User getUser() {
-		return user;
-	}
-	public void setUser(User user) {
-		this.user = user;
-	}
 	public String getDid() {
 		return did;
 	}
@@ -97,6 +87,21 @@ public class SignMan {
 	}
 	public void setDepartment(Department department) {
 		this.department = department;
+	}
+	public String getUid2() {
+		return uid2;
+	}
+	public void setUid2(String uid2) {
+		this.uid2 = uid2;
+	}
+	public String getUname2() {
+		return uname2;
+	}
+	public void setUname2(String uname2) {
+		this.uname2 = uname2;
+	}
+	public String getUname() {
+		return uname;
 	}
 	
 	

@@ -19,25 +19,6 @@ function getUnameOfDeparment(a){
 	    		})			
 }
 
-function getUnameOfDeparment2(a){
-	var id=$.CurrentNavtab.find(a).val();
-
-	    		BJUI.ajax('doajax', {
-	    		    url: 'getUserByID.action',
-	    		    loadingmask: true,
-	    		    data:{uid:id},
-	    		    okCallback: function(json, options) {
-	    		    	if(json.length>0){
-	    		    		$.CurrentNavtab.find('#department_edit_uname2').val(json[0].name).change();
-	    		    	}                         
-	    		    	else{
-	    		    		$.CurrentNavtab.find(a).val(''); 	
-	    		    		$.CurrentNavtab.find('#department_edit_uname2').val('');
-	    		    		BJUI.alertmsg('error','无对应数据'); 	    			
-	    		    	}
-	    		    }
-	    		})			
-}
 </script>
 
 
@@ -68,8 +49,6 @@ function getUnameOfDeparment2(a){
 				<th data-options="{name:'name',width:350,align:'center',finalWidth:'true'}">Deparment</th>
 				<th data-options="{name:'uid',width:150,align:'center',finalWidth:'true',attrs:{onchange:'getUnameOfDeparment(this);'},rule:'required'}" >Name ID</th>
 				<th data-options="{name:'uname',width:350,align:'center',finalWidth:'true',attrs:{readonly:'true',id:'department_edit_uname'}}">Name</th>
-				<th data-options="{name:'uid2',width:150,align:'center',finalWidth:'true',attrs:{onchange:'getUnameOfDeparment2(this);'},rule:'required'}" >Name ID2</th>
-				<th data-options="{name:'uname2',width:350,align:'center',finalWidth:'true',attrs:{readonly:'true',id:'department_edit_uname2'}}">Name2</th>
             </tr>
         </thead>
     </table>

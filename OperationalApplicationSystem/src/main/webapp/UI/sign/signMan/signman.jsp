@@ -63,6 +63,8 @@ $(function(){
 				<th data-options="{name:'dname',width:200,align:'center',finalWidth:'true'}">Department</th>
 				<th data-options="{name:'uid',width:150,align:'center',finalWidth:'true' }" >Name ID</th>
 				<th data-options="{name:'uname',width:150,align:'center',finalWidth:'true'}">Name</th>
+				<th data-options="{name:'uid2',width:150,align:'center',finalWidth:'true' }" >Name ID2</th>
+				<th data-options="{name:'uname2',width:150,align:'center',finalWidth:'true'}">Name2</th>
             </tr>
         </thead>
     </table>

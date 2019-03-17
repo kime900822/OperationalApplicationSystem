@@ -201,7 +201,7 @@ function dataToFace(){
                 	$.CurrentNavtab.find("#j_payment_visit_id").val(json.visitId);
                 	$.CurrentNavtab.find("#payment-visit-tr").show();
             	}
-            	showButton(json.state,json.isPrint,json.UID,json.documentAuditID,json.deptManagerID);
+            	showButton(json.state,json.isPrint,json.UID,json.documentAuditID,json.deptManagerID,json.deptManager2ID);
             }else{
             	 BJUI.alertmsg('error', json.message); 
             }
@@ -216,7 +216,7 @@ function fileToTr(name,path){
 }
 
 
-function showButton(state,print,uid,documentAuditid,deptManagerid){	
+function showButton(state,print,uid,documentAuditid,deptManagerid,deptManager2id){	
 	if('${param.viewtype}'=='admin'){
 		if((state=="0"||state=="1")&&print!='1'){
 			$.CurrentNavtab.find('#payment-delete').show();
@@ -243,6 +243,14 @@ function showButton(state,print,uid,documentAuditid,deptManagerid){
 		$.CurrentNavtab.find('#payment-invalid-tr').hide();
 		$.CurrentNavtab.find('#payment-return-tr').hide();	
 	}else if(state=="1"&&(deptManagerid=='${user.uid}'||'{param.viewtype}'=='sign')){//部门经理审批
+		$.CurrentNavtab.find('#payment-approve').show();
+		$.CurrentNavtab.find('#payment-reject').show();
+		$.CurrentNavtab.find('#payment-assign').hide();
+		$.CurrentNavtab.find('#payment-acc').hide();
+		$.CurrentNavtab.find('#payment-print').hide();
+		$.CurrentNavtab.find('#payment-invalid-tr').hide();
+		$.CurrentNavtab.find('#payment-return-tr').hide();	
+	}else if(state=="9"&&(deptManager2id=='${user.uid}'||'{param.viewtype}'=='sign')){//部门经理审批
 		$.CurrentNavtab.find('#payment-approve').show();
 		$.CurrentNavtab.find('#payment-reject').show();
 		$.CurrentNavtab.find('#payment-assign').hide();

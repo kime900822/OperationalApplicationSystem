@@ -19,7 +19,7 @@ public class PaymentHelp {
 	/**
 	 * 提交待审批
 	 */
-	public final static String MANAGER2_PAYMENT="9";
+	public final static String SUBPAYMENT2="9";
 	
 	/**
 	 * 财务待审批

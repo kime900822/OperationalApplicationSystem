@@ -1076,7 +1076,7 @@ public class PaymentAction extends ActionBase {
 		try {
 			User user=(User)session.getAttribute("user");
 			Payment payment=paymentBIZ.getPayment(" where id='"+id+"'").get(0);
-			payment.setState(PaymentHelp.APPROVEPAYMENT);
+			payment.setState(PaymentHelp.SUBPAYMENT2);
 			//如果是代理审批
 			if (!user.getUid().equals(payment.getDeptManagerID())) {
 				List<Dict> ldict=dictBIZ.getDict(" where type='AGENTEMPLOYEE' and key='"+payment.getDeptManagerID()+"'");
@@ -1095,6 +1095,48 @@ public class PaymentAction extends ActionBase {
 			payment.setDeptManagerDate(CommonUtil.getDateTemp());
 			
 			paymentBIZ.approvePayment(payment);
+			
+			result.setMessage(Message.SAVE_MESSAGE_SUCCESS);
+			result.setStatusCode("200");
+			logUtil.logInfo("付款申请单审批通过:"+payment.getId());
+		} catch (Exception e) {
+			logUtil.logInfo("付款申请单审批异常:"+e.getMessage());
+			result.setMessage(e.getMessage());
+			result.setStatusCode("300");
+		}
+		
+		reslutJson=new ByteArrayInputStream(new Gson().toJson(result).getBytes("UTF-8")); 	
+		return SUCCESS;
+	}
+	
+	
+	@Action(value="approvePayment2",results={@org.apache.struts2.convention.annotation.Result(type="stream",
+			params={
+					"inputName", "reslutJson"
+			})})
+	public String approvePayment2() throws UnsupportedEncodingException{
+		try {
+			User user=(User)session.getAttribute("user");
+			Payment payment=paymentBIZ.getPayment(" where id='"+id+"'").get(0);
+			payment.setState(PaymentHelp.APPROVEPAYMENT);
+			//如果是代理审批
+			if (!user.getUid().equals(payment.getDeptManager2ID())) {
+				List<Dict> ldict=dictBIZ.getDict(" where type='AGENTEMPLOYEE' and key='"+payment.getDeptManagerID()+"'");
+				if (ldict.size()>0) {
+					payment.setDeptManager2(ldict.get(0).getValueName()+"(On behalf of "+ldict.get(0).getKeyName()+", "+ldict.get(0).getKeyExplain()+" to "+ldict.get(0).getValueExplain()+")");
+				}else {
+					result.setMessage("Agent Error!");
+					result.setStatusCode("300");
+					reslutJson=new ByteArrayInputStream(new Gson().toJson(result).getBytes("UTF-8")); 	
+					return SUCCESS;
+				}
+				
+			}else {
+				payment.setDeptManager2(user.getName());	
+			}
+			payment.setDeptManagerDate(CommonUtil.getDateTemp());
+			
+			paymentBIZ.approvePayment2(payment);
 			
 			result.setMessage(Message.SAVE_MESSAGE_SUCCESS);
 			result.setStatusCode("200");

@@ -87,7 +87,7 @@ public class SourceAction extends ActionBase {
     public String  ImportSource() throws Exception{
 		try {
 	    	if (upfile!=null) {
-	    		List<Source> lSources= new ArrayList<>();
+	    		List<Source> lSources= new ArrayList<Source>();
 	    	
 	    		//POIFSFileSystem fs=new POIFSFileSystem(new FileInputStream(upfile));   
 	        	//HSSFWorkbook wb = new HSSFWorkbook(fs); 
