@@ -14,9 +14,7 @@ function datagrid_paymentSubject() {
     return [{'1':'Fixed Asset 固定资产'},{'2':'Raw Material 原材料'},{'3':'Consumable 消耗品'},{'4':'Subcontractor 外包'},{'5':'Service 服务'},{'6':'Petty Cash备用金'},{'7':'Other 其他'},{'8':'Travel 差旅费'}]
 }
 
-function datagrid_paymentState() {
-    return [{'0':'Submit Required'},{'1':'Manager Approval'},{'2':'Audit Approval'},{'3':'Manager Rejected'},{'4':'Finance Approval'},{'5':'Invalid'},{'6':'Finance Rejected'},{'7':'GM Approval'},{'8':'Payment Completed'}]
-}
+
 function datagrid_urgent() {
     return [{'0':''},{'1':'Y'}]
 }

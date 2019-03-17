@@ -41,3 +41,9 @@ function getPaymentVisitStatus(){
 	
 	
 }
+
+
+function datagrid_paymentState() {
+    return [{'0':'Submit Required'},{'1':'Manager Approval'},{'2':'Audit Approval'},{'3':'Manager Rejected'},{'4':'Finance Approval'},{'5':'Invalid'},{'6':'Finance Rejected'},{'7':'GM Approval'},{'8':'Payment Completed'},{'9':'Manager Approval'}]
+}
+

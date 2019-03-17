@@ -194,10 +194,25 @@ public class PaymentAction extends ActionBase {
 	private String gmDate_f;
 	private String gmDate_t;
 	private String downloadType;
-	private String poNo;
+	private String poNo;                                                                                                                                                                                                                                                                                                                                                                                                 
 	private String visitId;
+	private String deptManager2;
+	private String deptManager2ID;
 	
 	
+	
+	public String getDeptManager2() {
+		return deptManager2;
+	}
+	public void setDeptManager2(String deptManager2) {
+		this.deptManager2 = deptManager2;
+	}
+	public String getDeptManager2ID() {
+		return deptManager2ID;
+	}
+	public void setDeptManager2ID(String deptManager2ID) {
+		this.deptManager2ID = deptManager2ID;
+	}
 	public String getVisitId() {
 		return visitId;
 	}
@@ -1790,7 +1805,7 @@ public class PaymentAction extends ActionBase {
 			hql="  select  P from Payment P where P.documentAuditID='"+user.getUid()+"' and P.state='2' "+where+" order By P.dateTemp desc";  			
 		}
 		if ("sign".equals(queryType)) {
-			hql="  select  P from Payment P left join Dict D ON P.deptManagerID=D.key And D.type='AGENTEMPLOYEE' And '"+CommonUtil.getDate()+"' >=D.keyExplain And '"+CommonUtil.getDate()+"' <=D.valueExplain  where P.state='1' and (P.deptManagerID='"+user.getUid()+"' OR D.value='"+user.getUid()+"')order By P.dateTemp desc";
+			hql="  select  P from Payment P left join Dict D ON P.deptManagerID=D.key And D.type='AGENTEMPLOYEE' And '"+CommonUtil.getDate()+"' >=D.keyExplain And '"+CommonUtil.getDate()+"' <=D.valueExplain  where (P.state='1' and (P.deptManagerID='"+user.getUid()+"' OR D.value='"+user.getUid()+"')) OR (P.state='9' and (P.deptManagerID='"+user.getUid()+"' OR D.value='"+user.getUid()+"')) order By P.dateTemp desc";
 		}
 		if ("user".equals(queryType)) {
 			hql=" select P from Payment P where P.UID='"+user.getUid()+"' "+where+" order By P.dateTemp desc";
@@ -1926,7 +1941,7 @@ public class PaymentAction extends ActionBase {
     			hql="  select  P from Payment P where P.documentAuditID='"+user.getUid()+"' and P.state='2' "+where+" order By P.dateTemp desc";  			
     		}
     		if ("sign".equals(queryType)) {
-    			hql="  select  P from Payment P where P.state='1' and P.deptManagerID='"+user.getUid()+"' order By P.dateTemp desc";
+    			hql="  select  P from Payment P left join Dict D ON P.deptManagerID=D.key And D.type='AGENTEMPLOYEE' And '"+CommonUtil.getDate()+"' >=D.keyExplain And '"+CommonUtil.getDate()+"' <=D.valueExplain  where (P.state='1' and (P.deptManagerID='"+user.getUid()+"' OR D.value='"+user.getUid()+"')) OR (P.state='9' and (P.deptManagerID='"+user.getUid()+"' OR D.value='"+user.getUid()+"')) order By P.dateTemp desc";
     		}
     		if ("user".equals(queryType)) {
     			hql=" select P from Payment P where P.UID='"+user.getUid()+"' "+where+" order By P.dateTemp desc";

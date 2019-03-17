@@ -18,9 +18,6 @@ function datagrid_urgent() {
     return [{'0':''},{'1':'Y'}]
 }
 
-function datagrid_paymentState() {
-    return [{'0':'Submit Required'},{'1':'Manager Approval'},{'2':'Audit Approval'},{'3':'Manager Rejected'},{'4':'Finance Approval'},{'5':'Invalid'},{'6':'Finance Rejected'},{'7':'GM Approval'},{'8':'Payment Completed'}]
-}
 
 </script>
 <div class="bjui-pageHeader" style="background-color:#fefefe; border-bottom:none;">

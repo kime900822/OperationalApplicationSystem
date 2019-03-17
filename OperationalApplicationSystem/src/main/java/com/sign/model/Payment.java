@@ -404,6 +404,18 @@ public class Payment {
 	private String deptManagerID;
 	
 	/**
+	 * 部门经理
+	 */
+	@Column
+	private String deptManager2;
+	
+	/**
+	 * 部门经理ID
+	 */
+	@Column
+	private String deptManager2ID;
+	
+	/**
 	 * 财务主管
 	 */
 	@Column
@@ -1098,6 +1110,22 @@ public class Payment {
 
 	public void setAmountInFigures(String amountInFigures) {
 		this.amountInFigures = amountInFigures;
+	}
+
+	public String getDeptManager2() {
+		return deptManager2;
+	}
+
+	public void setDeptManager2(String deptManager2) {
+		this.deptManager2 = deptManager2;
+	}
+
+	public String getDeptManager2ID() {
+		return deptManager2ID;
+	}
+
+	public void setDeptManager2ID(String deptManager2ID) {
+		this.deptManager2ID = deptManager2ID;
 	}
 
 
