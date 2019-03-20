@@ -227,7 +227,7 @@ public class CustomsReportAction extends ActionBase {
 				+ " from t_customs_importsandexports A "
 				+ " left join t_customs_material_mapping C on "
 				+ " C.oldMaterialNo=A.cimtasCode "
-				+ " left join t_customs_jde D "
+				+ " left join (select orderNumber,cimtasLongItemNo,sum(coalesce(transQTY,0)) AS transQTY from t_customs_jde group by  orderNumber,cimtasLongItemNo) D "
 				+ " on coalesce(C.newMaterialNo,A.cimtasCode)=D.cimtasLongItemNo "
 				+ " and A.orderNumber=D.orderNumber " 
 				+ " group by A.orderNumber,A.cimtasCode,coalesce(C.newMaterialNo,A.cimtasCode) "

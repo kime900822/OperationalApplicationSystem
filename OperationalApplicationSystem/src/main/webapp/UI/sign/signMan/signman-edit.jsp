@@ -32,14 +32,14 @@
 		})
 
 		function getUname(){
-			var id=$.CurrentDialog.find('#j_signman_edit_uid2').val();
+			var id=$.CurrentDialog.find('#j_signman_edit_uid').val();
 			BJUI.ajax('doajax', {
 			    url: 'getUserByID.action',
 			    loadingmask: true,
 			    data:{uid:id},
 			    okCallback: function(json, options) {
 			    	if(json.length>0){
-			    		$.CurrentDialog.find('#j_signman_edit_uname2').val(json[0].name); 
+			    		$.CurrentDialog.find('#j_signman_edit_uname').val(json[0].name);
 			    	}                         
 			    	else{
 			    		BJUI.alertmsg('error','userid不存在'); 
@@ -51,14 +51,14 @@
 		
 		
 		function getUname2(){
-			var id=$.CurrentDialog.find('#j_signman_edit_uid').val();
+			var id=$.CurrentDialog.find('#j_signman_edit_uid2').val();
 			BJUI.ajax('doajax', {
 			    url: 'getUserByID.action',
 			    loadingmask: true,
 			    data:{uid:id},
 			    okCallback: function(json, options) {
 			    	if(json.length>0){
-			    		$.CurrentDialog.find('#j_signman_edit_uname').val(json[0].name); 
+			    		$.CurrentDialog.find('#j_signman_edit_uname2').val(json[0].name);
 			    	}                         
 			    	else{
 			    		BJUI.alertmsg('error','userid不存在'); 

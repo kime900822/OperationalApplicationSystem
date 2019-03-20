@@ -45,7 +45,7 @@ $(function(){
         toolbarItem: 'add,edit,del',
         dataUrl: 'querySignMan.action',
         dataType: 'jsonp',
-        editMode: {dialog:{width:'800',height:200,title:'Edit SignMan',mask:true}},
+        editMode: {dialog:{width:'800',height:300,title:'Edit SignMan',mask:true}},
         delUrl:'deleteSignMan.action',
         editUrl: 'sign/signMan/signman-edit.jsp',
         paging: {pageSize:30, pageCurrent:1},
