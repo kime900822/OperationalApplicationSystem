@@ -590,7 +590,7 @@ function showButton(state,print,uid,documentAuditid,deptManagerid){
 		$.CurrentNavtab.find('#upfile_other').hide();
 		$.CurrentNavtab.find('#upfile_contract').hide();
 		$.CurrentNavtab.find('#upfile_invoice').hide();
-	}else if(state=="1"){//部门经理待审批
+	}else if(state=="1" || state=="9"){//部门经理待审批
 		$.CurrentNavtab.find('#payment-save').hide();
 		$.CurrentNavtab.find('#payment-submit').hide();
 		$.CurrentNavtab.find('#payment-approve').hide();
@@ -1288,24 +1288,28 @@ function showVisitTR(){
 	}else{
 		$.CurrentNavtab.find("#j_payment_visit_form").hide();
 	}
-	var term=$.CurrentNavtab.find("#j_payment_paymentTerm")
-	term.children().removeAll();
-	term.append("<option value=''></option>"); 
-	if(value=='2'||value=='3'){
-		term.append("<option value='3'>Upon receiving 收货后</option>"); 
-		term.append("<option value='4'>Upon Approval 验收后</option>"); 
-		term.append("<option value='5'>Upon invoice 见票后</option>"); 
-	}else{
-		term.append("<option value='1'>Advance 预付款</option>"); 
-		term.append("<option value='2'>Payment at sight 见票即付</option>"); 
-		term.append("<option value='6'>Other 其他</option>"); 
-	}
-	
-	term.selectpicker('refresh');
+
 	changePaymentTerm();
 	
 }	
 
+function setPaymentTerm() {
+    var value=$.CurrentNavtab.find("#j_payment_paymentSubject").val();
+    var term=$.CurrentNavtab.find("#j_payment_paymentTerm")
+    term.children().remove();
+    term.append("<option value=''></option>");
+    if(value=='2'||value=='3'){
+        term.append("<option value='3'>Upon receiving 收货后</option>");
+        term.append("<option value='4'>Upon Approval 验收后</option>");
+        term.append("<option value='5'>Upon invoice 见票后</option>");
+    }else{
+        term.append("<option value='1'>Advance 预付款</option>");
+        term.append("<option value='2'>Payment at sight 见票即付</option>");
+        term.append("<option value='6'>Other 其他</option>");
+    }
+
+    term.selectpicker('refresh');
+}
 
 function showVisitForm(){
 	BJUI.dialog({
@@ -1550,7 +1554,7 @@ function showVisitForm(){
 						Payment Subject <label style="color:red;font-size:12px"><b>*</b></label>
 					</td>
 					<td>
-						<select name="paymentSubject" data-toggle="selectpicker" id="j_payment_paymentSubject" onchange="showVisitTR();"  data-rule="required" data-width="190px">
+						<select name="paymentSubject" data-toggle="selectpicker" id="j_payment_paymentSubject" onchange="showVisitTR();setPaymentTerm();"  data-rule="required" data-width="190px">
 	                        <option value=""></option>
 	                        <option value="1">Fixed Asset 固定资产</option>
 	                        <option value="2">Raw Material 原材料</option>

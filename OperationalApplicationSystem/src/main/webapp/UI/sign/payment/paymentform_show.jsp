@@ -242,7 +242,7 @@ function showButton(state,print,uid,documentAuditid,deptManagerid,deptManager2id
 		$.CurrentNavtab.find('#payment-print').show();
 		$.CurrentNavtab.find('#payment-invalid-tr').hide();
 		$.CurrentNavtab.find('#payment-return-tr').hide();	
-	}else if(state=="1"&&(deptManagerid=='${user.uid}'||'{param.viewtype}'=='sign')){//部门经理审批
+	}else if((state=="1" || state=="2")&&(deptManagerid=='${user.uid}'||'{param.viewtype}'=='sign')){//部门经理审批
 		$.CurrentNavtab.find('#payment-approve').show();
 		$.CurrentNavtab.find('#payment-reject').show();
 		$.CurrentNavtab.find('#payment-assign').hide();

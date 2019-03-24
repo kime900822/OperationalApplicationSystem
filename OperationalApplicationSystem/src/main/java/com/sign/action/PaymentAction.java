@@ -1076,29 +1076,61 @@ public class PaymentAction extends ActionBase {
 		try {
 			User user=(User)session.getAttribute("user");
 			Payment payment=paymentBIZ.getPayment(" where id='"+id+"'").get(0);
-			payment.setState(PaymentHelp.SUBPAYMENT2);
-			//如果是代理审批
-			if (!user.getUid().equals(payment.getDeptManagerID())) {
-				List<Dict> ldict=dictBIZ.getDict(" where type='AGENTEMPLOYEE' and key='"+payment.getDeptManagerID()+"'");
-				if (ldict.size()>0) {
-					payment.setDeptManager(ldict.get(0).getValueName()+"(On behalf of "+ldict.get(0).getKeyName()+", "+ldict.get(0).getKeyExplain()+" to "+ldict.get(0).getValueExplain()+")");
+			if (payment.getState().equals(PaymentHelp.SUBPAYMENT))
+			{
+				payment.setState(PaymentHelp.SUBPAYMENT2);
+				//如果是代理审批
+				if (!user.getUid().equals(payment.getDeptManagerID())) {
+					List<Dict> ldict=dictBIZ.getDict(" where type='AGENTEMPLOYEE' and key='"+payment.getDeptManagerID()+"'");
+					if (ldict.size()>0) {
+						payment.setDeptManager(ldict.get(0).getValueName()+"(On behalf of "+ldict.get(0).getKeyName()+", "+ldict.get(0).getKeyExplain()+" to "+ldict.get(0).getValueExplain()+")");
+					}else {
+						result.setMessage("Agent Error!");
+						result.setStatusCode("300");
+						reslutJson=new ByteArrayInputStream(new Gson().toJson(result).getBytes("UTF-8"));
+						return SUCCESS;
+					}
+
 				}else {
-					result.setMessage("Agent Error!");
-					result.setStatusCode("300");
-					reslutJson=new ByteArrayInputStream(new Gson().toJson(result).getBytes("UTF-8")); 	
-					return SUCCESS;
+					payment.setDeptManager(user.getName());
 				}
-				
-			}else {
-				payment.setDeptManager(user.getName());	
+				payment.setDeptManagerDate(CommonUtil.getDateTemp());
+
+				paymentBIZ.approvePayment(payment);
+
+				result.setMessage(Message.SAVE_MESSAGE_SUCCESS);
+				result.setStatusCode("200");
+				logUtil.logInfo("付款申请单审批通过:"+payment.getId());
+
+
+			}else{
+				payment.setState(PaymentHelp.APPROVEPAYMENT);
+				//如果是代理审批
+				if (!user.getUid().equals(payment.getDeptManager2ID())) {
+					List<Dict> ldict=dictBIZ.getDict(" where type='AGENTEMPLOYEE' and key='"+payment.getDeptManager2ID()+"'");
+					if (ldict.size()>0) {
+						payment.setDeptManager2(ldict.get(0).getValueName()+"(On behalf of "+ldict.get(0).getKeyName()+", "+ldict.get(0).getKeyExplain()+" to "+ldict.get(0).getValueExplain()+")");
+					}else {
+						result.setMessage("Agent Error!");
+						result.setStatusCode("300");
+						reslutJson=new ByteArrayInputStream(new Gson().toJson(result).getBytes("UTF-8"));
+						return SUCCESS;
+					}
+
+				}else {
+					payment.setDeptManager2(user.getName());
+				}
+				payment.setDeptManagerDate(CommonUtil.getDateTemp());
+
+				paymentBIZ.approvePayment2(payment);
+
+				result.setMessage(Message.SAVE_MESSAGE_SUCCESS);
+				result.setStatusCode("200");
+				logUtil.logInfo("付款申请单审批通过:"+payment.getId());
+
+
 			}
-			payment.setDeptManagerDate(CommonUtil.getDateTemp());
-			
-			paymentBIZ.approvePayment(payment);
-			
-			result.setMessage(Message.SAVE_MESSAGE_SUCCESS);
-			result.setStatusCode("200");
-			logUtil.logInfo("付款申请单审批通过:"+payment.getId());
+
 		} catch (Exception e) {
 			logUtil.logInfo("付款申请单审批异常:"+e.getMessage());
 			result.setMessage(e.getMessage());
@@ -1109,48 +1141,7 @@ public class PaymentAction extends ActionBase {
 		return SUCCESS;
 	}
 	
-	
-	@Action(value="approvePayment2",results={@org.apache.struts2.convention.annotation.Result(type="stream",
-			params={
-					"inputName", "reslutJson"
-			})})
-	public String approvePayment2() throws UnsupportedEncodingException{
-		try {
-			User user=(User)session.getAttribute("user");
-			Payment payment=paymentBIZ.getPayment(" where id='"+id+"'").get(0);
-			payment.setState(PaymentHelp.APPROVEPAYMENT);
-			//如果是代理审批
-			if (!user.getUid().equals(payment.getDeptManager2ID())) {
-				List<Dict> ldict=dictBIZ.getDict(" where type='AGENTEMPLOYEE' and key='"+payment.getDeptManagerID()+"'");
-				if (ldict.size()>0) {
-					payment.setDeptManager2(ldict.get(0).getValueName()+"(On behalf of "+ldict.get(0).getKeyName()+", "+ldict.get(0).getKeyExplain()+" to "+ldict.get(0).getValueExplain()+")");
-				}else {
-					result.setMessage("Agent Error!");
-					result.setStatusCode("300");
-					reslutJson=new ByteArrayInputStream(new Gson().toJson(result).getBytes("UTF-8")); 	
-					return SUCCESS;
-				}
-				
-			}else {
-				payment.setDeptManager2(user.getName());	
-			}
-			payment.setDeptManagerDate(CommonUtil.getDateTemp());
-			
-			paymentBIZ.approvePayment2(payment);
-			
-			result.setMessage(Message.SAVE_MESSAGE_SUCCESS);
-			result.setStatusCode("200");
-			logUtil.logInfo("付款申请单审批通过:"+payment.getId());
-		} catch (Exception e) {
-			logUtil.logInfo("付款申请单审批异常:"+e.getMessage());
-			result.setMessage(e.getMessage());
-			result.setStatusCode("300");
-		}
-		
-		reslutJson=new ByteArrayInputStream(new Gson().toJson(result).getBytes("UTF-8")); 	
-		return SUCCESS;
-	}
-	
+
 	@Action(value="invalidPayment",results={@org.apache.struts2.convention.annotation.Result(type="stream",
 			params={
 					"inputName", "reslutJson"
@@ -1186,6 +1177,7 @@ public class PaymentAction extends ActionBase {
 			payment.setState(PaymentHelp.RETURNPAYMENT);
 			payment.setReturnDescription(returnDescription);
 			payment.setDeptManager("");
+			payment.setDeptManager2("");
 			payment.setDocumentAudit("");
 			
 			paymentBIZ.returnPayment(payment);
@@ -1847,7 +1839,7 @@ public class PaymentAction extends ActionBase {
 			hql="  select  P from Payment P where P.documentAuditID='"+user.getUid()+"' and P.state='2' "+where+" order By P.dateTemp desc";  			
 		}
 		if ("sign".equals(queryType)) {
-			hql="  select  P from Payment P left join Dict D ON P.deptManagerID=D.key And D.type='AGENTEMPLOYEE' And '"+CommonUtil.getDate()+"' >=D.keyExplain And '"+CommonUtil.getDate()+"' <=D.valueExplain  where (P.state='1' and (P.deptManagerID='"+user.getUid()+"' OR D.value='"+user.getUid()+"')) OR (P.state='9' and (P.deptManagerID='"+user.getUid()+"' OR D.value='"+user.getUid()+"')) order By P.dateTemp desc";
+			hql="  select  P from Payment P left join Dict D ON P.deptManagerID=D.key And D.type='AGENTEMPLOYEE' And '"+CommonUtil.getDate()+"' >=D.keyExplain And '"+CommonUtil.getDate()+"' <=D.valueExplain  where (P.state='1' and (P.deptManagerID='"+user.getUid()+"' OR D.value='"+user.getUid()+"')) OR (P.state='9' and (P.deptManager2ID='"+user.getUid()+"' OR D.value='"+user.getUid()+"')) order By P.dateTemp desc";
 		}
 		if ("user".equals(queryType)) {
 			hql=" select P from Payment P where P.UID='"+user.getUid()+"' "+where+" order By P.dateTemp desc";
