@@ -1299,9 +1299,12 @@ function setPaymentTerm() {
     term.children().remove();
     term.append("<option value=''></option>");
     if(value=='2'||value=='3'){
+        term.append("<option value='1'>Advance 预付款</option>");
+        term.append("<option value='2'>Payment at sight 见票即付</option>");
         term.append("<option value='3'>Upon receiving 收货后</option>");
         term.append("<option value='4'>Upon Approval 验收后</option>");
         term.append("<option value='5'>Upon invoice 见票后</option>");
+        term.append("<option value='6'>Other 其他</option>");
     }else{
         term.append("<option value='1'>Advance 预付款</option>");
         term.append("<option value='2'>Payment at sight 见票即付</option>");

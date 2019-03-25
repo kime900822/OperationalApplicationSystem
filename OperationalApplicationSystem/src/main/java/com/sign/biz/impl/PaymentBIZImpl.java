@@ -82,6 +82,11 @@ public class PaymentBIZImpl extends BizBase implements PaymentBIZ {
 			if (list.size()>0) {
 				payment.setDeptManagerID(list.get(0).getUid());
 				payment.setDeptManager(list.get(0).getName());
+				if (lDicts.get(0).getValue().equals(lDicts.get(0).getTmp1())){
+					payment.setDeptManager2ID(list.get(0).getUid());
+					payment.setDeptManager2(list.get(0).getName());
+					payment.setState(PaymentHelp.SUBPAYMENT2);
+				}
 				paymentDAO.update(payment);
 				//SendMail.SendMail(lUsers.get(0).getEmail(), "Payment application system inform", "Dear sir,<br><br> You have got a payment approval request from <u><b>\""+payment.getUName()+"\"</b></u> . <br><br>Approval Website:<a href='"+PropertiesUtil.ReadProperties(Message.SYSTEM_PROPERTIES, "website")+"'>Analysis</a>");	
 				SendMail.SendMail(list.get(0).getEmail(), PropertiesUtil.ReadProperties(Message.MAIL_PROPERTIES, "mailTitleOfSubmit"), MessageFormat.format(PropertiesUtil.ReadProperties(Message.MAIL_PROPERTIES, "mailContentOfSubmit"),payment.getUName(),TypeChangeUtil.formatMoney(payment.getAmountInFigures(), 2, payment.getCurrency_1()),PropertiesUtil.ReadProperties(Message.SYSTEM_PROPERTIES, "website")));	
@@ -91,9 +96,15 @@ public class PaymentBIZImpl extends BizBase implements PaymentBIZ {
 		}
 			else{
 				List<User> lUsers=userDAO.queryByHql(" select U from User U,SignMan S where U.uid=S.uid AND S.did='"+payment.getDepartmentID()+"'");
+				List<User> lUsers2=userDAO.queryByHql(" select U from User U,SignMan S where U.uid=S.uid2 AND S.did='"+payment.getDepartmentID()+"'");
 				if (lUsers.size()>0) {
 					if (!lUsers.get(0).getUid().equals(payment.getUID())) {
 						payment.setDeptManagerID(lUsers.get(0).getUid());
+						if(lUsers2.size()>0&&lUsers.get(0).getUid().equals(lUsers2.get(0).getUid())){
+							payment.setDeptManager(lUsers.get(0).getName());
+							payment.setDeptManager2ID(lUsers.get(0).getUid());
+							payment.setState(PaymentHelp.SUBPAYMENT2);
+						}
 						paymentDAO.update(payment);
 						//SendMail.SendMail(lUsers.get(0).getEmail(), "Payment application system inform", "Dear sir,<br><br> You have got a payment approval request from <u><b>\""+payment.getUName()+"\"</b></u> . <br><br>Approval Website:<a href='"+PropertiesUtil.ReadProperties(Message.SYSTEM_PROPERTIES, "website")+"'>Analysis</a>");	
 						SendMail.SendMail(lUsers.get(0).getEmail(), PropertiesUtil.ReadProperties(Message.MAIL_PROPERTIES, "mailTitleOfSubmit"), MessageFormat.format(PropertiesUtil.ReadProperties(Message.MAIL_PROPERTIES, "mailContentOfSubmit"),payment.getUName(),TypeChangeUtil.formatMoney(payment.getAmountInFigures(), 2, payment.getCurrency_1()),PropertiesUtil.ReadProperties(Message.SYSTEM_PROPERTIES, "website")));	

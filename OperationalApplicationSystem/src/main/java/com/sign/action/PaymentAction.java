@@ -1094,7 +1094,7 @@ public class PaymentAction extends ActionBase {
 				}else {
 					payment.setDeptManager(user.getName());
 				}
-				payment.setDeptManagerDate(CommonUtil.getDateTemp());
+				//payment.setDeptManagerDate(CommonUtil.getDateTemp());
 
 				paymentBIZ.approvePayment(payment);
 

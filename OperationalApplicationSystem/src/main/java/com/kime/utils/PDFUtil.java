@@ -470,7 +470,7 @@ public class PDFUtil {
         form.setField("amountInFigures",payment.getCurrency_1()+" "+CommonUtil.formatAmount(payment.getAmountInFigures().replaceAll(",", "")));
         form.setField("amountInBig",CommonUtil.digitUppercase(Double.parseDouble(payment.getAmountInFigures().replaceAll(",", ""))));
         form.setField("documentAudit",payment.getDocumentAudit());
-        form.setField("deptManager",payment.getDeptManager()+"/"+payment.getDeptManagerDate());
+        form.setField("deptManager",payment.getDeptManager2()+"/"+payment.getDeptManagerDate());
        
         if(payment.getState().equals(PaymentHelp.INVALIDPAYMENT)) {
         	form.setField("invalid","INVALID");
