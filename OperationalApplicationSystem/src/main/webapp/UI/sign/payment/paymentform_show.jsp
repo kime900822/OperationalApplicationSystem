@@ -270,7 +270,7 @@ function showButton(state,print,uid,documentAuditid,deptManagerid,deptManager2id
 		$.CurrentNavtab.find('#payment-invalid-tr').show();
 		$.CurrentNavtab.find('#payment-return-tr').show();	
 		$.CurrentNavtab.find('#j_payment_documentAudit').val('${user.name}')
- 	}else if(state=="2"&&(deptManagerid=='${user.uid}'||'{param.viewtype}'=='sign')){//审批通过 普通员工打印
+ 	}else if(state=="2"&&(deptManager2id=='${user.uid}'||'{param.viewtype}'=='sign')){//审批通过 普通员工打印
 		$.CurrentNavtab.find('#payment-approve').hide();
 		$.CurrentNavtab.find('#payment-reject').hide();
 		$.CurrentNavtab.find('#payment-assign').hide();

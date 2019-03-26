@@ -69,7 +69,7 @@ function datagrid_tree_operation() {
         gridTitle : 'Payment_Visit management',
         dataUrl: 'getPaymentVisit.action?queryType=user',
         dataType: 'jsonp',
-        showToolbar: true,
+        showToolbar: false,
         toolbarItem: 'export',
         editMode: {navtab:{width:'830',height:800,title:'Edit Payment',mask:true,fresh:true}},
         editUrl: 'sign/payment/visit/payment_visit_form.jsp?',
