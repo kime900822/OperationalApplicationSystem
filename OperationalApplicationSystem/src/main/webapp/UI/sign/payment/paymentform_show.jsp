@@ -153,10 +153,11 @@ function dataToFace(){
             	
             	$.CurrentNavtab.find("#documentAudit").html("&nbsp&nbsp"+json.documentAudit);
             	
-            	if(json.deptManagerDate!=''&&json.deptManagerDate!=null&&json.deptManagerDate!=undefiend){
+            	if(json.deptManagerDate!=''&&json.deptManagerDate!=null&&json.deptManagerDate!=undefined){
             		$("#deptManager").html("&nbsp&nbsp"+json.deptManager2+"/"+json.deptManagerDate);
             	}
-            	else{
+            	else {
+                    if(json.deptManager2!=''&&json.deptManager2!=null&&json.deptManager2!=undefined)
             		$("#deptManager").html("&nbsp&nbsp"+json.deptManager2);
             	}
             	
@@ -455,9 +456,11 @@ function approvePayment(){
 	    data:{id:$.CurrentNavtab.find("#j_payment_id").val()},	    
 	    okCallback: function(json, options) {
             if(json.status='200'){
-            	 BJUI.alertmsg('info', json.message); 
+            	 BJUI.alertmsg('info', json.message);
             	 $.CurrentNavtab.find('#payment-approve').hide();
-            	 $.CurrentNavtab.find('#payment-print').show();
+            	 if($.CurrentNavtab.find("#j_payment_state").val()=="9"){
+                     $.CurrentNavtab.find('#payment-print').show();
+                 }
          		 $.CurrentNavtab.find('#payment-reject').hide();
             }else{
             	 BJUI.alertmsg('error', json.message); 
