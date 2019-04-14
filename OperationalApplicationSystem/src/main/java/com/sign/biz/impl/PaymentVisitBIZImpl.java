@@ -419,9 +419,13 @@ public class PaymentVisitBIZImpl extends BizBase implements PaymentVisitBIZ {
 		if (paymentVisit.getAdvanceAmount()>0) {
 			payment.setDeptManagerID(paymentVisit.getApproveList().get(0).getUid());
 			payment.setDeptManager(paymentVisit.getApproveList().get(0).getUname());
+			payment.setDeptManager2ID(paymentVisit.getApproveList().get(0).getUid());
+			payment.setDeptManager2(paymentVisit.getApproveList().get(0).getUname());
 		}else {
 			payment.setDeptManagerID(user.getDepartment().getUid());
 			payment.setDeptManager(user.getDepartment().getName());
+			payment.setDeptManager2ID(user.getDepartment().getUid());
+			payment.setDeptManager2(user.getDepartment().getName());
 		}
 		payment.setDeptManagerDate(CommonUtil.getDateTemp());
 		payment.setUsageDescription(paymentVisit.getVisitDateFrom()+" "+paymentVisit.getVisitDateTo()+" "+paymentVisit.getVisitDetailPlace()+" "+paymentVisit.getVisitPurpose()+"  单号："+paymentVisit.getReferenceNo());
