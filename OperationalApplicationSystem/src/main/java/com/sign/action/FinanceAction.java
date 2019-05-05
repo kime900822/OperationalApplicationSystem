@@ -81,8 +81,8 @@ public class FinanceAction extends DictAction {
 			object.setKey("6");
 		}else if (object.getKey().equals("Other 其他")) {
 			object.setKey("7");
-		}else if (object.getKey().equals("8")) {
-			object.setKey("Travel 备用金");
+		}else if (object.getKey().equals("Travel 备用金")) {
+			object.setKey("8");
 		}
 		
 		try {
