@@ -328,6 +328,31 @@ public class DictAction extends ActionBase{
 	
 	
 		String where=" where type='SignMan4Manager'  ";
+		if (!"".equals(key)&&key!=null) {
+			where += " and key='"+key+"'";
+		}
+
+		if (!"".equals(key)&&key!=null) {
+			where += " and key='"+key+"'";
+		}
+		if (!"".equals(keyExplain)&&keyExplain!=null) {
+			where += " and keyExplain='"+keyExplain+"'";
+		}
+		if (!"".equals(value)&&value!=null) {
+			where += " and value='"+value+"'";
+		}
+		if (!"".equals(valueExplain)&&valueExplain!=null) {
+			where += " and valueExplain='"+valueExplain+"'";
+		}
+		if (!"".equals(tmp1)&&tmp1!=null) {
+			where += " and tmp1='"+tmp1+"'";
+		}
+		if (!"".equals(tmp2)&&tmp2!=null) {
+			where += " and tmp2='"+tmp2+"'";
+		}
+
+
+
 		List<Dict> list=dictBIZ.getDict(where, Integer.parseInt(pageSize),Integer.parseInt(pageCurrent));
 		int total=dictBIZ.getDict(where).size();
 		

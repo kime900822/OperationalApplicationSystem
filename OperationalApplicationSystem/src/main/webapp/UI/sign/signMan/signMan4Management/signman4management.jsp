@@ -21,8 +21,7 @@
         showCheckboxcol: true,
         linenumberAll: true,
         contextMenuB: true,
-        hScrollbar: true,
-        filterThead:false
+        hScrollbar: true
     }">
         <thead>
             <tr>

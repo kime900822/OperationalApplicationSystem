@@ -1890,6 +1890,7 @@ public class PaymentAction extends ActionBase {
         	List<HeadColumn> lHeadColumns = new ArrayList<>();
         	lHeadColumns.add(new HeadColumn("code", "100", "center", "Sequential Code"));
         	lHeadColumns.add(new HeadColumn("refNoofBank", "100", "center", "Ref.No. of Bank"));
+			lHeadColumns.add(new HeadColumn("requestPaymentDate", "100", "center", "Request Payment Date"));
         	lHeadColumns.add(new HeadColumn("applicationDate", "100", "center", "Application Date"));
         	lHeadColumns.add(new HeadColumn("state", "100", "center", "Approval Status"));
         	lHeadColumns.add(new HeadColumn("uID", "100", "center", "Cimtas ID"));

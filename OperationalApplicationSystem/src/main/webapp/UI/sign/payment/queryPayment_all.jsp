@@ -138,6 +138,7 @@ function datagrid_urgent() {
             <tr>
             	<th data-options="{render:datagrid_tree_operation,align:'center'}">Operation</th>
             	<th data-options="{name:'id',width:150,align:'center',finalWidth:'true',hide:'true'}">id</th>
+				<th data-options="{name:'requestPaymentDate',width:150,align:'center',finalWidth:'true',hide:'true'}">Request Payment Date</th>
             	<th data-options="{name:'applicationDate',width:150,align:'center',finalWidth:'true'}" >Application Date</th>
 				<th data-options="{name:'state',width:150,align:'center',finalWidth:'true',type:'select', items:datagrid_paymentState}">Approval Status</th>
 				<th data-options="{name:'UID',width:150,align:'center',finalWidth:'true'}">Cimtas ID</th>
