@@ -165,14 +165,22 @@ function paymentVisitViewDateToFace(id){
         			})
 	    			
 	        		for(var j=5;j<29;j++){
-	        			total=0;
-		    			total+=toNumber(trs[4].children[j].innerHTML);
-		    			total+=toNumber(trs[5].children[j].innerHTML);
-		    			total+=toNumber(trs[6].children[j].innerHTML);
-		    			total+=toNumber(trs[7].children[j].innerHTML);
-		    			total+=toNumber(trs[8].children[j].innerHTML);
-		    			total+=toNumber(trs[9].children[j].innerHTML);
-		    			trs[10].children[j-1].innerHTML=toDecimal2(total);
+	        			if(j==18){
+							for(var k=4;k<10;k++){
+								if(trs[k].children[18].innerHTML!='' && trs[k].children[18].innerHTML!=' '&& trs[k].children[18].innerHTML!=undefined){
+									trs[10].children[17].innerHTML=trs[k].children[18].innerHTML;
+								}
+							}
+						}else{
+							total=0;
+							total+=toNumber(trs[4].children[j].innerHTML);
+							total+=toNumber(trs[5].children[j].innerHTML);
+							total+=toNumber(trs[6].children[j].innerHTML);
+							total+=toNumber(trs[7].children[j].innerHTML);
+							total+=toNumber(trs[8].children[j].innerHTML);
+							total+=toNumber(trs[9].children[j].innerHTML);
+							trs[10].children[j-1].innerHTML=toDecimal2(total);
+						}
 		    			}
 	    			}
 	    		
@@ -231,7 +239,7 @@ function paymentVisitViewDateToFace(id){
 						total+=toNumber(trs[9].children[k].children[0].value);
 						trs[10].children[k-1].innerHTML=toDecimal2(total);
 					})
-	         		
+
 	    		}
 	    		
 	    		
