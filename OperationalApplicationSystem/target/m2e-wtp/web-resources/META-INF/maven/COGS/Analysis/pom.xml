@@ -9,7 +9,7 @@
   <url>http://maven.apache.org</url>
  <properties>
   	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
- 	<spring.version>4.3.12.RELEASE</spring.version>
+ 	<spring.version>5.3.18</spring.version>
  	<struts2.version>2.5.10</struts2.version>
  	<poi.version>3.16</poi.version>
  	<javamail.version>1.4.7</javamail.version>
