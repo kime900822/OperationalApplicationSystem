@@ -11,7 +11,7 @@
   	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
  	<spring.version>4.3.12.RELEASE</spring.version>
  	<struts2.version>2.5.10</struts2.version>
- 	<poi.version>3.16</poi.version>
+ 	<poi.version>4.1.1</poi.version>
  	<javamail.version>1.4.7</javamail.version>
 	 <jetty.version>7.6.15.v20140411</jetty.version>
   </properties>
